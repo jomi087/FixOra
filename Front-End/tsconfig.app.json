@@ -23,7 +23,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* Path Alias Configuration */
+    /* Path Alias Configuration (shadcn) */
     "baseUrl": ".",
     "paths": {
       "@/*": [

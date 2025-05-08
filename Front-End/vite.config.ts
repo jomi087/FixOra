@@ -15,6 +15,7 @@ export default defineConfig({
     port : 3000,
     open: true
   },
+  //shadcn
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
