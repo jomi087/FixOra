@@ -1,6 +1,5 @@
 
 # Fetures
-
 1. react(vite) + typescript
 2. added Tailwind 
   1. added shadcn 
@@ -10,5 +9,5 @@
       - Tailwind CSS (for styling)
       - TypeScript (for type safety)
     * 
-3. 
+3.
 

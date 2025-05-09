@@ -1,10 +1,17 @@
-function App() {
+import { ToastContainer } from 'react-toastify';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes/AppRoutes';
 
+function App() {
   return (
     <>
-      <h1 className="text-5xl font-bold underline">
-        Hello world!
-      </h1>
+      <ToastContainer
+        theme="dark" 
+        position="top-right" 
+        autoClose={3000} 
+        closeOnClick
+      />
+      <RouterProvider router= {router} />
     </>
   )
 }
