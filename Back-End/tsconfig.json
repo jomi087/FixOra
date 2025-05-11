@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext", // Use Node.js-style module resolution with ES module support.(supports es6 module and cjs both together)
+    "moduleResolution": "nodenext", // Resolve modules using Node.js's ES module resolution strategy.
+    "outDir": "./dist", // Specifies the output directory for compiled JavaScript files.
+    "rootDir": "./src", // Specifies the root directory of TypeScript source files.
+    "target": "ES6", // Sets the JavaScript version to which TypeScript compiles (ES6 in this case).
+    "sourceMap": true, // Generates source map files for debugging.
+    "strict": true, // Enables all strict type-checking options for better code quality.
+    "esModuleInterop": true // Allows default imports from CommonJS modules.
+  },
+  "include": ["src/**/*"], // Includes all TypeScript files in the src folder and its subfolders.
+  "exclude": ["node_modules"] // Excludes the node_modules folder from compilation.
+}

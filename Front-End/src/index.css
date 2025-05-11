@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/* @custom-variant dark (&:where(.dark, .dark *)); */
+@theme {
+    --color-nav-background: var(--navbackground) ;
+    --color-nav-text : var(--navtext) ;
+    --color-body-background : var(--bodybackground) ;
+    --color-body-text : var(--bodytext) ;
+    --color-footer-background : var(--footerbackground) ;
+    --color-footer-text: var(--footertext);
+}
+
+:root{
+    --navbackground : #fff;
+    --navtext : #000 ;
+    --bodybackground : #f1f5f9 ;
+    --bodytext : #000;
+    --footerbackground : #f1f5f9  ;
+    --footertext : #000;
+}
+
+.dark{
+    --navbackground : #1e2129 ;
+    --navtext : #ff6900;
+    --bodybackground : #1e2129 ;
+    --bodytext : #fff ;
+    --footerbackground : #1e2129  ;
+    --footertext : #fff;
+}
