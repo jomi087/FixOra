@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+@import 'swiper/css/free-mode';
+
 
 /* @custom-variant dark (&:where(.dark, .dark *)); */
 @theme {
@@ -8,6 +12,13 @@
     --color-body-text : var(--bodytext) ;
     --color-footer-background : var(--footerbackground) ;
     --color-footer-text: var(--footertext);
+    
+}
+
+@layer utilities {
+  .bg-hero-background {
+    background: var(--herobackground);
+  }
 }
 
 :root{
@@ -17,6 +28,7 @@
     --bodytext : #000;
     --footerbackground : #f1f5f9  ;
     --footertext : #000;
+    --herobackground : linear-gradient(to right, #3b82f6, #9333ea);
 }
 
 .dark{
@@ -26,4 +38,8 @@
     --bodytext : #fff ;
     --footerbackground : #1e2129  ;
     --footertext : #fff;
+    --herobackground: rgb(0, 0, 0);
+    --cardborder : #fff;
+
+
 }
