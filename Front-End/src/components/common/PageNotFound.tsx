@@ -1,9 +1,9 @@
-
+import {BGImage_404} from '../../utils/constant'
 
 const PageNotFound = () => {
     return (
         <div className="flex items-center justify-center min-h-screen px-4 bg-cover bg-center"
-            style={{ backgroundImage: "url('/404_Bg_Image.jpg')" }}>
+            style={{ backgroundImage: BGImage_404 }}>
         <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-800 mb-4">404 Page Not Found</h1>
             <p className="text-lg text-gray-600 mb-6">The page you requested does not exist.</p>
