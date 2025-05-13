@@ -1,9 +1,10 @@
 import { HeroSectionImage } from "../../utils/constant";
 
+
 const Hero = () => {
   return (
-    <section className="bg-hero-background text-white p-30 md:p-0">
-      <div className="container mx-auto px-5 md:px-3 lg:px-20 flex flex-col md:flex-row items-center">
+    <section className="bg-hero-background text-white p-30 md:p-0 ">
+      <div className="container mx-auto px-5 md:px-3 lg:px-20 flex flex-col md:flex-row items-center ">
         {/* Text Content */}
         <div className="md:w-1/2 text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
@@ -21,7 +22,7 @@ const Hero = () => {
               Get Started
             </a>
             <a
-              href="#about"
+              href="/"
               className="bg-transparent border border-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-blue-600 transition"
             >
               Learn More

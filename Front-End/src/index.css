@@ -2,6 +2,8 @@
 @import 'swiper/css';
 @import 'swiper/css/pagination';
 @import 'swiper/css/free-mode';
+@import 'swiper/css/navigation';
+
 
 
 /* @custom-variant dark (&:where(.dark, .dark *)); */
@@ -24,7 +26,7 @@
 :root{
     --navbackground : #fff;
     --navtext : #000 ;
-    --bodybackground : #f1f5f9 ;
+    --bodybackground : #fff ;
     --bodytext : #000;
     --footerbackground : #f1f5f9  ;
     --footertext : #000;

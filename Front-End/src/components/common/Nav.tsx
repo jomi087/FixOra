@@ -4,19 +4,19 @@ import ThemeToggle from "./ThemeToggle";
 
 
 interface NavProps {
-  props?: string; // CSS class string
+  className?: string; // CSS class string
   isLoggedIn?: boolean;
   role?: string;
 }
 
-const Nav: React.FC<NavProps> = ({ props = "", isLoggedIn = false, role = "client" }) => {
+const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "client" }) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [darkMode , setDarkMode] = useState<boolean>(()=> localStorage.getItem('theme') === 'dark' );
+  const [darkMode , setDarkMode] = useState<boolean>(()=> localStorage.getItem('theme') === 'dark' ); //doubt what will do in next js
 
   return (
     <>
-      <nav className={`shadow-lg fixed w-full z-10 ${props}`}>
+      <nav className={`shadow-lg fixed w-full z-10 ${className}`}>
         <div className="flex items-center justify-between px-7 py-4 ">
           {/* Logo */}
           <div className="hidden md:flex text-3xl font-bold tracking-wide">
