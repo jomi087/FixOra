@@ -1,4 +1,3 @@
-import { useState } from "react"
 import BlogsPreview from "../../components/client/BlogsPreview"
 import Hero from "../../components/client/Hero"
 import LearnMore from "../../components/client/LearnMore"
@@ -16,9 +15,8 @@ const LandingPage = () => {
         <LearnMore />
         <BlogsPreview/> 
       </div>
-      <Footer props={'bg-footer-background text-footer-text'} />
+      <Footer className={'bg-footer-background text-footer-text'} />
     </div>
-
   )
 }
 
