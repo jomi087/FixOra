@@ -4,9 +4,9 @@ import ThemeToggle from "./ThemeToggle";
 
 
 interface NavProps {
-  className?: string; // CSS class string
-  isLoggedIn?: boolean;
-  role?: string;
+  className: string; // Pass a bg-color and  text-coler
+  isLoggedIn?: boolean; 
+  role?: string; 
 }
 
 const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "client" }) => {
@@ -55,7 +55,7 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
         )}
           
           {/* Navigation Links */}
-          {role === "client" && (
+          {role === "client" && isLoggedIn && (
             <div className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
               <a href="#" className="flex items-center gap-2  hover:font-bold transition">
                 <Home size={18} /> Home
@@ -82,12 +82,12 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
 
             {/* Login/Logout Button */}
             {!isLoggedIn ? (
-              <a href="#" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
-                <LogIn size={18} /> Login
+              <a href="/signIn" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
+                <LogIn size={18} /> Sign-In
               </a>
             ) : (
               <a href="#" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
-                <LogOut size={18} /> Logout
+                <LogOut size={18} /> Sign-Out
               </a>
             )}
           </div>

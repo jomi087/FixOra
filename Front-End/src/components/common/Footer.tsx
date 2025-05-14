@@ -1,12 +1,12 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 
 interface FooterProps {
-  props: string; // CSS class string
+  className: string; // Pass a bg-color and  text-coler
 }
 
-const Footer: React.FC<FooterProps> = ({ props }) => {
+const Footer: React.FC<FooterProps> = ({ className ="" }) => {
   return (
-    <footer className={`text-center py-10 ${props}`}>
+    <footer className={`text-center py-10 ${className}`}>
       {/* Footer Links */}
       <div className="flex flex-col md:flex-row justify-evenly gap-4 mb-6">
         <a href="#" className="hover:underline">
