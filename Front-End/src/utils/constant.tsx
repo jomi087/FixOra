@@ -1,6 +1,6 @@
-export const BGImage_404 = "url('/404_Bg_Image.jpg')"
+export const BGImage_404 = "url('/404_Bg_Image.jpg')"  //used in sign-in ,pagenot found ,
 export const HeroSectionImage = "/Hero-removebg-preview.png"
-
+export const SingIntTheme  = "/signIn.png"
 
 
 //temp

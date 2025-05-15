@@ -1,109 +1,166 @@
 import { Link } from "react-router-dom";
-
+import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
-import { BGImage_404 } from "../utils/constant";
+
+import { BGImage_404, SingIntTheme } from "../utils/constant";
+import Header from "../components/common/Header";
+
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
+  const [isSignInForm , setIsSignInForm] = useState(true)
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundImage: BGImage_404 }}>
+    <main className="min-h-screen flex flex-col " style={{ backgroundImage: BGImage_404 }} >
       {/* Navigation */}
-      <nav className=" flex items-center px-7 py-4 ">
-        <h1 className="fixed text-3xl font-extrabold tracking-tight text-blue-700 select-none ">
-          FixOra
-        </h1>
-      </nav>
+      <Header className={"md:text-end"} />
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col md:flex-row ">
+      <div className="flex flex-1 flex-col md:flex-row  pt-10 overflow-hidden ">
+        
         {/* Left: Sign In Container */}
-        <section className="flex flex-col justify-center items-center md:w-2/3 pt-18 ">
-          <div className="w-full max-w-md text-black drop-shadow-lg">
+        <section className="flex flex-col justify-center items-center md:w-2/3    ">
+          <div className="w-full max-w-md text-black shadow-lg shadow-black border-1 rounded-2xl p-8 pb-4 ">
             <h2 className="text-5xl text-center mb-2 font-extrabold tracking-tight">
-              Welcome Back
+              { isSignInForm ? "Welcome Back" : "Verify-Email" }
             </h2>
-            <p className="mb-8 text-center text-black-700 text-sm font-semibold">
+            {isSignInForm && <p className=" text-center text-black text-sm font-semibold">
               Sign in to your FixOra account to continue.
             </p>
+            }
 
-            <form className="space-y-8 " noValidate >
-              <label htmlFor="email" className="block w-full shadow-2xl shadow-black">
-                <div className="flex items-center border rounded-lg overflow-hidden">
-                  <span className="bg-black px-4 py-3 font-mono text-white select-none text-sm md:text-base">
+            <div aria-live="polite" className="sr-only">
+              {loading && "Processing in, please wait..."}
+            </div>
+            
+            <form className="space-y-6" noValidate>
+              {/* Email */}
+              <label htmlFor="email" className="block w-full">
+                <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden mt-8">
+                  <span className="bg-black px-4 py-3 font-mono text-white select-none text-sm md:text-base whitespace-nowrap">
                     E-Mail
                   </span>
                   <input
                     type="email"
-                    className="flex-1 outline-none focus:ring-2 focus:ring-offset-1"
+                    name="email"
+                    id="email"
+                    className="flex-1 p-3 outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Enter your email"
                     required
                     autoComplete="email"
                     disabled={loading}
+                    aria-required="true" 
                   />
                 </div>
               </label>
 
-              <label htmlFor="password" className="block w-full shadow-2xl shadow-black">
-                <div className="flex items-center border rounded-lg overflow-hidden shadow-sm bg-blue-50">
-                  <span className="bg-black px-5 py-3 text-white select-none text-sm md:text-base">
-                    Password
-                  </span>
-                  <input
-                    type="text"
-                    className="flex-1 p-3 outline-none focus:ring-2 focus:ring-offset-1"
-                    placeholder="Enter your password"
-                    required
-                    autoComplete="current-password"
-                    disabled={loading}
-                  />
-                </div>
-              </label>
+              {/* Password */}
+              { isSignInForm &&
+                <label htmlFor="password" className="block w-full">
+                  <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-blue-50">
+                    <span className="bg-black px-5 py-3 text-white select-none text-sm md:text-base whitespace-nowrap">
+                      Password
+                    </span>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      className="flex-1 p-3 outline-none focus:ring-8 "
+                      placeholder="Enter your password"
+                      required
+                      autoComplete="current-password"
+                      disabled={loading}
+                      aria-required="true"
+                    />
+                  </div>
+                </label>
+              }
 
+              {/* Sign In Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-3 rounded-full font-semibold text-white shadow-2xl shadow-black transition-colors duration-300 ${
+                aria-busy={loading}
+                aria-label={isSignInForm ? "Sign in to FixOra" : "verifying your email"}
+                className={`w-full py-3 rounded-full font-semibold text-white shadow-lg transition-colors duration-300 cursor-pointer ${
                   loading
                     ? "bg-blue-400 cursor-not-allowed"
                     : "bg-blue-800 hover:bg-blue-900"
                 }`}
               >
-                {loading ? "Signing in..." : "Sign In"}
+                { isSignInForm ? "Sign in" : "Verify" } 
               </button>
             </form>
 
-            <p className="mt-6 text-center">
-              Don't have an account?{" "}
-              <Link to="/signup" className="underline text-blue-600 font-semibold">
-                Sign up
-              </Link>
-            </p>
+            {isSignInForm &&
+              <p className="mt-6 text-center">
+                Don't have an account?
+                <Link to="/signup" className="underline text-blue-600 font-semibold ml-1">
+                  Sign up
+                </Link>
+              </p>
+            }
 
-            <p className="mt-4 text-blue-100 text-center">
-              <Link to="/admin" className="text-black font-semibold">
-                Explore our app
+            { isSignInForm &&
+              <p className="text-center text-black font-medium text-sm mt-4 cursor-pointer hover:underline"
+                onClick={()=>{setIsSignInForm(false)}}
+              >
+                  Forgot-Password
+              </p> 
+            }
+
+            <div className="flex items-center my-4">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-4 text-gray-400 text-xs">OR</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+            
+            { isSignInForm &&
+              <Link to="#" className="flex justify-center my-4 cursor-pointer">
+                <FcGoogle size={25} />
               </Link>
-            </p>
+            }
+
+            { !isSignInForm &&
+              <Link to="/signup" className="font-semibold block text-center ">
+                Create Account
+              </Link>
+            }
+
+            {!isSignInForm &&
+              <button className=" w-full text-center mt-6 pt-2 text-black font-semibold cursor-pointer  "
+                onClick={()=>{setIsSignInForm(true)}}
+              >
+                Back to Login
+              </button>
+            }
+
+            {isSignInForm &&
+              <p className="mt-4 text-blue-100 text-center">
+                <Link to="/admin" className="text-black font-semibold">
+                  Explore our app
+                </Link>
+              </p>
+            }
           </div>
         </section>
 
         {/* Right: Image */}
         <section className="hidden md:flex md:w-1/2 relative " >
           <img
-            src="/signIn.png"
+            src={ SingIntTheme }
             alt="Sign In Illustration"
             className="object-cover w-full h-full"
           />          
         </section>
       </div>
 
-    </div>
+
+
+
+    </main>
   );
 };
 
 export default SignIn;
 
-
-          // import Spline from '@splinetool/react-spline'
-          //  <Spline scene="https://prod.spline.design/hNfClYEFxdGOsdZG/scene.splinecode" />
