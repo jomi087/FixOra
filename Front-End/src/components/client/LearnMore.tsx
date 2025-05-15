@@ -7,7 +7,7 @@ import { services , providers } from '../../utils/constant';
 
 const LearnMore = () => {
   return (
-    <section id="learnMore" className={'py-10'}>
+    <section id="learnMore" className={'py-10'} aria-label="Information about FixOra services and providers" >
       <div className="container mx-auto px-4">
 
         {/*  About */}
@@ -46,7 +46,8 @@ const LearnMore = () => {
                 spaceBetween: 20,
               },
             }}
-            className="max-w-[90%] lg:max-w-[100%] h-[80vh]   "
+            className="max-w-[90%] lg:max-w-[100%] h-[80vh] "
+             aria-label="Service options slider" 
           >
             
             {services.map((service) => (
@@ -83,6 +84,7 @@ const LearnMore = () => {
                     delay: 3000,
                     disableOnInteraction : false,
                   }}
+                  aria-label="Certified service providers slider"
                 >
                   {providers.map((provider,index) => (
                     <SwiperSlide key={index}>

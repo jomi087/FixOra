@@ -1,9 +1,11 @@
 import { HeroSectionImage } from "../../utils/constant";
+import { Link } from "react-router-dom";
+
 
 
 const Hero = () => {
   return (
-    <section className="bg-hero-background text-white p-30 md:p-0 ">
+    <section className="bg-hero-background text-white p-30 md:p-0 " role="banner" aria-label="Hero section with introduction and action buttons">
       <div className="container mx-auto px-5 md:px-3 lg:px-20 flex flex-col md:flex-row items-center ">
         {/* Text Content */}
         <div className="md:w-1/2 text-center md:text-left">
@@ -15,18 +17,22 @@ const Hero = () => {
             Experience seamless and reliable services tailored to your needs.
           </p>
           <div className="flex justify-center md:justify-start gap-4">
-            <a
-              href="#services"
+            <Link
+              to="#services"
               className="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition"
+              role="button"
+              aria-label="Get started with FixOra services"
             >
               Get Started
-            </a>
-            <a
-              href="/"
+            </Link>
+            <Link
+              to="/"
+              role='button'
+              aria-label="Learn more about FixOra and how it works"
               className="bg-transparent border border-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-blue-600 transition"
             >
               Learn More
-            </a>
+            </Link>
           </div>
         </div>
 

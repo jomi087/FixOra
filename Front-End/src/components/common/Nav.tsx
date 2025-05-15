@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Home, Briefcase, Users, FileText, LogIn, LogOut, Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import { Link } from "react-router-dom";
+
 
 
 interface NavProps {
@@ -19,36 +21,36 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
       <nav className={`shadow-lg fixed w-full z-10 ${className}`}>
         <div className="flex items-center justify-between px-7 py-4 ">
           {/* Logo */}
-          <div className="hidden md:flex text-3xl font-bold tracking-wide">
+          <div className="hidden md:flex text-3xl font-bold tracking-wide" aria-label="FixOra Logo">
             FixOra
           </div>
-          <div className="flex md:hidden text-3xl font-bold tracking-wide">
+          <div className="flex md:hidden text-3xl font-bold tracking-wide" aria-label="FixOra Logo">
             Fix<ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} version={"mobile"} />ra
           </div>
 
 
           {/* Hamburger Menu for Mobile */}
           <button className="md:hidden " onClick={() => { setIsMenuOpen(!isMenuOpen) }}
-            aria-expanded={isMenuOpen} aria-label="Toggle navigation menu"
+            aria-expanded={isMenuOpen} aria-label="Toggle navigation menu" aria-controls="mobile-menu"
           >
             { isMenuOpen ? (<X size={24}/>):(<Menu size={24}/>)}
           </button>
          
         {isMenuOpen && (
-            <div className="md:hidden rounded-lg shadow-lg absolute top-12 right-2 p-4">
-              <a href="#" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Home </a>
-              <a href="#" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Services </a>
-              <a href="#" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Providers </a>
-              <a href="#" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Blog </a>
+            <div className="md:hidden rounded-lg shadow-lg absolute top-12 right-2 p-4" aria-label="Mobile menu">
+              <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Home </Link>
+              <Link to="#" role="menuitem"  className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Services </Link>
+              <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Providers </Link>
+              <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Blog </Link>
               <div className="mt-1 border-t-2 pt-4">
                 {!isLoggedIn ? (
-                  <a href="#" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
-                    <LogIn size={18} /> Login
-                  </a>
+                  <Link to="#" role="menuitem" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
+                    <LogIn size={18} aria-hidden="true"  /> Login
+                  </Link>
                 ) : (
-                  <a href="#" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
-                    <LogOut size={18} /> Logout
-                  </a>
+                  <Link to="#" role="menuitem" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
+                    <LogOut size={18} aria-hidden="true"  /> Logout
+                  </Link>
                 )}
               </div>
           </div>
@@ -57,21 +59,21 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
           {/* Navigation Links */}
           {role === "client" && isLoggedIn && (
             <div className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
-              <a href="#" className="flex items-center gap-2  hover:font-bold transition">
-                <Home size={18} /> Home
-              </a>
+              <Link to="#" className="flex items-center gap-2  hover:font-bold transition">
+                <Home size={18} aria-hidden="true" /> Home
+              </Link>
 
-              <a href="#" className="flex items-center gap-2  hover:font-bold transition" >
-                <Briefcase size={18} /> Services
-              </a>
+              <Link to="#" className="flex items-center gap-2  hover:font-bold transition" >
+                <Briefcase size={18} aria-hidden="true" /> Services
+              </Link>
 
-              <a href="#" className="flex items-center gap-2  hover:font-bold transition" >
-                <Users size={18} /> Providers
-              </a>
+              <Link to="#" className="flex items-center gap-2  hover:font-bold transition" >
+                <Users size={18} aria-hidden="true" /> Providers
+              </Link>
 
-              <a href="#" className="flex items-center gap-2  hover:font-bold transition" >
-                <FileText size={18} /> Blog
-              </a>
+              <Link to="#" className="flex items-center gap-2  hover:font-bold transition" >
+                <FileText size={18} aria-hidden="true" /> Blog
+              </Link>
             </div>
           )}
 
@@ -82,13 +84,13 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
 
             {/* Login/Logout Button */}
             {!isLoggedIn ? (
-              <a href="/signIn" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
-                <LogIn size={18} /> Sign-In
-              </a>
+              <Link to="/signIn" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
+                <LogIn size={18}  aria-hidden="true"/> Sign-In
+              </Link>
             ) : (
-              <a href="#" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
-                <LogOut size={18} /> Sign-Out
-              </a>
+              <Link to="#" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
+                <LogOut size={18} aria-hidden="true" /> Sign-Out
+              </Link>
             )}
           </div>
         </div>
