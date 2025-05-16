@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BGImage_404 } from "../utils/constant";
 import Header from "../components/common/Header";
 
-const SignUp = () => {
+const SignUp : React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   return (

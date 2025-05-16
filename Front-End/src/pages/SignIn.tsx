@@ -6,7 +6,7 @@ import { BGImage_404, SingIntTheme } from "../utils/constant";
 import Header from "../components/common/Header";
 
 
-const SignIn = () => {
+const SignIn : React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [isSignInForm , setIsSignInForm] = useState(true)
 
