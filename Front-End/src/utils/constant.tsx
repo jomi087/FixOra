@@ -1,6 +1,10 @@
-export const BGImage_404 = "url('/404_Bg_Image.jpg')"  //used in sign-in ,pagenot found ,
+export const BGImage_404 = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
 export const HeroSectionImage = "/Hero-removebg-preview.png"
 export const SingIntTheme  = "/signIn.png"
+
+// OTP
+export const OTP_LENGTH = 6; // reducing or increasing this , will have to change ui also 
+export const OTP_TIME = 20;
 
 
 //temp
