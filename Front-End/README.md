@@ -6,8 +6,8 @@
 4. imlpiement dark mode and light mode with tailwind
 5. implimented some design pattern for mobile  version also
 6. swiper module for card slide
-7. impiment a 3d robot using spline (in user signup)
-
+7. implimented a 3d robot using spline (in user signup)
+8. implimented error boundries  
 
 
 

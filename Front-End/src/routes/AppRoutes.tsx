@@ -29,6 +29,11 @@ const router = createBrowserRouter([
         path: '/resetPassword',
         element: <ErrorBoundary><ResetPassword /></ErrorBoundary>
     },
+    // Admin
+    {
+        path: '/dashboard',
+        element : <ErrorBoundary><Dashboard/></ErrorBoundary>
+    },
     {
         path: '*',
         element: <PageNotFound />

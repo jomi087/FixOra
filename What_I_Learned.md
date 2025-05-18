@@ -3,7 +3,7 @@
 * importance or A11Y (Accessability)
 * Maxlength property in input 
 * input = 'numeric' property for show a numeric keypad for mobile user 
-* 
+* how to go previous page (navigate(-1))
 
 
 ## Modules 
