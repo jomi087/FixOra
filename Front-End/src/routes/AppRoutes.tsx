@@ -5,6 +5,8 @@ import SignIn from '../pages/SignIn'
 import SignUp from '../pages/SignUp'
 import OtpVerification from '../pages/OtpVerification'
 import ResetPassword from '../pages/ResetPassword'
+import ErrorBoundary from '../utils/ErrorBoundary'
+import Dashboard from '../pages/admin/Dashboard'
 
 const router = createBrowserRouter([
     {
@@ -21,11 +23,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/otp',
-        element: <OtpVerification />
+        element: <ErrorBoundary><OtpVerification /></ErrorBoundary>
     },
     {
         path: '/resetPassword',
-        element: <ResetPassword />
+        element: <ErrorBoundary><ResetPassword /></ErrorBoundary>
     },
     {
         path: '*',
@@ -33,3 +35,4 @@ const router = createBrowserRouter([
     }
 ])
 export default router
+
