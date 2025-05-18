@@ -21,6 +21,7 @@ const OtpVerification: React.FC = () => {
             nextInput?.focus()
         }
     }
+    
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
         
         if (e.key === 'Backspace') {
@@ -35,12 +36,11 @@ const OtpVerification: React.FC = () => {
             }
         }
     }
+
     const handleResendOtp = () => {
         setTimer(OTP_TIME)
         setOtp(new Array(OTP_LENGTH).fill(''))
     }
-
-
 
     useEffect(() => {
         if (timer === 0) return;
@@ -48,9 +48,8 @@ const OtpVerification: React.FC = () => {
             setTimer((prev) => prev - 1 )
         }, 1000);
         return () => clearInterval(interval);
-        },[timer])
-
-
+    }, [timer])
+    
     return (
         <>
             <Header className="md:text-start"/>
@@ -105,7 +104,6 @@ const OtpVerification: React.FC = () => {
                 {/* otp component  finish */}
             </div>
         </>
-            
     )
 }
 

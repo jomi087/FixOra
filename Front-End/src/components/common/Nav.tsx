@@ -21,7 +21,7 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
       <nav className={`shadow-lg fixed w-full z-10 ${className}`}>
         <div className="flex items-center justify-between px-7 py-4 ">
           {/* Logo */}
-          <div className="hidden md:flex text-3xl font-bold tracking-wide" aria-label="FixOra Logo">
+          <div className="hidden md:flex text-3xl font-bold tracking-wide cursor-default" aria-label="FixOra Logo">
             FixOra
           </div>
           <div className="flex md:hidden text-3xl font-bold tracking-wide" aria-label="FixOra Logo">
@@ -78,7 +78,7 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
           )}
 
           {/* Right Section */}
-          <div className="hidden md:flex items-center gap-6 ">
+          <div className="hidden md:flex items-center gap-6  ">
             {/* Theme Toggle */}
             <ThemeToggle  darkMode={darkMode} setDarkMode={setDarkMode} version={"desktop"}  />
 

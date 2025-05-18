@@ -8,7 +8,7 @@ import Header from "../components/common/Header";
 
 const SignIn : React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [isSignInForm , setIsSignInForm] = useState(true)
+  const [isSignInForm, setIsSignInForm] = useState(true) 
 
   return (
     <main className="min-h-screen flex flex-col " style={{ backgroundImage: BGImage_404 }} >

@@ -33,7 +33,7 @@ const ThemeToggle: React.FC<ThemeProps> = ({darkMode=false,setDarkMode,version})
               }`}
           >
             <div
-              className={`bg-white w-5 h-5 rounded-full shadow-md transform duration-300  ${darkMode ? 'translate-x-7' : ''
+              className={`bg-white w-5 h-5 rounded-full shadow-md transform duration-300 cursor-pointer  ${darkMode ? 'translate-x-7' : ''
                 }`}
             ></div>
           </button>
@@ -45,7 +45,7 @@ const ThemeToggle: React.FC<ThemeProps> = ({darkMode=false,setDarkMode,version})
           >
           <div>
             {darkMode ? (
-              <GiMoon size={28} className="text-gray-400" />
+              <GiMoon size={28} className="text-gray-400 " />
               ) : (
               <GiStripedSun size={28} className='text-yellow-400' /> 
             )}   
