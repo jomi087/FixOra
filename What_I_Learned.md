@@ -4,6 +4,7 @@
 * Maxlength property in input 
 * input = 'numeric' property for show a numeric keypad for mobile user 
 * how to go previous page (navigate(-1))
+* useLocation() hook to get current page location (used for sidebar Active logic)
 
 
 ## Modules 

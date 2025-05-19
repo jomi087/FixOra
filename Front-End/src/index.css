@@ -14,7 +14,8 @@
     --color-body-text : var(--bodytext) ;
     --color-footer-background : var(--footerbackground) ;
     --color-footer-text: var(--footertext);
-    
+    --color-sidebar-background : var(--sidebarbackground);
+    --color-userIcon-text : var(--userIcon);
 }
 
 @layer utilities {
@@ -31,6 +32,9 @@
     --footerbackground : #f1f5f9  ;
     --footertext : #000;
     --herobackground : linear-gradient(to right, #3b82f6, #9333ea);
+    --sidebarbackground : #1e2939 ;
+    --userIcon : #000;
+
 }
 
 .dark{
@@ -42,6 +46,7 @@
     --footertext : #fff;
     --herobackground: rgb(0, 0, 0);
     --cardborder : #fff;
-
-
+    --sidebarbackground : oklch(64.6% 0.222 41.116);
+    --userIcon :  oklch(83.7% 0.128 66.29) ;
 }
+
