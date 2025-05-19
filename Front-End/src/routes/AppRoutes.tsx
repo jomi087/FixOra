@@ -7,6 +7,9 @@ import OtpVerification from '../pages/OtpVerification'
 import ResetPassword from '../pages/ResetPassword'
 import ErrorBoundary from '../utils/ErrorBoundary'
 import Dashboard from '../pages/admin/Dashboard'
+import UserManagement from '../pages/admin/UserManagement'
+import ProviderManagement from '../pages/admin/ProviderManagement'
+import ServiceManagement from '../pages/admin/ServiceManagement'
 
 const router = createBrowserRouter([
     {
@@ -29,11 +32,24 @@ const router = createBrowserRouter([
         path: '/resetPassword',
         element: <ErrorBoundary><ResetPassword /></ErrorBoundary>
     },
-    // Admin
+    // Admin Routes
     {
         path: '/dashboard',
         element : <ErrorBoundary><Dashboard/></ErrorBoundary>
     },
+    {
+        path: '/users',
+        element : <ErrorBoundary><UserManagement/></ErrorBoundary>
+    },
+    {
+        path: '/providers',
+        element : <ErrorBoundary><ProviderManagement/></ErrorBoundary>
+    },
+    {
+        path: '/services',
+        element : <ErrorBoundary><ServiceManagement/></ErrorBoundary>
+    },
+
     {
         path: '*',
         element: <PageNotFound />
