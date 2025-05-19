@@ -1,13 +1,40 @@
-export const BGImage_404 = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
-export const HeroSectionImage = "/Hero-removebg-preview.png"
-export const SingIntTheme  = "/signIn.png"
+export const BGImage_404:string = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
+export const HeroSectionImage:string = "/Hero-removebg-preview.png"
+export const SingIntTheme:string  = "/signIn.png"
 
 // OTP
-export const OTP_LENGTH = 6; // reducing or increasing this , will have to change ui also 
-export const OTP_TIME = 20;
+export const OTP_LENGTH:number = 6; // reducing or increasing this , will have to change ui also 
+export const OTP_TIME:number = 20;
+
+/********************************************* Side-Bar Sections *******************************************************/
+interface SideBarOption {
+  icon: React.ElementType;
+  section: string;
+  to: string;
+}
+
+//Admins Side Bar
+import { MdDashboard, MdBarChart } from "react-icons/md";
+import { FaUsers } from "react-icons/fa";
+import { FaUsersGear } from "react-icons/fa6";
+import { FcServices } from "react-icons/fc";
+import { AiFillAlert } from "react-icons/ai";
+
+export const adminSideBarOptions: SideBarOption[] = [
+  { icon: MdDashboard, section: "Dashboard", to: "/dashboard" },
+  { icon: FaUsers, section: "Users", to: "/users" },
+  { icon: FaUsersGear, section: "Providers", to: "/providers" },
+  { icon: MdBarChart, section: "Sales", to: "/sales" },
+  { icon: FcServices, section: "Services", to: "/services" },
+  { icon: AiFillAlert, section: "Dispute", to: "/dispute" },
+];
+
+//Provider Side Bar
 
 
-//temp
+
+/********************************************************************************************************************************************************* */
+//temp dummy data
 interface Services {
   title: string;
   description: string;
