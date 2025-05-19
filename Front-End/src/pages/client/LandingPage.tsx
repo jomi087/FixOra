@@ -5,7 +5,7 @@ import Footer from "../../components/common/Footer"
 import Nav from "../../components/common/Nav"
 
 
-const LandingPage = () => {
+const LandingPage :React.FC = () => {
 
   return (
     <div >

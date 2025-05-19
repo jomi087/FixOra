@@ -5,7 +5,7 @@ import { Pagination ,Navigation ,Autoplay} from 'swiper/modules';
 import { services , providers } from '../../utils/constant';
 
 
-const LearnMore = () => {
+const LearnMore:React.FC = () => {
   return (
     <section id="learnMore" className={'py-10'} aria-label="Information about FixOra services and providers" >
       <div className="container mx-auto px-4">

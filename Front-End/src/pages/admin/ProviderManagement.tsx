@@ -27,7 +27,7 @@ const data :Array<data> = [
 ]
 
 
-const ProviderManagement = () => {
+const ProviderManagement:React.FC = () => {
   return (
       <>
         <Nav className='bg-nav-background text-nav-text' />

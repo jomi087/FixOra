@@ -26,7 +26,7 @@ const data :Array<data> = [
     { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobile: '098-765-4321', status: false , role:'user' }
 ]
 
-const UserManagement = () => {
+const UserManagement:React.FC = () => {
   return (
       <>
         <Nav className='bg-nav-background text-nav-text' />

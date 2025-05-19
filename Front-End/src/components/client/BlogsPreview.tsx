@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { blogPosts } from "../../utils/constant"
 
-const BlogsPreview = () => {
+const BlogsPreview:React.FC = () => {
   return (
       <section id='blogPreview' className="container mx-auto px-5" aria-label="Latest blog posts">
             <h3 className="text-4xl font-bold font-mono underline pt-20 px-4">

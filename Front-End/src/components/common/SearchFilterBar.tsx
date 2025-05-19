@@ -1,5 +1,5 @@
 
-const SearchFilterBar = () => {
+const SearchFilterBar:React.FC = () => {
   return (
         <div className='m-6 mb-2  flex justify-between ' aria-label={'search &  filter '} >
             <div className="flex items-center  border w-80 focus-within:border-indigo-500 transition duration-300 pr-3 gap-2  border-gray-500/30 h-[46px] rounded-[5px] overflow-hidden">

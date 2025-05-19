@@ -1,5 +1,5 @@
 
-const Pagination = () => {
+const Pagination:React.FC = () => {
     return (
         <div className="flex justify-end items-center gap-3 p-6">
             <button  className="px-4 py-1 rounded border disabled:opacity-50"

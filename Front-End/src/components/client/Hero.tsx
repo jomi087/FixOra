@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 
 
-const Hero = () => {
+const Hero:React.FC = () => {
   return (
     <section className="bg-hero-background text-white p-30 md:p-0 " role="banner" aria-label="Hero section with introduction and action buttons">
       <div className="container mx-auto px-5 md:px-3 lg:px-20 flex flex-col md:flex-row items-center ">
