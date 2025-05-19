@@ -9,13 +9,13 @@ const LandingPage = () => {
 
   return (
     <div >
-      <Nav className={'bg-nav-background text-nav-text'} />
+      <Nav className='bg-nav-background text-nav-text' />
       <div className="pt-16 bg-body-background text-body-text ">
         <Hero />
         <LearnMore />
         <BlogsPreview/> 
       </div>
-      <Footer className={'bg-footer-background text-footer-text'} />
+      <Footer className='bg-footer-background text-footer-text' />
     </div>
   )
 }

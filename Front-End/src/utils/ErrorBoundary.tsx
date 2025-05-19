@@ -1,6 +1,6 @@
 import React  from "react";
 import { toast } from "react-toastify";
-import ErrorPage from "../components/common/ErrorPage";
+import ErrorPage from "../pages/ErrorPage";
 
 interface Props {
   children: React.ReactNode;

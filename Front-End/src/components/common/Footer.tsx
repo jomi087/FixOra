@@ -1,4 +1,5 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface FooterProps {
   className: string; // Pass a bg-color and  text-coler
@@ -9,52 +10,52 @@ const Footer: React.FC<FooterProps> = ({ className ="" }) => {
     <footer className={`text-center py-10 ${className}`}>
       {/* Footer Links */}
       <div className="flex flex-col md:flex-row justify-evenly gap-4 mb-6">
-        <a href="#" className="hover:underline">
+        <Link to="#" className="hover:underline">
           Terms and Conditions
-        </a>
-        <a href="#" className="hover:underline">
+        </Link>
+        <Link to="#" className="hover:underline">
           Privacy Policy
-        </a>
-        <a href="#" className="hover:underline">
+        </Link>
+        <Link to="#" className="hover:underline">
           About Us
-        </a>
-        <a href="#" className="hover:underline">
+        </Link>
+        <Link to="#" className="hover:underline">
           Contact Us
-        </a>
-        <a href="#" className="hover:underline">
+        </Link>
+        <Link to="#" className="hover:underline">
           Careers
-        </a>
-        <a href="#" className="hover:underline">
+        </Link>
+        <Link to="#" className="hover:underline">
           Help Center
-        </a>
+        </Link>
       </div>
 
       {/* Social Media Links */}
       <div className="flex justify-center gap-6 mb-6">
-        <a href="#" aria-label="Facebook" className="hover:text-blue-500">
+        <Link to="#" aria-label="Facebook" className="hover:text-blue-500">
           <FaFacebookF size={20} />
-        </a>
-        <a href="#" aria-label="Twitter" className="hover:text-blue-400">
+        </Link>
+        <Link to="#" aria-label="Twitter" className="hover:text-blue-400">
           <FaTwitter size={20} />
-        </a>
-        <a href="#" aria-label="Instagram" className="hover:text-pink-500">
+        </Link>
+        <Link to="#" aria-label="Instagram" className="hover:text-pink-500">
           <FaInstagram size={20} />
-        </a>
-        <a href="#" aria-label="LinkedIn" className="hover:text-blue-700">
+        </Link>
+        <Link to="#" aria-label="LinkedIn" className="hover:text-blue-700">
           <FaLinkedinIn size={20} />
-        </a>
-        <a href="#" aria-label="YouTube" className="hover:text-red-500">
+        </Link>
+        <Link to="#" aria-label="YouTube" className="hover:text-red-500">
           <FaYoutube size={20} />
-        </a>
+        </Link>
       </div>
 
       {/* Contact Information */}
       <div className="mb-6">
         <p className="text-sm">
-          Email: <a href="mailto:support@fixora.com" className="hover:underline">support@fixora.com</a>
+          Email: <Link to="mailto:support@fixora.com" className="hover:underline">support@fixora.com</Link>
         </p>
         <p className="text-sm">
-          Phone: <a href="tel:+1234567890" className="hover:underline">+91 (000) 000-000</a>
+          Phone: <Link to="tel:+1234567890" className="hover:underline">+91 (000) 000-000</Link>
         </p>
       </div>
 
