@@ -1,11 +1,20 @@
 # Thing i have learned in this project
 
-* importance or A11Y (Accessability)
-* Maxlength property in input 
-* input = 'numeric' property for show a numeric keypad for mobile user 
-* how to go previous page (navigate(-1))
-* useLocation() hook to get current page location (used for sidebar Active logic)
 
+## Front-End
+
+* dynamic css styling && dark anf light mode
+* **importance or A11Y (Accessability)**
+* Maxlength property in input 
+* **input = 'numeric' property for show a numeric keypad for mobile user** 
+* **how to go previous page (navigate(-1))**
+* useLocation() hook to get current page location (used for sidebar Active logic)
+* side bar responsive
+* 
+
+## Node (express) version
+* advance version of mongodb connection with ( Retry , Fallback URI )
+* 
 
 ## Modules 
 
