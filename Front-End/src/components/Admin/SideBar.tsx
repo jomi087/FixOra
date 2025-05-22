@@ -2,17 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import { adminSideBarOptions } from "../../utils/constant";
 
 
-interface SideBarProps {
-  className: string; // Pass a width of the side bar
-}
-
-
-
-const SideBar: React.FC<SideBarProps> = ({ className }) => {
+const SideBar: React.FC = () => {
   const location = useLocation()
 
   return (
-    <div className={`bg-sidebar-background text-white overflow-hidden transition-transform ${className}`}>
+    <div className={`bg-sidebar-background text-white overflow-hidden transition-transform min-w-1/5 shrink-0`}>
       <ul className="space-y-2 pt-12 text-center">
         {adminSideBarOptions.map((item, index) => {
           const Icon = item.icon;

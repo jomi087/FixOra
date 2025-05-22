@@ -1,6 +1,6 @@
 import InfoCard from "../../components/Admin/InfoCard";
 import SideBar from "../../components/Admin/SideBar"
-import Nav from "../../components/common/Nav"
+import Nav from "../../components/common/layout/Nav"
 import Pagination from "../../components/common/Pagination";
 import SearchFilterBar from "../../components/common/SearchFilterBar";
 
@@ -32,7 +32,7 @@ const ProviderManagement:React.FC = () => {
       <>
         <Nav className='bg-nav-background text-nav-text' />
           <div className="flex pt-16  ">
-              <SideBar className="min-w-1/5 shirk-0" />
+              <SideBar />
               <div className="flex-1 bg-footer-background text-body-text">
                   <SearchFilterBar/>
                   <InfoCard datas={data} />

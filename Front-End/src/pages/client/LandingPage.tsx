@@ -1,8 +1,8 @@
 import BlogsPreview from "../../components/client/BlogsPreview"
 import Hero from "../../components/client/Hero"
 import LearnMore from "../../components/client/LearnMore"
-import Footer from "../../components/common/Footer"
-import Nav from "../../components/common/Nav"
+import Footer from "../../components/common/layout/Footer"
+import Nav from "../../components/common/layout/Nav"
 
 
 const LandingPage :React.FC = () => {

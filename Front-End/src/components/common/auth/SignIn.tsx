@@ -3,30 +3,27 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 
 interface signInProps {
-    singInThemeImage : string;
-    clientLogin: (email: string, password: string) => Promise<void>;
+    alternativeSideContent : string;
+    signInSubmit: (email: string, password: string) => Promise<void>;
     verifyEmail :  (email: string ) => Promise<void>;
     loading : boolean
 }
 
-const SignIn:React.FC<signInProps> = ( { singInThemeImage, clientLogin, verifyEmail, loading} ) => {
+const SignIn:React.FC<signInProps> = ( { alternativeSideContent, signInSubmit, verifyEmail, loading} ) => {
 
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isSignInForm, setIsSignInForm] = useState(true);
 
-    
-    console.log('loading',loading)
-    
+        
     const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log('loading check',loading)
         if (!isSignInForm) {
            verifyEmail(email)
             return
         }
-        clientLogin(email,password)
+        signInSubmit(email,password)
     }
     
     return (
@@ -183,7 +180,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, clientLogin, verifyEm
             {/* Right: Image */}
             <section className="hidden md:flex md:w-1/2 relative " >
             <img
-                src={ singInThemeImage }
+                src={ alternativeSideContent }
                 alt="Sign In Illustration"
                 className="object-cover w-full h-full"
             />          

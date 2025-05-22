@@ -8,7 +8,6 @@ interface NavProps {
   className: string; // Pass a bg-color and  text-coler
   isLoggedIn?: boolean; 
   role?: string; 
-
 }
 
 const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "client" }) => {
@@ -36,7 +35,7 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
             { isMenuOpen ? (<X size={24}/>):(<Menu size={24}/>)}
           </button>
          
-        {isMenuOpen && (
+        { isMenuOpen && (
             <div className="md:hidden rounded-lg shadow-lg absolute top-12 right-2 p-4" aria-label="Mobile menu">
               <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Home </Link>
               <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Services </Link>
@@ -44,11 +43,11 @@ const Nav: React.FC<NavProps> = ({ className = "", isLoggedIn = false, role = "c
               <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Blog </Link>
               <div className="mt-1 border-t-2 pt-4">
                 {!isLoggedIn ? (
-                  <Link to="#" role="menuitem" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
+                  <Link to="/signIn" role="menuitem" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
                     <LogIn size={18} aria-hidden="true"  /> Login
                   </Link>
                 ) : (
-                  <Link to="#" role="menuitem" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
+                  <Link to="/SignUp" role="menuitem" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
                     <LogOut size={18} aria-hidden="true"  /> Logout
                   </Link>
                 )}
