@@ -15,7 +15,7 @@ const LearnMore:React.FC = () => {
           Fixing Made Simple - Service Made Reliable
         </h3>
 
-        <p className="text-center font-mono w-3/4 mx-auto">
+        <p className="text-center text-sm sm:text-lg font-mono md:w-3/4 mx-auto">
           FixOra is your all-in-one solution for home repair services. Whether it's appliances, electrical issues, or plumbing needs – book trusted professionals in just a few taps. Fast, reliable, and hassle-free.
         </p>
   
@@ -24,12 +24,11 @@ const LearnMore:React.FC = () => {
           <h3 className="text-xl font-medium text-center underline pt-10 pb-5">
             SERVICES PROVIDED
           </h3>
-          <p className="text-center font-mono font-medium w-3/4 mx-auto pb-5">
+          <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto pb-5">
             We currently offer a wide range of home repair services, including appliance servicing, electrical fixes, and plumbing solutions. Our platform is constantly evolving — new and specialized services will be added regularly to meet your needs more effectively.
           </p>
           <Swiper
-             modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
-            pagination={{ clickable: true }} // Enable clickable pagination
+            modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
             loop= { true }
             autoplay={{
               delay: 1,
@@ -46,7 +45,7 @@ const LearnMore:React.FC = () => {
                 spaceBetween: 20,
               },
             }}
-            className="max-w-[90%] lg:max-w-[100%] h-[80vh] "
+            className="max-w-[90%] lg:max-w-[100%] "
              aria-label="Service options slider" 
           >
             
@@ -70,7 +69,7 @@ const LearnMore:React.FC = () => {
         {/* Certified Provider */}
         <div className="mt-10">
           <h3 className="text-xl font-medium text-center pb-5">Why Choose FixOra?</h3>
-          <p className="text-center font-mono font-medium w-3/4 mx-auto">
+          <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto">
             FixOra is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need.
           </p>
           <div className ='grid grid-cols-1 md:grid-cols-2 mt-20   to-blue-500 from-amber-500  p-10'>
@@ -98,13 +97,11 @@ const LearnMore:React.FC = () => {
             </div>
             <div>
               <h3 className="text-xl font-medium text-center mt-4">Certified Providers</h3>
-              <p className="text-center font-mono font-medium w-3/4 mx-auto m-10">
+              <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4  mx-auto m-10  ">
                 FixOra is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need.
               </p>
             </div>
           </div>
-
-
         </div>
 
 

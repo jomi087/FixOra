@@ -1,15 +1,14 @@
 
-import { BGImage_404, SingInThemeImage } from "../../../utils/constant";
-import Header from "../../../components/common/layout/Header";
-import SignIn from "../../../components/common/auth/SignIn";
+import { BGImage_404, SingInThemeImage } from "../../utils/constant";
+import Header from "../../components/common/layout/Header";
+import SignIn from "../../components/common/auth/SignIn";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
 
-const ClientSignIn: React.FC = () => {
+const ClientSignInPage: React.FC = () => {
   
   const [loading, setLoading] = useState(false);  
-
 
   const handleClientLogin = async (email: string, password: string) => {
 
@@ -27,7 +26,6 @@ const ClientSignIn: React.FC = () => {
 
   const handleVerifyEmail = async (email: string) => {
     
-    
     setLoading(true);
     try {
      console.log("VERIFIYING  EMAL BY ", email);
@@ -42,18 +40,15 @@ const ClientSignIn: React.FC = () => {
     
   return (
     <main className="min-h-screen flex flex-col " style={{ backgroundImage: BGImage_404 }} >
-      {/* Navigation */}
       <Header className={"md:text-end"} />
-
-      {/* Main Content */}
       <SignIn
-        SingInThemeImage={SingInThemeImage}
-        clientLogin={handleClientLogin}
+        alternativeSideContent={SingInThemeImage}
+        signInSubmit={handleClientLogin}
         verifyEmail={handleVerifyEmail}
         loading={loading} />
     </main>
   );
 };
 
-export default ClientSignIn;
+export default ClientSignInPage;
 

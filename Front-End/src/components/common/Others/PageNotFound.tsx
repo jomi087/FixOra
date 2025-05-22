@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import {BGImage_404} from '../utils/constant'
+import {BGImage_404} from '../../../utils/constant'
 
 const PageNotFound : React.FC = () => {
     return (

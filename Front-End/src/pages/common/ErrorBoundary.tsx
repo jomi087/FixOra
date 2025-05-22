@@ -1,6 +1,7 @@
 import React  from "react";
 import { toast } from "react-toastify";
-import ErrorPage from "../pages/ErrorPage";
+import ErrorPage from "../../components/common/Others/ErrorPage";
+import Header from "../../components/common/layout/Header";
 
 interface Props {
   children: React.ReactNode;
@@ -31,7 +32,10 @@ class ErrorBoundary extends React.Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <ErrorPage msg={this.state.error?.message} />
+        <>
+          <Header className="md:text-start"/>
+          <ErrorPage msg={this.state.error?.message} />
+        </>
       )
     }
 
