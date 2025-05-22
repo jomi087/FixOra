@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 
 interface signInProps {
-    SingInThemeImage : string;
+    singInThemeImage : string;
     clientLogin: (email: string, password: string) => Promise<void>;
     verifyEmail :  (email: string ) => Promise<void>;
     loading : boolean
 }
 
-const SignIn:React.FC<signInProps> = ( { SingInThemeImage, clientLogin, verifyEmail, loading} ) => {
+const SignIn:React.FC<signInProps> = ( { singInThemeImage, clientLogin, verifyEmail, loading} ) => {
 
 
     const [email, setEmail] = useState("");
@@ -183,7 +183,7 @@ const SignIn:React.FC<signInProps> = ( { SingInThemeImage, clientLogin, verifyEm
             {/* Right: Image */}
             <section className="hidden md:flex md:w-1/2 relative " >
             <img
-                src={ SingInThemeImage }
+                src={ singInThemeImage }
                 alt="Sign In Illustration"
                 className="object-cover w-full h-full"
             />          
