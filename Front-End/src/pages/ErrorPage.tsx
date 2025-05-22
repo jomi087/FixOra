@@ -1,6 +1,6 @@
 import { BiError } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/common/Header";
+import Header from "../components/common/layout/Header";
 
 interface ErrorPageProps {
     msg ?: string;
