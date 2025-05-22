@@ -7,7 +7,7 @@
 5. implimented some design pattern for mobile  version also
 6. swiper module for card slide
 7. implimented a 3d robot using spline (in user signup)
-8. implimented error boundries  
+8. error handling with error boundries  
 
 
 
