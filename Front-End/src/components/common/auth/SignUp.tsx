@@ -2,6 +2,8 @@ import Spline from "@splinetool/react-spline"
 import { useState } from "react";
 import { Link } from "react-router-dom"
 import type { user } from "../../../Types/user";
+import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNumber, validatePassword } from "../../../utils/formValidation";
+import { toast } from "react-toastify";
 
 interface signUpProps{
   alternativeSideContent?: string; //only image acceptable
@@ -48,7 +50,25 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
 
   const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault()
+    if (loading) return;
+
+    const fnameError = validateFName(formData.fname);
+    const lnameError = validateLName(formData.lname);
+    const emailError = validateEmail(formData.email);
+    const mobileNumberError = validateMobileNumber(formData.mobile);
+    const passwordError = validatePassword(formData.password);
+    const CpasswordError = validateCPassword(formData.cPassword,formData.password)
+
+    if (fnameError) return toast.error(fnameError);
+    if (lnameError) return toast.error(lnameError);
+    if (emailError) return toast.error(emailError);
+    if (mobileNumberError) return toast.error(mobileNumberError);
+    if (passwordError) return toast.error(passwordError);
+    if (CpasswordError) return toast.error(CpasswordError);
+
+
     signUpSubmit(formData)
+    
   }
 
   return (

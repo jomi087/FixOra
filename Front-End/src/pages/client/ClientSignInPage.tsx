@@ -39,13 +39,14 @@ const ClientSignInPage: React.FC = () => {
   }
     
   return (
-    <main className="min-h-screen flex flex-col " style={{ backgroundImage: BGImage_404 }} >
+    <main className="min-h-screen flex flex-col" style={{ backgroundImage: BGImage_404 }} >
       <Header className={"md:text-end"} />
       <SignIn
         alternativeSideContent={SingInThemeImage}
         signInSubmit={handleClientLogin}
         verifyEmail={handleVerifyEmail}
-        loading={loading} />
+        loading={loading} 
+      />
     </main>
   );
 };

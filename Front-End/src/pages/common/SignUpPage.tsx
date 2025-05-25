@@ -9,13 +9,13 @@ import { toast } from "react-toastify";
 const SignUpPage : React.FC = () => {
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async(formData:user) => {
-
+  const handleSubmit = async (formData: user) => {    
     setLoading(true)
     try {
-      console.log("creating user ", formData)
-    } catch (err:unknown) {  const [loading, setLoading] = useState(false);
-      toast.error("email verification failed");
+      console.log(formData)
+      alert("working")
+    } catch (err:unknown) {  
+      toast.error("Account Creation failed");
     } finally {
       setLoading(false)
     }
