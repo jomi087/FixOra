@@ -1,4 +1,4 @@
-# Back-End Project
+# BFixOra Back-End
 This project is a TypeScript-based back-end application with es6 modules  that serves as the server-side component for a web application.with clean Architecture
 
 ## Fetures
@@ -6,7 +6,8 @@ This project is a TypeScript-based back-end application with es6 modules  that s
 2. type script with nodeNext (supports es6 modules)
 3. Clean Architecture
 
-**Run the application**:
+
+## Run the application :
 > ```npm run build ```
    Runs the TypeScript compiler (tsc) to compile TypeScript files into JavaScript.
 > ```npm start```
@@ -34,6 +35,38 @@ This project is a TypeScript-based back-end application with es6 modules  that s
       3. Etc... 
 
 
-## Contributing
+## Folder Structure
 
-   Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+* **Src/domain/**
+   Purpose: Defines the business logic layer (core rules, interfaces, and entities).
+
+   - repositories/: Interface definitions (e.g., IUserRepository).
+   - entities/: Core domain models (e.g., UserEntity).
+   - 1stReadme (domain).md: Helpful for documentation!
+
+* **src/infrastructure/**
+   Purpose: Provides concrete implementations for external dependencies.
+
+   - database/: ORM/DB logic (schema, etc.).
+   - services/: External services like email or OTP.
+   - config/: Env vars, DB configs, mail config, etc.
+   - 1stReadme (infrastructure).md: Nicely documented.
+
+* **src/interfaces/**
+   Purpose: Handles user interaction layers — typically HTTP controllers/routes/middleware.
+
+   - middleware/: For auth, validation, etc.
+   - routes/: All Express routes.
+   - controllers/: Handle HTTP and call useCases.
+   - 1stReadme (interfaces).md: Keeps the folder purpose clear.
+
+* **src/application/**
+   Purpose: Application use cases and services.
+
+   - Will contain business logic (like createUserUseCase, sendOtpUseCase, etc.)
+   - 1st Readme (application).md: Good.
+
+* **server.ts**
+   - Entry point for the application. Typically initializes the app, sets up middlewares, routes, and starts the server.
+
+

@@ -4,5 +4,5 @@ export type user = {
     email: string,
     mobile: string,
     password: string,
-    cPassword?: string,
+    cPassword: string,
 }

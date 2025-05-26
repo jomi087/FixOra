@@ -5,8 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 //From Local files
-import mongoConnect from './infrastructure/database/mongodb/connection.js';
-
+import mongoConnect from './infrastructure/database/connection.js';
 
 const app = express()
 const port = process.env.PORT || 5000;
@@ -14,6 +13,7 @@ const port = process.env.PORT || 5000;
 mongoConnect()
 app.use(morgan('tiny'))
 app.use(express.json())
+
 
 
 app.listen(port, () => {
