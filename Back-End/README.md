@@ -35,38 +35,6 @@ This project is a TypeScript-based back-end application with es6 modules  that s
       3. Etc... 
 
 
-## Folder Structure
 
-* **Src/domain/**
-   Purpose: Defines the business logic layer (core rules, interfaces, and entities).
-
-   - repositories/: Interface definitions (e.g., IUserRepository).
-   - entities/: Core domain models (e.g., UserEntity).
-   - 1stReadme (domain).md: Helpful for documentation!
-
-* **src/infrastructure/**
-   Purpose: Provides concrete implementations for external dependencies.
-
-   - database/: ORM/DB logic (schema, etc.).
-   - services/: External services like email or OTP.
-   - config/: Env vars, DB configs, mail config, etc.
-   - 1stReadme (infrastructure).md: Nicely documented.
-
-* **src/interfaces/**
-   Purpose: Handles user interaction layers — typically HTTP controllers/routes/middleware.
-
-   - middleware/: For auth, validation, etc.
-   - routes/: All Express routes.
-   - controllers/: Handle HTTP and call useCases.
-   - 1stReadme (interfaces).md: Keeps the folder purpose clear.
-
-* **src/application/**
-   Purpose: Application use cases and services.
-
-   - Will contain business logic (like createUserUseCase, sendOtpUseCase, etc.)
-   - 1st Readme (application).md: Good.
-
-* **server.ts**
-   - Entry point for the application. Typically initializes the app, sets up middlewares, routes, and starts the server.
 
 

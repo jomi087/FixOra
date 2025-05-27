@@ -1,5 +1,7 @@
+//domain + useCase connected to db => IUserRepository + email/user(parmeter came form usecase) connecting to mongo db (for comunication) via infrasturcture
+
 import { User } from "../../../domain/entities/UserEntity.js";
-import { IUserRepository } from "../../../domain/repositories/IUserRepository.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import UserModel from "../models/UserModel.js";
 
 export class UserRepository implements IUserRepository {

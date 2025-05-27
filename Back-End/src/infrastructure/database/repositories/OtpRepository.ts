@@ -1,5 +1,5 @@
 import { Otp } from "../../../domain/entities/OtpEntity.js";
-import { IOtpRepository } from "../../../domain/repositories/IOtpRepository.js";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import OtpModel, { IOtpModel } from "../models/OtpModel.js";
 
 export class OtpRepository implements IOtpRepository {

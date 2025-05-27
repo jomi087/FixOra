@@ -1,5 +1,6 @@
-import { IOtpModel } from "../../infrastructure/database/models/OtpModel.js";
-import { Otp } from "../entities/OtpEntity.js";
+import { IOtpModel } from "../../../infrastructure/database/models/OtpModel.js";
+import { Otp } from "../../entities/OtpEntity.js";
+
 
 export interface IOtpRepository{
 

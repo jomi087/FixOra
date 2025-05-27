@@ -2,12 +2,12 @@
 
 * src/application/ :
     - **Application Business Rules [second last inner layer]**
-    - Contains classes that implement the business use cases of the system
+        - The Application Layer contains the business rules of your app — not core domain logic (like User), but actions or operations the app performs with that domain.
+        - also it contains a service folder were it is user to write  the redundant method in the buiness logic like gernating otp , calulating sales 
 
     * Each use case (often a class like CreateUserUseCase) orchestrates domain entities and calls repository interfaces to perform actions
         -  For example, a UserService or CreateUserUseCase connects to the repository interfaces , which are abstract (usually defined in the domain layer [ ie domain/repostry/interfaces ]),
         - by: Calling methods like userRepository.create(user) or userRepository.findById(id) to persist or retrieve entities.
 
 
-    * This layer also houses DTOs (Data Transfer Objects) or “request/response models” under application/dtos/, which decouple external I/O from domain models
-    . DTOs are used as input/output for use cases, ensuring the domain stays separate from the API contracts
+
