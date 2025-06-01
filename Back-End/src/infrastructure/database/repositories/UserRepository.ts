@@ -6,6 +6,7 @@ import UserModel from "../models/UserModel.js";
 
 export class UserRepository implements IUserRepository {
     async findByEmail(email: string): Promise<User | null>{
+        console.log("enter this function findByemial")
         return await UserModel.findOne({ email })  //mongo db methods 
     }
 
@@ -14,5 +15,7 @@ export class UserRepository implements IUserRepository {
         return await newUser.save()
     }
 
-    
 }
+
+
+

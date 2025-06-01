@@ -15,7 +15,7 @@
 * **Interface** (there is an another strucuture or an abstract rules your app needs, without writing the actual logic yet rule (defined Below)  )
     
     - Repository interfaces – Defines Interfaces for DB ie,define database-related methods: 
-    - Service interfaces    – define logic you want to plug in later (e.g. email sender, OTP generator).
+    - Service interfaces    – define logic you want to plug in later (e.g. email sender).
 ---
 ### What's Repository ?
 * A repository acts as a mediator between the domain layer and the data mapping layer (e.g., a database like MongoDB). It provides a clean interface for the use cases to perform data operations, without exposing details of the database (Mongoose, SQL, etc.)

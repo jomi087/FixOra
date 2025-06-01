@@ -18,14 +18,11 @@
     "noImplicitAny": true,                              /* Raise error on expressions and declarations with an implied 'any' type */
     "strictNullChecks": true,                           /* Enable strict null checks */
     "strictFunctionTypes": true,                        /* Enable strict checking of function types */
-    "strictBindCallApply": true,                        /* Enable strict 'bind', 'call', and 'apply' methods on functions */
     "noUnusedLocals": false,                            /* Disable checking for unused locals */
     "noUnusedParameters": false,                        /* Disable checking for unused parameters */
-    "noImplicitReturns": true,                          /* Report error when not all code paths in function return a value */
     "noFallthroughCasesInSwitch": true,                 /* Report errors for fallthrough cases in switch statement */
     "skipLibCheck": true,                               /* Skip type checking of declaration files */
-    "incremental": true
   },
-  "include": ["src/**/*"], // Includes all TypeScript files in the src folder and its subfolders.
-  "exclude": ["node_modules"] // Excludes the node_modules folder from compilation.
+  // "include": ["src/**/*"], // Includes all TypeScript files in the src folder and its subfolders.
+  // "exclude": ["node_modules"] // Excludes the node_modules folder from compilation.
 }
