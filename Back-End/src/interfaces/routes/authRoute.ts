@@ -1,11 +1,15 @@
 import express from 'express'
 const router = express.Router();
 
+import { validateRequest } from '../middleware/validateRequest.js';
+import { signupSchema } from '../validations/signupSchema.js';
+
 import { UserRepository } from '../../infrastructure/database/repositories/UserRepository.js';
 import { OtpRepository } from '../../infrastructure/database/repositories/OtpRepository.js';
 import { EmailService } from '../../infrastructure/services/EmailService.js';
 import { OtpGenratorservice } from '../../infrastructure/services/OtpGeneratorService.js';
 import { HashService } from '../../infrastructure/services/HashService.js';
+
 
 // Instantiate all dependencies
 const userRepository = new UserRepository();
@@ -23,12 +27,11 @@ const signupUseCase = new SignupUseCase( //
     hashService
 ) 
 
-
 import { AuthController } from '../controllers/AuthController.js';
-const authController = new AuthController(signupUseCase) 
 
-// router.post('/signup' ,  authController.signup ) //! This will not wrk (reson metioned below)
-router.post('/signup', (req, res) => authController.signup(req, res))
+
+const authController = new AuthController(signupUseCase) 
+router.post('/signup', validateRequest(signupSchema), (req, res) => authController.signup(req, res))
 
 
 export default router
