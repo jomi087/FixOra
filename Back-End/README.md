@@ -5,7 +5,7 @@ This project is a TypeScript-based back-end application with es6 modules  that s
 1. Es6 modules (import and export)
 2. type script with nodeNext (supports es6 modules)
 3. Clean Architecture & its structure (notes mentioned in each folder)
-4. backend validation with zod library
+4. backend validation with zod library (A TypeScript-first schema declaration and validation library )
 5. Used JWT for maintain stateLess 
 6. 
       

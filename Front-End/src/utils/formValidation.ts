@@ -12,7 +12,7 @@ export const validateLName = (lname:string):string|null => {
     return null ;
 } ;
 
-export const validateMobileNumber = (phone:string):string|null => {
+export const validate= (phone:string):string|null => {
     phone = phone.trim();
     if (!phone) return "Phone required";
     if (!/^\d+$/.test(phone)) return "Only digits allowed";
@@ -40,8 +40,9 @@ export const validateEmail = (email:string):string|null => {
 export const validatePassword = (password:string):string|null => {
     password = password.trim();
     if (!password) return "Password field cannot be empty";
-    const isPasswordValid = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
-    if (!isPasswordValid) return "Password is not valid";
+    // const isPasswordValid = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+    // if (!isPasswordValid) return "Password is not valid";
+    if(password.length < 10)return "Password must be at least 10 characters"
     return null;
 };
 
