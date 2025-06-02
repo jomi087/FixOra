@@ -2,8 +2,7 @@ import Spline from "@splinetool/react-spline"
 import { useState } from "react";
 import { Link } from "react-router-dom"
 import type { user } from "../../../Types/user";
-import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNumber, validatePassword } from "../../../utils/formValidation";
-import { toast } from "react-toastify";
+
 
 interface signUpProps{
   alternativeSideContent?: string; //only image acceptable
@@ -18,7 +17,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
       fname: "",
       lname: "",
       email: "",
-      mobile: "",
+      mobileNo: "",
       password: "",
       cPassword: ""
     });
@@ -33,7 +32,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
       fname: formData.fname,
       lname: formData.lname,
       email: formData.email,
-      mobile: formData.mobile,
+      mobileNo: formData.mobileNo,
       password: formData.password,
       cPassword: formData.cPassword,
     };
@@ -51,24 +50,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
   const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault()
     if (loading) return;
-
-    const fnameError = validateFName(formData.fname);
-    const lnameError = validateLName(formData.lname);
-    const emailError = validateEmail(formData.email);
-    const mobileNumberError = validateMobileNumber(formData.mobile);
-    const passwordError = validatePassword(formData.password);
-    const CpasswordError = validateCPassword(formData.cPassword,formData.password)
-
-    if (fnameError) return toast.error(fnameError);
-    if (lnameError) return toast.error(lnameError);
-    if (emailError) return toast.error(emailError);
-    if (mobileNumberError) return toast.error(mobileNumberError);
-    if (passwordError) return toast.error(passwordError);
-    if (CpasswordError) return toast.error(CpasswordError);
-
-
     signUpSubmit(formData)
-    
   }
 
   return (
@@ -154,12 +136,12 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
             />
 
             {/* Mobile Number */}
-            <label htmlFor="mobile" className="sr-only">
+            <label htmlFor="mobileNo" className="sr-only">
               Mobile Number
             </label>
             <input
-              id="mobile"
-              name="mobile"
+              id="mobileNo"
+              name="mobileNo"
               type="text"
               placeholder="Enter your Mobile number"
               className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
@@ -167,7 +149,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
               disabled={loading}
               aria-required="true"
               aria-disabled={loading}
-              value={formData.mobile}
+              value={formData.mobileNo}
               onChange={handleChange}
             />
 

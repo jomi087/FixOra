@@ -9,21 +9,21 @@ interface data {
     Fname: string;
     Lname: string;
     email: string;
-    mobile: string;
+    mobileNo: string;
     status: boolean;
     image?: string;
     role: string;
 }
 
 const data :Array<data> = [
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobile: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobile: '098-765-4321', status: false , role:'user'  },
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobile: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobile: '098-765-4321', status: false , role:'user' },
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobile: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobile: '098-765-4321', status: false , role:'user' },
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobile: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobile: '098-765-4321', status: false , role:'user' }
+    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
+    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user'  },
+    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
+    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user' },
+    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
+    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user' },
+    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
+    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user' }
 ]
 
 

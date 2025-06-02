@@ -7,7 +7,7 @@ interface data {
     Fname: string;
     Lname: string;
     email: string;
-    mobile: string;
+    mobileNo: string;
     status: boolean;
     image?: string;
     role: string;
@@ -48,7 +48,7 @@ const InfoCard:React.FC <DataProps> = ({datas}) => {
                         </div>
                         <div className="flex justify-between mb-2 ">
                             <p className="text-sm font-semibold font-mono text-start px-2">Mobile :</p>
-                            <p className="text-sm font-semibold text-end px-2">{data.mobile}</p>
+                            <p className="text-sm font-semibold text-end px-2">{data.mobileNo}</p>
                         </div>
 
                     </div>

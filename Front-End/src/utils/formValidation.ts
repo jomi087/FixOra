@@ -12,7 +12,7 @@ export const validateLName = (lname:string):string|null => {
     return null ;
 } ;
 
-export const validate= (phone:string):string|null => {
+export const validateMobileNo= (phone:string):string|null => {
     phone = phone.trim();
     if (!phone) return "Phone required";
     if (!/^\d+$/.test(phone)) return "Only digits allowed";
