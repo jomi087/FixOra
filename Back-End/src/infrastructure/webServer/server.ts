@@ -1,6 +1,7 @@
 // From node_modules
 import express from 'express'
 import morgan from 'morgan'
+import cors from 'cors'
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,12 +12,19 @@ import authRouter from '../../interfaces/routes/authRoute.js'
 const app = express()
 const port = process.env.PORT || 5000;
 
+const corsOptions = {
+    origin: 'http://localhost:5001', // front end url  //this is how we  give access to those url which can access our apis // here its only access for my frontend url how ever  if to make acess forevery one we  user  "*" 
+    credentials: true,  //allowing credentials like cookies , headers etc .... 
+}
+
 mongoConnect()
 app.use(morgan('tiny'))
+app.use(cors(corsOptions))
 app.use(express.json())
 
 
-app.use('/', authRouter )
+app.use('/api/auth', authRouter)
+
 
 
 app.listen(port, () => {

@@ -3,11 +3,25 @@ export const HeroSectionImage:string = "/Hero-removebg-preview.png"
 export const SingInThemeImage:string  = "/signIn.png"
 
 export const constraints = [
-    { label: "More than 8 characters", test: (pw: string) => pw.length > 8 },
+    { label: "At least 10 characters", test: (pw: string) => pw.length > 10 },
     { label: "At least one capital letter", test: (pw: string) => /[A-Z]/.test(pw) },
     { label: "At least one number", test: (pw: string) => /\d/.test(pw) },
     { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
 ];
+
+export const signupApi =`${import.meta.env.VITE_API_URL}/api/auth/signup`
+
+
+
+
+
+
+
+
+
+
+
+
 
 /********************************************* Side-Bar Sections *******************************************************/
 interface SideBarOption {
