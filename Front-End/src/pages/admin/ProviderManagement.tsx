@@ -1,5 +1,5 @@
-import InfoCard from "../../components/Admin/InfoCard";
-import SideBar from "../../components/Admin/SideBar"
+import InfoCard from "../../components/admin/InfoCard";
+import SideBar from "../../components/admin/SideBar"
 import Nav from "../../components/common/layout/Nav"
 import Pagination from "../../components/common/Pagination";
 import SearchFilterBar from "../../components/common/SearchFilterBar";

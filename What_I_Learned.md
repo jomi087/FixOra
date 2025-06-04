@@ -11,6 +11,9 @@
 * shared component and re-usable componet
 * created re-usabel Component
     - signIn, signUp, Otp,
+* useParams() is for path parmas  [ "/signIn/:role => signIn/customer" ]
+* useSearchParams() is for Query parameters [ "/signIn?role=customer"	 ]
+
 
 ## Node (express) version
 * advance version of mongodb connection with ( Retry , Fallback URI )

@@ -59,7 +59,7 @@ const SignUpPage : React.FC = () => {
           "Content-Type": "application/json"
         }
       });
-      if (res.status == 200) {
+      if (res.status == 200 || res.status == 201) {
         toast.success(res.data.message || "Sign-in successful!");
         setTimeout(() => {
           navigate('/otp');

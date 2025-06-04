@@ -1,5 +1,5 @@
-import DashBoard from "../../components/Admin/DashBoard"
-import SideBar from "../../components/Admin/SideBar"
+import DashBoard from "../../components/admin/DashBoard"
+import SideBar from "../../components/admin/SideBar"
 import Nav from "../../components/common/layout/Nav"
 
 const Dashboard:React.FC = () => {
