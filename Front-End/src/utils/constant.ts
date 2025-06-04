@@ -10,18 +10,8 @@ export const constraints = [
 ];
 
 export const signupApi =`${import.meta.env.VITE_API_URL}/api/auth/signup`
-
-
-
-
-
-
-
-
-
-
-
-
+export const accountVerificationWithOtpApi = `${import.meta.env.VITE_API_URL}/api/auth/verify-otp`
+export const resendOtpApi = `${import.meta.env.VITE_API_URL}/api/auth/resend-Otp`
 
 /********************************************* Side-Bar Sections *******************************************************/
 interface SideBarOption {

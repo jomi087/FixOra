@@ -65,8 +65,9 @@ const SignUpPage : React.FC = () => {
           navigate('/otp');
         }, 1000);
       }
-    } catch (err: unknown) {
-      toast.error("Account Creation failed");
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message ||"Account Creation failed";
+      toast.error(errorMsg);
     } finally {
       setLoading(false)
     }

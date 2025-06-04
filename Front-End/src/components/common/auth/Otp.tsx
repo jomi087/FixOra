@@ -1,13 +1,17 @@
 import  { useEffect, useState } from "react";
 import { BiCheck, BiRefresh } from "react-icons/bi";
+import { toast } from "react-toastify";
 
 interface otpProps {
     otpTime: number;
     otpLength: number;
+    otpSubmit: (otp: string) => Promise<void>; 
+    resendOtp: () => Promise<void>; 
+
 }
 
 
-const Otp: React.FC<otpProps>= ({otpTime , otpLength }) => {
+const Otp: React.FC<otpProps>= ({otpTime , otpLength , otpSubmit , resendOtp }) => {
     const [otp, setOtp] = useState(new Array(otpLength).fill(""));
     const [timer, setTimer] = useState(otpTime);
 
@@ -27,7 +31,6 @@ const Otp: React.FC<otpProps>= ({otpTime , otpLength }) => {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
         
         if (e.key === 'Backspace') {
-            console.log(idx)
             if (otp[idx]) {
                 const newOtp = [...otp]
                 newOtp[idx] = "";
@@ -40,10 +43,22 @@ const Otp: React.FC<otpProps>= ({otpTime , otpLength }) => {
     }
 
     const handleResendOtp = () => {
-      setTimer(otpTime)
-      setOtp(new Array(otpLength).fill(''))
-      const nextInput = document.getElementsByClassName('otp_input')[0]as HTMLInputElement | undefined
-      nextInput?.focus()
+        setTimer(otpTime)
+
+        setOtp(new Array(otpLength).fill(''))
+        const nextInput = document.getElementsByClassName('otp_input')[0]as HTMLInputElement | undefined
+        nextInput?.focus()
+
+        resendOtp();
+    }
+
+    const handleOtpSubmit = () => {
+        const otpString = otp.join("");
+        if (otpString.length !== otpLength) {
+            toast.warning("Please enter a complete OTP.");
+            return;
+        }
+        otpSubmit(otpString);
     }
 
     const isOtpComplete = otp.every((digit) => digit !== "");
@@ -100,7 +115,7 @@ const Otp: React.FC<otpProps>= ({otpTime , otpLength }) => {
                     type='button'   
                     disabled={!isOtpComplete}
                     className={`flex items-center justify-center gap-1  text-white font-bold px-5 py-2 rounded-lg transition-colors duration-200 ${!isOtpComplete ? 'bg-gray-300' : 'bg-blue-700 hover:bg-blue-800'}`}
-                    onClick={()=>{alert("verified")}}  // adlogic later
+                    onClick={(handleOtpSubmit)}  
                 >
                     <BiCheck className="text-xl" />
                     Submit

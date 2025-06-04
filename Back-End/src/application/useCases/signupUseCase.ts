@@ -21,9 +21,8 @@ export class SignupUseCase {
     async execute(userData: SignupDTO) {
         try {
             const existingUser = await this.userRepository.findByEmail(userData.email)
-            console.log("existingUser",existingUser)
             if (existingUser) {
-                return { success: false, message:"email alredy exists" }
+                throw { status: 409, message: "Email already registered" }; 
             }
 
             const hashedPassword = await this.hashService.hash(userData.password)
@@ -33,13 +32,10 @@ export class SignupUseCase {
                 password: hashedPassword,
                 userId: uuidv4()
             }
-            console.log("tempPayload",tempPayload)
     
-            const tempToken = jwt.sign(tempPayload, process.env.JWT_SECRET as string, { expiresIn: "5m" })
-            console.log("tempToken",tempToken)
+            const tempToken = jwt.sign(tempPayload, process.env.JWT_SECRET as string, { expiresIn: "10m" })
 
             const otp = this.otpGenratorService.generateOtp()
-            console.log("otp",otp)
 
             await this.otpRepository.storeOtp({
                 email: userData.email,
@@ -48,14 +44,19 @@ export class SignupUseCase {
             })
 
             const html = `<h1>Welcome to FixOra</h1><p>Your OTP code is: <strong>${otp}</strong></p>`
-
             await this.emailService.sendEmail(userData.email, "Your FixOra OTP", html);
 
-            return tempToken
+            return {
+                success: true,
+                message: "OTP sent to your email",
+                token: tempToken,
+            };
 
         } catch (error: any) {
-            console.log("signup useCase Error", error.message)
-            throw new Error('signUp failed , please try again ')
+            if (error.status && error.message) {
+               throw error;
+            }
+            throw { status: 500, message: 'signUp failed , please try again '};
         }
     }
 

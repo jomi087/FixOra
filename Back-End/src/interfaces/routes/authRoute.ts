@@ -19,20 +19,20 @@ const otpGenratorservice = new OtpGenratorservice();
 const hashService = new HashService();
 
 import { SignupUseCase } from '../../application/useCases/signupUseCase.js';
-const signupUseCase = new SignupUseCase( //
-    userRepository,
-    otpRepository,
-    emailService,
-    otpGenratorservice,
-    hashService
-) 
+const signupUseCase = new SignupUseCase(userRepository, otpRepository, emailService, otpGenratorservice, hashService) 
+
+import { VerifyAcUseCase } from '../../application/useCases/VerifyAcUseCase.js';
+const verifyAcUseCase = new VerifyAcUseCase(otpRepository, userRepository)
+
+import { ResendOtpUseCase } from '../../application/useCases/resendOtpUseCase.js';
+const resendOtpUseCase = new ResendOtpUseCase(otpRepository,otpGenratorservice,emailService)
 
 import { AuthController } from '../controllers/AuthController.js';
+const authController = new AuthController(signupUseCase, verifyAcUseCase,resendOtpUseCase ) 
 
-
-const authController = new AuthController(signupUseCase) 
-router.post('/signup', validateRequest(signupSchema), (req, res) => authController.signup(req, res))
-
+router.post('/signup', validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next))
+router.post('/verify-otp', (req, res, next) => authController.verifyAc(req, res, next))
+router.get('/resend-otp',(req,res,next)=>authController.resendOtp(req,res,next))
 
 export default router
 
