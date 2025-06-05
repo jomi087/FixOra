@@ -1,4 +1,4 @@
-export interface OtpVerifyDTO {
+export type OtpVerifyDTO = {
   email? : string
   otp: string;
 }

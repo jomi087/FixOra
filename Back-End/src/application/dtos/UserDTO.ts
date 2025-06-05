@@ -1,6 +1,8 @@
-import { SignupDTO } from "./SignupDTO.js";
 
-export interface UserDTO extends SignupDTO{
-    userId: string;
+import { SignupDTO } from "../../interfaces/validations/signupSchema.js";
+
+export type UserDTO = SignupDTO & {
+  userId: string;
 }
+
 

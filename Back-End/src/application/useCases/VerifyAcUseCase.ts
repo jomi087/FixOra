@@ -29,7 +29,7 @@ export class VerifyAcUseCase{
 
             await this.userRepository.create({
                 ...decodeUserData,
-                createdAt: new Date()
+                createdAt: new Date(),
             })
 
             await this.otpRepository.deleteOtpByEmail(decodeUserData.email)

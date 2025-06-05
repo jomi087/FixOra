@@ -8,7 +8,6 @@ export interface User {
   mobileNo: string;
   password: string; // hashed
   isBlocked?: boolean;
-  isVerified?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

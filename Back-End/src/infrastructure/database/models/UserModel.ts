@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema<IUserModel>({
         required: true,
         unique: true,
         trim: true
-        //default: '',
     },
     fname: {
         type: String,
@@ -40,11 +39,6 @@ const userSchema = new mongoose.Schema<IUserModel>({
         trim: true
     },
     isBlocked: {
-        type: Boolean,
-        required: true,
-        default : false
-    },
-    isVerified: {
         type: Boolean,
         required: true,
         default : false
