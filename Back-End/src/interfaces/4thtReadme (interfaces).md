@@ -2,8 +2,8 @@
 
 * src/interfaces/ : 
      **[2rd Outer layer]**
-    - The Interface Layer  is the entry and exit point of your application.
-        
+    - The Interface Layer  is the entry and exit point of your application. ( Interfaces -> Can depend on -> application, domain)
+    - That also mean that interface layer must not be depended to infrastructure layer 
     - This layer bridges the outside world (HTTP) and the application. It includes 
         - controllers
         - routes

@@ -3,6 +3,7 @@ import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpR
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import {  OtpVerifyDTO } from "../dtos/OtpVerifyDTO.js";
 import { UserDTO } from "../dtos/UserDTO.js";
+import { RoleEnum } from "../../domain/constant/Roles.js";
 
 
 export class VerifyAcUseCase{
@@ -13,7 +14,7 @@ export class VerifyAcUseCase{
 
     async execute(otpData: OtpVerifyDTO , token : string) {
         try {
-
+            
             if (!token) {
                 throw { status: 401, message: "Something  went wrong"  }
             }
@@ -24,12 +25,12 @@ export class VerifyAcUseCase{
                 throw { status: 400, message: "OTP Expired, Click Re-Send Otp" }
             }else if (storedOtp.otp != otpData.otp) {
                 throw { status: 400, message: "Invalid OTP" }
-                
             }
 
             await this.userRepository.create({
                 ...decodeUserData,
                 createdAt: new Date(),
+                role : RoleEnum.Customer
             })
 
             await this.otpRepository.deleteOtpByEmail(decodeUserData.email)
@@ -43,7 +44,7 @@ export class VerifyAcUseCase{
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: "Account Verification failed, please try again." };
+            throw { status: 500, message: "Account Verification failed, (something went wrong)" };
         }
     }
     

@@ -2,7 +2,7 @@ import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpR
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
 
-import { SignupDTO } from "../../interfaces/validations/signupSchema.js";
+import { SignupDTO } from "../dtos/SignupDTO.js";
 import { v4 as uuidv4 } from "uuid";
 import jwt from 'jsonwebtoken'
 import { IOtpGenratorService } from "../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
@@ -31,8 +31,9 @@ export class SignupUseCase {
                 ...userData,
                 password: hashedPassword,
                 userId: uuidv4(),
+                
             }
-    
+            
             const tempToken = jwt.sign(tempPayload, process.env.JWT_SECRET as string, { expiresIn: "10m" })
 
             const otp = this.otpGenratorService.generateOtp()
@@ -56,7 +57,7 @@ export class SignupUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'signUp failed , please try again '};
+            throw { status: 500, message: 'signUp failed, (something went wrong)'};
         }
     }
 
