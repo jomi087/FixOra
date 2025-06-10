@@ -18,8 +18,11 @@
 ## Node (express) version
 * advance version of mongodb connection with ( Retry , Fallback URI )
 * DIP -> dependency investion principle
-    - 	High-level modules should not depend on low-level modules. Both should depend on abstractions.
-
+    - 	High-level modules should not depend on low-level modules. Both should depend on abstractions./
+* how to restrict incoming request data size in Express (for both JSON and URL-encoded bodies).
+    -  helps protect the server from large payload (stop users from sending too much data to server) 
+* ocp Open/Close principle in Solid
+* Use of Refresh Token and Its Purpose  
 
 
 ## Modules 

@@ -9,14 +9,12 @@
         -  For example, a UserService or CreateUserUseCase connects to the repository interfaces , which are abstract (usually defined in the domain layer [ ie domain/repostry/interfaces ]),
         - by: Calling methods like userRepository.create(user) or userRepository.findById(id) to persist or retrieve entities.
 
-
 In Clean Architecture, there are actually two common approaches to placing DTOs, and both are valid depending on your specific needs:
 
 **Interface/Presentation Layer DTOs** 
 Used for transforming data between external requests and your application
 Handles input validation and data shaping for API requests/responses
 Located in interfaces/dtos/ (what we did)
-
 
 **Application Layer DTOs**:
 Used for transferring data between use cases and repositories

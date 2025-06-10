@@ -42,7 +42,7 @@ export class ResendOtpUseCase{
            if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: "Re-send Otp failed, please try again." };  
+            throw { status: 500, message: "Re-send Otp failed, (something went wrong)" };  
         }
     }
 }
