@@ -4,6 +4,7 @@ import { accountVerificationWithOtpApi, BGImage_404, resendOtpApi } from "../../
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { RoleEnum } from '../../../shared/enums/roles';
 
 
 const OtpPage: React.FC = () => {
@@ -23,7 +24,7 @@ const OtpPage: React.FC = () => {
             if ( res.status == 200 ) { 
                 toast.success(res.data.message || " OTP verified successfully ! ");
                 setTimeout(() => {
-                    navigate('/signIn');
+                    navigate(`/signIn/${RoleEnum.CUSTOMER}`); // Redirect to sign-in page after successful verification
                 }, 1000);
             }
         } catch (error: any) {
@@ -34,6 +35,7 @@ const OtpPage: React.FC = () => {
             }
         }
     }
+    
     const resendOtp = async (): Promise<void> => {
         try {
             const res = await axios.get( resendOtpApi, {
@@ -50,7 +52,6 @@ const OtpPage: React.FC = () => {
             toast.error(errorMsg);
         }
     }
-
     return (
         <>
             <Header className="md:text-start" />

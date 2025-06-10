@@ -3,19 +3,19 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 
 interface signInProps {
-    alternativeSideContent : string;
-    signInSubmit: (email: string, password: string) => Promise<void>;
+    singInThemeImage : string;
+    signInSubmit: (email: string, password: string ) => Promise<void>;
     verifyEmail :  (email: string ) => Promise<void>;
-    loading : boolean
+    loading: boolean
+    role: string
 }
 
-const SignIn:React.FC<signInProps> = ( { alternativeSideContent, signInSubmit, verifyEmail, loading} ) => {
+const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, verifyEmail, loading , role } ) => {
 
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isSignInForm, setIsSignInForm] = useState(true);
-
         
     const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -36,7 +36,7 @@ const SignIn:React.FC<signInProps> = ( { alternativeSideContent, signInSubmit, v
                 { isSignInForm ? `Welcome Back  ` : "Verify-Email" }
                 </h2>
                 {isSignInForm && <p className=" text-center text-black text-sm font-semibold">
-                Sign in to your FixOra account to continue.
+                    { role == "provider" ? `Lets get back to work!` : `Sign in to your FixOra account to continue`}
                 </p>
                 }
 
@@ -180,7 +180,7 @@ const SignIn:React.FC<signInProps> = ( { alternativeSideContent, signInSubmit, v
             {/* Right: Image */}
             <section className="hidden md:flex md:w-1/2 relative " >
             <img
-                src={ alternativeSideContent }
+                src={ singInThemeImage }
                 alt="Sign In Illustration"
                 className="object-cover w-full h-full"
             />          

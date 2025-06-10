@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import LandingPage from '../pages/client/LandingPage'
 import PageNotFound from '../components/common/Others/PageNotFound'
-import ClientSignInPage from '../pages/client/ClientSignInPage.tsx'
+import SignInPage from '../pages/common/SignInPage.tsx'
 import SignUpPage from '../pages/common/SignUpPage.tsx'
 import OtpPage from '../pages/common/OtpPage.tsx'
 import ResetPasswordPage from '../pages/common/ResetPasswordPage.tsx'
@@ -11,14 +11,15 @@ import UserManagement from '../pages/admin/UserManagement'
 import ProviderManagement from '../pages/admin/ProviderManagement'
 import ServiceManagement from '../pages/admin/ServiceManagement'
 
+
 const router = createBrowserRouter([
     {
         path: '/',
         element: <ErrorBoundary><LandingPage /></ErrorBoundary>
     },
     {
-        path: '/signIn',
-        element: <ErrorBoundary><ClientSignInPage /></ErrorBoundary>
+        path: '/signIn/:role',
+        element: <ErrorBoundary><SignInPage /></ErrorBoundary>
     },
     {
         path: '/signUp',

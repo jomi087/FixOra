@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BGImage_404, signupApi } from "../../utils/constant";
 import Header from "../../components/common/layout/Header";
 import SignUp from "../../components/common/auth/SignUp";
-import type { user } from "../../Types/user";
+import type { User } from "../../../shared/Types/user";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNo, validatePassword } from "../../utils/formValidation";
@@ -13,7 +13,7 @@ const SignUpPage : React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (formData: user): Promise<void> => {
+  const handleSubmit = async (formData: User): Promise<void> => {
     
     const fnameError = validateFName(formData.fname);
     const lnameError = validateLName(formData.lname);

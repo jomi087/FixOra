@@ -1,19 +1,19 @@
 import Spline from "@splinetool/react-spline"
 import { useState } from "react";
 import { Link } from "react-router-dom"
-import type { user } from "../../../Types/user";
+import type { User } from "../../../../shared/Types/user";
 
 
 interface signUpProps{
   alternativeSideContent?: string; //only image acceptable
   loading?: boolean;
-  signUpSubmit: (formData:user) => Promise<void>;
+  signUpSubmit: (formData:User) => Promise<void>;
 } 
 
 
 const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUpSubmit }) => {
 
-    const [formData, setFormData] = useState<user>({
+    const [formData, setFormData] = useState<User>({
       fname: "",
       lname: "",
       email: "",
