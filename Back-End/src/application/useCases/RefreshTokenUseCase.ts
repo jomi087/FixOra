@@ -20,22 +20,21 @@ export class RefreshTokenUseCase  {
         role: string;
       };
 
-      const user = await this.userRepository.findByEmail(decoded.email)
+      const user = await this.userRepository.findByEmail(decoded.email,["password"])
       if (!user || user.refreshToken !== refreshToken  ) {
         throw { status: 401, message: "Invalid refresh token" };
       }
 
       const payload = {
         id: decoded.id,
-        name: decoded.name,
         email: decoded.email,
         role: decoded.role,
+        name: decoded.name,
       }
 
       const newRefreshToken = this.tokenService.generateRefreshToken(payload)
       
-      const updatedUserData  = await this.userRepository.update( decoded.id ,{refreshToken : newRefreshToken } )
-      if (!updatedUserData) {
+      if (!await this.userRepository.update( decoded.id ,{refreshToken : newRefreshToken } )) {
           throw { status: 404, message: "User Not Found" };
       }
 

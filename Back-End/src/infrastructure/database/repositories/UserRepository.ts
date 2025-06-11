@@ -1,11 +1,13 @@
-//domain + useCase connected to db => IUserRepository + email/user(parmeter came form usecase) connecting to mongo db (for comunication) via infrasturcture
+// Infrastructure talking to MongoDB using the IUserRepository interface.
+// Parameters like email/userId come from the use case layer.
 import { User } from "../../../domain/entities/UserEntity.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import UserModel from "../models/UserModel.js";
 
 export class UserRepository implements IUserRepository {
-    async findByEmail(email: string): Promise<User | null>{
-        return await UserModel.findOne({ email })  //mongo db methods 
+    async findByEmail(email: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
+        return await UserModel.findOne({ email }).select(omitSelect).lean<Partial<User>>()  //mongo db methods 
     }
 
     async create(user: User): Promise<void>{
@@ -13,18 +15,18 @@ export class UserRepository implements IUserRepository {
         await newUser.save()
     }
 
-    async findByUserId(userId: string) :Promise<Omit<User, "password" | "refreshToken">| null> {
-        return await UserModel.findOne(
-            { userId }
-        ).select("-password -refreshToken").lean<Omit<User, "password" | "refreshToken">>()
+    async findByUserId(userId: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
+        return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>()
     }
 
-    async update(userId: string, updates: Partial<User>) :Promise<Omit<User, "password" | "refreshToken">| null> {
+    async update(userId: string, updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOneAndUpdate(
             { userId },
             { $set: updates },
             { new: true }
-        ).select("-password -refreshToken").lean<Omit<User, "password" | "refreshToken">>()
+        ).select(omitSelect).lean<Partial<User>>()
     }
 }
 
