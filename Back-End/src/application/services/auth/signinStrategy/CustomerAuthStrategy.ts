@@ -22,7 +22,7 @@ export class CustomerAuthStrategy  implements IAuthStrategy  {
             if (user.isBlocked) throw { status: 403, message: "Account blocked" };
 
             const isMatch = await this.hashService.compare(credentials.password, user.password );
-            if (!isMatch) throw { status: 401, message: "Incorrect password" };
+            if (!isMatch) throw { status: 401, message: "Invalid credentials" };
             
             return { userData: user, role: RoleEnum.Customer };
             

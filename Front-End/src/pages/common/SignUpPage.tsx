@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { BGImage_404, signupApi } from "../../utils/constant";
+import { BGImage_404 } from "../../utils/constant";
 import Header from "../../components/common/layout/Header";
 import SignUp from "../../components/common/auth/SignUp";
-import type { User } from "../../../shared/Types/user";
+import type { Signup } from "../../../shared/Types/user";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNo, validatePassword } from "../../utils/formValidation";
 import { useNavigate } from "react-router-dom";
+import AuthSerivice from "../../services/AuthSerivice";
 
 
 const SignUpPage : React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (formData: User): Promise<void> => {
+  const handleSubmit = async (formData: Signup): Promise<void> => {
     
     const fnameError = validateFName(formData.fname);
     const lnameError = validateLName(formData.lname);
@@ -53,12 +53,8 @@ const SignUpPage : React.FC = () => {
     }
     setLoading(true)
     try {
-      const res = await axios.post(signupApi, formData, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+      const res = await AuthSerivice.signup(formData)
+
       if (res.status == 200 || res.status == 201) {
         toast.success(res.data.message || "Sign-in successful!");
         setTimeout(() => {

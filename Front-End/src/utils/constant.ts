@@ -2,6 +2,7 @@ export const BGImage_404:string = "url('/404_Bg_Image.jpg')"  //used in sign-in,
 export const HeroSectionImage:string = "/Hero-removebg-preview.png"
 export const SingInThemeImage:string  = "/signIn.png"
 
+
 export const constraints = [
     { label: "At least 10 characters", test: (pw: string) => pw.length > 10 },
     { label: "At least one capital letter", test: (pw: string) => /[A-Z]/.test(pw) },
@@ -9,9 +10,7 @@ export const constraints = [
     { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
 ];
 
-export const signupApi =`${import.meta.env.VITE_API_URL}/api/auth/signup`
-export const accountVerificationWithOtpApi = `${import.meta.env.VITE_API_URL}/api/auth/verify-otp`
-export const resendOtpApi = `${import.meta.env.VITE_API_URL}/api/auth/resend-Otp`
+
 
 /********************************************* Side-Bar Sections *******************************************************/
 interface SideBarOption {
