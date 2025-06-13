@@ -1,7 +1,7 @@
 import Spline from "@splinetool/react-spline"
 import { useState } from "react";
 import { Link } from "react-router-dom"
-import type { User } from "../../../../shared/Types/user";
+import type { User } from "../../../../shared/Types/signup";
 
 
 interface signUpProps{

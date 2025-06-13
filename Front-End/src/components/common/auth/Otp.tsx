@@ -18,7 +18,7 @@ const Otp: React.FC<otpProps>= ({otpTime , otpLength , otpSubmit , resendOtp }) 
     const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
         const value = e.target.value
         if (!/^[0-9]?$/.test(value)) return;
-        let newOtp = [...otp]
+        const newOtp = [...otp]
         newOtp[idx] = value
         setOtp(newOtp)
 
@@ -88,7 +88,8 @@ const Otp: React.FC<otpProps>= ({otpTime , otpLength , otpSubmit , resendOtp }) 
                         className="otp_input w-10 h-12 border border-gray-300 rounded-md text-center text-lg  focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={value}
                         aria-label={`Digit ${index + 1} of 6 for OTP`}
-                        autoFocus = { index == 0 }
+                        // eslint-disable-next-line jsx-a11y/no-autofocus  
+                        autoFocus = { index == 0 } // next time i have do this in another way
                         maxLength={1} //to avoid multiple numbers
                         inputMode = 'numeric' //to show a numeric keypad for mobile user
                         onChange={(e) => { handleOtpChange(e, index) }} //react event  handlers only pass one argument  then is event /e

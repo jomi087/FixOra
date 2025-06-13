@@ -47,6 +47,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, verifyE
                 <form className="space-y-6" noValidate onSubmit={handleFormSubmit}>
                 {/* Email */}
                     <label htmlFor="email" className="block w-full">
+                        <span className="sr-only">Email address</span>
                         <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden mt-8">
                         <span className="bg-black px-4 py-3 font-mono text-white select-none text-sm md:text-base whitespace-nowrap">
                             E-Mail
@@ -70,6 +71,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, verifyE
                     {/* Password */}
                     { isSignInForm &&
                         <label htmlFor="password" className="block w-full">
+                            <span className="sr-only">Password</span>
                         <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-blue-50">
                             <span className="bg-black px-5 py-3 text-white select-none text-sm md:text-base whitespace-nowrap">
                                 Password
@@ -133,13 +135,17 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, verifyE
                 </p>
                 }
 
-                { isSignInForm &&
-                <p className="text-center text-black font-medium text-sm mt-4 cursor-pointer hover:underline"
-                    onClick={()=>{setIsSignInForm(false)}}
-                >
-                    Forgot-Password
-                </p> 
-                }
+                {isSignInForm && (
+                <div className="flex justify-center mt-4">
+                    <button
+                    type="button"
+                    className="text-black font-medium text-sm cursor-pointer hover:underline"
+                    onClick={() => setIsSignInForm(false)}
+                    >
+                    Forgot Password
+                    </button>
+                </div>
+                )}
 
                 <div className="flex items-center my-4">
                 <div className="flex-grow border-t border-gray-300"></div>

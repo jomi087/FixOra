@@ -1,10 +1,10 @@
 import Header from '../../components/common/layout/Header' 
 import Otp from '../../components/common/auth/Otp';
-import { accountVerificationWithOtpApi, BGImage_404, resendOtpApi } from "../../utils/constant";
+import { BGImage_404 } from "../../utils/constant";
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { RoleEnum } from '../../../shared/enums/roles';
+import AuthSerivice from '../../services/AuthSerivice';
 
 
 const OtpPage: React.FC = () => {
@@ -12,12 +12,7 @@ const OtpPage: React.FC = () => {
 
     const verifyOtp = async (otp: string): Promise<void> => {
         try {
-            const res = await axios.post(accountVerificationWithOtpApi, { otp }, {
-                headers: {
-                "Content-Type": "application/json"
-                },
-                withCredentials: true  
-            });
+            const res = await AuthSerivice.accountVerificationWithOtp({otp});
 
             console.log("OTP submitted:", res);
 
@@ -38,20 +33,19 @@ const OtpPage: React.FC = () => {
     
     const resendOtp = async (): Promise<void> => {
         try {
-            const res = await axios.get( resendOtpApi, {
-                withCredentials: true  
-            });
+
+            const res = await AuthSerivice.resendOtpApi();
 
             // console.log("OTP resent:", res);
             if (res.status === 200) {
                 toast.info( res.data.message || "OTP has been sent to your mail!");
             }
-            
+             
         } catch (error: any) {
             const errorMsg = error?.response?.data?.message || "Failed to resend OTP. Please try again.";
             toast.error(errorMsg);
         }
-    }
+    } 
     return (
         <>
             <Header className="md:text-start" />

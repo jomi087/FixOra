@@ -28,7 +28,6 @@ const ResetPassword = () => {
                     className="flex-1 p-2.5 outline-none text-base "
                     placeholder="New password"
                     required
-                    autoFocus
                     aria-required="true"
                     value={password}
                     onChange={e => setPassword(e.target.value)}

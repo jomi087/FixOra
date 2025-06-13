@@ -32,7 +32,7 @@ const InfoCard:React.FC <DataProps> = ({datas}) => {
 
                         <div className="max-h-44 overflow-hidden flex justify-center mt-4   ">
                             {data.image ?
-                                (<img src={data.image} alt="dummy image" className="" />) :
+                                (<img src={data.image} alt="profile image" className="" />) :
                                 (<IoPersonCircleOutline size={155} className="text-userIcon-text"/>)
                             }
                         </div>

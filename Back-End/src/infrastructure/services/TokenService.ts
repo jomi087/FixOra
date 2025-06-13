@@ -5,7 +5,7 @@ import { ITokenService } from '../../domain/interface/ServiceInterface/ITokenSer
 export class TokenService implements ITokenService {
 
   generateAccessToken(payload: object):string{
-    return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '1d' });
+    return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '5m' }); // for testing purpose  need to change later
   }
 
   generateRefreshToken(payload: object):string{
