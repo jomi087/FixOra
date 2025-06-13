@@ -25,7 +25,6 @@ export class SigninUseCase {
 
             const payload = {
                 id: userData.userId,
-                name: userData.fname,
                 email : userData.email,
                 role: role
             }
@@ -42,8 +41,6 @@ export class SigninUseCase {
                 message : "Singin Successful",
                 userData: {
                     fname: updatedUserData.fname,
-                    mobileNo: updatedUserData.mobileNo,
-                    email: updatedUserData.email,
                     role : updatedUserData.role
                 },
                 accessToken: acsToken,
