@@ -6,10 +6,10 @@ import { BGImage_404,SingInThemeImage } from "../../utils/constant";
 import Header from "../../components/common/layout/Header";
 import SignIn from "../../components/common/auth/SignIn";
 import { RoleEnum } from "../../../shared/enums/roles"; 
-import AuthSerivice from "../../services/AuthSerivice";
+import AuthService from "../../services/AuthService";
 import { validateEmail, validatePassword } from "../../utils/formValidation";
-import { useDispatch } from "react-redux";
 import { Userinfo } from "../../store/userSlice";
+import { useAppDispatch } from "../../store/hooks";
 
 const SignInPage: React.FC = () => {
   
@@ -17,7 +17,7 @@ const SignInPage: React.FC = () => {
   const navigate = useNavigate()
   const { role } = useParams() 
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
 
   const handleLogin = async (email: string, password: string) => {
@@ -41,15 +41,12 @@ const SignInPage: React.FC = () => {
 
     setLoading(true);
     try {
-
-      console.log("formData", data)
-      const res = await AuthSerivice.signin(data)
+      const res = await AuthService.signinApi(data) // 
 
       if (res.status === 200) {
-        console.log("Login successful", res.data);
-        const { userData, token } = res.data;
+        const { userData } = res.data;
 
-        dispatch(Userinfo({ user: userData, token }));
+        dispatch(Userinfo({ user: userData }));
         
         toast.success(res.data.message || "Sign-in successful!");
         if (userData.role === RoleEnum.CUSTOMER) {
@@ -60,10 +57,8 @@ const SignInPage: React.FC = () => {
           navigate("/admin/dashboard");
         }
       }
-
     } catch (error: any) {
-      
-      const errorMsg = error?.response?.data?.message ||"Login failed. Please try again Later";
+      const errorMsg = error?.response?.data?.message ||"Login failed.. Please try again Later";
       toast.error(errorMsg);
     } finally {
       setLoading(false)

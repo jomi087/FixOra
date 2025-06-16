@@ -50,7 +50,6 @@ const router = createBrowserRouter([
         path: '/services',
         element : <ErrorBoundary><ServiceManagement/></ErrorBoundary>
     },
-
     {
         path: '*',
         element: <PageNotFound />

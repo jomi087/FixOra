@@ -6,7 +6,7 @@ import type { Signup } from "../../../shared/Types/user";
 import { toast } from "react-toastify";
 import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNo, validatePassword } from "../../utils/formValidation";
 import { useNavigate } from "react-router-dom";
-import AuthSerivice from "../../services/AuthSerivice";
+import AuthService from "../../services/AuthService";
 
 
 const SignUpPage : React.FC = () => {
@@ -53,7 +53,7 @@ const SignUpPage : React.FC = () => {
     }
     setLoading(true)
     try {
-      const res = await AuthSerivice.signup(formData)
+      const res = await AuthService.signupApi(formData)
 
       if (res.status == 200 || res.status == 201) {
         toast.success(res.data.message || "Sign-in successful!");

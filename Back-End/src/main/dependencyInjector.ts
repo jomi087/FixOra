@@ -13,7 +13,11 @@ const hashService = new HashService();
 const tokenService = new TokenService()
 
 /******************************************************************************************************************************************************/
+//userAuth- Middleware
+import { createUserAuthMiddleware } from "../interfaces/middleware/userAuthMiddleware.js";
+const userAuthMiddleware = createUserAuthMiddleware(tokenService, userRepository)
 
+/******************************************************************************************************************************************************/
 import { SignupUseCase } from "../application/useCases/SignupUseCase.js";
 const signupUseCase = new SignupUseCase(userRepository, otpRepository, emailService, otpGenratorservice, hashService ) 
 
@@ -29,6 +33,7 @@ const resendOtpUseCase = new ResendOtpUseCase(otpRepository, otpGenratorservice,
 //sign-in Strategy
 import { configureAuthStrategies } from "../infrastructure/config/authSigninConfig.js";
 const authFactory = configureAuthStrategies(userRepository, hashService)
+//console.log("authFactory",authFactory)
 
 import { SigninUseCase } from "../application/useCases/SigninUseCase.js";
 const signinUseCase = new SigninUseCase(authFactory, tokenService, userRepository)
@@ -38,8 +43,14 @@ import { RefreshTokenUseCase } from "../application/useCases/RefreshTokenUseCase
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService,userRepository)
 
 /******************************************************************************************************************************************************/
+import { configureSignoutStrategies } from "../infrastructure/config/authSignoutConfig.js";
+const  SignoutFactory = configureSignoutStrategies(userRepository)
+import { SignoutUseCase } from "../application/useCases/SignoutUseCase.js";
+const signoutUseCase = new SignoutUseCase(SignoutFactory)
+
+/******************************************************************************************************************************************************/
 /******************************************************************************************************************************************************/
 import { AuthController } from "../interfaces/controllers/AuthController.js";
-const authController = new AuthController(signupUseCase, verifyAcUseCase,resendOtpUseCase,signinUseCase,refreshTokenUseCase) 
+const authController = new AuthController(signupUseCase, verifyAcUseCase,resendOtpUseCase,signinUseCase,refreshTokenUseCase,signoutUseCase) 
 
-export { authController}
+export { authController , userAuthMiddleware }

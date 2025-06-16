@@ -18,11 +18,11 @@ export class CustomerAuthStrategy  implements IAuthStrategy  {
         try {
             const user = await this.userRepository.findByEmail(credentials.email) as User;
 
-            if (!user || user.role != credentials.role ) throw { status: 401, message: "Invalid credentials" };
+            if (!user || user.role != credentials.role ) throw { status: 403, message: "Invalid credentials" };
             if (user.isBlocked) throw { status: 403, message: "Account blocked" };
 
             const isMatch = await this.hashService.compare(credentials.password, user.password );
-            if (!isMatch) throw { status: 401, message: "Invalid credentials" };
+            if (!isMatch) throw { status: 403, message: "Invalid credentials" };
             
             return { userData: user, role: RoleEnum.Customer };
             

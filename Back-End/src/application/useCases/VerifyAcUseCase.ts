@@ -16,10 +16,10 @@ export class VerifyAcUseCase{
         try {
             
             if (!token) {
-                throw { status: 401, message: "Something  went wrong"  }
+                throw { status: 403, message: "Something  went wrong"  }
             }
             
-            const decodeUserData  = jwt.verify(token, process.env.JWT_SECRET as string) as UserDTO            
+            const decodeUserData  = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string) as UserDTO            
             const storedOtp = await this.otpRepository.findOtpByEmail(decodeUserData.email)
             if ( !storedOtp ) {
                 throw { status: 400, message: "OTP Expired, Click Re-Send Otp" }

@@ -1,4 +1,3 @@
-
 import express from 'express'
 const router = express.Router();
 
@@ -6,13 +5,17 @@ import { validateRequest } from '../middleware/validateRequest.js';
 import { signupSchema } from '../validations/signupSchema.js';
 import { signinSchema } from '../validations/signinSchema.js';
 
-import { authController} from '../../main/dependencyInjector.js'; 
+import { authController, userAuthMiddleware } from '../../main/dependencyInjector.js'; 
 
 router.post('/signup', validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next))
 router.post('/verify-otp', (req, res, next) => authController.verifyAc(req, res, next))
 router.get('/resend-otp', (req, res, next) => authController.resendOtp(req, res, next))
-router.post('/signin', validateRequest(signinSchema), (req, res,next) => authController.signin(req, res, next) )
-router.post('/refresh-token',(req,res,next) => authController.refreshToken(req,res,next))
+router.post('/signin', validateRequest(signinSchema), (req, res, next) => authController.signin(req, res, next))
+
+router.get('/check', userAuthMiddleware, (req, res, next) => authController.checkAuth(req, res, next))
+router.post('/refresh-token', (req, res, next) => authController.refreshToken(req, res, next))
+
+router.post('/signout', userAuthMiddleware, (req,res,next)=> authController.signout(req, res, next))
 
 export default router
 
@@ -94,5 +97,19 @@ router.get('/resend-otp', (req, res, next) => authController.resendOtp(req, res,
 router.post('/signin', validateRequest(signinSchema), (req, res,next) => authController.signin(req, res, next) )
 router.post('/refresh-token',(req,res,next) => authController.refreshToken(req,res,next))
 export default router
+
+*/
+
+
+/*
+this 1 case 
+1. Preventing refresh logic from running when user is not logged in
+
+Even if the user is not logged in, the refresh token logic is triggered, causing unnecessary logout dispatch and errors.
+
+Your Axios interceptor tries to refresh tokens whenever it gets a 403 response.
+
+But unauthenticated users (like new visitors or signed-out users) don't have tokens, so the refresh call fails, and then logout() is called — which is not needed.
+
 
 */

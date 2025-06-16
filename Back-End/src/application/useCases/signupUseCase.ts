@@ -1,13 +1,14 @@
+
+import { v4 as uuidv4 } from "uuid";
+import jwt from 'jsonwebtoken'
+import type { SignOptions } from 'jsonwebtoken';
+
 import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
-
 import { SignupDTO } from "../dtos/SignupDTO.js";
-import { v4 as uuidv4 } from "uuid";
-import jwt from 'jsonwebtoken'
 import { IOtpGenratorService } from "../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IHashService } from "../../domain/interface/ServiceInterface/IHashService.js";
-
 
 export class SignupUseCase {
     constructor(
@@ -33,8 +34,10 @@ export class SignupUseCase {
                 userId: uuidv4(),
                 
             }
-            
-            const tempToken = jwt.sign(tempPayload, process.env.JWT_SECRET as string, { expiresIn: "10m" })
+            // src/config.ts
+
+            const expiryTime  = process.env.JWT_TEMP_ACCESS_TOKEN_EXPIRY as SignOptions['expiresIn']
+            const tempToken = jwt.sign(tempPayload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: expiryTime })
 
             const otp = this.otpGenratorService.generateOtp()
 

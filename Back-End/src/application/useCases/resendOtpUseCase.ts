@@ -15,12 +15,10 @@ export class ResendOtpUseCase{
     
     async execute(token : string) {
         try {
-
             if (!token) {
-                throw { status: 401, message: "Something  went wrong"  }
+                throw { status: 403, message: "Something  went wrong"  }
             }
-            
-            const decodeUserData  = jwt.verify(token, process.env.JWT_SECRET as string) as UserDTO            
+            const decodeUserData  = jwt.verify( token, process.env.JWT_ACCESS_SECRET as string ) as UserDTO            
             
             const otp = this.otpGenratorService.generateOtp()
 

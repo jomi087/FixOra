@@ -20,7 +20,7 @@ const LearnMore:React.FC = () => {
         </p>
   
         {/* Service Slider */}
-        <div className="">                
+        <div className="">
           <h3 className="text-xl font-medium text-center underline pt-10 pb-5">
             SERVICES PROVIDED
           </h3>
@@ -31,7 +31,7 @@ const LearnMore:React.FC = () => {
             modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
             loop= { true }
             autoplay={{
-              delay: 1,
+              delay: 3000,
               disableOnInteraction : false,
             }}
             speed={5000} // Smooth transition duration in milliseconds
@@ -47,13 +47,12 @@ const LearnMore:React.FC = () => {
             }}
             className="max-w-[90%] lg:max-w-[100%] "
              aria-label="Service options slider" 
-          >
-            
+          >           
             {services.map((service) => (
               <SwiperSlide key={service.title} className="p-4 ">
                 <div className="w-[99%] rounded-2xl text-center cursor-pointer shadow-lg shadow-black border ">
                   <div className=" h-48 overflow-hidden p-1 rounded-t-2xl">
-                      <img src={service.image} alt={service.title} className="rounded-t-2xl " />
+                    <img src={service.image} alt={service.title} className="rounded-t-2xl " width={300} height={200} loading="lazy"/>
                   </div>
                   <h6 className="text-lg font-bold mb-2 mt-2">{service.title}</h6>
                   <p className="text-sm">{service.description}</p>
@@ -76,7 +75,7 @@ const LearnMore:React.FC = () => {
             <div className=''>
                 <div className="rounded-2xl text-center cursor-pointer shadow-2xl shadow-black">
                 <Swiper
-                   modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
+                  modules={ [Pagination, Navigation, Autoplay] } // Add Pagination module
                   pagination={{ clickable: true }} // Enable clickable pagination
                   loop={true}
                   autoplay={{
@@ -97,14 +96,12 @@ const LearnMore:React.FC = () => {
             </div>
             <div>
               <h3 className="text-xl font-medium text-center mt-4">Certified Providers</h3>
-              <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4  mx-auto m-10  ">
+              <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4  mx-auto m-10   ">
                 FixOra is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need.
               </p>
             </div>
           </div>
         </div>
-
-
 
       </div>
     </section>

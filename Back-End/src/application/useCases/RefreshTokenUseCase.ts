@@ -10,7 +10,7 @@ export class RefreshTokenUseCase  {
   async execute(refreshToken: string) {
     try {
       if (!refreshToken) {
-        throw { status: 401,  message: "Unauthorized request (refresh Token missing)"  }
+        throw { status: 403,  message: "Unauthorized request (refresh Token missing)"  }
       }
 
       const decoded = this.tokenService.verifyRefreshToken(refreshToken) as {
@@ -20,9 +20,9 @@ export class RefreshTokenUseCase  {
         role: string;
       };
 
-      const user = await this.userRepository.findByEmail(decoded.email,["password"])
+      const user = await this.userRepository.findByUserId(decoded?.id,["password"])
       if (!user || user.refreshToken !== refreshToken  ) {
-        throw { status: 401, message: "Invalid refresh token" };
+        throw { status: 403, message: "Invalid refresh token" };
       }
 
       const payload = {
@@ -32,13 +32,12 @@ export class RefreshTokenUseCase  {
         name: decoded.name,
       }
 
+      const newAccessToken = this.tokenService.generateAccessToken(payload);
       const newRefreshToken = this.tokenService.generateRefreshToken(payload)
       
       if (!await this.userRepository.update( decoded.id ,{refreshToken : newRefreshToken } )) {
           throw { status: 404, message: "User Not Found" };
       }
-
-      const newAccessToken = this.tokenService.generateAccessToken(payload);
 
       return  {
         accessToken: newAccessToken,

@@ -13,9 +13,13 @@ export function configureAuthStrategies( userRepository: IUserRepository, hashSe
     const customerStrategy = new CustomerAuthStrategy(userRepository, hashService);
     authFactory.register(RoleEnum.Customer, customerStrategy); 
 
-
     // Register provider authentication strategy
+    // const providerStrategy = new ProviderAuthStrategy(userRepository, hashService)
+    // authFactory.register(RoleEnum.Provider, providerStrategy); 
+
     // Register admin authentication strategy
+    // const adminStrategy = new AdminAuthStrategy(userRepository, hashService)
+    // authFactory.register(RoleEnum.Admin, adminStrategy); 
 
     return authFactory;
 } 

@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { LogIn, LogOut, Menu, X } from "lucide-react";
 import ThemeToggle from "../ThemeToggle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RoleEnum } from "../../../../shared/enums/roles";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { navItems } from "../../../utils/constant";
 import { useLocation } from 'react-router-dom'
+import AuthService from "../../../services/AuthService";
+import { logout } from "../../../store/userSlice";
+import { toast } from "react-toastify";
 
 
 interface NavProps {
@@ -18,19 +21,28 @@ const Nav: React.FC<NavProps> = ({ className = ""}) => {
   const [signInOption, setSignInOption] = useState(false); 
   const [darkMode, setDarkMode] = useState<boolean>(() => localStorage.getItem('theme') === 'dark'); //doubt what will do in next js
   const location = useLocation()
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
-  const user = useAppSelector((state) => state.auth.user);
+  const handleSignout = async () => {
+    try {
+      const res =await AuthService.signoutApi()
+      if (res.status === 200) {
+        dispatch(logout())
 
-  const handleHamburgerClick = () => {
-    setIsMenuOpen(!isMenuOpen);
-    if( signInOption ){
-      setSignInOption(false);
+        toast.success(res.data.message)
+
+        setTimeout(() => {
+            navigate("/");
+        }, 5000);
+      }
+    } catch (error:any) {
+      const errorMsg = error?.response?.data?.message ||"Login failed. Please try again Later";
+      toast.error(errorMsg);
     }
-  };
-
-  
-
+  }
 
   return (
     <>
@@ -45,7 +57,7 @@ const Nav: React.FC<NavProps> = ({ className = ""}) => {
           </div>
           
           {/* Navigation Links */}
-          { user && user?.role === RoleEnum.CUSTOMER  && (
+          { isAuthenticated && user?.role === RoleEnum.CUSTOMER  && (
             <div className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
               {navItems
                 .filter((item)=> item.to != location.pathname )
@@ -72,38 +84,55 @@ const Nav: React.FC<NavProps> = ({ className = ""}) => {
             </div>
 
             {/* Hamburger Menu for Mobile */}
-            <button className="md:hidden " onClick={handleHamburgerClick}
+            <button className="md:hidden "
+              onClick={ () => {
+                setIsMenuOpen(!isMenuOpen);
+                if( signInOption ) setSignInOption(false);
+              }}
               aria-expanded={isMenuOpen} aria-label="Toggle navigation menu" aria-controls="mobile-menu"
             >
               { isMenuOpen ? (<X size={24}/>):(<Menu size={24}/>)}
             </button>
             { isMenuOpen && (
-                <div className="md:hidden rounded-lg shadow-lg absolute top-12 right-2 p-4" aria-label="Mobile menu">
-                  <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Home </Link>
-                  <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Services </Link>
-                  <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Providers </Link>
-                  <Link to="#" role="menuitem" className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> Blog </Link>
+              <div className="md:hidden rounded-lg shadow-lg absolute top-12 right-2 p-4" aria-label="Mobile menu">
+                {navItems
+                .filter((item)=> item.to != location.pathname )
+                .map((item) => (
+                  <Link 
+                    key={item.to}
+                    to = {item.to}
+                    className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"
+                  >
+                    {item.name}
+                  </Link>
+              ))}
               </div>
             )}
 
             {/* Login/Logout Button */}
             <div className=""> 
-              {!user ? (
-                <h4 className="flex items-center gap-2  font-bold hover:text-header-hover transition cursor-pointer"
-                  // onClick={() => { setSignInOption(!signInOption) }}
-                  onMouseEnter={() => { setSignInOption(true); if(isMenuOpen){setIsMenuOpen(false);} } }
+              {!isAuthenticated ? (
+                <button
+                  className="flex items-center gap-2  font-bold hover:text-header-hover transition cursor-pointer"
+                  onMouseEnter={ () => {
+                    setSignInOption(true);
+                    if (isMenuOpen)  setIsMenuOpen(false);
+                  }}
                 >
                   <LogIn size={18} aria-hidden="true" /> 
                   <span className="hidden md:flex">In</span>
-                </h4>
+                </button>
               ) : (
-                <Link to="#" className="flex items-center gap-2  font-bold hover:text-header-hover transition" >
-                    <LogOut size={18} aria-hidden="true" />
-                    <span className="hidden md:flex">Out</span>
-                </Link>
+                <button
+                  className="flex items-center gap-2  font-bold hover:text-header-hover transition cursor-pointer"
+                  onClick={handleSignout}
+                >
+                  <LogOut size={18} aria-hidden="true" /> 
+                  <span className="hidden md:flex">Out</span>
+                </button>
               )}
 
-              { !user && signInOption && (
+              { !isAuthenticated && signInOption && (
                 <div className="rounded-lg shadow-lg absolute top-12 right-2 p-4" aria-label="Mobile menu"
                   onMouseLeave={ () => { setSignInOption(false) }}
                 >

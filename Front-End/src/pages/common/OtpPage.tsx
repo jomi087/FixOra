@@ -4,7 +4,7 @@ import { BGImage_404 } from "../../utils/constant";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { RoleEnum } from '../../../shared/enums/roles';
-import AuthSerivice from '../../services/AuthSerivice';
+import AuthService from '../../services/AuthService';
 
 
 const OtpPage: React.FC = () => {
@@ -12,7 +12,7 @@ const OtpPage: React.FC = () => {
 
     const verifyOtp = async (otp: string): Promise<void> => {
         try {
-            const res = await AuthSerivice.accountVerificationWithOtp({otp});
+            const res = await AuthService.accountVerificationWithOtpApi({otp});
 
             console.log("OTP submitted:", res);
 
@@ -25,7 +25,7 @@ const OtpPage: React.FC = () => {
         } catch (error: any) {
             const errorMsg = error?.response?.data?.message || "Failed to verify OTP. Please try again.";
             toast.error(errorMsg);
-            if(error?.response?.status === 401) {
+            if(error?.response?.status === 403) {
                 navigate('/signup');
             }
         }
@@ -34,7 +34,7 @@ const OtpPage: React.FC = () => {
     const resendOtp = async (): Promise<void> => {
         try {
 
-            const res = await AuthSerivice.resendOtpApi();
+            const res = await AuthService.resendOtpApi();
 
             // console.log("OTP resent:", res);
             if (res.status === 200) {

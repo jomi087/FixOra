@@ -9,35 +9,36 @@ interface info {
 
 interface AuthState {
     user: info | null;
-    token: string | null;
+    isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
-  user: JSON.parse(localStorage.getItem("user") || "null"),
-  token: localStorage.getItem("token"),
+    user: null,
+    isAuthenticated: false
 };
 
 const userSlice = createSlice({
     name: "users",
     initialState,
     reducers: { 
-        Userinfo : (state, action : PayloadAction<{ user: info; token: string }>) => {
+        Userinfo: (state, action: PayloadAction<{ user: info  }>) => { //Userinfo is for active login (user just signed in)
             state.user = action.payload.user;
-            state.token = action.payload.token
-            localStorage.setItem("user", JSON.stringify(action.payload.user));
-            localStorage.setItem("token", action.payload.token);
+            state.isAuthenticated = true;
         },
         logout: (state) => {
             state.user = null;
-            state.token = null;
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-        }
+            state.isAuthenticated = false;
+        },
+        // checkAuth: (state, action: PayloadAction<{ user: info | null }>) => { //checkAuth is for verification (checking if user is still logged in like after refresh)
+        //     state.user = action.payload.user;
+        //     state.isAuthenticated = !!action.payload.user; // !!action.payload.user means  action.payload.user !== null;
+        // }
     }
 })
 
-export const { Userinfo } = userSlice.actions; 
+export const { Userinfo, logout } = userSlice.actions;
 export default userSlice.reducer;
+
 
 
 /* UnTyped version
@@ -47,15 +48,13 @@ export default userSlice.reducer;
     const userSlice = createSlice({
         name: "users",
         initialState: {
-            user : JSON.parse(localStorage.getItem("user") || "null" ) ,
-            token : localStorage.getItem("token")
+            user: null,
+            isAuthenticated: false
         },
         reducers: { 
             Userinfo : (state, action) => {
                 state.user = action.payload.user;
-                state.token = action.payload.token
-                localStorage.setItem("user", JSON.stringify(action.payload.user));
-                localStorage.setItem("token", action.payload.token);
+                state.isAuthenticated = true;
             },
         }
     })

@@ -6,9 +6,8 @@ This project is a TypeScript-based back-end application with es6 modules  that s
 2. type script with nodeNext (supports es6 modules)
 3. Clean Architecture & its structure (notes mentioned in each folder)
 4. backend validation with zod library (A TypeScript-first schema declaration and validation library )
-5. JWT for maintain stateLess (used access token and refresh token for  better security )
+5. implimented JWT -For better ux, Implimented refresh token with accessToken( used Rotating Refresh Tokens logic & store RToken in db for better security )
 6. 
-      
 
 ## Run the application :
 > ```npm run build ```
