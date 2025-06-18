@@ -31,7 +31,7 @@ export class SigninUseCase {
             const acsToken  = this.tokenService.generateAccessToken(payload)
             const refToken = this.tokenService.generateRefreshToken(payload)
             
-            const updatedUserData  = await this.userRepository.update(userData.userId ,{refreshToken : refToken } ,["password","refreshToken"])
+            const updatedUserData = await this.userRepository.update({ userId: userData.userId } ,{refreshToken : refToken } ,["password","refreshToken"])
             if (!updatedUserData) {
                 throw { status: 404, message: "User Not Found" };
             }

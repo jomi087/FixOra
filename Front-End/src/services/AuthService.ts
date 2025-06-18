@@ -19,16 +19,24 @@ class AuthService {
         return axiosInstance.post('/api/auth/signup', Data);
     }
 
+    resendOtpApi() {
+        return axiosInstance.get("/api/auth/resend-otp");
+    }
+
+    VerifySignupOtp(Data: { otp: string }) {
+        return axiosInstance.post('/api/auth/verify-otp', Data);
+    }
+
     signinApi(Data: Signin) {
         return axiosInstance.post('/api/auth/signin', Data);
     }
 
-    accountVerificationWithOtpApi(Data: { otp: string }) {
-        return axiosInstance.post('/api/auth/verify-otp', Data);
+    forgotPasswordApi(email: string) {
+        return axiosInstance.post('/api/auth/forgot-password', { email })
     }
 
-    resendOtpApi() {
-        return axiosInstance.get("/api/auth/resend-otp");
+    resetPasswordApi( token: string, password: string, cPassword: string ) {
+        return axiosInstance.post('/api/auth/reset-password', {token ,password,cPassword,})
     }
 
     checkAuthStatus() {

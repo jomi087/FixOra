@@ -6,15 +6,20 @@ import { signupSchema } from '../validations/signupSchema.js';
 import { signinSchema } from '../validations/signinSchema.js';
 
 import { authController, userAuthMiddleware } from '../../main/dependencyInjector.js'; 
+import { forgotPasswordSchema } from '../validations/forgotPasswordSchema.js';
+import { resetPasswordSchema } from '../validations/resetPasswordSchema.js';
 
 router.post('/signup', validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next))
-router.post('/verify-otp', (req, res, next) => authController.verifyAc(req, res, next))
+router.post('/verify-otp', (req, res, next) => authController.verifySignupAc(req, res, next))
 router.get('/resend-otp', (req, res, next) => authController.resendOtp(req, res, next))
+
 router.post('/signin', validateRequest(signinSchema), (req, res, next) => authController.signin(req, res, next))
+router.post('/forgot-password', validateRequest(forgotPasswordSchema), (req, res, next)=> authController.forgotPassword(req, res, next))
+router.post('/reset-password', validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next))
 
 router.get('/check', userAuthMiddleware, (req, res, next) => authController.checkAuth(req, res, next))
-router.post('/refresh-token', (req, res, next) => authController.refreshToken(req, res, next))
 
+router.post('/refresh-token', (req, res, next) => authController.refreshToken(req, res, next))
 router.post('/signout', userAuthMiddleware, (req,res,next)=> authController.signout(req, res, next))
 
 export default router
@@ -72,8 +77,8 @@ const tokenService = new TokenService()
 import { SignupUseCase } from '../../application/useCases/SignupUseCase.js';
 const signupUseCase = new SignupUseCase(userRepository, otpRepository, emailService, otpGenratorservice, hashService ) 
 
-import { VerifyAcUseCase } from '../../application/useCases/VerifyAcUseCase.js';
-const verifyAcUseCase = new VerifyAcUseCase(otpRepository, userRepository)
+import { VerifySignupOtpUseCase } from '../../application/useCases/VerifySignupOtpUseCase.js';
+const verifySignupOtpUseCase = new VerifySignupOtpUseCase(otpRepository, userRepository)
 
 import { ResendOtpUseCase } from '../../application/useCases/ResendOtpUseCase.js';
 const resendOtpUseCase = new ResendOtpUseCase(otpRepository, otpGenratorservice, emailService)
@@ -89,7 +94,7 @@ const refreshTokenUseCase = new RefreshTokenUseCase(tokenService)
 import { AuthController } from '../controllers/AuthController.js';
 import { userAuth } from '../middleware/userAuthMiddleware.js';
 
-const authController = new AuthController(signupUseCase, verifyAcUseCase,resendOtpUseCase,signinUseCase,refreshTokenUseCase) 
+const authController = new AuthController(signupUseCase, verifySignupOtpUseCase,resendOtpUseCase,signinUseCase,refreshTokenUseCase) 
 
 router.post('/signup', validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next))
 router.post('/verify-otp', (req, res, next) => authController.verifyAc(req, res, next))

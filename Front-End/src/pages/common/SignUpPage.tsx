@@ -20,7 +20,7 @@ const SignUpPage : React.FC = () => {
     const emailError = validateEmail(formData.email);
     const mobileNumberError = validateMobileNo(formData.mobileNo);
     const passwordError = validatePassword(formData.password);
-    const CpasswordError = validateCPassword(formData.cPassword,formData.password)
+    const cPasswordError = validateCPassword(formData.cPassword,formData.password)
 
     if (fnameError) {
       toast.error(fnameError);
@@ -47,8 +47,8 @@ const SignUpPage : React.FC = () => {
       return;
     }
 
-    if (CpasswordError) {
-      toast.error(CpasswordError);
+    if (cPasswordError) {
+      toast.error(cPasswordError);
       return;
     }
     setLoading(true)
@@ -56,7 +56,7 @@ const SignUpPage : React.FC = () => {
       const res = await AuthService.signupApi(formData)
 
       if (res.status == 200 || res.status == 201) {
-        toast.success(res.data.message || "Sign-in successful!");
+        toast.success(res.data.message ||" OTP has been sent to your mail ");
         setTimeout(() => {
           navigate('/otp');
         }, 1000);

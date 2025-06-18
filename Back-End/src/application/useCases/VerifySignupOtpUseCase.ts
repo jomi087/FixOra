@@ -1,29 +1,28 @@
 import jwt from "jsonwebtoken";
 import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import {  OtpVerifyDTO } from "../dtos/OtpVerifyDTO.js";
 import { UserDTO } from "../dtos/UserDTO.js";
 import { RoleEnum } from "../../domain/constant/Roles.js";
 
 
-export class VerifyAcUseCase{
+export class VerifySignupOtpUseCase{
     constructor(
         private readonly otpRepository: IOtpRepository ,
         private readonly userRepository : IUserRepository,
     ) { }
 
-    async execute(otpData: OtpVerifyDTO , token : string) {
+    async execute(otpData: string , token : string) {
         try {
             
             if (!token) {
                 throw { status: 403, message: "Something  went wrong"  }
             }
             
-            const decodeUserData  = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string) as UserDTO            
+            const decodeUserData  = jwt.verify(token, process.env.JWT_TEMP_ACCESS_SECRET as string) as UserDTO            
             const storedOtp = await this.otpRepository.findOtpByEmail(decodeUserData.email)
             if ( !storedOtp ) {
                 throw { status: 400, message: "OTP Expired, Click Re-Send Otp" }
-            }else if (storedOtp.otp != otpData.otp) {
+            }else if (storedOtp.otp != otpData ) {
                 throw { status: 400, message: "Invalid OTP" }
             }
 

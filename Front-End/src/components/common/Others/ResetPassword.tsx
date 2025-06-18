@@ -2,24 +2,34 @@ import { useState } from "react";
 import { BiShow, BiHide, BiCheckCircle, BiXCircle } from "react-icons/bi";
 import { constraints } from "../../../utils/constant";
 
+interface passwordResetProps{
+    passwordResetbutton : (password: string, cPassword: string) => Promise<void>;
+    loading?: boolean;
+}
 
 
-const ResetPassword = () => {
+const ResetPassword: React.FC<passwordResetProps> = ({ passwordResetbutton, loading}) => {
     
     const [showPw, setShowPw] = useState(false);
     const [showCPw, setShowCPw] = useState(false);
     const [password, setPassword] = useState("");
-    const [cPassword, setCPassword] = useState("");
+    const [cPassword, setcPassword] = useState("");
     
-    const allValid = constraints.every(c => c.test(password)) && password === cPassword && password.length > 0;
+    const allValid = constraints.every(c => c.test(password)) && password === cPassword ;
 
-  return (
+    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if ( !allValid || loading) return;
+        passwordResetbutton(password, cPassword);
+    };
+
+  return (  
     <div className="rounded-xl shadow-lg p-11 pt-5 shadow-black ">
         <h2 className="text-3xl font-bold text-center mb-2 text-blue-800">Reset Password</h2>
         <p className="text-gray-600 text-center mb-4 text-sm">
             Enter a strong password to secure your account.
         </p>
-        <form>
+          <form noValidate onSubmit={ handleFormSubmit }>
             <div className="flex items-center border border-gray-300 rounded-md overflow-hidden mb-4">
                 <input
                     type={showPw ? "text" : "password"}
@@ -53,7 +63,7 @@ const ResetPassword = () => {
                     required
                     aria-required="true"
                     value={cPassword}
-                    onChange={e => setCPassword(e.target.value)}
+                    onChange={e => setcPassword(e.target.value)}
                 />
                 <button
                     type="button"
@@ -96,13 +106,11 @@ const ResetPassword = () => {
             <button
                 type="submit"
                 className={`w-full py-2.5 rounded-md font-bold text-base transition-colors duration-200 ${
-                    allValid
-                        ? "bg-blue-700 text-white hover:bg-blue-800"
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    allValid ? "bg-blue-700 text-white hover:bg-blue-800": "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
                 disabled={!allValid}
             >
-                Reset Password
+                {loading ? "Loading..." : "Reset Password"}
             </button>
         </form>
     </div>

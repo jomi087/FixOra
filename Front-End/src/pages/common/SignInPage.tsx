@@ -65,16 +65,16 @@ const SignInPage: React.FC = () => {
     }
   }
 
-  const handleVerifyEmail = async (email: string) => { 
-    
+  const handleforgotPassword = async (email: string) => { 
     setLoading(true);
     try {
-      console.log("VERIFIYING  EMAL BY ", email);
-      // will add later
-      //validate
-      //on success,  navigate to otp page 
-    } catch ( err: unknown ) {
-      toast.error("email verification failed");
+      const res = await AuthService.forgotPasswordApi(email)
+      if (res.status === 200) {
+        toast.success(res.data.message || "Verification mail has been  Created SuccessFully");
+      }
+    } catch (error : any) {
+      const errorMsg = error?.response?.data?.message ||"Forgot Password Failed";
+      toast.error(errorMsg);
     } finally {
       setLoading(false)
     }
@@ -86,7 +86,7 @@ const SignInPage: React.FC = () => {
       <SignIn
         singInThemeImage={SingInThemeImage}
         signInSubmit={handleLogin}
-        verifyEmail={handleVerifyEmail}
+        forgotPassword={handleforgotPassword}
         loading={loading}
         role={role||RoleEnum.CUSTOMER} // Default to CUSTOMER if role is not provided
       />

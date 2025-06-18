@@ -5,12 +5,12 @@ import { FcGoogle } from "react-icons/fc";
 interface signInProps {
     singInThemeImage : string;
     signInSubmit: (email: string, password: string ) => Promise<void>;
-    verifyEmail :  (email: string ) => Promise<void>;
+    forgotPassword :  (email: string ) => Promise<void>;
     loading: boolean
     role: string
 }
 
-const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, verifyEmail, loading , role } ) => {
+const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotPassword, loading , role } ) => {
 
 
     const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, verifyE
     const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!isSignInForm) {
-           verifyEmail(email)
+           forgotPassword(email)
             return
         }
         signInSubmit(email,password)

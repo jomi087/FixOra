@@ -1,19 +1,20 @@
 import Spline from "@splinetool/react-spline"
 import { useState } from "react";
 import { Link } from "react-router-dom"
-import type { User } from "../../../../shared/Types/signup";
+import { RoleEnum } from "../../../../shared/enums/roles";
+import type { Signup } from "../../../../shared/Types/user";
 
 
 interface signUpProps{
   alternativeSideContent?: string; //only image acceptable
   loading?: boolean;
-  signUpSubmit: (formData:User) => Promise<void>;
+  signUpSubmit: (formData:Signup) => Promise<void>;
 } 
 
 
 const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUpSubmit }) => {
 
-    const [formData, setFormData] = useState<User>({
+    const [formData, setFormData] = useState<Signup>({
       fname: "",
       lname: "",
       email: "",
@@ -207,7 +208,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
 
           <p className="mt-6 text-center">
             Already have an account?
-            <Link to="/signin" className="underline text-blue-600 font-semibold ml-1">
+            <Link to={`/signIn/${RoleEnum.CUSTOMER}`} className="underline text-blue-600 font-semibold ml-1">
               Sign-In
             </Link>
           </p>

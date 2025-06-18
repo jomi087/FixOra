@@ -37,7 +37,7 @@ export class SignupUseCase {
             // src/config.ts
 
             const expiryTime  = process.env.JWT_TEMP_ACCESS_TOKEN_EXPIRY as SignOptions['expiresIn']
-            const tempToken = jwt.sign(tempPayload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: expiryTime })
+            const tempToken = jwt.sign(tempPayload, process.env.JWT_TEMP_ACCESS_SECRET as string, { expiresIn: expiryTime })
 
             const otp = this.otpGenratorService.generateOtp()
 
@@ -52,7 +52,7 @@ export class SignupUseCase {
 
             return {
                 success: true,
-                message: "OTP sent to your email",
+                message: "OTP sent to your mail",
                 token: tempToken,
             };
 

@@ -4,7 +4,7 @@ export interface IUserRepository {
     create(user: User): Promise <void>;
     findByEmail(email: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    update(userId:string , updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+    update( filter: Partial<Pick<User, "userId" | "email" >> , updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
 }
 
 /*

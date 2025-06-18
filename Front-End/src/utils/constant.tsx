@@ -1,18 +1,19 @@
 import { Home, Briefcase, Users, FileText, User } from "lucide-react";
 
-
+//Images
 export const BGImage_404: string = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
 export const HeroSectionImage:string = "/Hero-removebg-preview.png"
 export const SingInThemeImage:string  = "/signIn.png"
 
-
+//Reset Password Constraints
 export const constraints = [
-    { label: "At least 10 characters", test: (pw: string) => pw.length > 10 },
-    { label: "At least one capital letter", test: (pw: string) => /[A-Z]/.test(pw) },
-    { label: "At least one number", test: (pw: string) => /\d/.test(pw) },
-    { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
+    { label: "At least 10 characters", test: (pw: string) => pw.length >= 10 },
+    // { label: "At least one capital letter", test: (pw: string) => /[A-Z]/.test(pw) },
+    // { label: "At least one number", test: (pw: string) => /\d/.test(pw) },
+    // { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
 ];
 
+//Navigation Items for the main navigation bar
 export const navItems = [
   { name: 'Home', to: '/', icon: <Home size={18} />} ,
   { name: 'Services', to: '/services', icon: <Briefcase size={18} /> },

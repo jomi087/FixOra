@@ -3,21 +3,24 @@ import { NextFunction, Request, Response } from "express";
 //api logic
 import { SignupDTO } from "../../application/dtos/SignupDTO.js";
 import { SignupUseCase } from "../../application/useCases/SignupUseCase.js";
-import { OtpVerifyDTO } from "../../application/dtos/OtpVerifyDTO.js";
-import { VerifyAcUseCase } from "../../application/useCases/VerifyAcUseCase.js";
+import { VerifySignupOtpUseCase } from "../../application/useCases/VerifySignupOtpUseCase.js";
 import { ResendOtpUseCase } from "../../application/useCases/ResendOtpUseCase.js";
 import { SigninUseCase } from "../../application/useCases/SigninUseCase.js";
 import { SigninDTO } from "../../application/dtos/SigninDTO.js";
 import { RefreshTokenUseCase } from "../../application/useCases/RefreshTokenUseCase.js";
 import { SignoutUseCase } from "../../application/useCases/SignoutUseCase.js";
+import { ForgotPasswordUseCase } from "../../application/useCases/ForgotPasswordUseCase.js";
+import { ResetPasswordUseCase } from "../../application/useCases/ResetPasswordUseCase.js";
 
 
 export class AuthController {
   constructor(
     private signupUseCase: SignupUseCase, //"the value comming from constructor will be an instance of the class SignupUseCase."
-    private verifyAcUseCase: VerifyAcUseCase,
+    private verifySignupOtpUseCase: VerifySignupOtpUseCase,
     private resendOtpUseCase: ResendOtpUseCase,
     private signinUseCase: SigninUseCase,
+    private forgotPasswordUseCase: ForgotPasswordUseCase,
+    private resetPasswordUseCase : ResetPasswordUseCase,
     private refreshTokenUseCase: RefreshTokenUseCase,
     private signoutUseCase : SignoutUseCase
   ) { }
@@ -45,12 +48,12 @@ export class AuthController {
     }
   }
 
-  async verifyAc(req: Request, res: Response, next : NextFunction ): Promise<void>{
+  async verifySignupAc(req: Request, res: Response, next : NextFunction ): Promise<void>{
     try {
-      const otpData: OtpVerifyDTO = req.body;
+      const otpData = req.body;
       
-      const tempToken = req.cookies.tempToken
-      const result = await this.verifyAcUseCase.execute(otpData,tempToken)
+      const tempToken = req.cookies.tempToken 
+      const result = await this.verifySignupOtpUseCase.execute(otpData,tempToken)
       
       res.clearCookie("tempToken")
 
@@ -59,8 +62,8 @@ export class AuthController {
         message: result.message,
       });
 
-    }catch(error: any) {
-      console.error("verifyOtp error:", error);
+    } catch (error: any) {
+      console.error("Signup verification error:", error);
       next(error);
     }
   }
@@ -108,6 +111,59 @@ export class AuthController {
       
     } catch(error) {
       console.log("signin error", error);
+      next(error);
+    }
+  }
+
+  async forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { email } = req.body
+      const result = await this.forgotPasswordUseCase.execute(email)  // this use case is  were i am checking  do the given email exist in the usredb  if yes then send otp
+
+      res.status(200).json({
+        sucess: true,
+        message : result.message
+      })
+
+    } catch (error:any) {
+      console.error("ForgotPassword error:", error);
+      next(error);
+    }
+  }
+
+  async resetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+
+      const { token, password } = req.body
+      
+      const result = await this.resetPasswordUseCase.execute(token, password)
+
+      res.status(200).json({
+        success: true,
+        message: result.message,
+      });
+
+    } catch (error: any) {
+      console.error("verifyOtp error:", error);
+      next(error);
+    }
+    
+  }
+
+  async checkAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) {
+        throw { status: 401, message: "Not authenticated" };
+      }
+
+      res.status(200).json({
+        success: true,
+        user: {
+          fname: req.user.fname,
+          role: req.user.role,
+        }
+      });
+    } catch (error) {
       next(error);
     }
   }
@@ -188,21 +244,4 @@ export class AuthController {
     }
   }
 
-  async checkAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      if (!req.user) {
-        throw { status: 401, message: "Not authenticated" };
-      }
-
-      res.status(200).json({
-        success: true,
-        user: {
-          fname: req.user.fname,
-          role: req.user.role,
-        }
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
 }

@@ -8,7 +8,7 @@ export class CustomerSignoutStrategy implements ISignoutStrategy {
     
     async signout(userId: string): Promise<void> {
         try {
-            if (!(await this.userRepository.update(userId, { refreshToken: "" }))) {
+            if (!(await this.userRepository.update({userId}, { refreshToken: "" }))) {
                 throw { status: 400, message: "User not found during signout" };
             }
         } catch (error : any ) {

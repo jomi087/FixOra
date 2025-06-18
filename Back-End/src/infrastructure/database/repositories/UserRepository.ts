@@ -20,10 +20,10 @@ export class UserRepository implements IUserRepository {
         return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>()
     }
 
-    async update(userId: string, updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+    async update( filter: Partial<Pick<User, "email" | "userId" >> , updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOneAndUpdate(
-            { userId },
+            filter,
             { $set: updates },
             { new: true }
         ).select(omitSelect).lean<Partial<User>>()

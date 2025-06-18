@@ -35,7 +35,7 @@ export class RefreshTokenUseCase  {
       const newAccessToken = this.tokenService.generateAccessToken(payload);
       const newRefreshToken = this.tokenService.generateRefreshToken(payload)
       
-      if (!await this.userRepository.update( decoded.id ,{refreshToken : newRefreshToken } )) {
+      if (!await this.userRepository.update( { userId: decoded.id } ,{refreshToken : newRefreshToken } )) {
           throw { status: 404, message: "User Not Found" };
       }
 

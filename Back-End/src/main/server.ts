@@ -20,7 +20,7 @@ const __filename = fileURLToPath(import.meta.url) // why this way cz esmodule do
 const __dirname = path.dirname(__filename)
 
 const corsOptions = {
-    origin: 'http://localhost:5001', // front end url  //this is how we  give access to those url which can access our apis // here its only access for my frontend url how ever  if to make acess forevery one we  user  "*" 
+    origin: process.env.FRONTEND_URL||'http://localhost:5001', // front end url  //this is how we  give access to those url which can access our apis // here its only access for my frontend url how ever  if to make acess forevery one we  user  "*" 
     credentials: true,  //allowing credentials like cookies , headers etc .... 
 }
 
@@ -43,6 +43,7 @@ app.use(express.urlencoded({ extended: true, limit: "1mb" }))
 app.use(express.static(path.join(__dirname, '../public')));  
 
 app.use('/api/auth', authRouter)
+
 app.use(errorHandler)
 
 app.listen(port, () => {
