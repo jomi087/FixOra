@@ -10,7 +10,6 @@ import Dashboard from '../pages/admin/Dashboard'
 import UserManagement from '../pages/admin/UserManagement'
 import ProviderManagement from '../pages/admin/ProviderManagement'
 import ServiceManagement from '../pages/admin/ServiceManagement'
-import Account from '../pages/client/Account.tsx'
 
 
 const router = createBrowserRouter([
