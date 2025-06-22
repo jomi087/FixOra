@@ -1,17 +1,20 @@
 import { createBrowserRouter } from 'react-router-dom'
-import LandingPage from '../pages/client/LandingPage'
+import ErrorBoundary from '../pages/common/ErrorBoundary.tsx'
 import PageNotFound from '../components/common/Others/PageNotFound'
 import SignInPage from '../pages/common/SignInPage.tsx'
 import SignUpPage from '../pages/common/SignUpPage.tsx'
 import OtpPage from '../pages/common/OtpPage.tsx'
 import ResetPasswordPage from '../pages/common/ResetPasswordPage.tsx'
-import ErrorBoundary from '../pages/common/ErrorBoundary.tsx'
+
+import LandingPage from '../pages/client/LandingPage'
+import ProfilePage from '../pages/client/ProfilePage.tsx'
+import ChangePasswordPage from '@/pages/client/ChangePassword.tsx'
+
 import Dashboard from '../pages/admin/Dashboard'
 import UserManagement from '../pages/admin/UserManagement'
 import ProviderManagement from '../pages/admin/ProviderManagement'
 import ServiceManagement from '../pages/admin/ServiceManagement'
-import Account from '../pages/client/ProfilePage.tsx'
-import ChangePasswordPage from '@/pages/client/ChangePassword.tsx'
+
 
 
 const router = createBrowserRouter([
@@ -38,7 +41,7 @@ const router = createBrowserRouter([
     //client Routes
     {
         path: '/user/account/profile',
-        element  :  <ErrorBoundary><Account/></ErrorBoundary>
+        element  :  <ErrorBoundary><ProfilePage/></ErrorBoundary>
     },
     {
         path: '/user/account/change-password',
