@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { BGImage_404 } from "../../utils/constant";
 import Header from "../../components/common/layout/Header";
-import ResetPassword from "../../components/common/Others/ResetPassword";
+import ResetPassword from "../../components/common/auth/ResetPassword";
 import AuthService from "../../services/AuthService";
 import { toast } from "react-toastify";
 
@@ -17,7 +17,7 @@ const ResetPasswordPage: React.FC = () => {
         toast.error("Invalid or missing token");
         setTimeout(() => {
             navigate(-1)
-        }, 2000); 
+        }); 
         return null;
     }
 
@@ -32,7 +32,7 @@ const ResetPasswordPage: React.FC = () => {
                 toast.success(res.data.message || "Password reset successful!");
                 setTimeout(() => {
                     navigate("/"); 
-                }, 2000);
+                });
             }
         } catch (error: any) {
             console.error("Reset Password Error:", error)
@@ -40,7 +40,7 @@ const ResetPasswordPage: React.FC = () => {
             toast.error(errorMsg);
             setTimeout(() => {
                 navigate('/')
-            }, 2000);
+            });
         } finally {
             setLoading(false);
         }

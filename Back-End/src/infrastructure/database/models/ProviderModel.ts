@@ -43,27 +43,6 @@ const providerSchema = new Schema<IProviderModel>(
       type: Number,
       required: true,
     },
-
-    location: {
-      city: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      lat: {
-        type: Number,
-        required: true,
-      },
-      lng: {
-        type: Number,
-        required: true,
-      },
-      address: {
-        type: String,
-        trim: true,
-      },
-    },
-
     kycInfo: {
       status: {
         type: String,

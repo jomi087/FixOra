@@ -1,8 +1,8 @@
 import Spline from "@splinetool/react-spline"
 import { useState } from "react";
 import { Link } from "react-router-dom"
-import { RoleEnum } from "../../../../shared/enums/roles";
-import type { Signup } from "../../../../shared/Types/user";
+import type { Signup } from "@/shared/Types/user";
+import { RoleEnum } from "@/shared/enums/roles";
 
 
 interface signUpProps{
@@ -26,6 +26,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     
     /* Basic js verison
+    
     const name = e.target.name;
     const value = e.target.value;
 
@@ -45,7 +46,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
     
     //Advance js version 
     const { name, value } = e.target
-    setFormData({...formData ,[name]:value})
+    setFormData({...formData, [name]:value})
   }
 
   const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>)=> {

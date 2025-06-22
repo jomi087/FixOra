@@ -2,13 +2,13 @@ import { useState } from "react";
 import { LogIn, LogOut, Menu, X } from "lucide-react";
 import ThemeToggle from "../ThemeToggle";
 import { Link, useNavigate } from "react-router-dom";
-import { RoleEnum } from "../../../../shared/enums/roles";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { navItems } from "../../../utils/constant";
 import { useLocation } from 'react-router-dom'
 import AuthService from "../../../services/AuthService";
 import { logout } from "../../../store/userSlice";
 import { toast } from "react-toastify";
+import { RoleEnum } from "@/shared/enums/roles";
 
 
 interface NavProps {
@@ -36,7 +36,7 @@ const Nav: React.FC<NavProps> = ({ className = ""}) => {
 
         setTimeout(() => {
             navigate("/");
-        }, 5000);
+        });
       }
     } catch (error:any) {
       const errorMsg = error?.response?.data?.message ||"Login failed. Please try again Later";

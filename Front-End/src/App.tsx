@@ -14,8 +14,11 @@ function App() {
         <ToastContainer
           theme="dark" 
           position="top-right" 
-          autoClose={3000} 
+          autoClose={2000} 
+          className="text-sm font-serif"
           closeOnClick
+          hideProgressBar={true}
+          draggable={true}
         />
         <RouterProvider router={router} />
       </Provider>

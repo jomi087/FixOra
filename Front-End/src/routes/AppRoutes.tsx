@@ -10,7 +10,8 @@ import Dashboard from '../pages/admin/Dashboard'
 import UserManagement from '../pages/admin/UserManagement'
 import ProviderManagement from '../pages/admin/ProviderManagement'
 import ServiceManagement from '../pages/admin/ServiceManagement'
-import Account from '../pages/client/Account.tsx'
+import Account from '../pages/client/ProfilePage.tsx'
+import ChangePasswordPage from '@/pages/client/ChangePassword.tsx'
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,15 @@ const router = createBrowserRouter([
     {
         path: '/reset-Password',
         element: <ErrorBoundary><ResetPasswordPage /></ErrorBoundary>
+    },
+    //client Routes
+    {
+        path: '/user/account/profile',
+        element  :  <ErrorBoundary><Account/></ErrorBoundary>
+    },
+    {
+        path: '/user/account/change-password',
+        element  :  <ErrorBoundary><ChangePasswordPage/></ErrorBoundary>
     },
     // Admin Routes
     {

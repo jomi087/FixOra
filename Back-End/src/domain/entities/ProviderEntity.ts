@@ -11,12 +11,6 @@ export interface Provider {
     };
   };
   serviceCharge: number;
-  location: {
-    city: string;
-    lat: number;
-    lng: number;
-    address?: string;
-  };
   kycInfo: {
     status: KYCStatus;
     reason?: string;

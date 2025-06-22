@@ -15,7 +15,7 @@ router.get('/resend-otp', (req, res, next) => authController.resendOtp(req, res,
 
 router.post('/signin', validateRequest(signinSchema), (req, res, next) => authController.signin(req, res, next))
 router.post('/forgot-password', validateRequest(forgotPasswordSchema), (req, res, next)=> authController.forgotPassword(req, res, next))
-router.post('/reset-password', validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next))
+router.patch('/reset-password', validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next))
 
 router.get('/check', userAuthMiddleware, (req, res, next) => authController.checkAuth(req, res, next))
 

@@ -25,8 +25,8 @@ const ResetPassword: React.FC<passwordResetProps> = ({ passwordResetbutton, load
 
   return (  
     <div className="rounded-xl shadow-lg p-11 pt-5 shadow-black ">
-        <h2 className="text-3xl font-bold text-center mb-2 text-blue-800">Reset Password</h2>
-        <p className="text-gray-600 text-center mb-4 text-sm">
+        <h2 className="text-3xl font-bold text-center mb-2 text-blue-800 dark:text-white">Reset Password</h2>
+        <p className="text-gray-600 text-center mb-4 text-sm dark:text-white">
             Enter a strong password to secure your account.
         </p>
           <form noValidate onSubmit={ handleFormSubmit }>
@@ -44,12 +44,12 @@ const ResetPassword: React.FC<passwordResetProps> = ({ passwordResetbutton, load
                 />
                 <button
                     type="button"
-                    className="px-2 text-gray-500 hover:text-blue-700"
+                      className={`px-2 text-gray-500  hover:text-blue-700`}
                     tabIndex={-1}
                     onClick={() => setShowPw(v => !v)}
                     aria-label={showPw ? "Hide password" : "Show password"}
                 >
-                    {showPw ? <BiHide size={20} /> : <BiShow size={20} />}
+                    {showPw ? <BiShow size={20} /> : <BiHide size={20} />}
                 </button>
             </div>
     
@@ -72,7 +72,7 @@ const ResetPassword: React.FC<passwordResetProps> = ({ passwordResetbutton, load
                     onClick={() => setShowCPw(v => !v)}
                     aria-label={showCPw ? "Hide password" : "Show password"}
                 >
-                    {showCPw ? <BiHide size={20} /> : <BiShow size={20} />}
+                    {showCPw ? <BiShow size={20} /> : <BiHide size={20} />}
                 </button>
             </div>
 

@@ -1,11 +1,15 @@
-import { Home, Briefcase, Users, FileText, User } from "lucide-react";
+import {
+  Home, Briefcase, Users, FileText, User,
+  CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
+  LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
+} from "lucide-react";
 
-//Images
+/********************************************* Image Sections *******************************************************/
 export const BGImage_404: string = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
 export const HeroSectionImage:string = "/Hero-removebg-preview.png"
 export const SingInThemeImage:string  = "/signIn.png"
 
-//Reset Password Constraints
+/******************************************* Reset Password Constraints Sections *******************************************************/
 export const constraints = [
     { label: "At least 10 characters", test: (pw: string) => pw.length >= 10 },
     // { label: "At least one capital letter", test: (pw: string) => /[A-Z]/.test(pw) },
@@ -13,40 +17,41 @@ export const constraints = [
     // { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
 ];
 
-//Navigation Items for the main navigation bar
+/******************************Navigation Items for the User navigation bar ********************************/
 export const navItems = [
   { name: 'Home', to: '/', icon: <Home size={18} />} ,
-  { name: 'Services', to: '/services', icon: <Briefcase size={18} /> },
-  { name: 'Providers', to: '/providers', icon: <Users size={18} />},
-  { name: 'Blog', to: '/blog', icon: <FileText size={18} /> },
-  { name : 'Account' , to: '/account', icon: <User  size={18} />}
+  { name: 'Services', to: '/user/services', icon: <Briefcase size={18} /> },
+  { name: 'Providers', to: '/user/providers', icon: <Users size={18} />},
+  { name: 'Blog', to: '/user/blog', icon: <FileText size={18} /> },
+  { name : 'Account' , to: '/user/account/profile', icon: <User  size={18} />}
 ];
 
-
 /********************************************* Side-Bar Sections *******************************************************/
-interface SideBarOption {
+export interface SideBarOption {
   icon: React.ElementType;
   section: string;
   to: string;
 }
 
-//Admins Side Bar
-import { MdDashboard, MdBarChart } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
-import { FaUsersGear } from "react-icons/fa6";
-import { FcServices } from "react-icons/fc";
-import { AiFillAlert } from "react-icons/ai";
-
-export const adminSideBarOptions: SideBarOption[] = [
-  { icon: MdDashboard, section: "Dashboard", to: "/dashboard" },
-  { icon: FaUsers, section: "Users", to: "/users" },
-  { icon: FaUsersGear, section: "Providers", to: "/providers" },
-  { icon: MdBarChart, section: "Sales", to: "/sales" },
-  { icon: FcServices, section: "Services", to: "/services" },
-  { icon: AiFillAlert, section: "Dispute", to: "/dispute" },
+//User Side Bar
+export const userSideBarOptions: SideBarOption[] = [
+  { icon: User, section: "Profile", to: "/user/account/profile" },
+  { icon: CalendarCheck, section: "Booking", to: "/user/account/booking" },
+  { icon: MessageSquareText, section: "Chats", to: "/user/account/chats" },
+  { icon: Wallet, section: "Wallet", to: "/user/account/wallet" },
+  { icon: ShieldAlert, section: "Dispute", to: "/user/account/dispute" },
 ];
 
-//Provider Side Bar
+
+//Admins Side Bar
+export const adminSideBarOptions: SideBarOption[] = [
+  { icon: LayoutDashboard, section: "Dashboard", to: "/dashboard" },
+  { icon: Users, section: "Users", to: "/users" },
+  { icon: Settings, section: "Providers", to: "/providers" },
+  { icon: BarChartBig, section: "Sales", to: "/sales" },
+  { icon: Wrench, section: "Services", to: "/services" },
+  { icon: AlertTriangle, section: "Dispute", to: "/dispute" },
+];
 
 
 

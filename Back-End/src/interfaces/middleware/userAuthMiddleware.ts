@@ -21,7 +21,6 @@ export class UserAuthMiddleware {  //verify Jwt
     async handle( req: Request, res: Response, next: NextFunction) {
         try {
             const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer", "");
-            
             if (!token) {
                 res.status(403).json({
                     message: "Unauthorized Signin again (token not provided)",
@@ -29,7 +28,6 @@ export class UserAuthMiddleware {  //verify Jwt
                 return;
             }
             const decode = this.tokenService.verifyAccessToken(token);
-            console.log("decode",decode)
             const user = await this.userRepository.findByUserId(decode.id,["password","refreshToken"]);
             
             if (!user) {

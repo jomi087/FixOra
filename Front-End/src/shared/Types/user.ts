@@ -1,4 +1,5 @@
 import type { RoleEnum } from "../enums/roles";
+import type { AddressWithCoordinates } from "./location";
 
 export type Credentials = {
     email: string;
@@ -20,3 +21,10 @@ export type Signup = User & {
 export type Signin = Credentials & {
     role: RoleEnum;
 };
+
+export type ProfileEdit = {
+    fname: string;
+    lname: string;
+    mobile: string;
+    location: AddressWithCoordinates
+}

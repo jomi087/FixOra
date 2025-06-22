@@ -10,7 +10,9 @@ dotenv.config();
 
 //From Local files
 import mongoConnect from '../infrastructure/database/connection.js';
-import authRouter from '../interfaces/routes/authRoute.js'
+import authRouter from '../interfaces/routes/authRoute.js';
+import userRouter from '../interfaces/routes/userRoute.js'
+
 import { errorHandler } from '../interfaces/middleware/errorHandler.js'; 
 
 const app: Express = express()
@@ -43,6 +45,7 @@ app.use(express.urlencoded({ extended: true, limit: "1mb" }))
 app.use(express.static(path.join(__dirname, '../public')));  
 
 app.use('/api/auth', authRouter)
+app.use('/api/user', userRouter)
 
 app.use(errorHandler)
 

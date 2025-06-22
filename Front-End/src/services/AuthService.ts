@@ -1,5 +1,5 @@
 import axiosInstance from './axiosConfig';
-import type { Signup, Signin } from "../../shared/Types/user";
+import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
 
 
 class AuthService {  
@@ -23,8 +23,8 @@ class AuthService {
         return axiosInstance.get("/api/auth/resend-otp");
     }
 
-    VerifySignupOtp(Data: { otp: string }) {
-        return axiosInstance.post('/api/auth/verify-otp', Data);
+    VerifySignupOtp(Data: string ) {
+        return axiosInstance.post('/api/auth/verify-otp', { otpData : Data });
     }
 
     signinApi(Data: Signin) {
@@ -36,11 +36,23 @@ class AuthService {
     }
 
     resetPasswordApi( token: string, password: string, cPassword: string ) {
-        return axiosInstance.post('/api/auth/reset-password', {token ,password,cPassword,})
+        return axiosInstance.patch('/api/auth/reset-password', {token ,password,cPassword,})
     }
 
     checkAuthStatus() {
         return axiosInstance.get("/api/auth/check");
+    }
+
+    editProfileApi(form:ProfileEdit ) {
+        return axiosInstance.patch("/api/user/editProfile",form)
+    }
+
+    verifyPasswordApi(password:string) {
+        return axiosInstance.post("/api/user/verifyPassword",{password})
+    }
+
+    changePasswordApi( token: string, password: string, cPassword: string ) {
+        return axiosInstance.patch('/api/user/change-password', {token ,password,cPassword,})
     }
 
     signoutApi(token?:string) {

@@ -1,5 +1,5 @@
+import { blogPosts } from "@/utils/constant"
 import { Link } from "react-router-dom"
-import { blogPosts } from "../../utils/constant"
 
 const BlogsPreview:React.FC = () => {
   return (

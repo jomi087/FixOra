@@ -14,7 +14,6 @@ export class ResetPasswordUseCase{
             const hashedPassword = await this.hashService.hash( password ) 
 
             const decodeEmail = jwt.verify(token, process.env.JWT_RESET_PASSWORD_SECRET as string) as { email : string}
-            console.log("decodeEmail", decodeEmail)
             
             if (!await this.userRepository.update({ email: decodeEmail.email }, { password: hashedPassword })) {
                  throw { status: 404, message: "User Not Found" };

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { BGImage_404 } from "../../utils/constant";
 import Header from "../../components/common/layout/Header";
 import SignUp from "../../components/common/auth/SignUp";
-import type { Signup } from "../../../shared/Types/user";
+import type { Signup } from "@/shared/Types/user";
 import { toast } from "react-toastify";
-import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNo, validatePassword } from "../../utils/formValidation";
+import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNo, validatePassword } from "../../utils/validation/formValidation";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 

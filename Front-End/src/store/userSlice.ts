@@ -1,10 +1,15 @@
 //# Typed version
+import type { AddressWithCoordinates } from "@/shared/Types/location";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface info {
     fname: string;
+    lname: string;
+    email: string;
+    mobileNo: string;
     role: string; 
+    location?: AddressWithCoordinates;
 }
 
 interface AuthState {
@@ -29,10 +34,6 @@ const userSlice = createSlice({
             state.user = null;
             state.isAuthenticated = false;
         },
-        // checkAuth: (state, action: PayloadAction<{ user: info | null }>) => { //checkAuth is for verification (checking if user is still logged in like after refresh)
-        //     state.user = action.payload.user;
-        //     state.isAuthenticated = !!action.payload.user; // !!action.payload.user means  action.payload.user !== null;
-        // }
     }
 })
 

@@ -18,18 +18,18 @@ export class VerifySignupOtpUseCase{
                 throw { status: 403, message: "Something  went wrong"  }
             }
             
-            const decodeUserData  = jwt.verify(token, process.env.JWT_TEMP_ACCESS_SECRET as string) as UserDTO            
+            const decodeUserData = jwt.verify(token, process.env.JWT_TEMP_ACCESS_SECRET as string) as UserDTO
             const storedOtp = await this.otpRepository.findOtpByEmail(decodeUserData.email)
             if ( !storedOtp ) {
                 throw { status: 400, message: "OTP Expired, Click Re-Send Otp" }
-            }else if (storedOtp.otp != otpData ) {
+            } else if (storedOtp.otp != otpData ) {
                 throw { status: 400, message: "Invalid OTP" }
             }
 
             await this.userRepository.create({
                 ...decodeUserData,
                 createdAt: new Date(),
-                role : RoleEnum.Customer
+                role : RoleEnum.Customer,
             })
 
             await this.otpRepository.deleteOtpByEmail(decodeUserData.email)

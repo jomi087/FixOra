@@ -50,8 +50,8 @@ export class AuthController {
 
   async verifySignupAc(req: Request, res: Response, next : NextFunction ): Promise<void>{
     try {
-      const otpData = req.body;
-      
+      const { otpData } = req.body;
+
       const tempToken = req.cookies.tempToken 
       const result = await this.verifySignupOtpUseCase.execute(otpData,tempToken)
       
@@ -106,7 +106,7 @@ export class AuthController {
         .json({
           success: true,
           message: result.message,
-          userData: result.userData, // userData: {fname : string | undefined ; role: RoleEnum | undefined; }
+          userData: result.userData,
         });
       
     } catch(error) {
@@ -155,12 +155,15 @@ export class AuthController {
       if (!req.user) {
         throw { status: 401, message: "Not authenticated" };
       }
-
       res.status(200).json({
         success: true,
         user: {
           fname: req.user.fname,
+          lname: req.user.lname,
+          email: req.user.email,
+          mobileNo: req.user.mobileNo,
           role: req.user.role,
+          location : req.user?.location,
         }
       });
     } catch (error) {

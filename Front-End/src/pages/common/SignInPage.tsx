@@ -2,14 +2,14 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"; 
 
-import { BGImage_404,SingInThemeImage } from "../../utils/constant";
-import Header from "../../components/common/layout/Header";
-import SignIn from "../../components/common/auth/SignIn";
-import { RoleEnum } from "../../../shared/enums/roles"; 
-import AuthService from "../../services/AuthService";
-import { validateEmail, validatePassword } from "../../utils/formValidation";
-import { Userinfo } from "../../store/userSlice";
-import { useAppDispatch } from "../../store/hooks";
+import { BGImage_404, SingInThemeImage } from "@/utils/constant";
+import Header from "@/components/common/layout/Header";
+import SignIn from "@/components/common/auth/SignIn";
+import AuthService from "@/services/AuthService";
+import { validateEmail, validatePassword } from "@/utils/validation/formValidation";
+import { Userinfo } from "@/store/userSlice";
+import { useAppDispatch } from "@/store/hooks";
+import { RoleEnum } from "@/shared/enums/roles";
 
 const SignInPage: React.FC = () => {
   
