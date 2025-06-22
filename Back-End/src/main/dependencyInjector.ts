@@ -14,7 +14,7 @@ const tokenService = new TokenService()
 
 /******************************************************************************************************************************************************/
 //userAuth- Middleware
-import { createUserAuthMiddleware } from "../interfaces/middleware/UserAuthMiddleware.js";
+import { createUserAuthMiddleware } from "../interfaces/middleware/userAuthMiddleware.js";
 const userAuthMiddleware = createUserAuthMiddleware(tokenService, userRepository)
 
 /******************************************************************************************************************************************************/
