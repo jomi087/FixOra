@@ -41,7 +41,11 @@ export class SigninUseCase {
                 message : "Singin Successful",
                 userData: {
                     fname: updatedUserData.fname,
-                    role : updatedUserData.role
+                    lname: updatedUserData.lname,
+                    email: updatedUserData.email,
+                    mobileNo: updatedUserData.mobileNo,
+                    role: updatedUserData.role,
+                    location : updatedUserData.location
                 },
                 accessToken: acsToken,
                 refreshToken: refToken,

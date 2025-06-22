@@ -4,6 +4,20 @@ import { RoleEnum } from '../../../domain/constant/Roles.js'
 
 export interface IUserModel extends Document, User {}
 
+const addressSchema = new mongoose.Schema({
+  houseinfo: { type: String,  trim: true, default: "" },
+  street: { type: String,  trim: true },
+  district: { type: String,  trim: true },
+  city: { type: String,  trim: true },
+  locality: { type: String,  trim: true },
+  state: { type: String,  trim: true },
+  postalCode: { type: String,  trim: true },
+  coordinates: {
+    latitude: { type: Number},
+    longitude: { type: Number },
+  },
+});
+
 
 const userSchema = new mongoose.Schema<IUserModel>({
     userId: {
@@ -20,7 +34,6 @@ const userSchema = new mongoose.Schema<IUserModel>({
     },
     lname: {
         type: String,
-        required: true,
         trim: true
     },
     email: {
@@ -32,12 +45,10 @@ const userSchema = new mongoose.Schema<IUserModel>({
     },
     mobileNo: {
         type: String,
-        required: true,
         trim: true
     },
     password: {
         type: String,
-        required: true,
         trim: true
     },
     role: {
@@ -52,7 +63,11 @@ const userSchema = new mongoose.Schema<IUserModel>({
         type: Boolean,
         required: true,
         default : false
-    }
+    },
+    location: {
+        type: addressSchema,
+        default: undefined
+    },
 },
     {timestamps : true}
 )
