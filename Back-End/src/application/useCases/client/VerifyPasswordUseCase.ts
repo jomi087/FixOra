@@ -16,7 +16,7 @@ export class VerifyPasswordUseCase {
     async execute(password: string, userId : string) {
         try {
             const user = await this.userRepository.findByUserId(userId,["refreshToken"]) as User; 
-            const isMatch = await this.hashService.compare(password, user.password)
+            const isMatch = await this.hashService.compare(password, user.password as string)
             if (!isMatch) throw { status: 403, message: "Invalid Password" }
             
             const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions['expiresIn']

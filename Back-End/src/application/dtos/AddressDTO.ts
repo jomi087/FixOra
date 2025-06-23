@@ -6,7 +6,7 @@ export type AddressDTO = {
     locality: string;
     state : string;
     postalCode: string;
-    cordinates: {
+    coordinates: {
         latitude: number;
         longitude: number;
     }
