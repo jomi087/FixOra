@@ -34,7 +34,6 @@ const userSchema = new mongoose.Schema<IUserModel>({
     },
     lname: {
         type: String,
-        required: true,
         trim: true
     },
     email: {
@@ -46,18 +45,22 @@ const userSchema = new mongoose.Schema<IUserModel>({
     },
     mobileNo: {
         type: String,
-        required: true,
         trim: true
     },
     password: {
         type: String,
-        required: true,
         trim: true
     },
     role: {
         type: String,
         enum: Object.values(RoleEnum),
         required: true
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true,
+        index: true
     },
     refreshToken: {
         type : String

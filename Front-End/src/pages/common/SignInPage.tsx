@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"; 
+import  { useGoogleLogin } from '@react-oauth/google'
+
 
 import { BGImage_404, SingInThemeImage } from "@/utils/constant";
 import Header from "@/components/common/layout/Header";
@@ -19,6 +21,8 @@ const SignInPage: React.FC = () => {
 
   const dispatch = useAppDispatch()
 
+  const isValidRole = Object.values(RoleEnum).includes(role as RoleEnum);
+  const userRole: RoleEnum = isValidRole ? (role as RoleEnum) : RoleEnum.CUSTOMER;
 
   const handleLogin = async (email: string, password: string) => {
 
@@ -29,9 +33,6 @@ const SignInPage: React.FC = () => {
       toast.error(emailError || passwordError);
       return;
     }
-
-    const isValidRole = Object.values(RoleEnum).includes(role as RoleEnum);
-    const userRole: RoleEnum = isValidRole ? (role as RoleEnum) : RoleEnum.CUSTOMER;
     
     const data = {
       email,
@@ -79,7 +80,42 @@ const SignInPage: React.FC = () => {
       setLoading(false)
     }
   } 
-    
+
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (authResult:any) => {
+      if (authResult.code) {
+        const data = { code: authResult.code, role: userRole  };
+        try {
+          const res =await AuthService.googleSigninApi(data)
+
+          if (res.status === 200) {
+            const { userData } = res.data;
+            dispatch(Userinfo({ user: userData }));
+            toast.success(res.data.message || "Sign-in successful!");
+            if (userData.role === RoleEnum.CUSTOMER) {
+              navigate("/"); 
+            } else if (userData.role === RoleEnum.PROVIDER) {
+              navigate("/provider/dashboard");
+            } else if (userData.role === RoleEnum.ADMIN) {
+              navigate("/admin/dashboard");
+            }
+          }
+        } catch (error: any) {
+          console.log(error.response)
+          const errorMsg = error?.response?.data?.message ||"Login failed.. Please try again Later";
+          toast.error(errorMsg);
+        }
+      }
+    },
+    onError: (error) => {
+      console.log("Google login error", error);
+      toast.error("Google login failed");
+    },
+    flow: 'auth-code',  // this enables PKCE under the hood
+  });
+
+
   return (
     <main className="min-h-screen flex flex-col" style={{ backgroundImage: BGImage_404 }} >
       <Header className={"md:text-end"} />
@@ -88,6 +124,7 @@ const SignInPage: React.FC = () => {
         signInSubmit={handleLogin}
         forgotPassword={handleforgotPassword}
         loading={loading}
+        googleSignin={loginWithGoogle}
         role={role||RoleEnum.CUSTOMER} // Default to CUSTOMER if role is not provided
       />
     </main>

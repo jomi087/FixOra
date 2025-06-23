@@ -1,10 +1,11 @@
 import { User } from "../../entities/UserEntity.js";
 
 export interface IUserRepository {
-    create(user: User): Promise <void>;
+    create(user: User): Promise <User>;
     findByEmail(email: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    update( filter: Partial<Pick<User, "userId" | "email" >> , updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+    findByUserGoogleId(googleId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+    update( filter: Partial<Pick<User, "userId" | "email" |"googleId" >> , updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
 }
 
 /*

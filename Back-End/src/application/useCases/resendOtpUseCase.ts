@@ -21,7 +21,8 @@ export class ResendOtpUseCase{
             const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as UserDTO            
             
             const otp = this.otpGenratorService.generateOtp()
-
+            console.log("this is resend otp", otp)
+            
             await this.otpRepository.storeOtp({
                 email: decodeUserData.email,
                 otp,

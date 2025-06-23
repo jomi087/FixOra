@@ -11,6 +11,7 @@ import { RefreshTokenUseCase } from "../../application/useCases/RefreshTokenUseC
 import { SignoutUseCase } from "../../application/useCases/SignoutUseCase.js";
 import { ForgotPasswordUseCase } from "../../application/useCases/ForgotPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/useCases/ResetPasswordUseCase.js";
+import { GoogleSigninUseCase } from "../../application/useCases/GoogleSigninUseCase.js";
 
 
 export class AuthController {
@@ -19,6 +20,7 @@ export class AuthController {
     private verifySignupOtpUseCase: VerifySignupOtpUseCase,
     private resendOtpUseCase: ResendOtpUseCase,
     private signinUseCase: SigninUseCase,
+    private googleSigninUseCase : GoogleSigninUseCase,
     private forgotPasswordUseCase: ForgotPasswordUseCase,
     private resetPasswordUseCase : ResetPasswordUseCase,
     private refreshTokenUseCase: RefreshTokenUseCase,
@@ -50,8 +52,8 @@ export class AuthController {
 
   async verifySignupAc(req: Request, res: Response, next : NextFunction ): Promise<void>{
     try {
-      const { otpData } = req.body;
-
+      const {otpData} = req.body;
+      
       const tempToken = req.cookies.tempToken 
       const result = await this.verifySignupOtpUseCase.execute(otpData,tempToken)
       
@@ -81,6 +83,39 @@ export class AuthController {
     } catch (error) {
       console.error("resendOtp error:", error);
       next(error);
+    }
+  }
+
+  async googleSignin(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+
+      const { code, role } = req.body;
+      if (!code || !role) throw { status: 400, message: "Token(code) is missing" };
+      
+      const result = await this.googleSigninUseCase.execute(code,role)
+
+      res
+        .status(200)
+        .cookie('accessToken', result.accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_COOKIE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        })
+        .cookie('refreshToken', result.refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_COOKIE_ENV === "production", 
+          sameSite: "lax",
+          maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        })
+        .json({
+          success: true,
+          message: result.message,
+          userData: result.userData,
+        });
+    } catch (error) {
+      console.log(error);
+      next(error)
     }
   }
 

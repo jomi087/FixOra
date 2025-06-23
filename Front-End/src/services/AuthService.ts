@@ -31,6 +31,10 @@ class AuthService {
         return axiosInstance.post('/api/auth/signin', Data);
     }
 
+    googleSigninApi(data: { code: string, role: string }) {
+    return axiosInstance.post('/api/auth/google-signin', data);
+    }
+
     forgotPasswordApi(email: string) {
         return axiosInstance.post('/api/auth/forgot-password', { email })
     }

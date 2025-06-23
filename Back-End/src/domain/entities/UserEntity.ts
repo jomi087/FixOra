@@ -10,7 +10,7 @@ export interface Address {
   locality: string;
   state: string;
   postalCode: string;
-  cordinates: {
+  coordinates: {
       latitude: number;
       longitude: number;
   }
@@ -19,18 +19,15 @@ export interface Address {
 export interface User {
   userId: string;
   fname: string;
-  lname: string;
+  lname?: string;
   email: string;
-  mobileNo: string;
-  password: string;
-  role: RoleEnum; // 
+  mobileNo?: string;
+  password?: string;
+  role: RoleEnum;
+  googleId?: string;
   refreshToken?: string;
   location?: Address ;
   isBlocked?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
-
-
-
-
