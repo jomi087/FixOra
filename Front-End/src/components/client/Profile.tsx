@@ -18,7 +18,6 @@ const Profile: React.FC<ProfileProps> = ({ setEditMode }) => {
     const [errorMsg, setErrorMsg] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-
     const { user } = useAppSelector((state) => state.auth);
 
     const handleChangePassword = async (password:string) => { 
@@ -32,7 +31,7 @@ const Profile: React.FC<ProfileProps> = ({ setEditMode }) => {
         try {
             const res = await AuthService.verifyPasswordApi(password)
             if (res.status === 200) {
-                toast.success(res.data.message || "A mail has been sent to your mail")
+                toast.success(res.data.message || "A mail has been sent to your mail" )
             }
             setIsDialogOpen(false)
         } catch (error:any) {

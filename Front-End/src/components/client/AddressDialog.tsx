@@ -13,8 +13,7 @@ interface AddAdressProps{
     open: boolean;
     setOpen: (value: boolean) => void;
     processing : boolean
-
-} 
+}
 
 const AddressDialog:React.FC<AddAdressProps> = ({saveAdress,open,setOpen,processing}) => {
     const [loading, setLoading] = useState(false);

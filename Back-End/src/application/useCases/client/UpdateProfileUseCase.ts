@@ -19,12 +19,15 @@ export class UpdateProfileUseCase {
             if (!updatedUser) {
                 throw { status: 404, message: "user Not Found" };
             }
-
-            console.log(updatedUser)
-
             return {
                 success: true,
                 message: "Profile updated successfully",
+                user: {
+                    fname: updatedUser.fname,
+                    lname: updatedUser.lname,
+                    mobileNo: updatedUser.mobileNo,
+                    location :updatedUser?.location,
+                } 
             };
 
         } catch (error:any) {

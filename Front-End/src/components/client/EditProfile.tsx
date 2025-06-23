@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,8 @@ import { getAddressFromCoordinates } from "@/utils/helper/reverseGeocodingLocati
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";
 import AuthService from "@/services/AuthService";
 import { getCoordinatesFromAddress } from "@/utils/helper/forwardGeocodingLocation";
+import { Userinfo } from "@/store/userSlice";
+import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
 
 
 
@@ -44,6 +46,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
     });
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const dispatch = useAppDispatch();
+    
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -141,6 +145,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
                 ...prev,
                 location: AddressWithCoordinates
             }));
+
             setIsDialogOpen(false);
         } catch (error:any) {
             const errorMsg = error?.response?.data?.message ||"failed to fetch coordinates";
@@ -152,11 +157,22 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
 
     const handleSubmit =async (e: React.FormEvent) => {
         e.preventDefault();
+        const fnameError = validateFName(form.fname)
+        const lnameError  = validateLName(form.lname)
+        const mobileNumberError = validateMobileNo(form.mobile)
+        
+
+            if (fnameError || lnameError || mobileNumberError) {
+                toast.error(fnameError || lnameError || mobileNumberError);
+                return;
+            }
+
         setLoading(true)
-        console.log(form)
         try {
             const res = await AuthService.editProfileApi(form)
             if (res.status == 200) {
+                console.log(res.data)
+                dispatch(Userinfo({ user: { ...user, ...res.data.user } }));
                 toast.success("Address saved successfully");
                 setEditMode(false)
             }
@@ -181,7 +197,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
                     value={form.fname}
                     onChange={handleChange}
                     placeholder="Enter first name"
-                
+                    className="dark:text-white"
                 />
                 </div>
 
@@ -250,7 +266,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
 
                 {/* Buttons */}
                 <div className="flex items-center justify-between">
-                    <Button type="submit">Update Profile</Button>
+                    <Button type="submit" disabled={loading}>Update Profile</Button>
                     <Button variant="outline" type="button"
                         onClick={() => setEditMode(false)}
                     >

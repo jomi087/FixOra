@@ -7,7 +7,7 @@ export const validateFName = (fname:string):string|null => {
 
 export const validateLName = (lname:string):string|null => {
     const name = lname.trim();
-    if (!name) return "Name required" ;
+    if (!name) return "Last Name required" ;
     if (name.length < 2) return "Name must have at least 2+ charectors" ;
     return null ;
 } ;

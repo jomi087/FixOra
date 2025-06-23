@@ -187,7 +187,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotP
 
                 {isSignInForm &&
                 <p className="mt-4 text-blue-100 text-center">
-                    <Link to="/dashboard" className="text-black font-semibold">
+                    <Link to="/admin/dashboard" className="text-black font-semibold">
                     Explore our app
                     </Link>
                 </p>
