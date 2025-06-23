@@ -49,19 +49,19 @@ const router = createBrowserRouter([
     },
     // Admin Routes
     {
-        path: 'admin/dashboard',
+        path: '/admin/dashboard',
         element : <ErrorBoundary><Dashboard/></ErrorBoundary>
     },
     {
-        path: 'admin/users',
+        path: '/admin/users',
         element : <ErrorBoundary><UserManagement/></ErrorBoundary>
     },
     {
-        path: 'admin/providers',
+        path: '/admin/providers',
         element : <ErrorBoundary><ProviderManagement/></ErrorBoundary>
     },
     {
-        path: '/services',
+        path: '/admin/services',
         element : <ErrorBoundary><ServiceManagement/></ErrorBoundary>
     },
     {
