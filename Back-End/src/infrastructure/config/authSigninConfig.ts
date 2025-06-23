@@ -1,3 +1,4 @@
+import { AdminAuthStrategy } from "../../application/services/auth/signinStrategy/AdminAuthStrategy.js";
 import { AuthStrategyFactory } from "../../application/services/auth/signinStrategy/AuthStrategyFactory.js";
 import { CustomerAuthStrategy } from "../../application/services/auth/signinStrategy/CustomerAuthStrategy.js";
 import { RoleEnum } from "../../domain/constant/Roles.js";
@@ -18,8 +19,8 @@ export function configureAuthStrategies( userRepository: IUserRepository, hashSe
     // authFactory.register(RoleEnum.Provider, providerStrategy); 
 
     // Register admin authentication strategy
-    // const adminStrategy = new AdminAuthStrategy(userRepository, hashService)
-    // authFactory.register(RoleEnum.Admin, adminStrategy); 
+    const adminStrategy = new AdminAuthStrategy(userRepository, hashService)
+    authFactory.register(RoleEnum.Admin, adminStrategy); 
 
     return authFactory;
 } 

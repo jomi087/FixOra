@@ -16,6 +16,7 @@ export class SigninUseCase {
             // a Role Strategy Map — dynamic role-to-strategy resolution.
             
             //from here
+            console.log(credentials.role)
             const strategy = this.authFactory.getStrategy(credentials.role);
             const authenticatedUser = await strategy.authenticate(credentials);
             //till here 
