@@ -14,6 +14,7 @@ router.post('/verify-otp', (req, res, next) => authController.verifySignupAc(req
 router.get('/resend-otp', (req, res, next) => authController.resendOtp(req, res, next))
 
 router.post('/signin', validateRequest(signinSchema), (req, res, next) => authController.signin(req, res, next))
+router.post('/google-signin',(req, res,next) => authController.googleSignin(req, res, next))
 router.post('/forgot-password', validateRequest(forgotPasswordSchema), (req, res, next)=> authController.forgotPassword(req, res, next))
 router.post('/reset-password', validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next))
 

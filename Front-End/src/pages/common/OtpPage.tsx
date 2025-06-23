@@ -12,7 +12,7 @@ const OtpPage: React.FC = () => {
 
     const verifyOtp = async (otp: string): Promise<void> => {
         try {
-            const res = await AuthService.VerifySignupOtp({otp});
+            const res = await AuthService.VerifySignupOtp(otp);
 
             console.log("OTP submitted:", res);
             if ( res.status == 200 ) { 

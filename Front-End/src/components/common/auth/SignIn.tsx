@@ -5,12 +5,13 @@ import { FcGoogle } from "react-icons/fc";
 interface signInProps {
     singInThemeImage : string;
     signInSubmit: (email: string, password: string ) => Promise<void>;
-    forgotPassword :  (email: string ) => Promise<void>;
-    loading: boolean
-    role: string
+    forgotPassword: (email: string) => Promise<void>;
+    googleSignin: () => void;
+    loading: boolean;
+    role: string;
 }
 
-const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotPassword, loading , role } ) => {
+const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotPassword, googleSignin, loading , role } ) => {
 
 
     const [email, setEmail] = useState("");
@@ -24,6 +25,11 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotP
             return
         }
         signInSubmit(email,password)
+    }
+
+    const handleGoogleLogin = (e:React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        googleSignin(); 
     }
     
     return (
@@ -153,10 +159,16 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotP
                 <div className="flex-grow border-t border-gray-300"></div>
                 </div>
                 
-                { isSignInForm &&
-                <Link to="#" className="flex justify-center my-4 cursor-pointer">
-                    <FcGoogle size={25} />
-                </Link>
+                {isSignInForm &&
+                    <div className="flex justify-center mt-4">
+                        <button
+                        type="button"
+                        className="text-black font-medium text-sm cursor-pointer "
+                        onClick={handleGoogleLogin}
+                        >
+                          <FcGoogle size={25} />
+                        </button>
+                    </div>
                 }
 
                 { !isSignInForm &&

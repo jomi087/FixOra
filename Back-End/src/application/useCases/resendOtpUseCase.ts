@@ -18,10 +18,11 @@ export class ResendOtpUseCase{
             if (!token) {
                 throw { status: 403, message: "Something  went wrong"  }
             }
-            const decodeUserData  = jwt.verify( token, process.env.JWT_ACCESS_SECRET as string ) as UserDTO            
+            const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as UserDTO            
             
             const otp = this.otpGenratorService.generateOtp()
-
+            console.log("this is resend otp", otp)
+            
             await this.otpRepository.storeOtp({
                 email: decodeUserData.email,
                 otp,

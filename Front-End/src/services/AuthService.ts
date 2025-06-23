@@ -23,12 +23,16 @@ class AuthService {
         return axiosInstance.get("/api/auth/resend-otp");
     }
 
-    VerifySignupOtp(Data: { otp: string }) {
-        return axiosInstance.post('/api/auth/verify-otp', Data);
+    VerifySignupOtp(Data: string ) {
+        return axiosInstance.post('/api/auth/verify-otp', { otpData : Data });
     }
 
     signinApi(Data: Signin) {
         return axiosInstance.post('/api/auth/signin', Data);
+    }
+
+    googleSigninApi(data: { code: string, role: string }) {
+    return axiosInstance.post('/api/auth/google-signin', data);
     }
 
     forgotPasswordApi(email: string) {

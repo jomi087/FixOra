@@ -6,10 +6,9 @@ export const validateRequest = (schema: ZodSchema<any>) => (req: Request, res: R
 
   if (!result.success) {
     const errorMessages = result.error.errors.map(err => err.message);
-    res.status(400).json({ success: false, errors: errorMessages });
-    return
+    console.log(result.error)
+    throw { status: 400, message: errorMessages[0] || errorMessages };
   }
-
   req.body = result.data;
   next();
 };

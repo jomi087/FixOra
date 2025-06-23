@@ -40,7 +40,8 @@ export class SignupUseCase {
             const tempToken = jwt.sign(tempPayload, process.env.JWT_TEMP_ACCESS_SECRET as string, { expiresIn: expiryTime })
 
             const otp = this.otpGenratorService.generateOtp()
-
+            console.log("this is the Otp", otp)
+            
             await this.otpRepository.storeOtp({
                 email: userData.email,
                 otp,

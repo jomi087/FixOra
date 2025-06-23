@@ -1,4 +1,4 @@
-# BFixOra Back-End
+# FixOra Back-End
 This project is a TypeScript-based back-end application with es6 modules  that serves as the server-side component for a web application.with clean Architecture
 
 ## Fetures
@@ -7,7 +7,7 @@ This project is a TypeScript-based back-end application with es6 modules  that s
 3. Clean Architecture & its structure (notes mentioned in each folder)
 4. backend validation with zod library (A TypeScript-first schema declaration and validation library )
 5. implimented JWT -For better ux, Implimented refresh token with accessToken( used Rotating Refresh Tokens logic & store RToken in db for better security )
-6. 
+6. Google OAuth authentication backend with support for PKCE-based code exchange, JWT issuance, refresh token
 
 ## Run the application :
 > ```npm run build ```

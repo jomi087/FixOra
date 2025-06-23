@@ -56,6 +56,12 @@ const userSchema = new mongoose.Schema<IUserModel>({
         enum: Object.values(RoleEnum),
         required: true
     },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true,
+        index: true
+    },
     refreshToken: {
         type : String
     },

@@ -10,9 +10,9 @@ export class UserRepository implements IUserRepository {
         return await UserModel.findOne({ email }).select(omitSelect).lean<Partial<User>>()  //mongo db methods 
     }
 
-    async create(user: User): Promise<void>{
+    async create(user: User): Promise<User>{
         const newUser = new  UserModel(user)
-        await newUser.save()
+        return await newUser.save() as unknown as User
     }
 
     async findByUserId(userId: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
@@ -20,7 +20,12 @@ export class UserRepository implements IUserRepository {
         return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>()
     }
 
-    async update( filter: Partial<Pick<User, "email" | "userId" >> , updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+    async findByUserGoogleId(googleId: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
+        return await UserModel.findOne({ googleId }).select(omitSelect).lean<Partial<User>>()
+    }
+
+    async update( filter: Partial<Pick<User, "email" | "userId" | "googleId" >> , updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOneAndUpdate(
             filter,

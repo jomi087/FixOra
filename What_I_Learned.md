@@ -25,10 +25,11 @@
 * ocp Open/Close principle in Solid
 * Use of Refresh Token and Its Purpose   
 
-
 ## Modules 
 * **react-Icon** best as of now (05/2025) 
 * **lucid-react** another module for icon
 * **swiper** for slider ui
 * **Spline** for intigrating 3d object 
-* 
+
+## others
+    what is SSO (Single-Sign-On) and what is OAUTH 
