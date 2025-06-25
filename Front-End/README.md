@@ -8,10 +8,15 @@
 7. implimented a 3d robot using spline (in user signup)
 8. error handling with error boundries  
 9. Implemented Google Sign-In using OAuth 2.0 Authorization Code Flow with PKCE via @react-oauth/google.
-    Handled secure auth code generation and redirection flow.
-    Sent code to backend for token exchange.
-10. 
+    - Handled secure auth code generation and redirection flow.
+    - Sent code to backend for token exchange.
+10. optimization 
+    - implimented useMemo for cacheing expensive operation 
+    - used debouncing on search field
+    - pagination
+11. Shimmer UI, for better U.X 
+
 
 # future 
 1. add login with mobile No option
-2.  
+2. 

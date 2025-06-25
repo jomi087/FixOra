@@ -1,5 +1,5 @@
 import { AdminAuthStrategy } from "../../application/services/auth/signinStrategy/AdminAuthStrategy.js";
-import { AuthStrategyFactory } from "../../application/services/auth/signinStrategy/AuthStrategyFactory.js";
+import { AuthStrategyFactory } from "../../application/services/auth/signinStrategy/repository/AuthStrategyFactory.js";
 import { CustomerAuthStrategy } from "../../application/services/auth/signinStrategy/CustomerAuthStrategy.js";
 import { RoleEnum } from "../../domain/constant/Roles.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";

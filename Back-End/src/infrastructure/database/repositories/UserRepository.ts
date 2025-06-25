@@ -1,5 +1,6 @@
 // Infrastructure talking to MongoDB using the IUserRepository interface.
 // Parameters like email/userId come from the use case layer.
+import { RoleEnum } from "../../../domain/constant/Roles.js";
 import { User } from "../../../domain/entities/UserEntity.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import UserModel from "../models/UserModel.js";
@@ -33,6 +34,12 @@ export class UserRepository implements IUserRepository {
             { new: true }
         ).select(omitSelect).lean<Partial<User>>()
     }
+
+    async findByRole(role: RoleEnum, omitFields: Array<keyof User>): Promise<Partial<User>[]>{
+        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
+        return await UserModel.find({ role }).select(omitSelect).lean<Partial<User>[]>();
+    }
+    
 }
 
 

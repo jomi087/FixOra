@@ -1,3 +1,4 @@
+import type { RoleEnum } from '@/shared/enums/roles';
 import axiosInstance from './axiosConfig';
 import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
 
@@ -57,6 +58,10 @@ class AuthService {
 
     changePasswordApi( token: string, password: string, cPassword: string ) {
         return axiosInstance.patch('/api/user/change-password', {token ,password,cPassword,})
+    }
+
+    getUsersByRoleApi(role:RoleEnum) {
+        return  axiosInstance.get(`/api/admin/user-management?role=${role}`)
     }
 
     signoutApi(token?:string) {

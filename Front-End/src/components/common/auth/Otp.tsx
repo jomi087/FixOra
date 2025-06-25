@@ -77,7 +77,7 @@ const Otp: React.FC<otpProps>= ({otpTime , otpLength , otpSubmit , resendOtp }) 
             <div className="bg-white rounded-xl shadow-2xl shadow-gray-700 w-full max-w-md p-6">
                 <h2  id="otp-heading"  className="text-2xl font-bold text-center mb-2">OTP Verification</h2>
                 <p className="text-gray-600 text-center mb-4">
-                Please enter the 6-digit code sent to your email.
+                    Please enter the 6-digit code sent to your email.
                 </p>
 
                 <div className="flex justify-center gap-4 mb-4 flex-wrap" role="group" aria-labelledby="otp-heading">

@@ -12,6 +12,7 @@ dotenv.config();
 import mongoConnect from '../infrastructure/database/connection.js';
 import authRouter from '../interfaces/routes/authRoute.js';
 import userRouter from '../interfaces/routes/userRoute.js'
+import adminRouter from '../interfaces/routes/adminRoute.js'
 
 import { errorHandler } from '../interfaces/middleware/errorHandler.js'; 
 
@@ -46,6 +47,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
+app.use('/api/admin', adminRouter)
 
 app.use(errorHandler)
 

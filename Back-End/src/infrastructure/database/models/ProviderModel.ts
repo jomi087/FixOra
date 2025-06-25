@@ -38,7 +38,6 @@ const providerSchema = new Schema<IProviderModel>(
         },
       },
     },
-
     serviceCharge: {
       type: Number,
       required: true,
@@ -54,6 +53,10 @@ const providerSchema = new Schema<IProviderModel>(
         trim: true,
       },
     },
+    status: {
+      type: Boolean,
+      default : false
+    }
   },
   { timestamps: true }
 );

@@ -257,13 +257,12 @@ export class AuthController {
     try {
 
       const userId  = req.user?.userId   //req.user gives the userData  ( user: Omit<User, "password" | "refreshToken"> | null)
-      const role  = req.user?.role
 
-      if (!userId || !role) {
+      if (!userId ) {
         throw { status : 400, message : "user or role is missing, refresh again"}
       }
 
-      await this.signoutUseCase.execute(userId  , role)
+      await this.signoutUseCase.execute( userId )
 
       const options  = {
         httpOnly: true,

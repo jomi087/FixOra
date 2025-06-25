@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
 import { SigninDTO } from "../dtos/SigninDTO.js";
-import { AuthStrategyFactory } from "../services/auth/signinStrategy/AuthStrategyFactory.js";
+import { AuthStrategyFactory } from "../services/auth/signinStrategy/repository/AuthStrategyFactory.js";
 
 export class SigninUseCase {
     constructor(

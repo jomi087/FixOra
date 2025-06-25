@@ -15,6 +15,7 @@ export interface Provider {
     status: KYCStatus;
     reason?: string;
   };
+  status: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -16,7 +16,6 @@ const tokenService = new TokenService()
 const googleOAuthService = new GoogleOAuthService()
 
 /******************************************************************************************************************************************************/
-//userAuth- Middleware
 import { createUserAuthMiddleware } from "../interfaces/middleware/userAuthMiddleware.js";
 const userAuthMiddleware = createUserAuthMiddleware(tokenService, userRepository)
 
@@ -33,7 +32,6 @@ import { ResendOtpUseCase } from "../application/useCases/ResendOtpUseCase.js";
 const resendOtpUseCase = new ResendOtpUseCase(otpRepository, otpGenratorservice, emailService)
 
 /******************************************************************************************************************************************************/
-//sign-in Strategy
 import { configureAuthStrategies } from "../infrastructure/config/authSigninConfig.js";
 const authFactory = configureAuthStrategies(userRepository, hashService)
 
@@ -57,30 +55,35 @@ import { RefreshTokenUseCase } from "../application/useCases/RefreshTokenUseCase
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService,userRepository)
 
 /******************************************************************************************************************************************************/
-//sign-out Strategy
-import { configureSignoutStrategies } from "../infrastructure/config/authSignoutConfig.js";
-const  SignoutFactory = configureSignoutStrategies(userRepository)
 import { SignoutUseCase } from "../application/useCases/SignoutUseCase.js";
-const signoutUseCase = new SignoutUseCase(SignoutFactory)
+const signoutUseCase = new SignoutUseCase(userRepository)
 
-/******************************************************************************************************************************************************/
-/******************************************************************************************************************************************************/
+/******************************************************************************************************************************************************
+Customer Specific
+******************************************************************************************************************************************************/
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase.js";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository)
 
 /******************************************************************************************************************************************************/
 import { VerifyPasswordUseCase } from "../application/useCases/client/VerifyPasswordUseCase.js";
 const verifyPasswordUseCase = new VerifyPasswordUseCase(userRepository,hashService,emailService)
-/******************************************************************************************************************************************************/
-/******************************************************************************************************************************************************/
+/******************************************************************************************************************************************************
+Admin Specific
+******************************************************************************************************************************************************/
+import { GetUsersByRoleUseCase } from "../application/useCases/admin/GetUsersByRoleUseCase.js";
+const getUsersByRoleUseCase = new GetUsersByRoleUseCase(userRepository)
 
+/******************************************************************************************************************************************************/
 import { AuthController } from "../interfaces/controllers/AuthController.js";
 import { UserController } from "../interfaces/controllers/UserContoller.js";
+import { AdminController } from "../interfaces/controllers/AdminController.js";
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
 const userController = new UserController(updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
+const adminController = new AdminController(getUsersByRoleUseCase)
 
 export {
     authController,
     userAuthMiddleware,
-    userController
+    userController,
+    adminController
 }
