@@ -1,6 +1,6 @@
 /*  You can see another version Using class  */
 
-import { RoleEnum } from "../constant/Roles.js";
+import { RoleEnum } from "../../shared/constant/Roles.js";
 
 export interface Address {
   houseinfo: string;

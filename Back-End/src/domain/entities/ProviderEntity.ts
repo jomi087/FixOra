@@ -1,8 +1,9 @@
-import { KYCStatus } from "../constant/KYCstatus.js";
+import { KYCStatus } from "../../shared/constant/KYCstatus.js";
 
 export interface Provider {
   userId: string;
-  gender?: "Male" | "Female" | "Other";
+  gender: "Male" | "Female" | "Other";
+  image: string;
   kyc: {
     idCard: string; 
     certificate: {
@@ -15,7 +16,7 @@ export interface Provider {
     status: KYCStatus;
     reason?: string;
   };
-  status: boolean;
+  isOnline: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

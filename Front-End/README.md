@@ -11,7 +11,6 @@
     - Handled secure auth code generation and redirection flow.
     - Sent code to backend for token exchange.
 10. optimization 
-    - implimented useMemo for cacheing expensive operation 
     - used debouncing on search field
     - pagination
 11. Shimmer UI, for better U.X 

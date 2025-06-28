@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { Provider } from '../../../domain/entities/ProviderEntity.js';
-import { KYCStatus } from '../../../domain/constant/KYCstatus.js';
+import { KYCStatus } from '../../../shared/constant/KYCstatus.js';
 
 // Extend Document with Provider
 export interface IProviderModel extends Document, Provider {}
@@ -14,12 +14,15 @@ const providerSchema = new Schema<IProviderModel>(
       index: true,
       trim: true,
     },
-
     gender: {
       type: String,
-      enum: ['Male', 'Female', 'Other'],
+      required : true,
+      enum: ['Male', 'Female', 'Other']
     },
-
+    image: {
+      type: String,
+      required : true
+    },
     kyc: {
       idCard: {
         type: String,
@@ -53,7 +56,7 @@ const providerSchema = new Schema<IProviderModel>(
         trim: true,
       },
     },
-    status: {
+    isOnline : {
       type: Boolean,
       default : false
     }

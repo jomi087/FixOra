@@ -1,3 +1,4 @@
+import type { KYCStatus } from "../enums/kycStatus";
 import type { RoleEnum } from "../enums/roles";
 import type { AddressWithCoordinates } from "./location";
 
@@ -39,6 +40,19 @@ export interface BaseUserData extends User  {
 export interface CustromersData extends BaseUserData {}
 
 export interface ProviderData extends BaseUserData {
-  isOnline: boolean;
-  image?: string;
+    image: string;
+    isOnline: boolean;
+    gender: "Male" | "Female" | "Other";
+    kyc: {
+        idCard: string; 
+        certificate: {
+        education: string; 
+        experience?: string; 
+        };
+    };
+    serviceCharge: number;
+    kycInfo: {
+        status: KYCStatus ;
+        reason?: string;
+    }; 
 }

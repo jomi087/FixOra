@@ -3,6 +3,17 @@
 import { IoPersonCircleOutline } from "react-icons/io5";
 import type { BaseUserData, ProviderData } from "@/shared/Types/user";
 
+function isProviderData(data: BaseUserData): data is ProviderData {
+  return (
+    "isOnline" in data &&
+    "image" in data &&
+    "gender" in data &&
+    "kyc" in data &&
+    "serviceCharge" in data &&
+    "kycInfo" in data
+  );
+}
+
 interface InfoCardProps<T extends BaseUserData> {
   datas: T[];
   type: "customer" | "provider";
@@ -19,7 +30,7 @@ const InfoCard = <T extends BaseUserData>({ datas, type }: InfoCardProps<T>) => 
           <div className="relative rounded-3xl cursor-pointer border border-gray-300 dark:border-white/20 shadow-lg shadow-black pb-2">
             <div className="flex justify-center rounded-t-3xl">
               <button
-                className={`text-xs md:text-sm dark:text-black ${
+                className={`text-xs md:text-sm cursor-pointer dark:text-black ${
                   data.isBlocked ? 'bg-green-600' : 'bg-red-600'
                 } font-semibold px-4 py-1 md:px-10 border-b border-l border-r rounded-b-2xl`}
               >
@@ -29,14 +40,14 @@ const InfoCard = <T extends BaseUserData>({ datas, type }: InfoCardProps<T>) => 
             {type === "provider" && "isOnline" in data && (
                 <div className="absolute top-2 right-3 group">
                   <div
-                    title={(data as ProviderData).isOnline ? "Online" : "Offline"}
+                    title={data.isOnline ? "Online" : "Offline"}
                     className="relative flex items-center justify-center"
                   >
-                    {(data as ProviderData).isOnline && (
+                    {"isOnline" in data && isProviderData(data) && data.isOnline  && (
                       <span className="absolute inline-flex h-5 w-5 rounded-full bg-green-400 opacity-75 animate-ping"></span>
                     )}
                     <span
-                      className={`relative inline-block h-5 w-5 rounded-full border-2 border-white ${
+                      className={`relative inline-block h-4 w-4 rounded-full border-2 border-white ${
                         data.isOnline ? "bg-green-500" : "bg-gray-400"
                       }`}
                     ></span>
@@ -57,6 +68,9 @@ const InfoCard = <T extends BaseUserData>({ datas, type }: InfoCardProps<T>) => 
               )}
             </div>
 
+             {"kycInfo" in data && isProviderData(data) && data.kycInfo.status  && (
+              <span>{ data.kycInfo.status}</span>
+              )}
             <h6 className="text-sm font-mono text-center m-2 pb-2 overflow-x-auto">
               {data.email}
             </h6>

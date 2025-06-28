@@ -1,3 +1,8 @@
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select";
+import type { ReactNode } from "react";
+
 interface FilterOption {
   label: string;
   value: string;
@@ -8,34 +13,54 @@ interface SearchFilterBarProps {
   searchQuery: string;
   onSearch: (query: string) => void;
   onFilter: (value: string) => void;
+  filter: string;
+  rightSlot?: ReactNode;
 }
 
-const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ filterOptions, searchQuery, onSearch, onFilter }) => {
-  
+const SearchFilterBar: React.FC<SearchFilterBarProps> = ({filterOptions,searchQuery,onSearch,onFilter,filter,rightSlot,}) => {
   return (
-    <div className="m-4 md:m-6 mb-2 flex flex-col md:flex-row md:justify-between gap-4 items-start md:items-center ">
-      <div className="flex items-center border w-full md:w-70 pr-3 gap-2 border-gray-500/30 h-[40px] rounded-[5px] bg-white">
-        <label htmlFor="search" className="sr-only">Search Users</label>
-        <input
-          type="text"
-          placeholder="Search User"
-          className="w-full h-full pl-4 outline-none placeholder-body-text/70 dark:placeholder:text-black text-sm text-black "
-          onChange={(e) => onSearch(e.target.value)}
-          value={searchQuery}
-        />
-      </div> 
+    <div className="w-full px-4 md:px-6 py-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        {/* Left side: Search + Filter */}
+        <div className="flex flex-col gap-3 md:flex-row md:items-center w-full md:w-auto">
+          {/* Search Input */}
+          <div className="w-full md:w-[280px]">
+            <Label htmlFor="search" className="sr-only">
+              Search User
+            </Label>
+            <Input
+              id="search"
+              placeholder="Search User"
+              value={searchQuery}
+              onChange={(e) => onSearch(e.target.value)}
+              className="dark:bg-foreground dark:text-background"
+            />
+          </div>
 
-      <div className="flex gap-4">
-        <select
-          className="border border-gray-300 rounded px-4 py-2 text-sm bg-body-background text-body-text"
-          onChange={(e) => onFilter(e.target.value)}
-        >
-          {filterOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          {/* Filter Select */}
+          <div className="w-full md:w-[200px]">
+            <Label htmlFor="filter" className="sr-only">Filter</Label>
+            <Select value={filter} onValueChange={onFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Filter" />
+              </SelectTrigger>
+              <SelectContent>
+                {filterOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Right side: Optional button or slot */}
+        {rightSlot && (
+          <div className="w-full md:w-auto">
+            {rightSlot}
+          </div>
+        )}
       </div>
     </div>
   );

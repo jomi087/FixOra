@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { UserDTO } from "../dtos/UserDTO.js";
-import { RoleEnum } from "../../domain/constant/Roles.js";
+import { RoleEnum } from "../../shared/constant/Roles.js";
 
 
 export class VerifySignupOtpUseCase{

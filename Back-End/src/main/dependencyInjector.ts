@@ -70,8 +70,12 @@ const verifyPasswordUseCase = new VerifyPasswordUseCase(userRepository,hashServi
 /******************************************************************************************************************************************************
 Admin Specific
 ******************************************************************************************************************************************************/
-import { GetUsersByRoleUseCase } from "../application/useCases/admin/GetUsersByRoleUseCase.js";
-const getUsersByRoleUseCase = new GetUsersByRoleUseCase(userRepository)
+import { GetCustomersUseCase } from "../application/useCases/admin/GetCustomersUseCase.js";
+const getCustomersUseCase = new GetCustomersUseCase(userRepository)
+
+/******************************************************************************************************************************************************/
+import { GetProvidersUseCase } from "../application/useCases/admin/GetProvidersUseCase.js";
+const getProvidersUseCase = new GetProvidersUseCase(userRepository)
 
 /******************************************************************************************************************************************************/
 import { AuthController } from "../interfaces/controllers/AuthController.js";
@@ -79,7 +83,7 @@ import { UserController } from "../interfaces/controllers/UserContoller.js";
 import { AdminController } from "../interfaces/controllers/AdminController.js";
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
 const userController = new UserController(updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
-const adminController = new AdminController(getUsersByRoleUseCase)
+const adminController = new AdminController(getCustomersUseCase,getProvidersUseCase)
 
 export {
     authController,

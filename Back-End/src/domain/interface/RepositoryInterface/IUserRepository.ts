@@ -1,5 +1,8 @@
-import { RoleEnum } from "../../constant/Roles.js";
+import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
+import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { Provider } from "../../entities/ProviderEntity.js";
 import { User } from "../../entities/UserEntity.js";
+
 
 export interface IUserRepository {
     create(user: User): Promise <User>;
@@ -7,9 +10,19 @@ export interface IUserRepository {
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserGoogleId(googleId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     update(filter: Partial<Pick<User, "userId" | "email" | "googleId">>, updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+     
+    findUsersWithFilters(
+        options: { searchQuery: string; filter: string },
+        currentPage: number, limit: number,
+        omitFields?: Array<keyof User>
+    ) : Promise<{ data: Partial<User>[]; total: number }>;
     
-    findByRole(role: RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User>[]>;
-
+    findProvidersWithFilters(
+        options: { searchQuery: string; filter: string, ProviderStatus:KYCStatus  },
+        currentPage: number, limit: number,
+        omitFields?: Array< keyof User | keyof Provider >
+    ): Promise<{ data: Array<Partial<User> & Partial<Provider>>; total: number }>;
+    
 }
 
 /*

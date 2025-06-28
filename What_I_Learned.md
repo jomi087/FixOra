@@ -32,9 +32,8 @@ ________________________________________________________________________________
     
 * how to get Location coordinates with browser help (navigator.geoLocation)
 
-* hom and were  impliment debouncing useMemo for optimising
+* Purpose and useCase of  debouncing  for optimising
 
-* 
 ______________________________________________________________________________________________________________________________________
 ## Node (express) version
 ---------------------------------------------------------------------------------------------------------------------------------------

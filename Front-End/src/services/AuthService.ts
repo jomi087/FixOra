@@ -1,4 +1,3 @@
-import type { RoleEnum } from '@/shared/enums/roles';
 import axiosInstance from './axiosConfig';
 import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
 
@@ -60,8 +59,12 @@ class AuthService {
         return axiosInstance.patch('/api/user/change-password', {token ,password,cPassword,})
     }
 
-    getUsersByRoleApi(role:RoleEnum) {
-        return  axiosInstance.get(`/api/admin/user-management?role=${role}`)
+    getCustomerApi(searchQuery:string, filter:string, currentPage:number) {
+        return axiosInstance.get(`/api/admin/customer-management?searchQuery=${searchQuery}&filter=${filter}&page=${currentPage}`)
+    }
+
+    getProviderApi(searchQuery:string, filter:string, currentPage:number) {
+        return axiosInstance.get(`/api/admin/provider-management?searchQuery=${searchQuery}&filter=${filter}&page=${currentPage}`)
     }
 
     signoutApi(token?:string) {

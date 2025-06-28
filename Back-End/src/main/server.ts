@@ -49,6 +49,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/admin', adminRouter)
 
+
 app.use(errorHandler)
 
 app.listen(port, () => {

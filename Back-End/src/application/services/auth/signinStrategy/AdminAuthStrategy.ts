@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../../domain/constant/Roles.js";
+import { RoleEnum } from "../../../../shared/constant/Roles.js";
 import { User } from "../../../../domain/entities/UserEntity.js";
 import { IUserRepository } from "../../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IHashService } from "../../../../domain/interface/ServiceInterface/IHashService.js";
