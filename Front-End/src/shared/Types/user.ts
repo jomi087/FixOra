@@ -9,9 +9,9 @@ export type Credentials = {
 
 export type User = {
     fname: string;
-    lname?: string;
+    lname: string;
     email: string;
-    mobileNo?: string;
+    mobileNo: string;
 };
 
 export type Signup = User & {

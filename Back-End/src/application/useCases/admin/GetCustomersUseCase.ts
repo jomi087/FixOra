@@ -16,9 +16,7 @@ export class GetCustomersUseCase {
     ) {}
     
     async execute(input : filters ) {    
-        try {
-            console.log(input)
-            
+        try {            
             const { searchQuery, filter, currentPage, limit } = input;
 
             const users = await this.userRepository.findUsersWithFilters(

@@ -1,5 +1,3 @@
-// src/components/admin/InfoCard.tsx
-
 import { IoPersonCircleOutline } from "react-icons/io5";
 import type { BaseUserData, ProviderData } from "@/shared/Types/user";
 

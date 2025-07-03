@@ -1,47 +1,22 @@
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
 import InfoCard from "@/components/admin/InfoCard";
-import Pagination from "@/components/common/Pagination";
-import SearchFilterBar from "@/components/common/SearchFilterBar";
-import { useEffect, useState } from "react";
-import AuthService from "@/services/AuthService";
-import { toast } from "react-toastify";
+import Pagination from "@/components/common/Others/Pagination";
+//import SearchFilterBar from "@/components/common/SearchFilterBar";
 import { adminSideBarOptions } from "@/utils/constant";
-import type { CustromersData } from "@/shared/Types/user";
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
-import { useDebounce } from "use-debounce";
+import { useUserManagement } from "@/hooks/useUserManagementHook";
+import FilterSelect from "@/components/common/Others/FilterSelect";
+import SearchInput from "@/components/common/Others/SearchInput";
 
 const UserManagement: React.FC = () => {
-  const [custData, setCustData] = useState<CustromersData[]>([]);
-  const [isLoading, setLoading] = useState(false);
-  const [totalCustomers, setTotalCustomers] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("")
-  const [filter, setFilter] = useState("all")
-  const [debouncedQuery] = useDebounce(searchQuery,500)
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 8
+  const { custData,isLoading,totalCustomers,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage}=useUserManagement()
   
-  useEffect(() => {
-    const fetchUser = async () => {
-      setLoading(true);
-      try {
-        const res = await AuthService.getCustomerApi(debouncedQuery,filter,currentPage);
-        if (res.status === 200) {
-          setCustData(res.data.customersData);
-          setTotalCustomers(res.data.total); 
-        }
-      } catch {
-        toast.error("Failed to fetch users");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, [debouncedQuery,filter,currentPage]);
-
-  useEffect(() => {  //this is to reset to page 1 on  search or filter change
-    setCurrentPage(1) 
-  },[debouncedQuery, filter])
+  const filterOptions = [
+    { label: "Filter", value: "all" },
+    { label: "Blocked", value: "blocked" },
+    { label: "Unblocked", value: "unblocked" },
+  ]
 
   return (
     <>
@@ -50,21 +25,18 @@ const UserManagement: React.FC = () => {
         <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-8 " />
         {isLoading ? (
           <div className="flex-1 bg-footer-background text-body-text">
-            <SkeletonInfoCard count={8} /> 
+            <SkeletonInfoCard count={itemsPerPage} /> 
           </div>
           ) : (
-            <div className="flex-1 bg-footer-background text-body-text">
-              <SearchFilterBar 
-                filterOptions={[
-                  { label: "Filter", value: "all" },
-                  { label: "Blocked", value: "blocked" },
-                  { label: "Unblocked", value: "unblocked" },
-                ]}
-                searchQuery={searchQuery}
-                onSearch={setSearchQuery}
-                onFilter={setFilter} 
-                filter={filter}
-              />
+            <div className="flex-1  bg-footer-background text-body-text w-full px-4 md:px-0 py-4">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mx-5 ">
+                <div className="flex flex-col gap-3 md:flex-row md:items-center w-full md:w-[240px]">
+                  <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search User" />
+                </div>
+                <div className="w-full md:w-auto">
+                  <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} /> 
+                </div>
+              </div>
 
               {custData.length === 0 ? (
                 <div className="flex justify-center items-center h-[84vh] w-full text-2xl font-semibold ">
@@ -76,7 +48,6 @@ const UserManagement: React.FC = () => {
                       datas={custData}
                       type="customer"
                     />
-                  
                     <Pagination
                       currentPage={currentPage}
                       totalPages={Math.ceil(totalCustomers  / itemsPerPage)}

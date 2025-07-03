@@ -162,10 +162,10 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
         const mobileNumberError = validateMobileNo(form.mobile)
         
 
-            if (fnameError || lnameError || mobileNumberError) {
-                toast.error(fnameError || lnameError || mobileNumberError);
-                return;
-            }
+        if (fnameError || lnameError || mobileNumberError) {
+            toast.error(fnameError || lnameError || mobileNumberError);
+            return;
+        }
 
         setLoading(true)
         try {

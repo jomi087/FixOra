@@ -2,50 +2,25 @@ import InfoCard from "@/components/admin/InfoCard";
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
-import Pagination from "@/components/common/Pagination";
-import SearchFilterBar from "@/components/common/SearchFilterBar";
-import AuthService from "@/services/AuthService";
-import type { ProviderData } from "@/shared/Types/user";
+import Pagination from "@/components/common/Others/Pagination";
 import { adminSideBarOptions } from "@/utils/constant";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { useDebounce } from "use-debounce";
 //import {  ProvidersData } from "@/utils/constant";
 import { Button } from "@/components/ui/button";
+import { useProviderManagement } from "@/hooks/useProviderManagement";
+import SearchInput from "@/components/common/Others/SearchInput";
+import FilterSelect from "@/components/common/Others/FilterSelect";
 
 
 const ProviderManagement: React.FC = () => {
-  const [provData, setProvData] = useState<ProviderData[]>([]);
-  const [isLoading, setLoading] = useState(false);
-  const [totalProviders, setTotalProviders] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("")
-  const [filter, setFilter] = useState("all")
-  const [debouncedQuery] = useDebounce(searchQuery,500)
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 8
   
-  useEffect(() => {
-    const fetchProviders = async () => {
-      setLoading(true);
-      try {
-        const res = await AuthService.getProviderApi(debouncedQuery,filter,currentPage);
-        if (res.status === 200) {
-          setProvData(res.data.providerData);
-          setTotalProviders(res.data.total)
-        }
-      } catch {
-        toast.error("Failed to fetch Providers");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProviders()
-  }, [debouncedQuery,filter,currentPage]);
-
-  useEffect(() => {  
-    setCurrentPage(1) 
-  }, [debouncedQuery, filter])
-  
+  const { provData,isLoading,totalProviders,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage}=useProviderManagement()
+  const filterOptions= [
+    { label: "All", value: "all" },
+    { label: "Blocked", value: "blocked" },
+    { label: "Unblocked", value: "unblocked" },
+    { label: "Online", value: "online" },
+    { label: "Offline", value: "offline" },
+  ]
 
   return (
     <>
@@ -56,45 +31,35 @@ const ProviderManagement: React.FC = () => {
           <div className="flex-1 bg-footer-background text-body-text">
             <SkeletonInfoCard count={8} />
           </div>
-          ) :  (
-            <div className="flex-1  bg-footer-background text-body-text">
-                <SearchFilterBar
-                  filterOptions={[
-                    { label: "All", value: "all" },
-                    { label: "Blocked", value: "blocked" },
-                    { label: "Unblocked", value: "unblocked" },
-                    { label: "Online", value: "online" },
-                    { label: "Offline", value: "offline" },
-                  ]}
-                  searchQuery={searchQuery}
-                  onSearch={setSearchQuery}
-                  onFilter={setFilter}
-                  filter={filter}
-                  rightSlot={<Button variant="default" className="bg-yellow-600">Verify Providers</Button>}
-
-              />
+        ) :  (
+          <div className="flex-1  bg-footer-background text-body-text w-full px-4 md:px-6 py-4">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center w-full md:w-[480px]">
+                <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
+                <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} /> 
+              </div>
+              <div className="w-full md:w-auto">
+                <Button variant="default" className="bg-yellow-600">Verify Providers</Button>
+              </div>
+            </div>
+            
+            { provData.length === 0 ? (
+              <div className="flex justify-center items-center h-[84vh] w-full text-2xl font-semibold ">
+                No providers have been registered yet
+              </div>
               
-              { provData.length === 0 ? (
-                <div className="flex justify-center items-center h-[84vh] w-full text-2xl font-semibold ">
-                  No providers found.
-                </div>
-                ) : (
-                  <>
-                    <InfoCard
-                      datas={provData}
-                      type="provider"
-                    />
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={Math.ceil(totalProviders / itemsPerPage)}
-                      onPage={setCurrentPage}
-                    />
-                  </>
-                )
-              }
-          </div>
-          ) 
-        }
+            ) : (
+              <>
+                <InfoCard datas={provData} type="provider" />
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(totalProviders / itemsPerPage)}
+                  onPage={setCurrentPage}
+                />
+              </>
+            )}
+        </div>
+        )}
       </div>
     </>
   );
