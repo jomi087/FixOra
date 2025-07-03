@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
-import { Userinfo } from '../../../store/userSlice';
+import { logout, Userinfo } from '../../../store/userSlice';
 import AuthService from '../../../services/AuthService';
 
-const AuthCheck = () => {
+const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -14,12 +14,12 @@ const AuthCheck = () => {
                     dispatch(Userinfo({ user: response.data.user }));
                 }
             } catch (error) {
-
-                //dispatch(Userinfo({ user: null }));
+                dispatch(logout());
                 console.log("user is not logged in",error)
+            } finally {
+                onComplete(); 
             }
         };
-
         verifyAuth();
     }, [dispatch]);
 

@@ -22,7 +22,7 @@ export class UserAuthMiddleware {  //verify Jwt
         try {
             const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer", "");
             if (!token) {
-                res.status(403).json({
+                res.status(401).json({
                     message: "Unauthorized Signin again (token not provided)",
                 });
                 return;
@@ -31,7 +31,7 @@ export class UserAuthMiddleware {  //verify Jwt
             const user = await this.userRepository.findByUserId(decode.id,["password","refreshToken"]);
             
             if (!user) {
-                res.status(403).json({
+                res.status(401).json({
                     message: "User not Found",
                 });
                 return;
