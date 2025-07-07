@@ -23,7 +23,7 @@ export class UserAuthMiddleware {  //verify Jwt
             const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer", "");
             if (!token) {
                 res.status(401).json({
-                    message: "Unauthorized Signin again (token not provided)",
+                    message: "Unauthorized-Signin again (token not provided)",
                 });
                 return;
             }
@@ -31,9 +31,21 @@ export class UserAuthMiddleware {  //verify Jwt
             const user = await this.userRepository.findByUserId(decode.id,["password","refreshToken"]);
             
             if (!user) {
-                res.status(401).json({
-                    message: "User not Found",
-                });
+                res.status(401).json({ message: "User not Found" });
+                return;
+            }
+
+            if (user.isBlocked) {
+                const options  = {
+                    httpOnly: true,
+                    secure: process.env.NODE_COOKIE_ENV === "production",
+                    sameSite: "lax" as const
+                }
+            
+                res.clearCookie('accessToken', options)
+                res.clearCookie('refreshToken', options)
+                await this.userRepository.update({ userId: user.userId }, { refreshToken: "" });
+                res.status(403).json({ message: "Account Blocked, Contanct support" });
                 return;
             }
 
@@ -42,6 +54,7 @@ export class UserAuthMiddleware {  //verify Jwt
             next();
 
         } catch (error: any) {
+            
             if (error.name === "JsonWebTokenError") {
                 res.status(401).json({ message: "Invalid token" });
                 return;

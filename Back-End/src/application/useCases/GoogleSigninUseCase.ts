@@ -29,6 +29,7 @@ export class GoogleSigninUseCase {
                     role,
                 })
             }
+            if (user.isBlocked) throw { status: 403, message: "Account Blocked, Contanct support" };
 
             const payload = {
                 id: user.userId,
