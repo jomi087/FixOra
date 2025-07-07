@@ -24,7 +24,6 @@ const ChangePassowrdDialog: React.FC<ChangePasswordProps> = ({ changePassword, e
                 <Button variant="outline" className="mt-4">Change Password</Button>
             </DialogTrigger>
                <DialogDescription >
-                    Click save when you&apos;re done.
                 </DialogDescription>
             <DialogContent className="sm:max-w-[355px]">
                 <DialogHeader>
