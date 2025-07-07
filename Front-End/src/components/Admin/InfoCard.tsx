@@ -15,9 +15,11 @@ function isProviderData(data: BaseUserData): data is ProviderData {
 interface InfoCardProps<T extends BaseUserData> {
   datas: T[];
   type: "customer" | "provider";
+  onToggleStatus ?: ( categoryId : string ) => void
 }
 
-const InfoCard = <T extends BaseUserData>({ datas, type }: InfoCardProps<T>) => {
+const InfoCard = <T extends BaseUserData>({ datas, type, onToggleStatus }: InfoCardProps<T>) => {
+
   return (
     <div className="flex flex-wrap justify-center gap-6 px-4 py-6 max-w-7xl mx-auto">
       {datas.map((data) => (
@@ -31,6 +33,10 @@ const InfoCard = <T extends BaseUserData>({ datas, type }: InfoCardProps<T>) => 
                 className={`text-xs md:text-sm cursor-pointer dark:text-black ${
                   data.isBlocked ? 'bg-green-600' : 'bg-red-600'
                 } font-semibold px-4 py-1 md:px-10 border-b border-l border-r rounded-b-2xl`}
+                  onClick={ (e) => {
+                    e.stopPropagation()
+                    onToggleStatus?.(data.userId)
+                  }}
               >
                 {data.isBlocked ? 'Unblock' : 'Block'}
               </button>

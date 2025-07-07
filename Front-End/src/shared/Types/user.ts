@@ -31,10 +31,16 @@ export type ProfileEdit = {
 }
 
 
+
 export interface BaseUserData extends User  {
-  role: string;
-  isBlocked: boolean;
-  location?: AddressWithCoordinates;
+    userId:string
+    fname: string;
+    lname: string;
+    email: string;
+    mobileNo: string;
+    role: string;
+    isBlocked: boolean;
+    location?: AddressWithCoordinates;
 }
 
 export interface CustromersData extends BaseUserData {}

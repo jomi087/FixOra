@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
-import { SigninDTO } from "../dtos/SigninDTO.js";
+import { SigninDTO } from "../InputDTO's/SigninDTO.js";
 import { AuthStrategyFactory } from "../services/auth/signinStrategy/repository/AuthStrategyFactory.js";
 
 export class SigninUseCase {
@@ -37,8 +37,6 @@ export class SigninUseCase {
             }
             
             return {
-                success: true,
-                message : "Singin Successful",
                 userData: {
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,

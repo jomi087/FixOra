@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { EditProfileDTO } from "../../application/dtos/EditProfileDTO.js";
+import { EditProfileDTO } from "../../application/InputDTO's/EditProfileDTO.js";
 import { UpdateProfileUseCase } from "../../application/useCases/client/UpdateProfileUseCase.js";
 import { VerifyPasswordUseCase } from "../../application/useCases/client/VerifyPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/useCases/ResetPasswordUseCase.js";
@@ -25,7 +25,7 @@ export class UserController {
 
             res.status(200).json({
                 success: true,
-                message: result.message,
+                message:  "Profile updated successfully",
                 user : result.user 
             })
     
@@ -43,11 +43,11 @@ export class UserController {
                 throw { status: 401, message: "Not authenticated" };
             }
             const userId = req.user.userId
-            const result = await this.verifyPasswordUseCase.execute(password,userId)  
+            await this.verifyPasswordUseCase.execute(password,userId)  
 
             res.status(200).json({
                 success: true,
-                message: result.message,
+                message: "Verification mail sent to your mail",
             })
         } catch (error) {
             console.error("verifyPassword error:", error);
@@ -59,11 +59,11 @@ export class UserController {
         try {
             const { token, password } = req.body
         
-            const result = await this.resetPasswordUseCase.execute(token, password)
+            await this.resetPasswordUseCase.execute(token, password)
             
             res.status(200).json({
                 success: true,
-                message: result.message,
+                message: "Verification mail sent to your mail"
             });
 
         } catch (error) {

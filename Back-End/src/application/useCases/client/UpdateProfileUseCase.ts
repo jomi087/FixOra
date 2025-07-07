@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { EditProfileDTO } from "../../dtos/EditProfileDTO.js";
+import { EditProfileDTO } from "../../InputDTO's/EditProfileDTO.js";
 
 export class UpdateProfileUseCase {
     constructor(
@@ -20,8 +20,6 @@ export class UpdateProfileUseCase {
                 throw { status: 404, message: "user Not Found" };
             }
             return {
-                success: true,
-                message: "Profile updated successfully",
                 user: {
                     fname: updatedUser.fname,
                     lname: updatedUser.lname,

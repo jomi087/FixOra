@@ -1,6 +1,5 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
 
 interface filters {
     searchQuery: string;
@@ -28,10 +27,10 @@ export class GetProvidersUseCase{
             )
 
             return {
-                success: true,
                 providerData: users.data,
                 total: users.total
             };
+            
         } catch (error: any) {
             if (error.status && error.message) {
                 throw error;

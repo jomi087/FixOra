@@ -8,15 +8,39 @@ import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
 import { useUserManagement } from "@/hooks/useUserManagementHook";
 import FilterSelect from "@/components/common/Others/FilterSelect";
 import SearchInput from "@/components/common/Others/SearchInput";
+import { toast } from "react-toastify";
+import AuthService from "@/services/AuthService";
+import type { CustromersData } from "@/shared/Types/user";
+
 
 const UserManagement: React.FC = () => {
-  const { custData,isLoading,totalCustomers,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage}=useUserManagement()
+  const { custData,isLoading,totalPages,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage,setCustData}=useUserManagement()
   
   const filterOptions = [
     { label: "Filter", value: "all" },
     { label: "Blocked", value: "blocked" },
     { label: "Unblocked", value: "unblocked" },
   ]
+
+  const handleToggleStatus = async (userId: string) => {
+    try {
+      console.log("userId", userId)
+      
+      const res = await AuthService.toggleUserStatus(userId)
+      if (res.status === 200) {
+        setCustData(prev =>
+          prev.map((data) => data.userId === userId ? {
+            ...data,
+            isBlocked: !data.isBlocked
+          }: data )
+        )
+      }
+    } catch (error: any) {
+      console.log(error)
+      const errorMsg = error?.response?.data?.message || "Failed to update status";
+      toast.error(errorMsg);
+    }
+  }
 
   return (
     <>
@@ -47,12 +71,15 @@ const UserManagement: React.FC = () => {
                     <InfoCard
                       datas={custData}
                       type="customer"
+                      onToggleStatus={handleToggleStatus}
                     />
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={Math.ceil(totalCustomers  / itemsPerPage)}
-                      onPage={setCurrentPage}
-                    />
+                    {totalPages > 1 && (
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPage={setCurrentPage}
+                      />
+                    )}
                   </>
                 )
               }

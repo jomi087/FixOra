@@ -6,6 +6,7 @@ import { Provider } from "../../../domain/entities/ProviderEntity.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import UserModel from "../models/UserModel.js";
 import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
+import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
 
 export class UserRepository implements IUserRepository {
     async findByEmail(email: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
@@ -13,8 +14,9 @@ export class UserRepository implements IUserRepository {
         return await UserModel.findOne({ email }).select(omitSelect).lean<Partial<User>>()  //mongo db methods 
     }
 
-    async create(user: User): Promise<User>{
-        const newUser = new  UserModel(user)
+    async create(user: UserDTO): Promise<User>{
+        const newUser = new UserModel(user)
+        await newUser.save();
         return newUser.toObject() as User;
     }
 
@@ -36,7 +38,6 @@ export class UserRepository implements IUserRepository {
             { new: true }
         ).select(omitSelect).lean<Partial<User>>()
     }
-
 
     async findUsersWithFilters(options: { searchQuery: string; filter: string },currentPage: number, limit: number, omitFields: Array<keyof User>=[]): Promise<{ data: Partial<User>[]; total: number }>{
         

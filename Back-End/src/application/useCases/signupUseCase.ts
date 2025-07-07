@@ -6,7 +6,7 @@ import type { SignOptions } from 'jsonwebtoken';
 import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
-import { SignupDTO } from "../dtos/SignupDTO.js";
+import { SignupDTO } from "../InputDTO's/SignupDTO.js";
 import { IOtpGenratorService } from "../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IHashService } from "../../domain/interface/ServiceInterface/IHashService.js";
 
@@ -35,7 +35,6 @@ export class SignupUseCase {
                 
             }
             // src/config.ts
-
             const expiryTime  = process.env.JWT_TEMP_ACCESS_TOKEN_EXPIRY as SignOptions['expiresIn']
             const tempToken = jwt.sign(tempPayload, process.env.JWT_TEMP_ACCESS_SECRET as string, { expiresIn: expiryTime })
 
@@ -51,11 +50,7 @@ export class SignupUseCase {
             const html = `<h1>Welcome to FixOra</h1><p>Your OTP code is: <strong>${otp}</strong></p>`
             await this.emailService.sendEmail(userData.email, "Your FixOra OTP", html);
 
-            return {
-                success: true,
-                message: "OTP sent to your mail",
-                token: tempToken,
-            };
+            return tempToken
 
         } catch (error: any) {
             if (error.status && error.message) {

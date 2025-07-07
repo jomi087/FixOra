@@ -1,5 +1,4 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
 
 
 interface filters {
@@ -22,11 +21,10 @@ export class GetCustomersUseCase {
             const users = await this.userRepository.findUsersWithFilters(
                 { searchQuery, filter },
                 currentPage, limit,
-                ['password', 'refreshToken', 'googleId', 'userId', 'updatedAt']
+                ['password', 'refreshToken', 'googleId', 'updatedAt']
             )
 
             return {
-                success: true,
                 customersData: users.data,
                 total : users.total
             };

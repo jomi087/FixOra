@@ -13,7 +13,7 @@ export class ForgotPasswordUseCase {
         
     ) { }
     
-    async execute(email: string) {
+    async execute(email: string) :Promise<void>{
         try {
             if (!(await this.userRepository.findByEmail(email, ['password', 'refreshToken',]))) {
                 throw { status : 404, message : "Email doesn’t exist" }
@@ -39,10 +39,6 @@ export class ForgotPasswordUseCase {
             
             await this.emailService.sendEmail(email, "FixOra Reset Password", html);
 
-            return {
-                success: true,
-                message : "Verification mail sent to your mail"
-            }
         } catch (error :any) {
             if (error.status && error.message) {
                throw error;

@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { UserDTO } from "../dtos/UserDTO.js";
+import { UserInputDTO } from "../InputDTO's/UserInputDTO.js";
 import { RoleEnum } from "../../shared/constant/Roles.js";
+import { UserDTO } from "../../domain/outputDTO's/UserDTO.js";
 
 
 export class VerifySignupOtpUseCase{
@@ -11,14 +12,14 @@ export class VerifySignupOtpUseCase{
         private readonly userRepository : IUserRepository,
     ) { }
 
-    async execute(otpData: string , token : string) {
+    async execute(otpData: string , token : string):Promise<void> {
         try {
             
             if (!token) {
                 throw { status: 403, message: "Something  went wrong"  }
             }
             
-            const decodeUserData = jwt.verify(token, process.env.JWT_TEMP_ACCESS_SECRET as string) as UserDTO
+            const decodeUserData = jwt.verify(token, process.env.JWT_TEMP_ACCESS_SECRET as string) as UserInputDTO
             const storedOtp = await this.otpRepository.findOtpByEmail(decodeUserData.email)
             if ( !storedOtp ) {
                 throw { status: 400, message: "OTP Expired, Click Re-Send Otp" }
@@ -28,16 +29,10 @@ export class VerifySignupOtpUseCase{
 
             await this.userRepository.create({
                 ...decodeUserData,
-                createdAt: new Date(),
-                role : RoleEnum.Customer,
-            })
+                role: RoleEnum.Customer,
+            }) 
 
             await this.otpRepository.deleteOtpByEmail(decodeUserData.email)
-
-            return {
-                success: true,
-                message: "Account Created SuccessFully"
-            };
 
         } catch (error: any) {
             if (error.status && error.message) {

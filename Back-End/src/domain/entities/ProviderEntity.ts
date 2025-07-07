@@ -2,6 +2,7 @@ import { KYCStatus } from "../../shared/constant/KYCstatus.js";
 
 export interface Provider {
   userId: string;
+  serviceIds: string[];
   gender: "Male" | "Female" | "Other";
   image: string;
   kyc: {
@@ -20,4 +21,3 @@ export interface Provider {
   createdAt?: Date;
   updatedAt?: Date;
 }
-

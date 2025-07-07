@@ -2,7 +2,7 @@ import { RoleEnum } from "../../../../shared/constant/Roles.js";
 import { User } from "../../../../domain/entities/UserEntity.js";
 import { IUserRepository } from "../../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IHashService } from "../../../../domain/interface/ServiceInterface/IHashService.js";
-import { SigninDTO } from "../../../dtos/SigninDTO.js";
+import { SigninDTO } from "../../../InputDTO's/SigninDTO.js";
 import { AuthData, IAuthStrategy } from "./interface/IAuthStrategy.js";
 
 

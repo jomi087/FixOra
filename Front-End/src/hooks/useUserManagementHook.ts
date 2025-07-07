@@ -5,14 +5,16 @@ import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
 
 export const useUserManagement = ()=>{
-    const [custData, setCustData] = useState<CustromersData[]>([]);
-    const [isLoading, setLoading] = useState(false);
-    const [totalCustomers, setTotalCustomers] = useState(0);
-    const [searchQuery, setSearchQuery] = useState("")
-    const [filter, setFilter] = useState("all")
-    const [debouncedQuery] = useDebounce(searchQuery,500)
-    const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 16
+  const [custData, setCustData] = useState<CustromersData[]>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filter, setFilter] = useState("all")
+  const [debouncedQuery] = useDebounce(searchQuery,500)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 16
+  
+  const totalPages = Math.ceil(totalCustomers / itemsPerPage);
   
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,7 +41,7 @@ export const useUserManagement = ()=>{
     return {
         custData,
         isLoading,
-        totalCustomers,
+        totalPages,
         searchQuery,
         setSearchQuery,
         filter,
@@ -47,5 +49,6 @@ export const useUserManagement = ()=>{
         currentPage,
         setCurrentPage,
         itemsPerPage,
+        setCustData,
     }
 }

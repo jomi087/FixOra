@@ -14,6 +14,8 @@ import Dashboard from '../pages/admin/Dashboard'
 import UserManagement from '../pages/admin/UserManagement'
 import ProviderManagement from '../pages/admin/ProviderManagement'
 import ServiceManagement from '../pages/admin/ServiceManagement'
+import ProtectedRoute from './ProtectedRoutes.tsx'
+import { RoleEnum } from '@/shared/enums/roles.ts'
 
 
 
@@ -24,7 +26,9 @@ const router = createBrowserRouter([
     },
     {
         path: '/signIn/:role',
-        element: <ErrorBoundary><SignInPage /></ErrorBoundary>
+        element: <ErrorBoundary>
+            <SignInPage />
+        </ErrorBoundary>
     },
     {
         path: '/signUp',
@@ -41,28 +45,52 @@ const router = createBrowserRouter([
     //client Routes
     {
         path: '/user/account/profile',
-        element  :  <ErrorBoundary><ProfilePage/></ErrorBoundary>
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                <ProfilePage />
+            </ProtectedRoute>
+        </ErrorBoundary >
     },
     {
         path: '/user/account/change-password',
-        element  :  <ErrorBoundary><ChangePasswordPage/></ErrorBoundary>
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                <ChangePasswordPage />
+            </ProtectedRoute>
+        </ErrorBoundary>
     },
     // Admin Routes
     {
         path: '/admin/dashboard',
-        element : <ErrorBoundary><Dashboard/></ErrorBoundary>
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
+                <Dashboard />
+            </ProtectedRoute>
+            </ErrorBoundary >
     },
     {
         path: '/admin/users',
-        element : <ErrorBoundary><UserManagement/></ErrorBoundary>
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
+                <UserManagement />
+            </ProtectedRoute>
+        </ErrorBoundary>
     },
     {
         path: '/admin/providers',
-        element : <ErrorBoundary><ProviderManagement/></ErrorBoundary>
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
+                <ProviderManagement />
+            </ProtectedRoute>
+        </ErrorBoundary>
     },
     {
         path: '/admin/services',
-        element : <ErrorBoundary><ServiceManagement/></ErrorBoundary>
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
+                <ServiceManagement />
+            </ProtectedRoute>
+        </ErrorBoundary>
     },
     {
         path: '*',

@@ -21,7 +21,9 @@ const ProviderManagement: React.FC = () => {
     { label: "Online", value: "online" },
     { label: "Offline", value: "offline" },
   ]
-
+  
+  const totalPages = Math.ceil(totalProviders / itemsPerPage)
+  
   return (
     <>
       <Nav className="bg-nav-background text-nav-text" />
@@ -51,11 +53,13 @@ const ProviderManagement: React.FC = () => {
             ) : (
               <>
                 <InfoCard datas={provData} type="provider" />
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(totalProviders / itemsPerPage)}
-                  onPage={setCurrentPage}
-                />
+                  {totalPages > 1 && (
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPage={setCurrentPage}
+                    />
+                  )}
               </>
             )}
         </div>

@@ -45,8 +45,6 @@ export class GoogleSigninUseCase {
             } 
 
             return {
-                success: true,
-                message : "Singin Successful",
                 userData: {
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,

@@ -1,11 +1,11 @@
 import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
 import { Provider } from "../../entities/ProviderEntity.js";
 import { User } from "../../entities/UserEntity.js";
+import { UserDTO }  from "../../outputDTO's/UserDTO.js";
 
 
 export interface IUserRepository {
-    create(user: User): Promise <User>;
+    create(user: UserDTO): Promise <User>;   
     findByEmail(email: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserGoogleId(googleId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
@@ -17,12 +17,15 @@ export interface IUserRepository {
         omitFields?: Array<keyof User>
     ) : Promise<{ data: Partial<User>[]; total: number }>;
     
-    findProvidersWithFilters(
+    findProvidersWithFilters( //might neeed to change  from userModel to provider Model 
         options: { searchQuery: string; filter: string, ProviderStatus:KYCStatus  },
         currentPage: number, limit: number,
         omitFields?: Array< keyof User | keyof Provider >
     ): Promise<{ data: Array<Partial<User> & Partial<Provider>>; total: number }>;
+
+
     
+
 }
 
 /*
