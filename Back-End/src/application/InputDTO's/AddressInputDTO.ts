@@ -1,4 +1,4 @@
-export type AddressDTO = {
+export type AddressInputDTO = {
     houseinfo: string;
     street: string;
     district: string;

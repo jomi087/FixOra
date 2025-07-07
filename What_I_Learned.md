@@ -31,6 +31,9 @@ ________________________________________________________________________________
     - Boolean() - it's a built-in JavaScript function (constructor) it converts any value to its truthy or falsy equivalent:
     
 * how to get Location coordinates with browser help (navigator.geoLocation)
+
+* Purpose and useCase of  debouncing  for optimising
+
 ______________________________________________________________________________________________________________________________________
 ## Node (express) version
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -58,3 +61,4 @@ Tailwind, CSS Radix, UI (for accessibility and behavior) ,TypeScript ]
 
 ## others
     what is SSO (Single-Sign-On) and what is OAUTH 
+    status code 204(no content) pecularities

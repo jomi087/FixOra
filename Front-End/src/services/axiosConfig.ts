@@ -10,9 +10,6 @@ const axiosInstance = axios.create(
     { // defined repeted option 
         baseURL: import.meta.env.VITE_API_URL,
         withCredentials: true,
-        headers: {
-            'Content-Type': 'application/json'
-        }
     }
 );
 
@@ -41,7 +38,6 @@ axiosInstance.interceptors.response.use(
                 return Promise.reject(refreshError);
             }
         }
-
         // For any other error, just reject
         return Promise.reject(error);
     }

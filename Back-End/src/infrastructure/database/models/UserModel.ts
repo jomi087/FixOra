@@ -1,6 +1,6 @@
 import mongoose, { Document } from 'mongoose'
 import { User } from '../../../domain/entities/UserEntity.js'
-import { RoleEnum } from '../../../domain/constant/Roles.js'
+import { RoleEnum } from '../../../shared/constant/Roles.js'
 
 export interface IUserModel extends Document, User {}
 

@@ -1,6 +1,6 @@
 /*  You can see another version Using class  */
 
-import { RoleEnum } from "../constant/Roles.js";
+import { RoleEnum } from "../../shared/constant/Roles.js";
 
 export interface Address {
   houseinfo: string;
@@ -17,17 +17,17 @@ export interface Address {
 }
 
 export interface User {
-  userId: string;
+  userId : string;
   fname: string;
-  lname?: string;
+  lname: string;
   email: string;
-  mobileNo?: string;
-  password?: string;
+  mobileNo : string;
+  password : string;
   role: RoleEnum;
-  googleId?: string;
-  refreshToken?: string;
-  location?: Address ;
-  isBlocked?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  googleId : string;
+  refreshToken : string;
+  location : Address ;
+  isBlocked : boolean;
+  createdAt : Date;
+  updatedAt : Date;
 }

@@ -20,14 +20,6 @@ export const validateMobileNo= (phone:string):string|null => {
     return null;
 } ;
 
-// export const validateImage = (image:string) => {
-//     if (!image) return "Image required";
-//     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-//     if (!allowedTypes.includes(image.type)) return "Only JPG, PNG";
-//     const maxSize = 5 * 1024 * 1024;
-//     if (image.size > maxSize) return "Max 5MB size";
-//     return null;
-// };
 
 export const validateEmail = (email:string):string|null => {
     email = email.trim();
@@ -52,5 +44,4 @@ export const validateCPassword = (cPassword:string , password:string):string|nul
     if(cPassword != password) return "password didnt match"
     return null;
 } ;
-
 

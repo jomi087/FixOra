@@ -1,26 +1,21 @@
-import { ToastContainer } from 'react-toastify';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/AppRoutes';
 import { Provider } from 'react-redux';
 import appStore from './store/appStore';
 import AuthCheck from './components/common/auth/AuthCheck';
+import { useState } from 'react';
+import PageLoader from './components/common/PageLoader';
+import ToastConfig from './components/common/ToastConfig';
 
 
 function App() {
+  const [authChecked, setAuthChecked] = useState(false);
   return (
     <>
-      <Provider store = {appStore}>
-        <AuthCheck />
-        <ToastContainer
-          theme="dark" 
-          position="top-right" 
-          autoClose={2000} 
-          className="text-sm font-serif"
-          closeOnClick
-          hideProgressBar={true}
-          draggable={true}
-        />
-        <RouterProvider router={router} />
+      <Provider store={appStore}>
+        <ToastConfig/>
+        {!authChecked ? <PageLoader/> : <RouterProvider router={router} />}
+        <AuthCheck  onComplete={() => setAuthChecked(true)} />
       </Provider>
     </>
   )

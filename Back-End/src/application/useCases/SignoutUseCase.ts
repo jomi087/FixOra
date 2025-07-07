@@ -1,16 +1,15 @@
-import { RoleEnum } from "../../domain/constant/Roles.js";
-import { SignoutStrategyFactory } from "../services/auth/signoutStrategy/SignoutStrategyFactory.js";
+import { UserRepository } from "../../infrastructure/database/repositories/UserRepository.js";
 
 export class SignoutUseCase {
     constructor(
-        private readonly SignoutFactory : SignoutStrategyFactory,
-    ) { }
+        private readonly userRepository : UserRepository,
+    ) {}
 
-    async execute(userId: string , role : RoleEnum) {
+    async execute(userId: string) {
         try {
-            const strategy = this.SignoutFactory.getStrategy(role)
-            await strategy.signout(userId)
-            
+            if (!(await this.userRepository.update({userId}, { refreshToken: "" }))) {
+                throw { status: 400, message: "User not found during signout" };
+            }            
         } catch (error:any) {
             if (error.status && error.message) {
                throw error;

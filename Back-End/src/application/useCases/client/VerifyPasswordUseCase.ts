@@ -13,7 +13,7 @@ export class VerifyPasswordUseCase {
         
     ) { }
     
-    async execute(password: string, userId : string) {
+    async execute(password: string, userId : string): Promise<void> {
         try {
             const user = await this.userRepository.findByUserId(userId,["refreshToken"]) as User; 
             const isMatch = await this.hashService.compare(password, user.password as string)
@@ -37,11 +37,6 @@ export class VerifyPasswordUseCase {
             `;
             
             await this.emailService.sendEmail(user.email, "FixOra Reset Password", html); 
-            
-            return {
-                success: true,
-                message : "Verification mail sent to your mail"
-            }
 
         } catch (error :any) {
             if (error.status && error.message) {

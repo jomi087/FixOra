@@ -1,45 +1,95 @@
-import InfoCard from "../../components/admin/InfoCard"
-import SideBar from "../../components/admin/SideBar"
-import Nav from "../../components/common/layout/Nav"
-import Pagination from "../../components/common/Pagination";
-import SearchFilterBar from "../../components/common/SearchFilterBar";
+import Nav from "@/components/common/layout/Nav";
+import SideBar from "@/components/common/Others/SideBar";
+import InfoCard from "@/components/admin/InfoCard";
+import Pagination from "@/components/common/Others/Pagination";
+//import SearchFilterBar from "@/components/common/SearchFilterBar";
+import { adminSideBarOptions } from "@/utils/constant";
+import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
+import { useUserManagement } from "@/hooks/useUserManagementHook";
+import FilterSelect from "@/components/common/Others/FilterSelect";
+import SearchInput from "@/components/common/Others/SearchInput";
+import { toast } from "react-toastify";
+import AuthService from "@/services/AuthService";
+import type { CustromersData } from "@/shared/Types/user";
 
-interface data {
-    id: number;
-    Fname: string;
-    Lname: string;
-    email: string;
-    mobileNo: string;
-    status: boolean;
-    image?: string;
-    role: string;
-}
 
-const data :Array<data> = [
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user'  },
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user' },
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user' },
-    { id: 1, Fname: 'John', Lname: 'Doe',   email: 'john@example.com', mobileNo: '123-456-7890', status: true , role:'user' },
-    { id: 2, Fname: 'Jane', Lname: 'Smith', email: 'jane@example.com', mobileNo: '098-765-4321', status: false , role:'user' }
-]
+const UserManagement: React.FC = () => {
+  const { custData,isLoading,totalPages,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage,setCustData}=useUserManagement()
+  
+  const filterOptions = [
+    { label: "Filter", value: "all" },
+    { label: "Blocked", value: "blocked" },
+    { label: "Unblocked", value: "unblocked" },
+  ]
 
-const UserManagement:React.FC = () => {
+  const handleToggleStatus = async (userId: string) => {
+    try {
+      console.log("userId", userId)
+      
+      const res = await AuthService.toggleUserStatus(userId)
+      if (res.status === 200) {
+        setCustData(prev =>
+          prev.map((data) => data.userId === userId ? {
+            ...data,
+            isBlocked: !data.isBlocked
+          }: data )
+        )
+      }
+    } catch (error: any) {
+      console.log(error)
+      const errorMsg = error?.response?.data?.message || "Failed to update status";
+      toast.error(errorMsg);
+    }
+  }
+
   return (
-      <>
-        <Nav className='bg-nav-background text-nav-text' />
-          <div className="flex pt-16 min-h-screen">
-              <SideBar  />
-              <div className="flex-1 bg-footer-background text-body-text ">
-                  <SearchFilterBar/>
-                  <InfoCard datas={data} />
-                  <Pagination/>
-              </div> 
+    <>
+      <Nav className="bg-nav-background text-nav-text" />
+      <div className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
+        <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-8 " />
+        {isLoading ? (
+          <div className="flex-1 bg-footer-background text-body-text">
+            <SkeletonInfoCard count={itemsPerPage} /> 
           </div>
-      </>
-  )
-}
+          ) : (
+            <div className="flex-1  bg-footer-background text-body-text w-full px-4 md:px-0 py-4">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mx-5 ">
+                <div className="flex flex-col gap-3 md:flex-row md:items-center w-full md:w-[240px]">
+                  <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search User" />
+                </div>
+                <div className="w-full md:w-auto">
+                  <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} /> 
+                </div>
+              </div>
 
-export default UserManagement
+              {custData.length === 0 ? (
+                <div className="flex justify-center items-center h-[84vh] w-full text-2xl font-semibold ">
+                  No Customer's found.
+                </div>
+                ) : (
+                  <>
+                    <InfoCard
+                      datas={custData}
+                      type="customer"
+                      onToggleStatus={handleToggleStatus}
+                    />
+                    {totalPages > 1 && (
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPage={setCurrentPage}
+                      />
+                    )}
+                  </>
+                )
+              }
+            </div>
+          )
+        }
+      </div>  
+    </>
+  );
+};
+
+export default UserManagement;
+

@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 
 //api logic
-import { SignupDTO } from "../../application/dtos/SignupDTO.js";
+import { SignupDTO } from "../../application/InputDTO's/SignupDTO.js";
 import { SignupUseCase } from "../../application/useCases/SignupUseCase.js";
 import { VerifySignupOtpUseCase } from "../../application/useCases/VerifySignupOtpUseCase.js";
 import { ResendOtpUseCase } from "../../application/useCases/ResendOtpUseCase.js";
 import { SigninUseCase } from "../../application/useCases/SigninUseCase.js";
-import { SigninDTO } from "../../application/dtos/SigninDTO.js";
+import { SigninDTO } from "../../application/InputDTO's/SigninDTO.js";
 import { RefreshTokenUseCase } from "../../application/useCases/RefreshTokenUseCase.js";
 import { SignoutUseCase } from "../../application/useCases/SignoutUseCase.js";
 import { ForgotPasswordUseCase } from "../../application/useCases/ForgotPasswordUseCase.js";
@@ -30,9 +30,9 @@ export class AuthController {
   async signup(req: Request, res: Response, next : NextFunction ): Promise<void> {
     try {
       const userData: SignupDTO = req.body;
-      const result = await this.signupUseCase.execute(userData);
+      const tempToken = await this.signupUseCase.execute(userData);
 
-      res.cookie('tempToken', result.token, {
+      res.cookie('tempToken', tempToken, {
         httpOnly: true,
         secure: process.env.NODE_COOKIE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
         sameSite: "lax",
@@ -41,7 +41,7 @@ export class AuthController {
 
       res.status(200).json({
           success: true,
-          message: result.message,
+        message: "OTP sent to your mail",
       });
 
     } catch (error: any) {
@@ -55,13 +55,13 @@ export class AuthController {
       const {otpData} = req.body;
       
       const tempToken = req.cookies.tempToken 
-      const result = await this.verifySignupOtpUseCase.execute(otpData,tempToken)
+      await this.verifySignupOtpUseCase.execute(otpData,tempToken)
       
       res.clearCookie("tempToken")
 
       res.status(200).json({
         success: true,
-        message: result.message,
+        message: "Account Created SuccessFully"
       });
 
     } catch (error: any) {
@@ -73,11 +73,11 @@ export class AuthController {
   async resendOtp(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
       const tempToken = req.cookies.tempToken
-      const result = await this.resendOtpUseCase.execute(tempToken)
+      await this.resendOtpUseCase.execute(tempToken)
 
       res.status(200).json({
-          success: true,
-          message: result.message,
+        success: true,
+        message: "OTP sent to your email",
       });
 
     } catch (error) {
@@ -110,13 +110,14 @@ export class AuthController {
         })
         .json({
           success: true,
-          message: result.message,
+          message: "Singin Successful",
           userData: result.userData,
         });
     } catch (error) {
       console.log(error);
       next(error)
     }
+    
   }
 
   async signin(req: Request, res: Response, next: NextFunction): Promise<void>{
@@ -140,7 +141,7 @@ export class AuthController {
         })
         .json({
           success: true,
-          message: result.message,
+          message: "Singin Successful",
           userData: result.userData,
         });
       
@@ -153,11 +154,11 @@ export class AuthController {
   async forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { email } = req.body
-      const result = await this.forgotPasswordUseCase.execute(email)  // this use case is  were i am checking  do the given email exist in the usredb  if yes then send otp
+      await this.forgotPasswordUseCase.execute(email)  // this use case is  were i am checking  do the given email exist in the usredb  if yes then send otp
 
       res.status(200).json({
         sucess: true,
-        message : result.message
+        message : "Verification mail sent to your mail"
       })
 
     } catch (error:any) {
@@ -171,11 +172,11 @@ export class AuthController {
 
       const { token, password } = req.body
       
-      const result = await this.resetPasswordUseCase.execute(token, password)
+      await this.resetPasswordUseCase.execute(token, password)
 
       res.status(200).json({
         success: true,
-        message: result.message,
+        message: "Password reset successful",
       });
 
     } catch (error: any) {
@@ -257,13 +258,12 @@ export class AuthController {
     try {
 
       const userId  = req.user?.userId   //req.user gives the userData  ( user: Omit<User, "password" | "refreshToken"> | null)
-      const role  = req.user?.role
 
-      if (!userId || !role) {
+      if (!userId ) {
         throw { status : 400, message : "user or role is missing, refresh again"}
       }
 
-      await this.signoutUseCase.execute(userId  , role)
+      await this.signoutUseCase.execute( userId )
 
       const options  = {
         httpOnly: true,

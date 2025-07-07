@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { UserDTO } from "../dtos/UserDTO.js";
+import { UserInputDTO } from "../InputDTO's/UserInputDTO.js";
 import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IOtpGenratorService } from "../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
@@ -13,12 +13,12 @@ export class ResendOtpUseCase{
         
     ) { }
     
-    async execute(token : string) {
+    async execute(token : string):Promise<void> {
         try {
             if (!token) {
                 throw { status: 403, message: "Something  went wrong"  }
             }
-            const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as UserDTO            
+            const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as UserInputDTO            
             
             const otp = this.otpGenratorService.generateOtp()
             console.log("this is resend otp", otp)
@@ -31,11 +31,6 @@ export class ResendOtpUseCase{
 
             const html = `<h1>Welcome to FixOra</h1><p>Your OTP code is: <strong>${otp}</strong></p>`
             await this.emailService.sendEmail(decodeUserData.email, "Your FixOra OTP", html);
-
-            return {
-                success: true,
-                message: "OTP sent to your email",
-            };
 
         } catch (error:any) {
            if (error.status && error.message) {

@@ -1,8 +1,8 @@
-import { AddressDTO } from "./AddressDTO.js";
+import { AddressInputDTO } from "./AddressInputDTO.js";
 
 export type EditProfileDTO = {
     fname: string;
     lname: string;
     mobile: string;
-    location: AddressDTO
+    location: AddressInputDTO
 }

@@ -9,7 +9,7 @@ export class ResetPasswordUseCase{
         private readonly userRepository : IUserRepository,
     ) { }
     
-    async execute( token : string , password : string ) {
+    async execute( token : string , password : string ):Promise<void> {
         try {
             const hashedPassword = await this.hashService.hash( password ) 
 
@@ -17,11 +17,6 @@ export class ResetPasswordUseCase{
             
             if (!await this.userRepository.update({ email: decodeEmail.email }, { password: hashedPassword })) {
                  throw { status: 404, message: "User Not Found" };
-            }
-
-            return {
-                sucess: true,
-                message: "Password reset successful",
             }
 
         } catch (error: any) {

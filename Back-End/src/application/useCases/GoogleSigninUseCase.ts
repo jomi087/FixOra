@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { RoleEnum } from "../../domain/constant/Roles.js";
+import { RoleEnum } from "../../shared/constant/Roles.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { GoogleOAuthService } from "../../infrastructure/services/GoogleOAuthService.js";
 import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
@@ -14,7 +14,6 @@ export class GoogleSigninUseCase {
 
     async execute(code : string , role : RoleEnum) {
         try {
-            console.log("entered")
             const tokenResponse = await this.googleOAuthService.exchangeCodeForToken(code)
             const googleUser = await this.googleOAuthService.getUserInfo(tokenResponse.access_token)
             
@@ -46,8 +45,6 @@ export class GoogleSigninUseCase {
             } 
 
             return {
-                success: true,
-                message : "Singin Successful",
                 userData: {
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,

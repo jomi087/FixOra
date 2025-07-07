@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { RoleEnum } from "@/shared/enums/roles";
 
 interface signInProps {
     singInThemeImage : string;
@@ -187,7 +188,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotP
 
                 {isSignInForm &&
                 <p className="mt-4 text-blue-100 text-center">
-                    <Link to="/admin/dashboard" className="text-black font-semibold">
+                    <Link to={`/signIn/${RoleEnum.ADMIN}`} className="text-black font-semibold">
                     Explore our app
                     </Link>
                 </p>

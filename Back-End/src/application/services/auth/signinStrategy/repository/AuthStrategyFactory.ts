@@ -1,5 +1,5 @@
-import { RoleEnum } from "../../../../domain/constant/Roles.js";
-import { IAuthStrategy } from "./interface/IAuthStrategy.js";
+import { RoleEnum } from "../../../../../shared/constant/Roles.js";
+import { IAuthStrategy } from "../interface/IAuthStrategy.js";
 
 export class AuthStrategyFactory {
     private strategies = new Map<RoleEnum, IAuthStrategy>();

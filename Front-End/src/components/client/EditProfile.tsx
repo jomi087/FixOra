@@ -106,8 +106,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
                         }
                     }))
 
-                } catch (error) {
-                    toast.error("Failed to fetch address from coordinates");
+                } catch (error:any) {
+                    const errorMsg = error?.response?.data?.message ||"Failed to fetch address from coordinates";
+                    toast.error(errorMsg);
                 } finally {
                      setLoading(false);;
                 }
@@ -162,10 +163,10 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
         const mobileNumberError = validateMobileNo(form.mobile)
         
 
-            if (fnameError || lnameError || mobileNumberError) {
-                toast.error(fnameError || lnameError || mobileNumberError);
-                return;
-            }
+        if (fnameError || lnameError || mobileNumberError) {
+            toast.error(fnameError || lnameError || mobileNumberError);
+            return;
+        }
 
         setLoading(true)
         try {
