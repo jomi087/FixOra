@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 import jwt from 'jsonwebtoken'
 import type { SignOptions } from 'jsonwebtoken';
 
-import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
-import { SignupDTO } from "../InputDTO's/SignupDTO.js";
-import { IOtpGenratorService } from "../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
-import { IHashService } from "../../domain/interface/ServiceInterface/IHashService.js";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
+import { SignupDTO } from "../../InputDTO's/SignupDTO.js";
+import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
+import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
 
 export class SignupUseCase {
     constructor(

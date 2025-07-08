@@ -3,8 +3,8 @@
 import jwt from "jsonwebtoken";
 import type { SignOptions } from 'jsonwebtoken';
 
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
 
 export class ForgotPasswordUseCase {
     constructor(

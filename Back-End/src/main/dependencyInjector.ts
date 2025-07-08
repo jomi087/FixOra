@@ -29,33 +29,33 @@ const userAuthMiddleware = createUserAuthMiddleware(tokenService, userRepository
 // const userAuthMiddleware = createUserAuthMiddleware(tokenService, userRepository)
 
 /******************************************************************************************************************************************************/
-import { SignupUseCase } from "../application/useCases/SignupUseCase.js";
+import { SignupUseCase } from "../application/useCases/auth/SignupUseCase.js";
 const signupUseCase = new SignupUseCase(userRepository, otpRepository, emailService, otpGenratorservice, hashService ) 
 
-import { VerifySignupOtpUseCase } from "../application/useCases/VerifySignupOtpUseCase.js";
+import { VerifySignupOtpUseCase } from "../application/useCases/auth/VerifySignupOtpUseCase.js";
 const verifySignupOtpUseCase = new VerifySignupOtpUseCase(otpRepository, userRepository)
 
-import { ResendOtpUseCase } from "../application/useCases/ResendOtpUseCase.js";
+import { ResendOtpUseCase } from "../application/useCases/auth/ResendOtpUseCase.js";
 const resendOtpUseCase = new ResendOtpUseCase(otpRepository, otpGenratorservice, emailService)
 
 import { configureAuthStrategies } from "../infrastructure/config/authSigninConfig.js";
 const authFactory = configureAuthStrategies(userRepository, hashService)
-import { SigninUseCase } from "../application/useCases/SigninUseCase.js";
+import { SigninUseCase } from "../application/useCases/auth/SigninUseCase.js";
 const signinUseCase = new SigninUseCase(authFactory, tokenService, userRepository)
 
-import { GoogleSigninUseCase } from "../application/useCases/GoogleSigninUseCase.js";
+import { GoogleSigninUseCase } from "../application/useCases/auth/GoogleSigninUseCase.js";
 const googleSigninUseCase = new GoogleSigninUseCase(googleOAuthService,userRepository,tokenService)
 
-import { ForgotPasswordUseCase } from "../application/useCases/ForgotPasswordUseCase.js";
+import { ForgotPasswordUseCase } from "../application/useCases/auth/ForgotPasswordUseCase.js";
 const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository,emailService )
 
-import { ResetPasswordUseCase } from "../application/useCases/ResetPasswordUseCase.js";
+import { ResetPasswordUseCase } from "../application/useCases/auth/ResetPasswordUseCase.js";
 const resetPasswordUseCase = new ResetPasswordUseCase(hashService,userRepository)
 
-import { RefreshTokenUseCase } from "../application/useCases/RefreshTokenUseCase.js";
+import { RefreshTokenUseCase } from "../application/useCases/auth/RefreshTokenUseCase.js";
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService,userRepository)
 
-import { SignoutUseCase } from "../application/useCases/SignoutUseCase.js";
+import { SignoutUseCase } from "../application/useCases/auth/SignoutUseCase.js";
 const signoutUseCase = new SignoutUseCase(userRepository)
 
 /******************************************************************************************************************************************************

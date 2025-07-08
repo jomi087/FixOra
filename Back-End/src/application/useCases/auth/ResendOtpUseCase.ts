@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import { UserInputDTO } from "../InputDTO's/UserInputDTO.js";
-import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
-import { IOtpGenratorService } from "../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
-import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
+import { UserInputDTO } from "../../InputDTO's/UserInputDTO.js";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
+import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
+import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
 
 
 export class ResendOtpUseCase{

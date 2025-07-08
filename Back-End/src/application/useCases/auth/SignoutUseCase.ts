@@ -1,4 +1,4 @@
-import { UserRepository } from "../../infrastructure/database/repositories/UserRepository.js";
+import { UserRepository } from "../../../infrastructure/database/repositories/UserRepository.js";
 
 export class SignoutUseCase {
     constructor(

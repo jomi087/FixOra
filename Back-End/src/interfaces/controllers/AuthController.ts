@@ -2,16 +2,16 @@ import { NextFunction, Request, Response } from "express";
 
 //api logic
 import { SignupDTO } from "../../application/InputDTO's/SignupDTO.js";
-import { SignupUseCase } from "../../application/useCases/SignupUseCase.js";
-import { VerifySignupOtpUseCase } from "../../application/useCases/VerifySignupOtpUseCase.js";
-import { ResendOtpUseCase } from "../../application/useCases/ResendOtpUseCase.js";
-import { SigninUseCase } from "../../application/useCases/SigninUseCase.js";
+import { SignupUseCase } from "../../application/useCases/auth/SignupUseCase.js";
+import { VerifySignupOtpUseCase } from "../../application/useCases/auth/VerifySignupOtpUseCase.js";
+import { ResendOtpUseCase } from "../../application/useCases/auth/ResendOtpUseCase.js";
+import { SigninUseCase } from "../../application/useCases/auth/SigninUseCase.js";
 import { SigninDTO } from "../../application/InputDTO's/SigninDTO.js";
-import { RefreshTokenUseCase } from "../../application/useCases/RefreshTokenUseCase.js";
-import { SignoutUseCase } from "../../application/useCases/SignoutUseCase.js";
-import { ForgotPasswordUseCase } from "../../application/useCases/ForgotPasswordUseCase.js";
-import { ResetPasswordUseCase } from "../../application/useCases/ResetPasswordUseCase.js";
-import { GoogleSigninUseCase } from "../../application/useCases/GoogleSigninUseCase.js";
+import { RefreshTokenUseCase } from "../../application/useCases/auth/RefreshTokenUseCase.js";
+import { SignoutUseCase } from "../../application/useCases/auth/SignoutUseCase.js";
+import { ForgotPasswordUseCase } from "../../application/useCases/auth/ForgotPasswordUseCase.js";
+import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
+import { GoogleSigninUseCase } from "../../application/useCases/auth/GoogleSigninUseCase.js";
 
 
 export class AuthController {

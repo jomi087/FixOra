@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IHashService } from "../../domain/interface/ServiceInterface/IHashService.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
 
 
 export class ResetPasswordUseCase{

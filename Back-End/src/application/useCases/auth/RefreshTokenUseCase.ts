@@ -1,5 +1,5 @@
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
 
 export class RefreshTokenUseCase  {
   constructor(

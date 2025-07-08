@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import { IOtpRepository } from "../../domain/interface/RepositoryInterface/IOtpRepository.js";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { UserInputDTO } from "../InputDTO's/UserInputDTO.js";
-import { RoleEnum } from "../../shared/constant/Roles.js";
-import { UserDTO } from "../../domain/outputDTO's/UserDTO.js";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { UserInputDTO } from "../../InputDTO's/UserInputDTO.js";
+import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
 
 
 export class VerifySignupOtpUseCase{

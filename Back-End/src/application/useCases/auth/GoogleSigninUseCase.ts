@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import { RoleEnum } from "../../shared/constant/Roles.js";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { GoogleOAuthService } from "../../infrastructure/services/GoogleOAuthService.js";
-import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
+import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService.js";
+import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
 
 export class GoogleSigninUseCase {
     constructor(

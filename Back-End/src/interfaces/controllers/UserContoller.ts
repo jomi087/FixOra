@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { EditProfileDTO } from "../../application/InputDTO's/EditProfileDTO.js";
 import { UpdateProfileUseCase } from "../../application/useCases/client/UpdateProfileUseCase.js";
 import { VerifyPasswordUseCase } from "../../application/useCases/client/VerifyPasswordUseCase.js";
-import { ResetPasswordUseCase } from "../../application/useCases/ResetPasswordUseCase.js";
+import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
 
 export class UserController {
     constructor(
