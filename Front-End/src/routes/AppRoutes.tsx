@@ -16,6 +16,7 @@ import ProviderManagement from '../pages/admin/ProviderManagement'
 import ServiceManagement from '../pages/admin/ServiceManagement'
 import ProtectedRoute from './ProtectedRoutes.tsx'
 import { RoleEnum } from '@/shared/enums/roles.ts'
+import ServicePage from '@/pages/client/ServicePage.tsx'
 
 
 
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
         element: <ErrorBoundary><ResetPasswordPage /></ErrorBoundary>
     },
     //client Routes
+    {
+        path: '/user/services',
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                <ServicePage/>
+            </ProtectedRoute>
+        </ErrorBoundary >
+    },
     {
         path: '/user/account/profile',
         element: <ErrorBoundary>

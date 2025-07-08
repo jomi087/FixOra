@@ -3,6 +3,7 @@ import { useAppSelector } from '@/store/hooks'
 import type { ReactNode } from 'react'
 import PageNotFound from '@/components/common/Others/PageNotFound'
 import type { RoleEnum } from '@/shared/enums/roles'
+import { toast } from 'react-toastify'
 
 interface ProtectedRouteProps {
   children: ReactNode
@@ -13,7 +14,8 @@ const ProtectedRoute = ({ children, allowedRoles } : ProtectedRouteProps) => {
   const { user, isAuthenticated } = useAppSelector((state) => state.auth)
   const location = useLocation()
 
-  if (!isAuthenticated || !user) {
+  if (!isAuthenticated || !user) { 
+    toast.info("Required Sign-In")
     return <Navigate to="/" state={{ from: location }} replace />
   }
 

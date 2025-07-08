@@ -13,6 +13,7 @@ import mongoConnect from '../infrastructure/database/connection.js';
 import authRouter from '../interfaces/routes/authRoute.js';
 import userRouter from '../interfaces/routes/userRoute.js'
 import adminRouter from '../interfaces/routes/adminRoute.js'
+import publicRouter from '../interfaces/routes/publicRouter.js'
 
 import { errorHandler } from '../interfaces/middleware/errorHandler.js'; 
 
@@ -45,6 +46,7 @@ app.use(express.json({ limit: "1mb" }))//Your server will only accept JSON reque
 app.use(express.urlencoded({ extended: true, limit: "1mb" }))
 app.use(express.static(path.join(__dirname, '../public')));  
 
+app.use('/api/public',publicRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/admin', adminRouter)

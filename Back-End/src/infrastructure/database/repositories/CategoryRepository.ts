@@ -31,6 +31,34 @@ export class CategoryRepository implements ICategoryRepository {
         const saved = await categoryDoc.save();
         return saved.toObject() as Category;
     }
+    
+
+    async findActiveCategories(omitFields: Array<keyof Category>=[]): Promise<Partial<Category>[]>{
+        const omitSelect = omitFields?.map(field => `-${field}`).join(' ')
+        return await CategoryModel.find({isActive : true}).select(omitSelect).lean<Partial<Category>[]>()
+    }
+
+
+    async findActiveCategoriesWithActiveSubcategories(): Promise<Partial<Category>[]>{
+        const categories = await CategoryModel.aggregate([
+            {
+                $match: { isActive: true }
+            },
+            {
+                $project: {
+                    categoryId: 1, name: 1, description: 1, image: 1, isActive: 1, createdAt: 1, updatedAt: 1,
+                    subcategories: {
+                        $filter: {
+                            input: "$subcategories",
+                            as: "sub",
+                            cond: { $eq: ["$$sub.isActive", true] }
+                        }
+                    }
+                }
+            }
+        ]);
+        return categories as Partial<Category>[];
+    }
 
 
     async findServicesWithFilters(

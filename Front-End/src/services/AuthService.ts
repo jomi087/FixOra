@@ -32,6 +32,10 @@ class AuthService {
     //!  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
     /*********************************************************************************************************************** */
     
+    getLandingData() {
+        return axiosInstance.get('/api/public/landing-data')
+    }
+    
     signupApi(Data: Signup) {
         return axiosInstance.post('/api/auth/signup', Data , this.getJsonConfig());
     }

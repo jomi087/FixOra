@@ -53,7 +53,10 @@ import { ResetPasswordUseCase } from "../application/useCases/auth/ResetPassword
 const resetPasswordUseCase = new ResetPasswordUseCase(hashService,userRepository)
 
 import { RefreshTokenUseCase } from "../application/useCases/auth/RefreshTokenUseCase.js";
-const refreshTokenUseCase = new RefreshTokenUseCase(tokenService,userRepository)
+const refreshTokenUseCase = new RefreshTokenUseCase(tokenService, userRepository)
+
+import { GetLandingDataUseCase } from "../application/useCases/public/GetLandingDataUseCase.js";
+const getLandingDataUseCase = new GetLandingDataUseCase(categoryRepository)
 
 import { SignoutUseCase } from "../application/useCases/auth/SignoutUseCase.js";
 const signoutUseCase = new SignoutUseCase(userRepository)
@@ -93,12 +96,15 @@ import { AuthController } from "../interfaces/controllers/AuthController.js";
 import { UserController } from "../interfaces/controllers/UserContoller.js";
 import { AdminController } from "../interfaces/controllers/AdminController.js";
 import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService.js";
+import { PublicController } from "../interfaces/controllers/PublicController.js";
 
+const publicController = new PublicController(getLandingDataUseCase)
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
 const userController = new UserController(updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
 const adminController = new AdminController(getCustomersUseCase,toggleUserStatusUseCase,getProvidersUseCase,getServiceUseCase,createServiceCategoryUseCase,toggleCategoryStatusUseCase)
 
 export {
+    publicController,
     authController,
     userAuthMiddleware,
     userController,

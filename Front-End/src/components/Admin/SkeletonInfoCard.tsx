@@ -1,7 +1,9 @@
-const SkeletonInfoCard: React.FC<{ count?: number }> = ({ count = 8 }) => {
+
+
+const SkeletonInfoCard: React.FC<{ count?: number ,style?: string }> = ({ count = 8, style="pt-30" }) => {
   const placeholders = Array(count).fill(null);
     return (
-        <div className="flex flex-wrap justify-center gap-6 px-4 py-6 max-w-7xl mx-auto pt-30">
+        <div className={`flex flex-wrap justify-center gap-6 px-4 py-6 max-w-7xl mx-auto ${style} `}>
             {placeholders.map((_, index) => (
                 <div
                 key={index}

@@ -1,3 +1,13 @@
+export type MainCategory = {
+  categoryId: string;
+  name: string;
+  description: string;
+  image: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export type Subcategory = {
   subCategoryId : string
   name: string;
@@ -8,17 +18,9 @@ export type Subcategory = {
   updatedAt: Date;
 };
 
-export type Category = {
-  categoryId: string;
-  name: string;
-  description: string;
-  image: string;
+export type Category = MainCategory &  {
   subcategories: Subcategory[];
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 };
-
 
 export type CategoryFormInput = {
   name: string;

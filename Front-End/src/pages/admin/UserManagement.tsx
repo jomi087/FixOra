@@ -2,7 +2,6 @@ import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
 import InfoCard from "@/components/admin/InfoCard";
 import Pagination from "@/components/common/Others/Pagination";
-//import SearchFilterBar from "@/components/common/SearchFilterBar";
 import { adminSideBarOptions } from "@/utils/constant";
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
 import { useUserManagement } from "@/hooks/useUserManagementHook";
@@ -10,7 +9,6 @@ import FilterSelect from "@/components/common/Others/FilterSelect";
 import SearchInput from "@/components/common/Others/SearchInput";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
-import type { CustromersData } from "@/shared/Types/user";
 
 
 const UserManagement: React.FC = () => {

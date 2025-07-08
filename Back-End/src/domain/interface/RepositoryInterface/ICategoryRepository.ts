@@ -5,8 +5,11 @@ export interface ICategoryRepository{
     create(category: CategoryDTO): Promise<Category>;
     findByName(name: string): Promise<Category | null>;
     findById(id: string): Promise<Category>;
-    save(category: Category): Promise<Category>; // ← new method
+    save(category: Category): Promise<Category>; 
     
+    findActiveCategories(omitFields?: Array<keyof Category>): Promise<Partial<Category>[]>;
+    findActiveCategoriesWithActiveSubcategories(): Promise<Partial<Category>[]>;
+
     findServicesWithFilters(
         options: { searchQuery: string; filter: string },
         currentPage: number, limit: number,
