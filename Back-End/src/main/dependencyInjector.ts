@@ -7,6 +7,7 @@ import { OtpGenratorservice } from "../infrastructure/services/OtpGeneratorServi
 import { HashService } from "../infrastructure/services/HashService.js";
 import { TokenService } from "../infrastructure/services/TokenService.js";
 import { GoogleOAuthService } from "../infrastructure/services/GoogleOAuthService.js";
+import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService.js";
 
 
 const userRepository = new UserRepository();
@@ -64,6 +65,9 @@ const signoutUseCase = new SignoutUseCase(userRepository)
 /******************************************************************************************************************************************************
                                                         Customer Specific
 ******************************************************************************************************************************************************/
+import { ActiveServiceUseCase } from "../application/useCases/client/ActiveServiceUseCase.js";
+const activeServiceUseCase = new ActiveServiceUseCase(categoryRepository)
+
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase.js";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository)
 
@@ -92,15 +96,14 @@ import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/Toggl
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository)
 
 /******************************************************************************************************************************************************/
+import { PublicController } from "../interfaces/controllers/PublicController.js";
 import { AuthController } from "../interfaces/controllers/AuthController.js";
 import { UserController } from "../interfaces/controllers/UserContoller.js";
 import { AdminController } from "../interfaces/controllers/AdminController.js";
-import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService.js";
-import { PublicController } from "../interfaces/controllers/PublicController.js";
 
 const publicController = new PublicController(getLandingDataUseCase)
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
-const userController = new UserController(updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
+const userController = new UserController(activeServiceUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
 const adminController = new AdminController(getCustomersUseCase,toggleUserStatusUseCase,getProvidersUseCase,getServiceUseCase,createServiceCategoryUseCase,toggleCategoryStatusUseCase)
 
 export {

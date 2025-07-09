@@ -69,7 +69,11 @@ class AuthService {
     }
     /*********************************************************************************************************************** */
 
-    editProfileApi(form:ProfileEdit ) {
+    getActiveServices() {
+        return axiosInstance.get('/api/user/services')
+    }
+
+    editProfileApi(form: ProfileEdit) {
         return axiosInstance.patch("/api/user/editProfile",form , this.getJsonConfig())
     }
 

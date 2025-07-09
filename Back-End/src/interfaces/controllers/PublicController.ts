@@ -8,10 +8,10 @@ export class PublicController {
     
     async getLandingData(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const Landingdata = await this.getLandingDataUseCase.execute()
+            const landingData = await this.getLandingDataUseCase.execute()
             res.status(200).json({
                 success: true,
-                Landingdata
+                landingData
             })
             
         } catch (error) {

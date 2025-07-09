@@ -1,23 +1,23 @@
-import InfoCard from "@/components/admin/InfoCard";
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard"
 import Services from "@/components/client/Services";
+import Footer from "@/components/common/layout/Footer";
 import Nav from "@/components/common/layout/Nav"
 import AuthService from "@/services/AuthService";
-import type { Category, MainCategory } from "@/shared/Types/category";
+import type { Category } from "@/shared/Types/category";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 
 const ServicePage : React.FC = () => {
-    const [categories, setCategories] = useState<MainCategory[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [ isPending, startTransition ] = useTransition();
     
     useEffect(() => {
         const fetchData = () => {
             startTransition( async () => {
                 try {
-                    const res = await AuthService.getLandingData()
+                    const res = await AuthService.getActiveServices()
                     if (res.status === 200) {
-                        setCategories(res.data?.Landingdata?.categories)
+                        setCategories(res.data?.servicesData)
                     }
                 } catch (error: any) {
                     console.log(error)
@@ -33,7 +33,7 @@ const ServicePage : React.FC = () => {
     return (
     <>
         <Nav className="bg-nav-background text-nav-text" />
-        <div className="pt-16 min-h-screen text-nav-text bg-nav-background ">
+        <main className="pt-16 min-h-screen text-nav-text bg-nav-background ">
             <div className="py-10">
                 <h2 className="text-3xl font-serif text-center">Our Services</h2>
                 <h4 className="text-lg font-serif text-center pt-2 ">Discover the path to a just solution.</h4>
@@ -55,9 +55,11 @@ const ServicePage : React.FC = () => {
                 </div>
                 )
             }
-        </div>  
+        </main>
+        <Footer className='bg-footer-background text-footer-text' />
+            
     </>
   )
 }
-
+ 
 export default ServicePage

@@ -23,7 +23,7 @@ const LandingPage: React.FC = () => {
         try {
           const res = await AuthService.getLandingData()
           if (res.status === 200) {
-            setCategories(res.data?.Landingdata?.categories)
+            setCategories(res.data?.landingData?.categories)
             // setProviders(res.data?.providers)
 
           }

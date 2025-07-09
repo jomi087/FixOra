@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { ActiveServiceUseCase } from "../../application/useCases/client/ActiveServiceUseCase.js";
 import { EditProfileDTO } from "../../application/InputDTO's/EditProfileDTO.js";
 import { UpdateProfileUseCase } from "../../application/useCases/client/UpdateProfileUseCase.js";
 import { VerifyPasswordUseCase } from "../../application/useCases/client/VerifyPasswordUseCase.js";
@@ -6,11 +7,26 @@ import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPassw
 
 export class UserController {
     constructor(
+        private activeServiceUseCase : ActiveServiceUseCase,
         private updateProfileUseCase: UpdateProfileUseCase,
         private verifyPasswordUseCase: VerifyPasswordUseCase,
         private resetPasswordUseCase : ResetPasswordUseCase,
-        
     ) { }
+
+    async activeServices(req: Request, res: Response, next: NextFunction): Promise<void> { 
+        try {
+            const servicesData = await this.activeServiceUseCase.execute()
+
+            res.status(200).json({
+                success: true,
+                servicesData
+            })
+
+        } catch (error) {
+            console.error("editProfile error:", error);
+            next(error);
+        }
+    }
     
     async editProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
