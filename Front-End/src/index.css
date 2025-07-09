@@ -161,3 +161,7 @@
     }
 }
 
+html {
+  scroll-padding-top: 90px; /* Adjust to your navbar height (e.g., 64px for h-16) */
+  scroll-behavior: smooth;  /* Smooth scrolling */
+}

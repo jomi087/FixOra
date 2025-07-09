@@ -1,6 +1,3 @@
-import { KYCStatus } from "@/shared/enums/kycStatus";
-import type { Category } from "@/shared/Types/category";
-import type { CustromersData, ProviderData } from "@/shared/Types/user";
 import {
   Home, Briefcase, Users, FileText, User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,

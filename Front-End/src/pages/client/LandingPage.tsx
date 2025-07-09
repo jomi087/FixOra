@@ -40,7 +40,7 @@ const LandingPage: React.FC = () => {
   return (
     <div >
       <Nav className='bg-nav-background text-nav-text' />
-      <div className="pt-16 bg-body-background text-body-text ">
+      <main className="pt-16 bg-body-background text-body-text ">
         <Hero />
         <LearnMore
           categories = {categories}
@@ -48,7 +48,7 @@ const LandingPage: React.FC = () => {
           isPending = {isPending}
         />
         <BlogsPreview/> 
-      </div>
+      </main>
       <Footer className='bg-footer-background text-footer-text' />
     </div>
   )

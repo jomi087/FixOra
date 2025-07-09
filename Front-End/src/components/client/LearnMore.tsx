@@ -7,6 +7,7 @@ import type { MainCategory } from '@/shared/Types/category';
 //temp data
 import { providers } from '../../utils/constant';
 import { useNavigate } from 'react-router-dom';
+import { slugify } from '@/utils/helper/slugify';
  
 
 interface learMoreProps{
@@ -67,15 +68,16 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
                     <div className=" h-48 overflow-hidden p-1 rounded-t-2xl">
                       <img src={category.image} alt={category.name} className="w-full h-full object-contain rounded-t-2xl "  loading="lazy"/>
                     </div>
-                    <h6 className="text-lg font-bold mb-2 mt-2">{category.name}</h6>
+                    <h6 className="text-lg font-mono mb-2 mt-2">{category.name.toUpperCase() }</h6>
                     <p className="text-sm">{category.description}</p>
                     <button
+     
                       className="border rounded-full px-2 py-1 mt-4 mb-8 shadow-md shadow-black text-right cursor-pointer"
-                      onClick={()=>{ navigate('/user/services') }}
+                      onClick={()=>{ navigate(`/user/services#${slugify(category.name)}`) }} 
                     >
                       View More
                     </button>
-                  </div>
+                  </div> 
                 </SwiperSlide>
               )) } 
             </Swiper>  
