@@ -26,7 +26,7 @@ const ServiceManagement: React.FC = () => {
     try {
       console.log("categoryId", categoryId)
       
-      const res = await AuthService.toggleCategoryStatus(categoryId)
+      const res = await AuthService.toggleCategoryStatusApi(categoryId)
       if (res.status === 200) {
         setCategories(prev =>
           prev.map((cat) => cat.categoryId === categoryId ? {

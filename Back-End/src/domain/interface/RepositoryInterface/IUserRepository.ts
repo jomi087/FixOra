@@ -18,14 +18,10 @@ export interface IUserRepository {
     ) : Promise<{ data: Partial<User>[]; total: number }>;
     
     findProvidersWithFilters( //might neeed to change  from userModel to provider Model 
-        options: { searchQuery: string; filter: string, ProviderStatus:KYCStatus  },
+        options: { searchQuery: string; filter: string },
         currentPage: number, limit: number,
         omitFields?: Array< keyof User | keyof Provider >
     ): Promise<{ data: Array<Partial<User> & Partial<Provider>>; total: number }>;
-
-
-    
-
 }
 
 /*

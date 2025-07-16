@@ -26,7 +26,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
     setLoading(true);
     const formData = createFormData();
     try {
-      const res = await AuthService.addCategory(formData)
+      const res = await AuthService.addCategoryApi(formData)
 
       if (res.status == 200) {
         toast.success(res.data.message)

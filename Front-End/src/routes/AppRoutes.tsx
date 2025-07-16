@@ -17,7 +17,9 @@ import ServiceManagement from '../pages/admin/ServiceManagement'
 import ProtectedRoute from './ProtectedRoutes.tsx'
 import { RoleEnum } from '@/shared/enums/roles.ts'
 import ServicePage from '@/pages/client/ServicePage.tsx'
-
+import ProvidersPage from '@/pages/client/ProvidersPage.tsx'
+import VerifictionFormPage from '@/pages/client/VerifictionPage.tsx'
+import ProviderApplicationPage from '@/pages/admin/ProviderApplicationPage.tsx'
 
 
 const router = createBrowserRouter([
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
         </ErrorBoundary >
     },
     {
+        path: '/user/providers',
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                <ProvidersPage/>
+            </ProtectedRoute>
+        </ErrorBoundary >
+    },
+    {
         path: '/user/account/profile',
         element: <ErrorBoundary>
             <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
@@ -65,6 +75,15 @@ const router = createBrowserRouter([
         element: <ErrorBoundary>
             <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
                 <ChangePasswordPage />
+            </ProtectedRoute>
+        </ErrorBoundary>
+    },
+    //Provider Routes
+    {
+        path: '/provider/KYC',
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                <VerifictionFormPage/>
             </ProtectedRoute>
         </ErrorBoundary>
     },
@@ -90,6 +109,14 @@ const router = createBrowserRouter([
         element: <ErrorBoundary>
             <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
                 <ProviderManagement />
+            </ProtectedRoute>
+        </ErrorBoundary>
+    },
+    {
+        path: '/admin/provider-request',
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
+                <ProviderApplicationPage/>
             </ProtectedRoute>
         </ErrorBoundary>
     },

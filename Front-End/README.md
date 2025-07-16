@@ -10,12 +10,13 @@
 9. Implemented Google Sign-In using OAuth 2.0 Authorization Code Flow with PKCE via @react-oauth/google.
     - Handled secure auth code generation and redirection flow.
     - Sent code to backend for token exchange.
-10. optimization 
-    - used debouncing on search field
-    - pagination
+10. handleing api+state effiicently with the help of redux-Thunk
 11. Shimmer UI, for better U.X 
 
 
-# future 
-1. add login with mobile No option
-2. 
+
+
+* optimization 
+    - used debouncing on search field
+    - pagination
+    - used more re-usable component manuly and also with the help of shadCN library

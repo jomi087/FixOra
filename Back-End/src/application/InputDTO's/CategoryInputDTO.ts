@@ -1,7 +1,7 @@
 export interface SubcategoryInputDTO {
   name: string;
   description: string;
-  image: string; // A Cloudinary URL or uploaded path
+  image: string; 
 }
 
 export interface CategoryInputDTO {

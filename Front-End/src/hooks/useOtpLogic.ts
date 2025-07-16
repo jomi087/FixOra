@@ -8,7 +8,7 @@ export const useOtpLogic = () => {
 
   const verifyOtp = async (otp: string): Promise<void> => {
     try {
-      const res = await AuthService.VerifySignupOtp(otp);
+      const res = await AuthService.VerifySignupOtpApi(otp);
       if (res.status === 200) {
         toast.success(res.data.message || " OTP verified successfully ! ");
         setTimeout(() => {

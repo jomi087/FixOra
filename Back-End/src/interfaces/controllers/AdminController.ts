@@ -6,6 +6,8 @@ import { GetServiceUseCase } from "../../application/useCases/admin/GetServiceUs
 import { CreateServiceCategoryUseCase } from "../../application/useCases/admin/CreateServiceCategoryUseCase.js";
 import { ToggleCategoryStatusUseCase } from "../../application/useCases/admin/ToggleCategoryStatusUseCase.js";
 import { ToggleUserStatusUseCase } from "../../application/useCases/admin/ToggleUserStatusUseCase.js";
+import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
+import { CategoryInputDTO, SubcategoryInputDTO } from "../../application/InputDTO's/CategoryInputDTO.js";
 
 
 export class AdminController {
@@ -15,7 +17,9 @@ export class AdminController {
         private getProvidersUseCase: GetProvidersUseCase,
         private getServiceUseCase: GetServiceUseCase,
         private createServiceCategoryUseCase: CreateServiceCategoryUseCase,
-        private toggleCategoryStatusUseCase : ToggleCategoryStatusUseCase,
+        private imageUploaderService: IImageUploaderService, 
+        private toggleCategoryStatusUseCase: ToggleCategoryStatusUseCase,
+
     ) { }
 
     async getCustomers(req: Request, res: Response, next: NextFunction) :Promise<void>{
@@ -27,7 +31,6 @@ export class AdminController {
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
             const result = await this.getCustomersUseCase.execute({searchQuery,filter,currentPage,limit});
-
 
             res.status(200).json({
                 success: true,
@@ -60,9 +63,8 @@ export class AdminController {
             const filter = req.query.filter as string || "all";
             const currentPage = parseInt(req.query.currentPage as string) || 1
             const limit = parseInt(req.query.itemsPerPage as string) || 8; 
-            const ProviderStatus = KYCStatus.Approved;
 
-            const result = await this.getProvidersUseCase.execute({ searchQuery, filter, currentPage, limit, ProviderStatus });
+            const result = await this.getProvidersUseCase.execute({ searchQuery, filter, currentPage, limit });
 
             res.status(200).json({
                 success: true,
@@ -75,6 +77,8 @@ export class AdminController {
             next(error);
         }
     }
+
+    
 
     async getServices(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -99,22 +103,49 @@ export class AdminController {
 
     async addService(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            let { name, description, subcategories } = req.body;
 
-            console.log(" from admin controller",req.body)
-            const body = req.body;
-            body.subcategories = JSON.parse(JSON.stringify(body.subcategories));
+            const files = req.files as Express.Multer.File[];
 
-            await this.createServiceCategoryUseCase.execute({ body,files: req.files as Express.Multer.File[] });
+            const mainImageFile = files.find(file => file.fieldname === "image");
+
+            if (!mainImageFile) throw { status: 400, message: "Main category image missing" };
+            
+            const mainImageUrl = await this.imageUploaderService.uploadImage(mainImageFile.buffer);
+
+            const subcategoriesWithUrls = await Promise.all(
+                subcategories.map(async (sub: any, index: number) => {
+                    const subImageFile = files.find(file => file.fieldname === `subcategoryImages[${index}]`);
+                    if (!subImageFile) throw { status: 400, message: `Subcategory image missing at index ${index}` };
+                    const imageUrl = await this.imageUploaderService.uploadImage(subImageFile.buffer);
+
+                    return {
+                    name: sub.name,
+                    description: sub.description,
+                    image: imageUrl,
+                    };
+                })
+            );
+
+            const categoryInputDTO = {
+            name,
+            description,
+            subcategories: subcategoriesWithUrls ,
+            image: mainImageUrl,
+            } as CategoryInputDTO
+
+            await this.createServiceCategoryUseCase.execute(categoryInputDTO);
 
             res.status(200).json({
                 success: true,
                 message: "Category created successfully",
             });
+
         } catch (error) {
-            console.error("addService error:", error);
             next(error);
         }
     }
+
 
     async toggleCategoryStatus(req: Request, res: Response, next: NextFunction): Promise<void>{
         try {

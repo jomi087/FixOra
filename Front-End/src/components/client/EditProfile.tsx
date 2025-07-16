@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import AddressDialog from "./AddressDialog";
 
 import type { ProfileEdit } from "@/shared/Types/user";
 import type { Address } from "@/shared/Types/location";
@@ -16,14 +15,14 @@ import AuthService from "@/services/AuthService";
 import { getCoordinatesFromAddress } from "@/utils/helper/forwardGeocodingLocation";
 import { Userinfo } from "@/store/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
-
+import AddressDialog from "../common/Others/AddressDialog";
 
 
 interface EditProfileProps {
-    setEditMode: (editMode: boolean) => void;
+    toggle: (editMode: boolean) => void;
 }
 
-const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
+const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
 
     const { user } = useAppSelector((state) => state.auth);
     const [form, setForm] = useState<ProfileEdit>({
@@ -168,14 +167,26 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
             return;
         }
 
+        const isSame = (
+            form.fname === user?.fname &&
+            form.lname === user?.lname &&
+            form.mobile === user?.mobileNo &&
+            JSON.stringify(form.location) === JSON.stringify(user?.location)
+        );
+
+        if (isSame) {
+            toast.info("No changes Made.");
+            return;
+        }
+
         setLoading(true)
         try {
             const res = await AuthService.editProfileApi(form)
             if (res.status == 200) {
                 console.log(res.data)
                 dispatch(Userinfo({ user: { ...user, ...res.data.user } }));
-                toast.success("Address saved successfully");
-                setEditMode(false)
+                toast.success("Updated");
+                toggle(false)
             }
         } catch (error:any) {
             const errorMsg = error?.response?.data?.message ||"profile modification failed";
@@ -243,7 +254,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
                         />
                         <Button type="button" onClick={handleClearAddress} variant="outline"> X </Button>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between flex-wrap">
                         
                         {/* Modal version */}
                         <AddressDialog
@@ -269,7 +280,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setEditMode }) => {
                 <div className="flex items-center justify-between">
                     <Button type="submit" disabled={loading}>Update Profile</Button>
                     <Button variant="outline" type="button"
-                        onClick={() => setEditMode(false)}
+                        onClick={() => toggle(false)}
                     >
                         Go Back
                     </Button>

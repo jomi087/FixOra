@@ -1,11 +1,11 @@
 import AuthService from "@/services/AuthService";
-import type { CustromersData } from "@/shared/Types/user";
+import type { CustomersData  } from "@/shared/Types/user";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
 
 export const useUserManagement = ()=>{
-  const [custData, setCustData] = useState<CustromersData[]>([]);
+  const [custData, setCustData] = useState<CustomersData []>([]);
   const [isLoading, setLoading] = useState(false);
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [searchQuery, setSearchQuery] = useState("")

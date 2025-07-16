@@ -68,15 +68,13 @@ export class UserRepository implements IUserRepository {
             .lean<Partial<User>[]>();
 
         return { data : users, total}
-
     };
 
-    async findProvidersWithFilters(options: { searchQuery: string; filter: string; ProviderStatus:KYCStatus }, currentPage: number, limit: number, omitFields: Array<keyof User | keyof Provider>=[]): Promise<{ data: Array<Partial<User> & Partial<Provider>>; total: number }> {
+    async findProvidersWithFilters(options: { searchQuery: string; filter: string }, currentPage: number, limit: number, omitFields: Array<keyof User | keyof Provider>=[]): Promise<{ data: Array<Partial<User> & Partial<Provider>>; total: number }> {
         
-        const { searchQuery, filter, ProviderStatus } = options
+        const { searchQuery, filter } = options
         const query: any = {
             role: RoleEnum.Provider,
-            "kycInfo.status" : ProviderStatus,
         };
 
         if (searchQuery) {
@@ -101,9 +99,7 @@ export class UserRepository implements IUserRepository {
             .lean<Array<Partial<User> & Partial<Provider>>>();
 
         return { data, total };
-
     }
-
 }
 
 

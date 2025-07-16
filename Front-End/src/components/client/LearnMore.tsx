@@ -8,6 +8,9 @@ import type { MainCategory } from '@/shared/Types/category';
 import { providers } from '../../utils/constant';
 import { useNavigate } from 'react-router-dom';
 import { slugify } from '@/utils/helper/slugify';
+import { useAppSelector } from '@/store/hooks';
+import { RoleEnum } from '@/shared/enums/roles';
+import { toast } from 'react-toastify';
  
 
 interface learMoreProps{
@@ -18,7 +21,16 @@ interface learMoreProps{
 
 
 const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
+  const { isAuthenticated } = useAppSelector((state) => state.auth)
   const navigate = useNavigate()
+  const handleServices = (section:string) => {
+    if (!isAuthenticated) {
+      toast.info("Sign-In Required")
+      navigate(`/signIn/${RoleEnum.CUSTOMER}`)
+    } else {
+      navigate(`/user/services#${slugify(section)}`) 
+    }
+  }
   return (
     <section id="learnMore" className={'py-10'} aria-label="Information about FixOra services and providers" >
       <div className="container mx-auto px-4">
@@ -34,10 +46,10 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
   
         {/* Service Slider */}
         <div className="">
-          <h3 className="text-xl font-medium text-center underline pt-10 pb-5">
+          <h3 className="text-xl font-medium text-center underline pt-10 pb-5" >
             SERVICES PROVIDED
           </h3>
-          <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto pb-5">
+          <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto pb-5" id="service_Provided">
             We currently offer a wide range of home repair services, including appliance servicing, electrical fixes, and plumbing solutions. Our platform is constantly evolving — new and specialized services will be added regularly to meet your needs more effectively.
           </p>
           { !isPending && categories.length != 0 &&
@@ -73,7 +85,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
                     <button
      
                       className="border rounded-full px-2 py-1 mt-4 mb-8 shadow-md shadow-black text-right cursor-pointer"
-                      onClick={()=>{ navigate(`/user/services#${slugify(category.name)}`) }} 
+                      onClick={() => { handleServices(category.name) }}
                     >
                       View More
                     </button>

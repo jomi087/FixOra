@@ -9,7 +9,7 @@ const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
     useEffect(() => {
         const verifyAuth = async () => {
             try {
-                const response = await AuthService.checkAuthStatus();
+                const response = await AuthService.checkAuthStatusApi();
                 if (response.status === 200) {
                     dispatch(Userinfo({ user: response.data.user }));
                 }

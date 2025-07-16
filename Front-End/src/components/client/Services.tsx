@@ -1,25 +1,15 @@
 import {Carousel,CarouselContent,CarouselItem,CarouselNext,CarouselPrevious,} from "@/components/ui/carousel"
 import { Card,CardContent,CardDescription,CardHeader,CardTitle } from "@/components/ui/card"
-import { useLocation } from "react-router-dom";
 
 import type { Category} from "@/shared/Types/category"
-import { useEffect } from "react";
 import { slugify } from "@/utils/helper/slugify";
+import { useScrollToHash } from "@/hooks/useScrollToHash";
 
 interface ServiceProps {
     categories : Category[] 
 }
 const Services: React.FC<ServiceProps> = ({ categories }) => {
-    const location = useLocation();
-    useEffect(() => {
-    if (location.hash) {
-        const id = location.hash.replace("#", "");
-        const el = document.getElementById(id);
-        if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-    }
-    }, [location]); 
+    useScrollToHash()
     return (
         <section className="w-full">
             { categories.map((cat) => (

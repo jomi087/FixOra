@@ -91,12 +91,17 @@ export const useCategoryForm = () => {
         formData.append("name", name);
         formData.append("description", description);
         if (image) formData.append("image", image);
+              
+        const subcategoriesJson = subcategories.map(sub => ({
+          name: sub.name,
+          description: sub.description,
+        }));
+        formData.append("subcategories", JSON.stringify(subcategoriesJson));
+
         subcategories.forEach((sub, index) => {
-            formData.append(`subcategories[${index}][name]`, sub.name);
-            formData.append(`subcategories[${index}][description]`, sub.description);
-            if (sub.image) {
-                formData.append(`subcategories[${index}][image]`, sub.image);
-            }
+          if (sub.image) {
+            formData.append(`subcategoryImages[${index}]`, sub.image);
+          }
         });
         return formData;
     };

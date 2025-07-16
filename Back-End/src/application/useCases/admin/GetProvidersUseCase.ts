@@ -6,7 +6,6 @@ interface filters {
     filter: string;
     currentPage: number;
     limit: number;
-    ProviderStatus:KYCStatus
 }
 
 
@@ -18,10 +17,10 @@ export class GetProvidersUseCase{
     async execute(input: filters) {
         
         try {
-            const { searchQuery, filter, currentPage, limit, ProviderStatus } = input
+            const { searchQuery, filter, currentPage, limit } = input
 
             const users = await this.userRepository.findProvidersWithFilters(
-                { searchQuery, filter, ProviderStatus },
+                { searchQuery, filter },
                 currentPage, limit,
                 ['password', 'refreshToken', 'googleId', 'userId', 'updatedAt']
             )

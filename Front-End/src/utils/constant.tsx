@@ -10,8 +10,10 @@ export const HeroSectionImage:string = "/Hero-removebg-preview.png"
 export const SingInThemeImage: string = "/signIn.png"
 /********************************************* rules  *******************************************************/
 export const categoryImageSize: number = 1  //default set  to 2 mb
-export const providerImageSize : number = 1
-
+export const providerImageSize: number = 1  //default set  to 2 mb
+export const KYCImageSize : number = 5   //default set  to 5 mb
+export const minYear = `${new Date().getFullYear() - 150}-01-01` 
+export const maxYear = `${new Date().getFullYear() - 19}-12-31`
 /******************************************* Reset Password Constraints Sections *******************************************************/
 export const constraints = [
     { label: "At least 10 characters", test: (pw: string) => pw.length >= 10 },
@@ -19,7 +21,6 @@ export const constraints = [
     // { label: "At least one number", test: (pw: string) => /\d/.test(pw) },
     // { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
 ];
-
 /******************************Navigation Items for the User navigation bar ********************************/
 export const navItems = [
   { name: 'Home', to: '/', icon: <Home size={18} />} ,

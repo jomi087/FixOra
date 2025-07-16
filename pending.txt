@@ -1,0 +1,40 @@
+edit category
+filename from pascal to camelCase , intentation , singleCots and dubleCotes any one
+remove console.log
+use code splitting
+if possible use 12 line rule (create custom hook)
+pasword type text to password
+in user Profile near change password there is ower flowed text crct it 
+addcatogry edge case is pending which is no duplicate subcategory name 
+accept multiple image for providers kyc
+
+
+Future 
+--------------------
+add login with mobile No option
+impliment cache 
+use rtk query or rdx query 
+customize ui of service Management
+subCategories to be able change status indipendently
+
+re-make ui for service section in user side /user/service
+
+kyc re-sumbision option 
+reject resone to update as array of reason with [ rewiedAt and reviewby and  reason ]  
+
+
+
+good Practice 
+--------------------
+configuration issues
+- any not preferred
+- enums
+- logger
+- elkstack
+- mapping
+- env configuration separte for dev and prodcution
+- cloudinary secured url
+- formic
+- Worker maangment
+- Booking Management
+- Payment

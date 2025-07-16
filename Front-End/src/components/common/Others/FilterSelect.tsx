@@ -15,7 +15,7 @@ interface FilterSelectProps {
 
 const FilterSelect: React.FC<FilterSelectProps> = ({filter,onChange,options,placeholder="Search..."}) => {
   return (
-    <div className="w-full">
+    <div className="">
       <Label className="sr-only">Filter</Label>
       <Select value={filter} onValueChange={onChange}>
         <SelectTrigger>

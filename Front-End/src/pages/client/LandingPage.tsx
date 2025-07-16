@@ -21,7 +21,7 @@ const LandingPage: React.FC = () => {
     const fetchData = () => {
       startTransition( async () => {
         try {
-          const res = await AuthService.getLandingData()
+          const res = await AuthService.getLandingDataApi()
           if (res.status === 200) {
             setCategories(res.data?.landingData?.categories)
             // setProviders(res.data?.providers)

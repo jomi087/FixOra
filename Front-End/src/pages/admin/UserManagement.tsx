@@ -24,7 +24,7 @@ const UserManagement: React.FC = () => {
     try {
       console.log("userId", userId)
       
-      const res = await AuthService.toggleUserStatus(userId)
+      const res = await AuthService.toggleUserStatusApi(userId)
       if (res.status === 200) {
         setCustData(prev =>
           prev.map((data) => data.userId === userId ? {

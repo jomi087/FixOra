@@ -9,10 +9,10 @@ import ChangePassowrdDialog from "./ChangePassowrdDialog";
 import { validatePassword } from "@/utils/validation/formValidation";
 
 interface ProfileProps { 
-    setEditMode: (editMode: boolean) => void;
+    toggle: (editMode: boolean) => void;
 }
 
-const Profile: React.FC<ProfileProps> = ({ setEditMode }) => {
+const Profile: React.FC<ProfileProps> = ({ toggle }) => {
 
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -54,7 +54,7 @@ const Profile: React.FC<ProfileProps> = ({ setEditMode }) => {
                         {`${user?.fname} ${user?.lname} `}
                         <CiEdit size={20}
                             className="cursor-pointer text-gray-500 hover:text-primary"
-                            onClick={() => setEditMode(true)}
+                            onClick={() => toggle(true)}
                         />
                     </h3>
                 </div>

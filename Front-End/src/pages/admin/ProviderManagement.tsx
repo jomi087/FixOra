@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useProviderManagement } from "@/hooks/useProviderManagement";
 import SearchInput from "@/components/common/Others/SearchInput";
 import FilterSelect from "@/components/common/Others/FilterSelect";
+import { useNavigate } from "react-router-dom";
 
 
 const ProviderManagement: React.FC = () => {
@@ -23,6 +24,8 @@ const ProviderManagement: React.FC = () => {
   ]
   
   const totalPages = Math.ceil(totalProviders / itemsPerPage)
+  const navigate = useNavigate()
+  
   
   return (
     <>
@@ -41,7 +44,12 @@ const ProviderManagement: React.FC = () => {
                 <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} /> 
               </div>
               <div className="w-full md:w-auto">
-                <Button variant="default" className="bg-yellow-600">Verify Providers</Button>
+                  <Button
+                    variant="default"
+                    className="bg-yellow-600"
+                    onClick={()=>{navigate('/admin/provider-request')}}
+                  >Verify Providers
+                  </Button>
               </div>
             </div>
             

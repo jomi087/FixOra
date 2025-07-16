@@ -9,10 +9,10 @@ const SignUpPage : React.FC = () => {
   const {loading, handleSubmit} = useSignUpLogic()
 
   return (
-    <main className="min-h-screen flex flex-col bg-cover " style={{ backgroundImage: BGImage_404 }} >
+    <div className="min-h-screen flex flex-col bg-cover " style={{ backgroundImage: BGImage_404 }} >
       <Header className={"md:text-start"} />
       <SignUp signUpSubmit={handleSubmit} loading={loading} />
-    </main>
+    </div>
   );
 };
 

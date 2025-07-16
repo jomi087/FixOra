@@ -2,12 +2,12 @@ import jwt from "jsonwebtoken";
 import { SignOptions } from "jsonwebtoken";
 import { User } from "../../../domain/entities/UserEntity.js";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
-import { UserRepository } from "../../../infrastructure/database/repositories/UserRepository.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 
 export class VerifyPasswordUseCase {
     constructor(
-        private readonly userRepository : UserRepository,
+        private readonly userRepository : IUserRepository,
         private readonly hashService : IHashService,
         private readonly emailService: IEmailService
         

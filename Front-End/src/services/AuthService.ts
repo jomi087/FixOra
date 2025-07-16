@@ -1,3 +1,4 @@
+import type { ProviderKYCType } from '@/utils/validation/providerKYCValidation';
 import axiosInstance from './axiosConfig';
 import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
 
@@ -32,7 +33,7 @@ class AuthService {
     //!  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
     /*********************************************************************************************************************** */
     
-    getLandingData() {
+    getLandingDataApi() {
         return axiosInstance.get('/api/public/landing-data')
     }
     
@@ -44,7 +45,7 @@ class AuthService {
         return axiosInstance.get("/api/auth/resend-otp");
     }
 
-    VerifySignupOtp(Data: string ) {
+    VerifySignupOtpApi(Data: string ) {
         return axiosInstance.post('/api/auth/verify-otp', { otpData : Data } , this.getJsonConfig());
     }
 
@@ -64,17 +65,21 @@ class AuthService {
         return axiosInstance.patch('/api/auth/reset-password', {token ,password,cPassword,} , this.getJsonConfig())
     }
 
-    checkAuthStatus() {
+    checkAuthStatusApi() {
         return axiosInstance.get("/api/auth/check");
     }
     /*********************************************************************************************************************** */
 
-    getActiveServices() {
+    getActiveServicesApi() {
         return axiosInstance.get('/api/user/services')
     }
 
+    providerKYCApi(data : FormData) {
+        return axiosInstance.post('/api/user/provider-kyc', data, this.getMultiPartConfig())
+    }
+
     editProfileApi(form: ProfileEdit) {
-        return axiosInstance.patch("/api/user/editProfile",form , this.getJsonConfig())
+        return axiosInstance.patch("/api/user/editProfile", form , this.getJsonConfig())
     }
 
     verifyPasswordApi(password:string) {
@@ -86,14 +91,18 @@ class AuthService {
     }
 
     /*********************************************************************************************************************** */
-    
+
+
+
+
+    /*********************************************************************************************************************** */
     getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
         return axiosInstance.get("/api/admin/customer-management", {
             params: { searchQuery, filter, currentPage, itemsPerPage }
         });
     }
 
-    toggleUserStatus(userId: string) {
+    toggleUserStatusApi(userId: string) {
         return axiosInstance.patch(`/api/admin/customer-management/${userId}`)
     }
 
@@ -109,11 +118,11 @@ class AuthService {
         })
     }
 
-    addCategory(data: FormData) {
+    addCategoryApi(data: FormData) {
         return axiosInstance.post(`/api/admin/service-management`,data,this.getMultiPartConfig())
     }
 
-    toggleCategoryStatus(categoryId: string) {
+    toggleCategoryStatusApi(categoryId: string) {
         return axiosInstance.patch(`/api/admin/service-management/${categoryId}`)
     }
 
