@@ -18,6 +18,8 @@ import { Userinfo } from "@/store/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
 import AddressDialog from "../common/Others/AddressDialog";
 import { useNavigate } from "react-router-dom";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 
 
@@ -109,7 +111,7 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
                     }))
 
                 } catch (error:any) {
-                    const errorMsg = error?.response?.data?.message ||"Failed to fetch address from coordinates";
+                    const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_ADDRESS_CORDINATES;
                     toast.error(errorMsg);
                 } finally {
                      setLoading(false);;
@@ -151,7 +153,7 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
 
             setIsDialogOpen(false);
         } catch (error:any) {
-            const errorMsg = error?.response?.data?.message ||"failed to fetch coordinates";
+            const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CORDINATES;
             toast.error(errorMsg);
         } finally {
             setLoading(false)
@@ -186,13 +188,13 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
         setLoading(true)
         try {
             const res = await AuthService.editProfileApi(form)
-            if (res.status == 200) {
+            if (res.status == HttpStatusCode.OK) {
                 dispatch(Userinfo({ user: { ...user, ...res.data.user } }));
                 toast.success("Updated");
                 toggle(true)
             }
         } catch (error:any) {
-            const errorMsg = error?.response?.data?.message ||"profile modification failed";
+            const errorMsg = error?.response?.data?.message || Messages.PROFILE_MODIFICATION_FAILED;
             toast.error(errorMsg);
         } finally {
             setLoading(false)

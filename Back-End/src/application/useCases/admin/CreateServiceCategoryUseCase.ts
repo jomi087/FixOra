@@ -1,6 +1,11 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
 import { v4 as uuidv4 } from "uuid";
-import { CategoryInputDTO } from "../../InputDTO's/CategoryInputDTO.js";
+import { CategoryInputDTO } from "../../DTO's/CategoryInputDTO.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+
+const { BAD_REQUEST } = HttpStatusCode
+const { CATEGORY_ALREADY_EXISTS} = Messages
 
 export class CreateServiceCategoryUseCase {
   constructor(
@@ -13,7 +18,7 @@ export class CreateServiceCategoryUseCase {
     const normalizedCategoryName = name.trim().toLowerCase();
     const exists = await this.categoryRepository.findByName(normalizedCategoryName);
     if (exists) {
-      throw { status: 400, message: `Category "${name}" already exists.` };
+      throw { status: BAD_REQUEST, message: CATEGORY_ALREADY_EXISTS  };
     }
 
     const category = {

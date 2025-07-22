@@ -1,17 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 
 //api logic
-import { SignupDTO } from "../../application/InputDTO's/SignupDTO.js";
+import { SignupDTO } from "../../application/DTO's/SignupDTO.js";
 import { SignupUseCase } from "../../application/useCases/auth/SignupUseCase.js";
 import { VerifySignupOtpUseCase } from "../../application/useCases/auth/VerifySignupOtpUseCase.js";
 import { ResendOtpUseCase } from "../../application/useCases/auth/ResendOtpUseCase.js";
 import { SigninUseCase } from "../../application/useCases/auth/SigninUseCase.js";
-import { SigninDTO } from "../../application/InputDTO's/SigninDTO.js";
+import { SigninDTO } from "../../application/DTO's/SigninDTO.js";
 import { RefreshTokenUseCase } from "../../application/useCases/auth/RefreshTokenUseCase.js";
 import { SignoutUseCase } from "../../application/useCases/auth/SignoutUseCase.js";
 import { ForgotPasswordUseCase } from "../../application/useCases/auth/ForgotPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
 import { GoogleSigninUseCase } from "../../application/useCases/auth/GoogleSigninUseCase.js";
+import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../shared/constant/Messages.js";
+
+const { OK, BAD_REQUEST,UNAUTHORIZED } = HttpStatusCode;
+const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,USER_NOT_FOUND,
+  SIGNIN_SUCCESSFUL,MISSING_TOKEN,VERIFICATION_MAIL_SENT,LOGGED_OUT,PASSWORD_RESET_SUCCESS
+ } = Messages;
 
 
 export class AuthController {
@@ -39,9 +46,9 @@ export class AuthController {
         maxAge: 10* 60 * 1000 // temp token  for 10 mints  
       })
 
-      res.status(200).json({
+      res.status(OK).json({
           success: true,
-        message: "OTP sent to your mail",
+        message: OTP_SENT,
       });
 
     } catch (error: any) {
@@ -59,9 +66,9 @@ export class AuthController {
       
       res.clearCookie("tempToken")
 
-      res.status(200).json({
+      res.status(OK).json({
         success: true,
-        message: "Account Created SuccessFully"
+        message: ACCOUNT_CREATED_SUCCESS
       });
 
     } catch (error: any) {
@@ -75,9 +82,9 @@ export class AuthController {
       const tempToken = req.cookies.tempToken
       await this.resendOtpUseCase.execute(tempToken)
 
-      res.status(200).json({
+      res.status(OK).json({
         success: true,
-        message: "OTP sent to your email",
+        message: OTP_SENT,
       });
 
     } catch (error) {
@@ -90,12 +97,12 @@ export class AuthController {
     try {
 
       const { code, role } = req.body;
-      if (!code || !role) throw { status: 400, message: "Token(code) is missing" };
+      if (!code || !role) throw { status: BAD_REQUEST, message: MISSING_TOKEN  };
       
       const result = await this.googleSigninUseCase.execute(code,role)
 
       res
-        .status(200)
+        .status(OK)
         .cookie('accessToken', result.accessToken, {
           httpOnly: true,
           secure: process.env.NODE_COOKIE_ENV === "production",
@@ -110,7 +117,7 @@ export class AuthController {
         })
         .json({
           success: true,
-          message: "Singin Successful",
+          message: SIGNIN_SUCCESSFUL,
           userData: result.userData,
         });
     } catch (error) {
@@ -126,7 +133,7 @@ export class AuthController {
       const result = await this.signinUseCase.execute(credentials)
 
       res
-        .status(200)
+        .status(OK)
         .cookie('accessToken', result.accessToken, {
           httpOnly: true,
           secure: process.env.NODE_COOKIE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
@@ -141,7 +148,7 @@ export class AuthController {
         })
         .json({
           success: true,
-          message: "Singin Successful",
+          message: SIGNIN_SUCCESSFUL,
           userData: result.userData,
         });
       
@@ -156,9 +163,9 @@ export class AuthController {
       const { email } = req.body
       await this.forgotPasswordUseCase.execute(email)  // this use case is  were i am checking  do the given email exist in the usredb  if yes then send otp
 
-      res.status(200).json({
+      res.status(OK).json({
         sucess: true,
-        message : "Verification mail sent to your mail"
+        message : VERIFICATION_MAIL_SENT
       })
 
     } catch (error:any) {
@@ -174,9 +181,9 @@ export class AuthController {
       
       await this.resetPasswordUseCase.execute(token, password)
 
-      res.status(200).json({
+      res.status(OK).json({
         success: true,
-        message: "Password reset successful",
+        message: PASSWORD_RESET_SUCCESS,
       });
 
     } catch (error: any) {
@@ -189,9 +196,9 @@ export class AuthController {
   async checkAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
-        throw { status: 401, message: "Not authenticated" };
+        throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
       }
-      res.status(200).json({
+      res.status(OK).json({
         success: true,
         user: {
           fname: req.user.fname,
@@ -228,9 +235,9 @@ export class AuthController {
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
       })
 
-      res.status(200).json({
+      res.status(OK).json({
         success: true,
-        message: "Tokens refreshed successfully"
+        message: TOKENS_REFRESHED_SUCCESS
       });
 
     } catch (error:any) {
@@ -260,7 +267,7 @@ export class AuthController {
       const userId  = req.user?.userId   //req.user gives the userData  ( user: Omit<User, "password" | "refreshToken"> | null)
 
       if (!userId ) {
-        throw { status : 400, message : "user or role is missing, refresh again"}
+        throw { status : BAD_REQUEST, message : USER_NOT_FOUND }
       }
 
       await this.signoutUseCase.execute( userId )
@@ -271,10 +278,10 @@ export class AuthController {
         sameSite: "lax" as const
       }
       
-      res.status(200)
+      res.status(OK)
         .clearCookie('accessToken', options)
         .clearCookie('refreshToken', options)
-        .json({ message: "Logged Out" })
+        .json({ message : LOGGED_OUT })
       
     } catch (error) {
       console.log("signout error", error);

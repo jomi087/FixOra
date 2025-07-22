@@ -15,6 +15,4 @@ export interface Category {
   image: string;
   subcategories: Subcategory[];
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }

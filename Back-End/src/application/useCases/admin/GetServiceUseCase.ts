@@ -1,12 +1,16 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
 
 interface filters {
-  searchQuery: string;
-  filter: string;
-  currentPage: number;
-  limit : number;
+    searchQuery: string;
+    filter: string;
+    currentPage: number;
+    limit : number;
 }
 
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode
+const { INTERNAL_ERROR } = Messages
 
 export class GetServiceUseCase {
     constructor(
@@ -30,7 +34,7 @@ export class GetServiceUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'Fetching Customer data failed, (something went wrong)'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

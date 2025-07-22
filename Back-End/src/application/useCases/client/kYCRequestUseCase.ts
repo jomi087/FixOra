@@ -1,7 +1,12 @@
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity.js";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
 import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
-import { KYCInputDTO } from "../../InputDTO's/KYCInputDTO.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+import { KYCInputDTO } from "../../DTO's/KYCInputDTO.js";
+
+const { BAD_REQUEST} = HttpStatusCode
+const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED } = Messages
 
 export class KYCRequestUseCase {
     constructor(
@@ -27,17 +32,20 @@ export class KYCRequestUseCase {
         
         if (existing) {
             if (existing.status === KYCStatus.Pending) {
-                throw { status: 400, message: "You already have a pending KYC request. Please wait for admin review." };
+                throw { status: BAD_REQUEST, message: PENDING_KYC_REQUEST };
             }
             if (existing.status === KYCStatus.Approved) {
-                throw { status: 400, message: "Your KYC is already approved. No need to reapply." };
+                throw { status: BAD_REQUEST, message: KYC_ALREADY_APPROVED };
             }
             if (existing.status === KYCStatus.Rejected) {
-                await this.kycRequestRepository.update(input.userId, newRequest) as KYCRequest;
+                await this.kycRequestRepository.updateByUserId(input.userId, newRequest) as KYCRequest;
                 return "resubmitted"
             }
         }
-        await this.kycRequestRepository.create(newRequest) 
+        
+        await this.kycRequestRepository.create(newRequest)
+        
+
         return "submitted"
     }
 }

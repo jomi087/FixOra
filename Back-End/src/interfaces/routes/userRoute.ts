@@ -5,7 +5,7 @@ import { editProfileSchema } from '../validations/editProfileSchema.js'
 import { verifyPasswordSchema } from '../validations/verifyPasswordSchema.js'
 import { resetPasswordSchema } from '../validations/resetPasswordSchema.js'
 import upload from '../middleware/upload.js'
-import { validateKYCRequest } from '../validations/KYCRequestSchema.js'
+import { validateKYCRequest } from '../validations/kycRequestSchema.js'
 const router = express.Router()
 
 router.get('/services', userAuthMiddleware ,(req,res,next)=>userController.activeServices(req, res, next))

@@ -34,9 +34,13 @@ ________________________________________________________________________________
 
 * Purpose and useCase of  debouncing  for optimising
 
-* Reacts New Hook -> useTransition() [example in lading Page]
+* Reacts New Hook -> useTransition()  [not implimented ]
 
 * FormData can only store strings, Blobs, or Files
+
+* purpose of lookup 
+
+*  scinario of facet and what it is -> $facet allows you to run multiple pipelines in parallel on the same input and combine their results into a single document.
 ______________________________________________________________________________________________________________________________________
 ## Node (express) version
 ---------------------------------------------------------------------------------------------------------------------------------------

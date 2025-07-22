@@ -3,6 +3,7 @@ import { Provider } from "../../entities/ProviderEntity.js";
 import { User } from "../../entities/UserEntity.js";
 import { UserDTO }  from "../../outputDTO's/UserDTO.js";
 
+//!mistake in this repository (i have am violatin srp rule need to re-work)
 
 export interface IUserRepository {
     create(user: UserDTO): Promise <User>;   

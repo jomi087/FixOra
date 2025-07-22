@@ -1,7 +1,12 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
-import { SigninDTO } from "../../InputDTO's/SigninDTO.js";
-import { AuthStrategyFactory } from "../../services/auth/signinStrategy/repository/AuthStrategyFactory.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+import { SigninDTO } from "../../DTO's/SigninDTO.js";
+import { AuthStrategyFactory } from "../../strategies/auth/AuthStrategyFactory.js";
+
+const {NOT_FOUND,INTERNAL_SERVER_ERROR} = HttpStatusCode
+const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
 
 export class SigninUseCase {
     constructor(
@@ -33,7 +38,7 @@ export class SigninUseCase {
             
             const updatedUserData = await this.userRepository.update({ userId: userData.userId } ,{refreshToken : refToken } ,["password","refreshToken"])
             if (!updatedUserData) {
-                throw { status: 404, message: "User Not Found" };
+                throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             }
             
             return {
@@ -53,7 +58,7 @@ export class SigninUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'signin failed ( something went wrong )'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

@@ -1,9 +1,13 @@
 import jwt from "jsonwebtoken";
-import { UserInputDTO } from "../../InputDTO's/UserInputDTO.js";
+import { UserInputDTO } from "../../DTO's/UserInputDTO.js";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
 
+const {FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
+const {UNAUTHORIZED_MSG,INTERNAL_ERROR} = Messages
 
 export class ResendOtpUseCase{
     constructor(
@@ -16,7 +20,7 @@ export class ResendOtpUseCase{
     async execute(token : string):Promise<void> {
         try {
             if (!token) {
-                throw { status: 403, message: "Something  went wrong"  }
+                throw { status: FORBIDDEN , message: UNAUTHORIZED_MSG }
             }
             const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as UserInputDTO            
             
@@ -36,7 +40,7 @@ export class ResendOtpUseCase{
            if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: "Re-send Otp failed, (something went wrong)" };  
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };  
         }
     }
 }

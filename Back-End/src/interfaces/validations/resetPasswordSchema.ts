@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { passwordField } from "./fields.js"
+import { Messages } from "../../shared/constant/Messages.js"
 
 export const resetPasswordSchema = z.object({
     token: z.string(),
@@ -7,7 +8,7 @@ export const resetPasswordSchema = z.object({
     cPassword : passwordField
 })
     .refine((data) =>  data.password === data.cPassword,{
-        message: "Password do not maatch",
+        message: Messages.PASSWORDS_DO_NOT_MATCH,
         path : ["cPassword"]
     }
 )

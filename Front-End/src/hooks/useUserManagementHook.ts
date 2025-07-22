@@ -1,5 +1,7 @@
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { CustomersData  } from "@/shared/Types/user";
+import { CCPP } from "@/utils/constant";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
@@ -12,7 +14,7 @@ export const useUserManagement = ()=>{
   const [filter, setFilter] = useState("all")
   const [debouncedQuery] = useDebounce(searchQuery,500)
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 16
+  const itemsPerPage = CCPP || 16
   
   const totalPages = Math.ceil(totalCustomers / itemsPerPage);
   
@@ -21,7 +23,7 @@ export const useUserManagement = ()=>{
       setLoading(true);
       try {
         const res = await AuthService.getCustomerApi(debouncedQuery,filter,currentPage,itemsPerPage);
-        if (res.status === 200) {
+        if (res.status === HttpStatusCode.OK) {
           setCustData(res.data.customersData);
           setTotalCustomers(res.data.total); 
         }

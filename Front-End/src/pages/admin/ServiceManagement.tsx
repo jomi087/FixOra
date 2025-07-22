@@ -1,6 +1,6 @@
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
-import { adminSideBarOptions } from "@/utils/constant";
+import { adminSideBarOptions, Messages } from "@/utils/constant";
 import {  useState } from "react";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import SearchInput from "@/components/common/Others/SearchInput";
@@ -11,6 +11,7 @@ import Pagination from "@/components/common/Others/Pagination";
 import { useServiceManagement } from "@/hooks/useServiceManagement";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 
 
 const ServiceManagement: React.FC = () => {
@@ -27,7 +28,7 @@ const ServiceManagement: React.FC = () => {
       console.log("categoryId", categoryId)
       
       const res = await AuthService.toggleCategoryStatusApi(categoryId)
-      if (res.status === 200) {
+      if (res.status === HttpStatusCode.OK) {
         setCategories(prev =>
           prev.map((cat) => cat.categoryId === categoryId ? {
             ...cat,
@@ -41,7 +42,7 @@ const ServiceManagement: React.FC = () => {
       }
     } catch (error: any) {
       console.log(error)
-      const errorMsg = error?.response?.data?.message || "Failed to update status";
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
       toast.error(errorMsg);
     }
   }

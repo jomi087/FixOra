@@ -1,5 +1,11 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+
+
+const { FORBIDDEN,NOT_FOUND } = HttpStatusCode
+const { UNAUTHORIZED_MSG,INVALID_REFRESH_TOKEN,USER_NOT_FOUND } = Messages
 
 export class RefreshTokenUseCase  {
   constructor(
@@ -10,7 +16,7 @@ export class RefreshTokenUseCase  {
   async execute(refreshToken: string) {
     try {
       if (!refreshToken) {
-        throw { status: 403,  message: "Unauthorized request (refresh Token missing)"  }
+        throw { status: FORBIDDEN,  message: UNAUTHORIZED_MSG  }
       }
 
       const decoded = this.tokenService.verifyRefreshToken(refreshToken) as {
@@ -22,7 +28,7 @@ export class RefreshTokenUseCase  {
 
       const user = await this.userRepository.findByUserId(decoded?.id,["password"])
       if (!user || user.refreshToken !== refreshToken  ) {
-        throw { status: 403, message: "Invalid refresh token" };
+        throw { status: FORBIDDEN, message: INVALID_REFRESH_TOKEN };
       }
 
       const payload = {
@@ -36,7 +42,7 @@ export class RefreshTokenUseCase  {
       const newRefreshToken = this.tokenService.generateRefreshToken(payload)
       
       if (!await this.userRepository.update( { userId: decoded.id } ,{refreshToken : newRefreshToken } )) {
-          throw { status: 404, message: "User Not Found" };
+          throw { status: NOT_FOUND, message: USER_NOT_FOUND };
       }
 
       return  {
@@ -48,7 +54,7 @@ export class RefreshTokenUseCase  {
       if (error.status && error.message) {
         throw error;
       }
-      throw { status: 403, message: "Unauthorized (something went wrong)" };
+      throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
     }
   }
 }

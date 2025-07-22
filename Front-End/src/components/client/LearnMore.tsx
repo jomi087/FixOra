@@ -7,7 +7,7 @@ import type { MainCategory } from '@/shared/Types/category';
 //temp data
 import { providers } from '../../utils/constant';
 import { useNavigate } from 'react-router-dom';
-import { slugify } from '@/utils/helper/slugify';
+import { slugify } from '@/utils/helper/utils';
 import { useAppSelector } from '@/store/hooks';
 import { RoleEnum } from '@/shared/enums/roles';
 import { toast } from 'react-toastify';

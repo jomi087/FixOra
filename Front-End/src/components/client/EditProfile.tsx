@@ -16,6 +16,8 @@ import { getCoordinatesFromAddress } from "@/utils/helper/forwardGeocodingLocati
 import { Userinfo } from "@/store/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
 import AddressDialog from "../common/Others/AddressDialog";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 
 interface EditProfileProps {
@@ -106,7 +108,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
                     }))
 
                 } catch (error:any) {
-                    const errorMsg = error?.response?.data?.message ||"Failed to fetch address from coordinates";
+                    const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_ADDRESS_CORDINATES;
                     toast.error(errorMsg);
                 } finally {
                      setLoading(false);;
@@ -148,7 +150,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
 
             setIsDialogOpen(false);
         } catch (error:any) {
-            const errorMsg = error?.response?.data?.message ||"failed to fetch coordinates";
+            const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CORDINATES;
             toast.error(errorMsg);
         } finally {
             setLoading(false)
@@ -182,7 +184,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
         setLoading(true)
         try {
             const res = await AuthService.editProfileApi(form)
-            if (res.status == 200) {
+            if (res.status == HttpStatusCode.OK) {
                 console.log(res.data)
                 dispatch(Userinfo({ user: { ...user, ...res.data.user } }));
                 toast.success("Updated");

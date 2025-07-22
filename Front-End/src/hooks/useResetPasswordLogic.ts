@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 export const useResetPasswordLogic = () => {
   const [searchParams] = useSearchParams();
@@ -27,15 +29,15 @@ export const useResetPasswordLogic = () => {
     setLoading(true);
     try {
       const res = await AuthService.resetPasswordApi(token, password, cPassword);
-      if (res.status === 200) {
-        toast.success(res.data.message || "Password reset successful!");
+      if (res.status === HttpStatusCode.OK) {
+        toast.success(res.data.message || Messages.PASSWORD_RESET_SUCCESS);
         setTimeout(() => {
           navigate("/");
         }); // no delay added
       }
     } catch (error: any) {
       console.error("Reset Password Error:", error);
-      const errorMsg = error?.response?.data?.message || "Password Reset failed";
+      const errorMsg = error?.response?.data?.message || Messages.PASSWORD_RESET_FAILED;
       toast.error(errorMsg);
       setTimeout(() => {
         navigate("/");

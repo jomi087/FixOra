@@ -7,6 +7,8 @@ import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
 import ChangePassowrdDialog from "./ChangePassowrdDialog";
 import { validatePassword } from "@/utils/validation/formValidation";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 interface ProfileProps { 
     toggle: (editMode: boolean) => void;
@@ -30,12 +32,12 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
         setLoading(true)
         try {
             const res = await AuthService.verifyPasswordApi(password)
-            if (res.status === 200) {
-                toast.success(res.data.message || "A mail has been sent to your mail" )
+            if (res.status === HttpStatusCode.OK) {
+                toast.success(res.data.message || Messages.MAIL_SENT_MSG )
             }
             setIsDialogOpen(false)
         } catch (error:any) {
-            const errorMsg = error?.response?.data?.message ||"Password verification Failed";
+            const errorMsg = error?.response?.data?.message || Messages.FAILED_PASSWORD_VERIFICATION;
             toast.error(errorMsg);
         } finally {
             setLoading(false)

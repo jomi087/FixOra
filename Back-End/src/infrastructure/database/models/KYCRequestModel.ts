@@ -8,7 +8,7 @@ export interface IKYCRequestModel extends Document,KYCRequest{}
 const KYCRequestSchema = new Schema<IKYCRequestModel>({
     userId: {
         type: String,
-        unique : true,
+        // unique : true,
         required: true
     },
     dob: {
@@ -23,6 +23,7 @@ const KYCRequestSchema = new Schema<IKYCRequestModel>({
     },
     serviceId: {
         type: String,
+        // unique: true,
         required : true
     },
     specializationIds: [{

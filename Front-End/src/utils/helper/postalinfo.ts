@@ -1,5 +1,6 @@
 import axios from "axios"
 import { toast } from "react-toastify";
+import { Messages } from "../constant";
 
 // work for indian postal
 export const getPostalInfo = async (pincode: string) => {
@@ -14,10 +15,14 @@ export const getPostalInfo = async (pincode: string) => {
         if (data?.Status === "Success" && data.PostOffice?.length > 0) {
             return data.PostOffice[0]
         } else {
-            throw new Error("Invalid Pincode");
+            const apiMessage = data?.Message || Messages.INVALID_OR_UNAVAILABLE_PINCODE;
+            throw new Error(apiMessage);
         }
     } catch (error: any) {
-        console.log("getPostalInfo error",error)
-        toast.error("Something went wrong")
+        // If it's an axios error, return a more meaningful message
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || Messages.NETWORK_ERROR_FETCHING_POSTAL_INFO);
+        }
+        throw error;
     }
 }

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 export const useChangePasswordLogic = () => {
   const [searchParams] = useSearchParams();
@@ -28,15 +30,15 @@ export const useChangePasswordLogic = () => {
     setLoading(true);
     try {
       const res = await AuthService.changePasswordApi(token, password, cPassword);
-      if (res.status === 200) {
-        toast.success(res.data.message || "Password updated successful!");
+      if (res.status === HttpStatusCode.OK) {
+        toast.success(res.data.message || Messages.PASSWORD_UPDATED_SUCCESS);
         setTimeout(() => {
           navigate("/user/account/profile");
         });
       }
     } catch (error: any) {
       console.error("Reset Password Error:", error);
-      const errorMsg = error?.response?.data?.message || "Password updation failed";
+      const errorMsg = error?.response?.data?.message || Messages.PASSWORD_UPDATE_FAILED;
       toast.error(errorMsg);
       setTimeout(() => {
         navigate("/user/account/profile");

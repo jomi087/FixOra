@@ -1,28 +1,37 @@
 import { NextFunction, Request, Response } from "express";
-import { GetCustomersUseCase } from "../../application/useCases/admin/GetCustomersUseCase.js";
-import { KYCStatus } from "../../shared/constant/KYCstatus.js";
+import { RoleEnum } from "../../shared/constant/Roles.js";
+import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../shared/constant/Messages.js";
+
+
+import { IGetCustomersUseCase } from "../../application/Interface/useCases/Admin/IGetCustomersUseCase.js";
 import { GetProvidersUseCase } from "../../application/useCases/admin/GetProvidersUseCase.js";
 import { GetServiceUseCase } from "../../application/useCases/admin/GetServiceUseCase.js";
 import { CreateServiceCategoryUseCase } from "../../application/useCases/admin/CreateServiceCategoryUseCase.js";
 import { ToggleCategoryStatusUseCase } from "../../application/useCases/admin/ToggleCategoryStatusUseCase.js";
 import { ToggleUserStatusUseCase } from "../../application/useCases/admin/ToggleUserStatusUseCase.js";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
-import { CategoryInputDTO, SubcategoryInputDTO } from "../../application/InputDTO's/CategoryInputDTO.js";
+import { CategoryInputDTO } from "../../application/DTO's/CategoryInputDTO.js";
+import { ProviderApplicationUseCase } from "../../application/useCases/admin/ProviderApplicationUseCase.js";
+import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
 
+const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
+const {  UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
 
 export class AdminController {
     constructor(
-        private getCustomersUseCase: GetCustomersUseCase,
-        private toggleUserStatusUseCase : ToggleUserStatusUseCase,
+        private getCustomersUseCase: IGetCustomersUseCase,
+        private toggleUserStatusUseCase: ToggleUserStatusUseCase,
         private getProvidersUseCase: GetProvidersUseCase,
+        private providerApplicationUseCase: ProviderApplicationUseCase,
+        private updateKYCStatusUseCase : IUpdateKYCStatusUseCase,
         private getServiceUseCase: GetServiceUseCase,
         private createServiceCategoryUseCase: CreateServiceCategoryUseCase,
-        private imageUploaderService: IImageUploaderService, 
+        private imageUploaderService: IImageUploaderService,
         private toggleCategoryStatusUseCase: ToggleCategoryStatusUseCase,
-
     ) { }
 
-    async getCustomers(req: Request, res: Response, next: NextFunction) :Promise<void>{
+    async getCustomers(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 
             const searchQuery = req.query.searchQuery as string || "";
@@ -30,12 +39,12 @@ export class AdminController {
             const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
-            const result = await this.getCustomersUseCase.execute({searchQuery,filter,currentPage,limit});
+            const result = await this.getCustomersUseCase.execute({ searchQuery, filter, currentPage, limit });
 
-            res.status(200).json({
+            res.status(OK).json({
                 success: true,
-                customersData: result.customersData,
-                total : result.total
+                customersData: result.data,
+                total: result.total
             });
             
         } catch (error) {
@@ -44,29 +53,29 @@ export class AdminController {
         }
     }
 
-    async toggleUserStatus(req: Request, res: Response, next: NextFunction): Promise<void>{
+    async toggleUserStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { userId } = req.params
             await this.toggleUserStatusUseCase.execute(userId);
 
-            res.status(200).json({ success: true });
+            res.status(OK).json({ success: true });
         } catch (error) {
             console.error("Error toggling status:", error)
             next(error)
         }
     }
     
-    async getProviders(req: Request, res: Response, next: NextFunction) :Promise<void>{
+    async getProviders(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 
             const searchQuery = req.query.searchQuery as string || "";
             const filter = req.query.filter as string || "all";
             const currentPage = parseInt(req.query.currentPage as string) || 1
-            const limit = parseInt(req.query.itemsPerPage as string) || 8; 
+            const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
             const result = await this.getProvidersUseCase.execute({ searchQuery, filter, currentPage, limit });
 
-            res.status(200).json({
+            res.status(OK).json({
                 success: true,
                 providerData: result.providerData,
                 total: result.total
@@ -78,7 +87,49 @@ export class AdminController {
         }
     }
 
-    
+    async getProviderApplications(req: Request, res: Response, next: NextFunction): Promise<void>{
+        try {
+            const searchQuery = req.query.searchQuery as string || ""
+            const filter = req.query.filter as string|| "Pending"
+            const currentPage = parseInt(req.query.currentPage as string) || 1
+            const limit = parseInt(req.query.itemsPerPage as string) || 8
+            
+            const result = await this.providerApplicationUseCase.execute({ searchQuery, filter, currentPage, limit });
+
+            res.status(OK).json({
+                success: true,
+                ApplicationData : result.data,
+                total: result.total
+            });
+
+        } catch (error) {
+            console.error("getProviders error:", error);
+            next(error);
+        }
+    }
+
+    async updateKYCStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const id = req.params.id;
+            const { action, reason } = req.body;
+
+            if (!req.user || req.user.role !== RoleEnum.Admin || !req.user.userId) {
+                throw { status: FORBIDDEN , message: UNAUTHORIZED_MSG };
+            }
+
+            const adminId = req.user.userId
+            const result = await this.updateKYCStatusUseCase.execute({ id,action,reason,adminId});
+
+            res.status(OK).json({
+                success: true,
+                message : result.message
+            });
+
+        } catch (error) {
+            console.error("updateKYCStatus error:", error);
+            next(error);
+        }
+    }
 
     async getServices(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -89,7 +140,7 @@ export class AdminController {
 
             const result = await this.getServiceUseCase.execute({ searchQuery, filter, currentPage, limit });
 
-            res.status(200).json({
+            res.status(OK).json({
                 success: true,               
                 catogoriesData: result.catogoriesData,
                 total : result.total
@@ -109,15 +160,15 @@ export class AdminController {
 
             const mainImageFile = files.find(file => file.fieldname === "image");
 
-            if (!mainImageFile) throw { status: 400, message: "Main category image missing" };
+            if (!mainImageFile) throw { status: BAD_REQUEST, message: MAIN_CATEGORY_IMAGE_MISSING  };
             
-            const mainImageUrl = await this.imageUploaderService.uploadImage(mainImageFile.buffer);
+            const mainImageUrl = await this.imageUploaderService.uploadImage(mainImageFile.buffer, "FixOra/Services");
 
             const subcategoriesWithUrls = await Promise.all(
                 subcategories.map(async (sub: any, index: number) => {
                     const subImageFile = files.find(file => file.fieldname === `subcategoryImages[${index}]`);
-                    if (!subImageFile) throw { status: 400, message: `Subcategory image missing at index ${index}` };
-                    const imageUrl = await this.imageUploaderService.uploadImage(subImageFile.buffer);
+                    if (!subImageFile) throw { status: BAD_REQUEST, message: SUBCATEGORY_IMAGE_MISSING };
+                    const imageUrl = await this.imageUploaderService.uploadImage(subImageFile.buffer, "FixOra/Services");
 
                     return {
                     name: sub.name,
@@ -136,9 +187,9 @@ export class AdminController {
 
             await this.createServiceCategoryUseCase.execute(categoryInputDTO);
 
-            res.status(200).json({
+            res.status(OK).json({
                 success: true,
-                message: "Category created successfully",
+                message: CATEGORY_CREATED_SUCCESS,
             });
 
         } catch (error) {
@@ -146,13 +197,12 @@ export class AdminController {
         }
     }
 
-
     async toggleCategoryStatus(req: Request, res: Response, next: NextFunction): Promise<void>{
         try {
             const { categoryId } = req.params
             await this.toggleCategoryStatusUseCase.execute(categoryId);
 
-            res.status(200).json({ success: true });
+            res.status(OK).json({ success: true });
         } catch (error) {
             console.error("Error toggling status:", error)
             next(error)

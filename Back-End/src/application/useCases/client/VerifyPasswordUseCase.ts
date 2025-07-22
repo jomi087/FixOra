@@ -4,20 +4,24 @@ import { User } from "../../../domain/entities/UserEntity.js";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+
+const { FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
+const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages
 
 export class VerifyPasswordUseCase {
     constructor(
         private readonly userRepository : IUserRepository,
         private readonly hashService : IHashService,
         private readonly emailService: IEmailService
-        
     ) { }
     
     async execute(password: string, userId : string): Promise<void> {
         try {
             const user = await this.userRepository.findByUserId(userId,["refreshToken"]) as User; 
             const isMatch = await this.hashService.compare(password, user.password as string)
-            if (!isMatch) throw { status: 403, message: "Invalid Password" }
+            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_PASSWORD }
             
             const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions['expiresIn']
             const resetToken = jwt.sign({ email: user.email }, process.env.JWT_RESET_PASSWORD_SECRET as string, { expiresIn: expiryTime })
@@ -42,7 +46,7 @@ export class VerifyPasswordUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: ' password verification failed, (something went wrong)'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

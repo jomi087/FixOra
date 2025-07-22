@@ -1,4 +1,4 @@
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useState } from "react"
 import BlogsPreview from "../../components/client/BlogsPreview"
 import Hero from "../../components/client/Hero"
 import LearnMore from "../../components/client/LearnMore"
@@ -7,6 +7,8 @@ import Nav from "../../components/common/layout/Nav"
 import AuthService from "@/services/AuthService"
 import { toast } from "react-toastify"
 import type { MainCategory } from "@/shared/Types/category"
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode"
+import { Messages } from "@/utils/constant"
 // import type { ProviderImage } from "@/shared/Types/providers"
 
 
@@ -14,25 +16,23 @@ const LandingPage: React.FC = () => {
   const [categories, setCategories] = useState<MainCategory[]>([]);
   //const [providers, setProviders] = useState<ProviderImage[]>([]);
   
-  // const [loading, setLoading] = useState(false)  // replaces loading state with useTransition hook reacts new hook  which dies the same wrk but withless code
-  const [ isPending, startTransition ] = useTransition();
+  const [loading, setLoading] = useState(true)  
 
   useEffect(() => {
-    const fetchData = () => {
-      startTransition( async () => {
-        try {
-          const res = await AuthService.getLandingDataApi()
-          if (res.status === 200) {
-            setCategories(res.data?.landingData?.categories)
-            // setProviders(res.data?.providers)
-
-          }
-        } catch (error: any) {
-          console.log(error)
-          const errorMsg = error?.response?.data?.message || "Failed to update status";
-          toast.error(errorMsg);
+    const fetchData = async () => {
+      try {
+        const res = await AuthService.getLandingDataApi()
+        if (res.status === HttpStatusCode.OK) {
+          setCategories(res.data?.landingData?.categories)
+          // setProviders(res.data?.providers)
         }
-      })
+      } catch (error: any) {
+        // console.log(error)
+        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
+        toast.error(errorMsg);
+      } finally {
+        setLoading(false)
+      }
     }
     fetchData();
   },[])
@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
         <LearnMore
           categories = {categories}
           //providers = {providers}
-          isPending = {isPending}
+          isPending = {loading}
         />
         <BlogsPreview/> 
       </main>

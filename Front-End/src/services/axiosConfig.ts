@@ -3,6 +3,7 @@
 import axios from 'axios';
 import appStore from '../store/appStore';
 import { logout } from '../store/userSlice';
+import { HttpStatusCode } from '@/shared/enums/HttpStatusCode';
 
 
 // Create axios instance
@@ -29,7 +30,7 @@ axiosInstance.interceptors.response.use(
                     withCredentials : true
                 }); 
 
-                if (response.status === 200) {
+                if (response.status === HttpStatusCode.OK) {
                     return axiosInstance(originalRequest);
                 }
             } catch (refreshError) {

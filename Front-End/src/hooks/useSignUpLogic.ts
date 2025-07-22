@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNo, validatePassword } from "@/utils/validation/formValidation";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 
 export const useSignUpLogic = () => {
@@ -38,14 +40,14 @@ export const useSignUpLogic = () => {
         try {
             const res = await AuthService.signupApi(formData)
 
-            if (res.status == 200 || res.status == 201) {
-                toast.success(res.data.message ||" OTP has been sent to your mail ");
+            if (res.status == HttpStatusCode.OK || res.status == HttpStatusCode.CREATED) {
+                toast.success(res.data.message || Messages.OTP_SENT_SUCCESS);
                 setTimeout(() => {
                 navigate('/otp');
                 }, 1000);
             }
         } catch (error: any) {
-            const errorMsg = error?.response?.data?.message ||"Account Creation failed";
+            const errorMsg = error?.response?.data?.message || Messages.ACCOUNT_CREATION_FAILED ;
             toast.error(errorMsg);
         } finally {
             setLoading(false)

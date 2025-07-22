@@ -2,6 +2,7 @@ import { UserRepository } from "../infrastructure/database/repositories/UserRepo
 import { OtpRepository } from "../infrastructure/database/repositories/OtpRepository.js";
 import { CategoryRepository } from "../infrastructure/database/repositories/CategoryRepository.js";
 import { KYCRequestRepository } from "../infrastructure/database/repositories/KYCRequestRepository.js";
+import { ProviderRepository } from "../infrastructure/database/repositories/ProviderRepository.js";
 
 import { EmailService } from "../infrastructure/services/EmailService.js";
 import { OtpGenratorservice } from "../infrastructure/services/OtpGeneratorService.js";
@@ -15,6 +16,7 @@ const userRepository = new UserRepository();
 const otpRepository = new OtpRepository();
 const categoryRepository = new CategoryRepository()
 const kycRequestRepository = new KYCRequestRepository()
+const providerRepository = new ProviderRepository()
 
 
 const emailService = new EmailService(); 
@@ -92,6 +94,12 @@ const toggleUserStatusUseCase = new ToggleUserStatusUseCase(userRepository)
 import { GetProvidersUseCase } from "../application/useCases/admin/GetProvidersUseCase.js";
 const getProvidersUseCase = new GetProvidersUseCase(userRepository)
 
+import { ProviderApplicationUseCase } from "../application/useCases/admin/ProviderApplicationUseCase.js";
+const providerApplicationUseCase = new ProviderApplicationUseCase(kycRequestRepository)
+
+import { UpdateKYCStatusUseCase } from "../application/useCases/admin/UpdateKYCStatusUseCase.js";
+const updateKYCStatusUseCase = new UpdateKYCStatusUseCase(kycRequestRepository,providerRepository)
+
 import { GetServiceUseCase } from "../application/useCases/admin/GetServiceUseCase.js";
 const getServiceUseCase = new GetServiceUseCase(categoryRepository)
 
@@ -100,6 +108,7 @@ const createServiceCategoryUseCase = new CreateServiceCategoryUseCase(categoryRe
 
 import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase.js";
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository)
+
 
 /******************************************************************************************************************************************************/
 import { PublicController } from "../interfaces/controllers/PublicController.js";
@@ -110,7 +119,7 @@ import { AdminController } from "../interfaces/controllers/AdminController.js";
 const publicController = new PublicController(getLandingDataUseCase)
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
 const userController = new UserController(activeServiceUseCase,kycRequestUseCase,imageUploaderService,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
-const adminController = new AdminController(getCustomersUseCase,toggleUserStatusUseCase,getProvidersUseCase,getServiceUseCase,createServiceCategoryUseCase,imageUploaderService,toggleCategoryStatusUseCase)
+const adminController = new AdminController(getCustomersUseCase,toggleUserStatusUseCase,getProvidersUseCase,providerApplicationUseCase,updateKYCStatusUseCase,getServiceUseCase,createServiceCategoryUseCase,imageUploaderService,toggleCategoryStatusUseCase,)
 
 export {
     publicController,

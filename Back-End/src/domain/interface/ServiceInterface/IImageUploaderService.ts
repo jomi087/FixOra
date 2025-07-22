@@ -1,3 +1,3 @@
 export interface IImageUploaderService {
-  uploadImage(buffer: Buffer): Promise<string>;
+  uploadImage(buffer: Buffer, folder? : string): Promise<string>;
 }

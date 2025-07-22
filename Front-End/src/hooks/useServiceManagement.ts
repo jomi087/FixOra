@@ -1,5 +1,7 @@
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { Category } from "@/shared/Types/category";
+import { Messages, SLPP } from "@/utils/constant";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
@@ -13,7 +15,7 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
     const [filter, setFilter] = useState("all")
     const [debouncedQuery] = useDebounce(searchQuery,500)
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 7
+    const itemsPerPage = SLPP || 10
 
     const totalPages = Math.ceil(totalCateogories / itemsPerPage);
     
@@ -24,14 +26,14 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
             setLoading(true);
             try {
                 const res = await AuthService.getCategoryApi(debouncedQuery, filter, currentPage, itemsPerPage)
-                if (res.status === 200) {
+                if (res.status === HttpStatusCode.OK) {
                     console.log("serviceMnagement", res.data)
                     setCategories(res.data.catogoriesData)
                     setTotalCateogories(res.data.total);
 
                 }
             } catch (error: any) {
-                const errorMsg = error?.response?.data?.message || "Failed to fetch Category";
+                const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CATEGORY ;
                 toast.error(errorMsg);
             } finally {
                 setLoading(false);

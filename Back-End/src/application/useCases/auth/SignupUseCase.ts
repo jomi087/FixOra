@@ -6,9 +6,14 @@ import type { SignOptions } from 'jsonwebtoken';
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
-import { SignupDTO } from "../../InputDTO's/SignupDTO.js";
+import { SignupDTO } from "../../DTO's/SignupDTO.js";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+
+const { CONFLICT, INTERNAL_SERVER_ERROR} = HttpStatusCode
+const { EMAIL_ALREADY_EXISTS, INTERNAL_ERROR } = Messages
 
 export class SignupUseCase {
     constructor(
@@ -23,7 +28,7 @@ export class SignupUseCase {
         try {
             const existingUser = await this.userRepository.findByEmail(userData.email)
             if (existingUser) {
-                throw { status: 409, message: "Email already registered" }; 
+                throw { status: CONFLICT, message: EMAIL_ALREADY_EXISTS }; 
             }
 
             const hashedPassword = await this.hashService.hash(userData.password)
@@ -32,14 +37,14 @@ export class SignupUseCase {
                 ...userData,
                 password: hashedPassword,
                 userId: uuidv4(),
-                
             }
+            
             // src/config.ts
             const expiryTime  = process.env.JWT_TEMP_ACCESS_TOKEN_EXPIRY as SignOptions['expiresIn']
             const tempToken = jwt.sign(tempPayload, process.env.JWT_TEMP_ACCESS_SECRET as string, { expiresIn: expiryTime })
 
             const otp = this.otpGenratorService.generateOtp()
-            console.log("this is the Otp", otp)
+            console.log("This is the Otp", otp)
             
             await this.otpRepository.storeOtp({
                 email: userData.email,
@@ -56,7 +61,7 @@ export class SignupUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'signUp failed, (something went wrong)'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 

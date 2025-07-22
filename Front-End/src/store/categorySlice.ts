@@ -4,6 +4,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Category } from "@/shared/Types/category";
 import AuthService from '@/services/AuthService';
 import { toast } from 'react-toastify';
+import { HttpStatusCode } from '@/shared/enums/HttpStatusCode';
+import { Messages } from '@/utils/constant';
 
 interface CategoryState{
     categories: Category[];
@@ -23,11 +25,11 @@ export const fetchCategories = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const res = await AuthService.getActiveServicesApi()
-            if (res.status === 200) {
+            if (res.status === HttpStatusCode.OK) {
                 return res.data.servicesData
             }
         } catch (error:any) {
-            const errorMsg = error?.response?.data?.message || "Failed to load categories";
+            const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
             toast.error(errorMsg)
             return rejectWithValue(errorMsg);
         }

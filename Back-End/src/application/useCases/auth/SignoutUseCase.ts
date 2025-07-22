@@ -1,4 +1,9 @@
 import { UserRepository } from "../../../infrastructure/database/repositories/UserRepository.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+
+const { BAD_REQUEST,INTERNAL_SERVER_ERROR} = HttpStatusCode
+const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
 
 export class SignoutUseCase {
     constructor(
@@ -8,13 +13,13 @@ export class SignoutUseCase {
     async execute(userId: string) {
         try {
             if (!(await this.userRepository.update({userId}, { refreshToken: "" }))) {
-                throw { status: 400, message: "User not found during signout" };
+                throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
             }            
         } catch (error:any) {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'signout failed, (something went wrong)'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

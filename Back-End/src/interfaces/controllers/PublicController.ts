@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { GetLandingDataUseCase } from "../../application/useCases/public/GetLandingDataUseCase.js";
+import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
+
+const { OK} = HttpStatusCode
 
 export class PublicController {
     constructor(
@@ -9,7 +12,7 @@ export class PublicController {
     async getLandingData(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const landingData = await this.getLandingDataUseCase.execute()
-            res.status(200).json({
+            res.status(OK).json({
                 success: true,
                 landingData
             })

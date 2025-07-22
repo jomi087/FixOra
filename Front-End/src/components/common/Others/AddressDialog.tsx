@@ -7,6 +7,7 @@ import { getPostalInfo } from "@/utils/helper/postalinfo"
 import { toast } from "react-toastify"
 import { validateCity, validateState, validateDistrict, validateHouseInfo, validateLocality, validatePostalCode, validateStreet } from "@/utils/validation/addressValidation"
 import type { Address } from "@/shared/Types/location"
+import { Messages } from "@/utils/constant"
 
 interface AddAdressProps{
     saveAdress: (formData: Address) => Promise<void>;
@@ -49,10 +50,11 @@ const AddressDialog:React.FC<AddAdressProps> = ({saveAdress,open,setOpen,process
                 locality: Block || "",
                 state: State || ""
             }))
-        } catch (error:any) {
-            const errorMsg = error?.response?.data?.message ||"Failed to get info from postalCode";
+        } catch (error: any) {
+            const errorMsg =
+            error?.message || Messages.FAILED_FETCH_POSTAL_INFO ;
             toast.error(errorMsg);
-        }finally {
+        } finally {
             setLoading(false)
         }
     }

@@ -1,7 +1,7 @@
 export const validateFName = (fname:string):string|null => {
     const name = fname.trim();
     if (!name) return "Name required";
-    if (name.length < 4) return "Name must have least 4+ charectors" ;
+    if (name.length < 3) return "Name must have least 3+ charectors" ;
     return null ;
 } ;
 

@@ -2,6 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { User } from "../../domain/entities/UserEntity.js";
+import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../shared/constant/Messages.js";
+
+const { UNAUTHORIZED,FORBIDDEN } = HttpStatusCode
+const { TOKEN_EXPIRED,INVALID_TOKEN,USER_NOT_FOUND,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED } = Messages
 
 // Extend Express Request type  
 declare global {
@@ -11,6 +16,7 @@ declare global {
         }
     }
 }
+
 
 export class UserAuthMiddleware {  //verify Jwt
     constructor(
@@ -22,8 +28,8 @@ export class UserAuthMiddleware {  //verify Jwt
         try {
             const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer", "");
             if (!token) {
-                res.status(401).json({
-                    message: "Unauthorized-Signin again (token not provided)",
+                res.status(UNAUTHORIZED).json({
+                    message: UNAUTHORIZED_MSG,
                 });
                 return;
             }
@@ -31,7 +37,7 @@ export class UserAuthMiddleware {  //verify Jwt
             const user = await this.userRepository.findByUserId(decode.id,["password","refreshToken"]);
             
             if (!user) {
-                res.status(401).json({ message: "User not Found" });
+                res.status(UNAUTHORIZED).json({ message: USER_NOT_FOUND });
                 return;
             }
 
@@ -45,7 +51,7 @@ export class UserAuthMiddleware {  //verify Jwt
                 res.clearCookie('accessToken', options)
                 res.clearCookie('refreshToken', options)
                 await this.userRepository.update({ userId: user.userId }, { refreshToken: "" });
-                res.status(403).json({ message: "Account Blocked, Contanct support" });
+                res.status(FORBIDDEN).json({ message: ACCOUNT_BLOCKED });
                 return;
             }
 
@@ -56,11 +62,11 @@ export class UserAuthMiddleware {  //verify Jwt
         } catch (error: any) {
             
             if (error.name === "JsonWebTokenError") {
-                res.status(401).json({ message: "Invalid token" });
+                res.status(UNAUTHORIZED).json({ message: INVALID_TOKEN });
                 return;
             } else if (error.name === "TokenExpiredError") {
                 console.log("expiry")
-                res.status(401).json({ message: "Token expired" });
+                res.status(UNAUTHORIZED).json({ message: TOKEN_EXPIRED });
                 return;
             }
             next(error);

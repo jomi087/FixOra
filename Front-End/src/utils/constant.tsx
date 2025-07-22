@@ -8,12 +8,54 @@ import {
 export const BGImage_404: string = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
 export const HeroSectionImage:string = "/Hero-removebg-preview.png"
 export const SingInThemeImage: string = "/signIn.png"
-/********************************************* rules  *******************************************************/
-export const categoryImageSize: number = 1  //default set  to 2 mb
-export const providerImageSize: number = 1  //default set  to 2 mb
-export const KYCImageSize : number = 5   //default set  to 5 mb
+/********************************************* Rules  *******************************************************/
+export const categoryImageSize: number = 1                                         //default set  to 2 mb
+export const providerImageSize: number = 1                                        //default set  to 2 mb
+export const KYCImageSize : number = 5                                           //default set  to 5 mb
 export const minYear = `${new Date().getFullYear() - 150}-01-01` 
-export const maxYear = `${new Date().getFullYear() - 19}-12-31`
+export const maxYear = `${new Date().getFullYear() - 19}-01-01`
+export const CCPP = 16                                                    //CCPP => Customer Cards Per page -> default set to 16
+export const PCPP = 16                                                   //PCPP => Provider Cards Per page  -> default set to 16
+export const PALPP = 10                                                 //PALPP => Provider Application List Per Page  -> default set to 15
+export const SLPP = 7                                                  //SLPP => Service list Per page -> default set to 10
+/******************************************* Messages *******************************************************/
+export const Messages = {
+  FAILED_CATEGORY_RESPONSE_MSG: "Failed to add category",
+  FAILED_TO_FETCH_ADDRESS_CORDINATES : "Failed to fetch address from coordinates",
+  FAILED_TO_FETCH_CORDINATES : "Failed to fetch coordinates",
+  FAILED_TO_FETCH_DATA: "Failed to fetch data",
+  MAIL_SENT_MSG: "A Verification mail has been sent to your mail",
+  FAILED_PASSWORD_VERIFICATION: "Password verification Failed",
+  KYC_SUBMITTED_SUCCESS: "KYC submitted successfully!",
+  FAILED_TO_SUBMIT_KYC: "Failed to submit KYC",
+  PROFILE_MODIFICATION_FAILED: "Profile modification failed",
+  LOGIN_FAILED: "Login failed. Please try again later",
+  FAILED_FETCH_POSTAL_INFO: "Failed to fetch postal info. Please try again later",
+  PASSWORD_UPDATED_SUCCESS: "Password updated successfully!",
+  PASSWORD_UPDATE_FAILED: "Password updation failed",
+  OTP_VERIFIED_SUCCESS: "OTP verified successfully!",
+  OTP_VERIFICATION_FAILED: "Failed to verify OTP. Please try again.",
+  OTP_SENT_SUCCESS: "OTP has been sent to your mail!",
+  OTP_RESENT_FAILED: "Failed to resend OTP. Please try again.",
+  PASSWORD_RESET_SUCCESS: "Password reset successful!",
+  PASSWORD_RESET_FAILED: "Password reset failed",
+  FAILED_TO_FETCH_CATEGORY: "Failed to fetch Category",
+  SIGNIN_SUCCESS: "Sign-in successful!",  
+  FORGOT_PASSWORD_FAILED: "Forgot Password Failed",
+  ACCOUNT_CREATION_FAILED: "Account Creation failed",
+  FAILED_TO_UPDATE_STATUS: "Failed to update status",
+  INVALID_OR_UNAVAILABLE_PINCODE: "Invalid or unavailable Pincode",
+  NETWORK_ERROR_FETCHING_POSTAL_INFO: "Network error while fetching postal info",
+  SERVICE_REQUIRED: "Service required",
+  DOB_REQUIRED: "Date of birth is required",
+  SERVICE_CHARGE_RANGE: "Service charge must be between 300 and 500",
+  SELECT_SPECIALIZATION: "Select at least one specialization",
+  SERVICE_CHARGE_REQUIRED: "Service charge is required",
+  EXPERIENCE_CERT_INVALID: "Experience certificate must be a valid JPG/PNG <= 5MB",
+  GENDER_REQUIRED: "Select a gender",
+  IMAGE_TYPE_INVALID: "Only JPEG, PNG, or JPG images are allowed.",
+
+}
 /******************************************* Reset Password Constraints Sections *******************************************************/
 export const constraints = [
     { label: "At least 10 characters", test: (pw: string) => pw.length >= 10 },

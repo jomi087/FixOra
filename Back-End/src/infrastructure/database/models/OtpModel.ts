@@ -23,7 +23,7 @@ const  otpSchema= new mongoose.Schema<IOtpModel>({
         default : Date.now ,
         expires: 300   // 60s * 5 = 300 sec ie = 5 minute 
     },
-},)
+},{ _id: false})
 
 const OtpModel = mongoose.model<IOtpModel>('Otp',otpSchema)
 

@@ -5,18 +5,22 @@ import type { SignOptions } from 'jsonwebtoken';
 
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
+const { INTERNAL_ERROR, EMAIL_NOT_FOUND  } = Messages
 
 export class ForgotPasswordUseCase {
     constructor(
         private readonly userRepository: IUserRepository,
         private readonly emailService: IEmailService
-        
     ) { }
     
     async execute(email: string) :Promise<void>{
         try {
             if (!(await this.userRepository.findByEmail(email, ['password', 'refreshToken',]))) {
-                throw { status : 404, message : "Email doesn’t exist" }
+                throw { status : NOT_FOUND , message : EMAIL_NOT_FOUND }
             }
 
             const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions['expiresIn']
@@ -43,7 +47,7 @@ export class ForgotPasswordUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'email verification failed, (something went wrong)'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

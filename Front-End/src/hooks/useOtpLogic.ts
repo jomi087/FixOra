@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { RoleEnum } from "@/shared/enums/roles";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 export const useOtpLogic = () => {
   const navigate = useNavigate();
@@ -9,14 +11,14 @@ export const useOtpLogic = () => {
   const verifyOtp = async (otp: string): Promise<void> => {
     try {
       const res = await AuthService.VerifySignupOtpApi(otp);
-      if (res.status === 200) {
-        toast.success(res.data.message || " OTP verified successfully ! ");
+      if (res.status === HttpStatusCode.OK) {
+        toast.success(res.data.message || Messages.OTP_VERIFIED_SUCCESS );
         setTimeout(() => {
           navigate(`/signIn/${RoleEnum.CUSTOMER}`);
         }, 500);
       }
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || "Failed to verify OTP. Please try again.";
+      const errorMsg = error?.response?.data?.message || Messages.OTP_VERIFICATION_FAILED ;
       toast.error(errorMsg);
       if (error?.response?.status === 403) {
         navigate("/signup");
@@ -27,11 +29,11 @@ export const useOtpLogic = () => {
   const resendOtp = async (): Promise<void> => {
     try {
       const res = await AuthService.resendOtpApi();
-      if (res.status === 200) {
-        toast.info(res.data.message || "OTP has been sent to your mail!");
+      if (res.status === HttpStatusCode.OK) {
+        toast.info(res.data.message || Messages.OTP_SENT_SUCCESS );
       }
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || "Failed to resend OTP. Please try again.";
+      const errorMsg = error?.response?.data?.message || Messages.OTP_RESENT_FAILED ;
       toast.error(errorMsg);
     }
   };

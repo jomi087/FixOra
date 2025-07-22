@@ -1,4 +1,4 @@
-import type { ProviderKYCType } from '@/utils/validation/providerKYCValidation';
+import type { KYCStatus } from '@/shared/enums/KycStatus';
 import axiosInstance from './axiosConfig';
 import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
 
@@ -106,10 +106,21 @@ class AuthService {
         return axiosInstance.patch(`/api/admin/customer-management/${userId}`)
     }
 
+
     getProviderApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
         return axiosInstance.get(`/api/admin/provider-management`,{
            params: { searchQuery, filter, currentPage, itemsPerPage }
         })
+    }
+
+    getProviderApplicationList(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
+        return axiosInstance.get('/api/admin/provider-applicationList', {
+            params : {searchQuery, filter, currentPage, itemsPerPage}
+        })
+    }
+
+    updateProviderKYC(id: string, payload: { action: KYCStatus , reason?: string }) {
+        return axiosInstance.patch(`/api/admin/provider-kyc/${id}`,payload, this.getJsonConfig())
     }
 
     getCategoryApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {

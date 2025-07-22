@@ -3,13 +3,17 @@ import { RoleEnum } from "../../../shared/constant/Roles.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService.js";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+
+const { INTERNAL_SERVER_ERROR, NOT_FOUND,FORBIDDEN } = HttpStatusCode
+const { INTERNAL_ERROR, USER_NOT_FOUND, ACCOUNT_BLOCKED } = Messages
 
 export class GoogleSigninUseCase {
     constructor(
         private readonly googleOAuthService: GoogleOAuthService,
         private readonly userRepository : IUserRepository,
         private readonly tokenService: ITokenService,
-        
     ) { }
 
     async execute(code : string , role : RoleEnum) {
@@ -29,7 +33,7 @@ export class GoogleSigninUseCase {
                     role,
                 })
             }
-            if (user.isBlocked) throw { status: 403, message: "Account Blocked, Contanct support" };
+            if (user.isBlocked) throw { status: FORBIDDEN, message: ACCOUNT_BLOCKED };
 
             const payload = {
                 id: user.userId,
@@ -42,7 +46,7 @@ export class GoogleSigninUseCase {
 
             const updatedUserData = await this.userRepository.update({ userId: user.userId }, { refreshToken: refToken }, ["password", "refreshToken"])
             if (!updatedUserData) {
-                throw { status: 404, message: "User Not Found" };
+                throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             } 
 
             return {
@@ -62,7 +66,7 @@ export class GoogleSigninUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'signin failed ( something went wrong )'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

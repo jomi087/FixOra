@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import { logout, Userinfo } from '../../../store/userSlice';
 import AuthService from '../../../services/AuthService';
+import { HttpStatusCode } from '@/shared/enums/HttpStatusCode';
 
 const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
     const dispatch = useAppDispatch();
@@ -10,7 +11,7 @@ const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
         const verifyAuth = async () => {
             try {
                 const response = await AuthService.checkAuthStatusApi();
-                if (response.status === 200) {
+                if (response.status === HttpStatusCode.OK) {
                     dispatch(Userinfo({ user: response.data.user }));
                 }
             } catch (error) {

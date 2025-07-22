@@ -1,6 +1,13 @@
 //implimented with zod was bit hard so validated with plain js
 
 import { Request, Response, NextFunction } from "express";
+import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../shared/constant/Messages.js";
+
+const { BAD_REQUEST} = HttpStatusCode
+const { SERVICE_REQUIRED, INVALID_SPECIALIZATION, SERVICE_CHARGE_RANGE,AT_LEAST_ONE_SUBCATEGORY_REQUIRED,
+    DOB_REQUIRED,INVALID_DOB,AGE_RESTRICTED,INVALID_GENDER,INVALID_SUBCATEGORIES_JSON
+} = Messages
 
 function isLegal(birthDate: Date):boolean {
     const today = new Date();
@@ -21,7 +28,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
 
         //service
         if (!service?.trim()) {
-        throw { status: 400, message: "Service required" };
+        throw { status: BAD_REQUEST, message: SERVICE_REQUIRED };
         }
 
         //specialization
@@ -30,46 +37,46 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
             try {
                 parsedSpecialization = JSON.parse(specialization);
             } catch {
-                throw { status : 400, message : 'Invalid subcategories JSON'}
+                throw { status : BAD_REQUEST, message : INVALID_SUBCATEGORIES_JSON }
             }
         } else {
         parsedSpecialization = specialization;
         }
         
         if (!Array.isArray(parsedSpecialization) || parsedSpecialization.length === 0) {
-        throw { status: 400, message: "At least one specialization is required" };
+        throw { status: BAD_REQUEST, message: AT_LEAST_ONE_SUBCATEGORY_REQUIRED };
         }
         
         parsedSpecialization.forEach((sub) => {
             if (typeof sub !== "string") {
-                throw { status: 400, message: `invalid specialization` };
+                throw { status: BAD_REQUEST, message: INVALID_SPECIALIZATION };
             }   
         })
         
         //ServiceCharge
         const chargeNum = Number(serviceCharge);
         if (isNaN(chargeNum) || chargeNum < 300 || chargeNum > 500) {
-            throw { status: 400, message: "Service charge must be between 300 and 500" };
+            throw { status: BAD_REQUEST, message: SERVICE_CHARGE_RANGE };
         }
 
         //D.O.B
         if (!dob?.trim()) {
-        throw { status: 400, message: "Date of birth is required" };
+        throw { status: BAD_REQUEST, message: DOB_REQUIRED };
         }
         
         const birthDate = new Date(dob);
         
         if (isNaN(birthDate.getTime())) {
-            throw { status: 400, message: "Invalid date of birth" };
+            throw { status: BAD_REQUEST, message: INVALID_DOB };
         }
         
         if (!isLegal(birthDate)) {
-            throw { status: 400, message: "Age restricted: must be at least 18" };
+            throw { status: BAD_REQUEST, message: AGE_RESTRICTED };
         }
 
         //Gender
         if (!gender || !["Male", "Female", "Other"].includes(gender)) {
-        throw { status: 400, message: "Gender must be Male, Female, or Other" };
+        throw { status: BAD_REQUEST, message: INVALID_GENDER };
         }
         
         req.body.specialization = parsedSpecialization; 

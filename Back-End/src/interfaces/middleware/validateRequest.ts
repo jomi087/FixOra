@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodSchema } from "zod";
+import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../shared/constant/Messages.js";
 
 type Location = "body" | "query" | "params";
 
@@ -9,7 +11,7 @@ export const validateRequest = (schema: ZodSchema<any>, location: Location = "bo
   const result = schema.safeParse(target);
   if (!result.success) {
     const errorMessages = result.error.errors.map((err) => err.message);
-    throw { status: 400, message: errorMessages[0] || errorMessages || "Validation failed" };
+    throw { status: HttpStatusCode.BAD_REQUEST, message: errorMessages[0] || errorMessages || Messages.VALIDATION_FAILED };
   };
 
   Object.assign(req[location], result.data);

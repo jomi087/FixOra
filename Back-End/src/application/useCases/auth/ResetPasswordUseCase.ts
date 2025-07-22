@@ -1,7 +1,11 @@
 import jwt from "jsonwebtoken";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
 
+const {NOT_FOUND,INTERNAL_SERVER_ERROR} = HttpStatusCode
+const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
 
 export class ResetPasswordUseCase{
     constructor(
@@ -16,7 +20,7 @@ export class ResetPasswordUseCase{
             const decodeEmail = jwt.verify(token, process.env.JWT_RESET_PASSWORD_SECRET as string) as { email : string}
             
             if (!await this.userRepository.update({ email: decodeEmail.email }, { password: hashedPassword })) {
-                 throw { status: 404, message: "User Not Found" };
+                 throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             }
 
         } catch (error: any) {
@@ -24,7 +28,7 @@ export class ResetPasswordUseCase{
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: "Reset Password failed, (something went wrong)" };
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

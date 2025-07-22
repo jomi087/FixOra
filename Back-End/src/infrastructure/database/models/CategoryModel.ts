@@ -4,13 +4,17 @@ import { Category,Subcategory } from "../../../domain/entities/CategoryEntity.js
 export interface ICategoryModel extends Document, Category{ }
 
 const SubcategorySchema = new mongoose.Schema<Subcategory>({
-    subCategoryId :{ type: String,required: true,unique: true,trim: true,index: true},
+    subCategoryId :{ type: String,required: true,unique: true,trim: true},
     name: { type: String, required: true },
     description: { type: String },
     image: {type: String,required : true },
     isActive: { type: Boolean, default: false, required: true },
-  },
-{ timestamps: true });
+},
+    {
+        timestamps: true,
+        _id: false
+    }
+);
 
 const CategorySchema = new mongoose.Schema<ICategoryModel>({
     categoryId: {
@@ -18,13 +22,12 @@ const CategorySchema = new mongoose.Schema<ICategoryModel>({
         required: true,
         unique: true,
         trim: true,
-        index: true,
     },
     name: {
         type: String,
         required: true,
         unique: true,
-        trim : true
+        trim : true,
     },
     description: {
         type: String,
@@ -41,7 +44,12 @@ const CategorySchema = new mongoose.Schema<ICategoryModel>({
         required: true,
         default : false,
     }
-},{timestamps : true})
+},
+    {
+        timestamps: true,
+        _id: false
+    }
+)
 
 
 

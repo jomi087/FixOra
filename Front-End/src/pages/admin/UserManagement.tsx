@@ -2,13 +2,14 @@ import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
 import InfoCard from "@/components/admin/InfoCard";
 import Pagination from "@/components/common/Others/Pagination";
-import { adminSideBarOptions } from "@/utils/constant";
+import { adminSideBarOptions, Messages } from "@/utils/constant";
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
 import { useUserManagement } from "@/hooks/useUserManagementHook";
 import FilterSelect from "@/components/common/Others/FilterSelect";
 import SearchInput from "@/components/common/Others/SearchInput";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 
 
 const UserManagement: React.FC = () => {
@@ -25,7 +26,7 @@ const UserManagement: React.FC = () => {
       console.log("userId", userId)
       
       const res = await AuthService.toggleUserStatusApi(userId)
-      if (res.status === 200) {
+      if (res.status === HttpStatusCode.OK) {
         setCustData(prev =>
           prev.map((data) => data.userId === userId ? {
             ...data,
@@ -35,7 +36,7 @@ const UserManagement: React.FC = () => {
       }
     } catch (error: any) {
       console.log(error)
-      const errorMsg = error?.response?.data?.message || "Failed to update status";
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS ;
       toast.error(errorMsg);
     }
   }

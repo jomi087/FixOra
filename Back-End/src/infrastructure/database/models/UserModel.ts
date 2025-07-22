@@ -16,8 +16,7 @@ const addressSchema = new mongoose.Schema({
     latitude: { type: Number},
     longitude: { type: Number },
   },
-});
-
+},{ _id: false });
 
 const userSchema = new mongoose.Schema<IUserModel>({
     userId: {
@@ -25,7 +24,6 @@ const userSchema = new mongoose.Schema<IUserModel>({
         required: true,
         unique: true,
         trim: true,
-        index: true,
     },
     fname: {
         type: String,
@@ -75,7 +73,10 @@ const userSchema = new mongoose.Schema<IUserModel>({
         default: undefined
     },
 },
-    {timestamps : true}
+    {
+        timestamps: true,
+        _id: false
+    },
 )
 
 const UserModel = mongoose.model<IUserModel>('User', userSchema)

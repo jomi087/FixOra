@@ -1,72 +1,65 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { Provider } from '../../../domain/entities/ProviderEntity.js';
 import { KYCStatus } from '../../../shared/constant/KYCstatus.js';
+import { Gender } from '../../../shared/constant/Gender.js';
 
 // Extend Document with Provider
 export interface IProviderModel extends Document, Provider {}
 
-const providerSchema = new Schema<IProviderModel>(
-  {
+const providerSchema = new Schema<IProviderModel>({
     userId: {
       type: String,
       required: true,
       unique: true,
-      index: true,
       trim: true,
     },
-    serviceIds : [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Service",
+    dob: {
+      type: Date, 
+      required : true,
+    },
+    gender: {
+        type: String,
+        enum: Object.values(Gender),
+        required: true,
+    },
+    serviceId: {
+      type: String,
+      required: true,
+    },
+    specializationIds : [{
+      type: String,
       required: true,
     }],
-    gender: {
-      type: String,
-      required : true,
-      enum: ['Male', 'Female', 'Other']
-    },
-    image: {
+    profileImage: {
       type: String,
       required : true
-    },
-    kyc: {
-      idCard: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      certificate: {
-        education: {
-          type: String,
-          required: true,
-          trim: true,
-        },
-        experience: {
-          type: String,
-          trim: true,
-        },
-      },
     },
     serviceCharge: {
       type: Number,
       required: true,
     },
-    kycInfo: {
-      status: {
-        type: String,
-        enum: Object.values(KYCStatus),
-        default: KYCStatus.Pending,
-      },
-      reason: {
-        type: String,
-        trim: true,
-      },
+    kyc: {
+        idCard: {
+            type: String,
+            required: true,
+        },
+        certificate: {
+            education: {
+                type: String,
+                required: true,
+            },
+            experience: {
+                type: String,
+            },
+        },
     },
     isOnline : {
-      type: Boolean,
-      default : false
+        type: Boolean,
+        default : false
     }
-  },
-  { timestamps: true }
+}, {
+    timestamps: true,
+    }
 );
 
 const ProviderModel = mongoose.model<IProviderModel>('Provider', providerSchema);

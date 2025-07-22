@@ -3,12 +3,13 @@ import { LogIn, LogOut, Menu, X } from "lucide-react";
 import ThemeToggle from "../ThemeToggle";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { navItems } from "../../../utils/constant";
+import { Messages, navItems } from "../../../utils/constant";
 import { useLocation } from 'react-router-dom'
 import AuthService from "../../../services/AuthService";
 import { logout } from "../../../store/userSlice";
 import { toast } from "react-toastify";
 import { RoleEnum } from "@/shared/enums/roles";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 
 
 interface NavProps {
@@ -29,7 +30,7 @@ const Nav: React.FC<NavProps> = ({ className = ""}) => {
   const handleSignout = async () => {
     try {
       const res =await AuthService.signoutApi()
-      if (res.status === 200) {
+      if (res.status === HttpStatusCode.OK) {
         dispatch(logout())
 
         toast.success(res.data.message)
@@ -39,7 +40,7 @@ const Nav: React.FC<NavProps> = ({ className = ""}) => {
         });
       }
     } catch (error:any) {
-      const errorMsg = error?.response?.data?.message ||"Login failed. Please try again Later";
+      const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
       toast.error(errorMsg);
     }
   }

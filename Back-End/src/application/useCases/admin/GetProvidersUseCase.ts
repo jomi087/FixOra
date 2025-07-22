@@ -1,5 +1,7 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
 import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
+import { Messages } from "../../../shared/constant/Messages.js";
 
 interface filters {
     searchQuery: string;
@@ -8,6 +10,8 @@ interface filters {
     limit: number;
 }
 
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode
+const { INTERNAL_ERROR} = Messages
 
 export class GetProvidersUseCase{
     constructor(
@@ -34,7 +38,7 @@ export class GetProvidersUseCase{
             if (error.status && error.message) {
                 throw error;
             }
-            throw { status: 500, message: 'Fetching Provider data failed, (something went wrong)' };
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 

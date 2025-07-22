@@ -1,5 +1,10 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { EditProfileDTO } from "../../InputDTO's/EditProfileDTO.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+import { EditProfileDTO } from "../../DTO's/EditProfileDTO.js";
+
+const { NOT_FOUND, INTERNAL_SERVER_ERROR} = HttpStatusCode
+const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
 
 export class UpdateProfileUseCase {
     constructor(
@@ -17,7 +22,7 @@ export class UpdateProfileUseCase {
             }, ["password", "refreshToken"])
 
             if (!updatedUser) {
-                throw { status: 404, message: "user Not Found" };
+                throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             }
             return {
                 user: {
@@ -32,7 +37,7 @@ export class UpdateProfileUseCase {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'Profile Updation failed ( something went wrong )'}; 
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR}; 
         }
     }
 }

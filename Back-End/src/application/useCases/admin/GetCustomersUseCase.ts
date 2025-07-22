@@ -1,20 +1,19 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../DTO's/GetCustomerDTO.js";
+import { IGetCustomersUseCase } from "../../Interface/useCases/Admin/IGetCustomersUseCase.js";
 
 
-interface filters {
-  searchQuery: string;
-  filter: string;
-  currentPage: number;
-  limit : number;
-}
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode
+const { INTERNAL_ERROR} = Messages
 
-
-export class GetCustomersUseCase {
+export class GetCustomersUseCase implements IGetCustomersUseCase {
     constructor(
         private readonly userRepository : IUserRepository,
     ) {}
     
-    async execute(input : filters ) {    
+    async execute(input :GetCustomersInputDTO ):Promise<GetCustomersOutputDTO>{    
         try {            
             const { searchQuery, filter, currentPage, limit } = input;
 
@@ -24,15 +23,18 @@ export class GetCustomersUseCase {
                 ['password', 'refreshToken', 'googleId', 'updatedAt']
             )
 
+            // remove omit and useMapper dto customerListalredy created
+
             return {
-                customersData: users.data,
+                data: users.data,
                 total : users.total
             };
+            
         } catch (error:any) {
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: 'Fetching Customer data failed, (something went wrong)'};
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }

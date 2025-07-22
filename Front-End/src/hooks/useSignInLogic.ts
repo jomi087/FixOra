@@ -1,7 +1,9 @@
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { RoleEnum } from "@/shared/enums/roles";
 import { useAppDispatch } from "@/store/hooks";
 import { Userinfo } from "@/store/userSlice";
+import { Messages } from "@/utils/constant";
 import { validateEmail, validatePassword } from "@/utils/validation/formValidation";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
@@ -51,15 +53,15 @@ export const useSignInLogic = () => {
         try {
             const res = await AuthService.signinApi(data) // 
 
-        if (res.status === 200) {
+        if (res.status === HttpStatusCode.OK) {
             const { userData } = res.data;
             dispatch(Userinfo({ user: userData }));
-            toast.success(res.data.message || "Sign-in successful!");
+            toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
 
             navigateByRole(userData.role);
         }
         } catch (error: any) {
-            const errorMsg = error?.response?.data?.message ||"Login failed.. Please try again Later";
+            const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
             toast.error(errorMsg);
         } finally {
             setLoading(false)
@@ -70,11 +72,11 @@ export const useSignInLogic = () => {
         setLoading(true);
         try {
             const res = await AuthService.forgotPasswordApi(email)
-        if (res.status === 200) {
-            toast.success(res.data.message || "Verification mail has been  Created SuccessFully");
+        if (res.status === HttpStatusCode.OK) {
+            toast.success(res.data.message || Messages.MAIL_SENT_MSG);
         }
         } catch (error : any) {
-            const errorMsg = error?.response?.data?.message ||"Forgot Password Failed";
+            const errorMsg = error?.response?.data?.message || Messages.FORGOT_PASSWORD_FAILED
         toast.error(errorMsg);
         } finally {
             setLoading(false)
@@ -88,17 +90,17 @@ export const useSignInLogic = () => {
                 try {
                     const res =await AuthService.googleSigninApi(data)
 
-                    if (res.status === 200) {
+                    if (res.status === HttpStatusCode.OK) {
                         const { userData } = res.data;
                         dispatch(Userinfo({ user: userData }));
-                        toast.success(res.data.message || "Sign-in successful!");
+                        toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
 
                         navigateByRole(userData.role);
                     }
                         
                 } catch (error: any) {
                     console.log(error.response)
-                    const errorMsg = error?.response?.data?.message ||"Login failed.. Please try again Later";
+                    const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
                     toast.error(errorMsg);
                 }
             }

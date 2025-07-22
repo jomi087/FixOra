@@ -2,7 +2,7 @@ import {Carousel,CarouselContent,CarouselItem,CarouselNext,CarouselPrevious,} fr
 import { Card,CardContent,CardDescription,CardHeader,CardTitle } from "@/components/ui/card"
 
 import type { Category} from "@/shared/Types/category"
-import { slugify } from "@/utils/helper/slugify";
+import { slugify } from "@/utils/helper/utils";
 import { useScrollToHash } from "@/hooks/useScrollToHash";
 
 interface ServiceProps {

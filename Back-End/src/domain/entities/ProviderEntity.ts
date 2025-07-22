@@ -1,10 +1,13 @@
-import { KYCStatus } from "../../shared/constant/KYCstatus.js";
+import { Gender } from "../../shared/constant/Gender.js";
 
 export interface Provider {
   userId: string;
-  serviceIds: string[];
-  gender: "Male" | "Female" | "Other";
-  image: string;
+  dob: Date;
+  gender: Gender;
+  serviceId: string;
+  specializationIds: string[]; // subcategories
+  profileImage: string;
+  serviceCharge: number;
   kyc: {
     idCard: string; 
     certificate: {
@@ -12,12 +15,7 @@ export interface Provider {
       experience?: string; 
     };
   };
-  serviceCharge: number;
-  kycInfo: {
-    status: KYCStatus;
-    reason?: string;
-  };
   isOnline: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Date;    
+  updatedAt?: Date;      
 }

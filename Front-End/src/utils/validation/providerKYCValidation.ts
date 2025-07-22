@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { KYCImageSize } from "../constant";
+import { KYCImageSize, Messages } from "../constant";
 
 export const imageValidator = (maxSizeInMB: number = 5 , msg : string) =>
   z
@@ -10,7 +10,7 @@ export const imageValidator = (maxSizeInMB: number = 5 , msg : string) =>
     .refine((file: File) => {
       const validTypes = ["image/jpeg", "image/png", "image/jpg"];
       return validTypes.includes(file.type);
-    }, { message: "Only JPEG, PNG, or JPG images are allowed." })
+    }, { message: Messages.IMAGE_TYPE_INVALID})
     .refine((file: File) => {
       const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
       return file.size <= maxSizeInBytes;
@@ -19,23 +19,23 @@ export const imageValidator = (maxSizeInMB: number = 5 , msg : string) =>
 
 export const providerKYCSchema = z.object({
 
-    service: z.string().min(1, "Please select a service"), //id
+    service: z.string().min(1, Messages.SERVICE_REQUIRED), //id
     
-    specialization: z.array(z.string()).min(1, "Select at least one specialization"), //array of sub id
+    specialization: z.array(z.string()).min(1, Messages.SELECT_SPECIALIZATION), //array of sub id
 
     serviceCharge: z.string()
-        .min(1,"Service charge is required")
+        .min(1,Messages.SERVICE_CHARGE_REQUIRED,)
         .refine((val) => {
         const num = Number(val);
         return !isNaN(num) && num >= 300 && num <= 500;
     }, {
-        message: "Service charge must be a number between 300 - 500",
+        message: Messages.SERVICE_CHARGE_RANGE,
     }),
 
-    dob: z.string().min(1, "Date of birth is required"),
+    dob: z.string().min(1, Messages.DOB_REQUIRED),
 
     gender: z.enum(["Male", "Female", "Other"], {
-        message: "Select a gender"
+        message: Messages.GENDER_REQUIRED
     }),
 
     profileImage: imageValidator(KYCImageSize,"Profile image"),           
@@ -52,7 +52,7 @@ export const providerKYCSchema = z.object({
         return validTypes.includes(file.type) && file.size <= maxSizeInBytes;
       },
       {
-        message: "Experience certificate must be a valid JPG/PNG <= 5MB",
+        message: Messages.EXPERIENCE_CERT_INVALID,
       }
     ),
 });

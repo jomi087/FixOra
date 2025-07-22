@@ -14,10 +14,10 @@ cloudinary.config({
 
 export class ImageUploaderService implements IImageUploaderService {
     
-    async uploadImage(buffer: Buffer): Promise<string> {
+    async uploadImage(buffer: Buffer, folder : string = "FixOra/All"): Promise<string> {
         return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
-            { folder: "FixOra/Services" }, // will need make it dynamic 
+            { folder},  
             ( error, result) => {
                 if (error) return reject(error);
                 resolve(result?.secure_url || "");

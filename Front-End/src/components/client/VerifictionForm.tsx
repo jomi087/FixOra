@@ -5,10 +5,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useFetchCategories from "@/hooks/useFetchCategories";
 import AuthService from "@/services/AuthService";
 import { Gender } from "@/shared/enums/Gender";
-import { maxYear, minYear } from "@/utils/constant";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { maxYear, Messages, minYear } from "@/utils/constant";
 import { providerKYCSchema, type ProviderKYCType } from "@/utils/validation/providerKYCValidation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
@@ -21,8 +22,9 @@ interface VerifictionFormProps {
 
 const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
   
-  const { categories, loading } = useFetchCategories()
-  const [isPending, startTransition] = useTransition();
+  const { categories, loading:isLoading } = useFetchCategories()
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate()
 
   const genderOptions = Object.values(Gender);
@@ -41,39 +43,34 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
     }
   })
   
-  const onSubmit = (data: ProviderKYCType) => {
-    console.log(data)
-
-    startTransition(async () => { 
+  const onSubmit = async (data: ProviderKYCType) => {
+      setLoading(true);
       try {
         const formData = new FormData()
-
         formData.append("service", data.service);
-
         formData.append(`specialization`, JSON.stringify(data.specialization)); //array of specialization id
-        
         formData.append("serviceCharge", data.serviceCharge);
         formData.append("dob", data.dob);
         formData.append("gender", data.gender);
         formData.append("profileImage", data.profileImage);
         formData.append("idCard", data.idCard);
         formData.append("educationCertificate", data.educationCertificate);
-
         if (data.experienceCertificate) {
           formData.append("experienceCertificate",data.experienceCertificate)
         }
-        
+
         const res = await AuthService.providerKYCApi(formData)
-        if (res.status === 200) {
-            toast.success(res.data.message||"KYC submitted successfully!");
+        if (res.status === HttpStatusCode.OK) {
+            toast.success(res.data.message|| Messages.KYC_SUBMITTED_SUCCESS);
             navigate(-1)
         }
       } catch (error:any) {
-        console.log(error)
-        const errorMsg = error?.response?.data?.message || "Failed to update status";
+        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_SUBMIT_KYC ;
         toast.error(errorMsg);
+      } finally {
+        setLoading(false);   
       }
-    })
+    
   }
 
  return (
@@ -89,7 +86,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
               <FormControl>
                 <Select
                   isClearable
-                  isLoading = {loading}
+                  isLoading = {isLoading}
                   options={categories.map(cat => ({
                     label: cat.name, value: cat.categoryId
                   }))}
@@ -129,7 +126,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
                 <FormControl>
                  <Select
                     isMulti
-                    isLoading={loading}
+                    isLoading={isLoading}
                     options={specializationOptions}
                     value={specializationOptions.filter((opt) => field.value.includes(opt.value))}
                     onChange={(selectedOptions) => {
@@ -306,7 +303,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
           >
               Go Back
           </Button>
-          <Button type="submit" disabled={isPending}>Submit KYC</Button>
+          <Button type="submit" disabled={loading}>Submit KYC</Button>
       </div>
       </form>
     </Form>

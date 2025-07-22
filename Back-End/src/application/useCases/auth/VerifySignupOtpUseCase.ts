@@ -1,10 +1,13 @@
 import jwt from "jsonwebtoken";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { UserInputDTO } from "../../InputDTO's/UserInputDTO.js";
+import { UserInputDTO } from "../../DTO's/UserInputDTO.js";
 import { RoleEnum } from "../../../shared/constant/Roles.js";
-import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
 
+const { FORBIDDEN,BAD_REQUEST, INTERNAL_SERVER_ERROR} = HttpStatusCode
+const { UNAUTHORIZED_MSG, INVALID_OTP, OTP_EXPIRED, INTERNAL_ERROR } = Messages
 
 export class VerifySignupOtpUseCase{
     constructor(
@@ -16,15 +19,15 @@ export class VerifySignupOtpUseCase{
         try {
             
             if (!token) {
-                throw { status: 403, message: "Something  went wrong"  }
+                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG  }
             }
             
             const decodeUserData = jwt.verify(token, process.env.JWT_TEMP_ACCESS_SECRET as string) as UserInputDTO
             const storedOtp = await this.otpRepository.findOtpByEmail(decodeUserData.email)
             if ( !storedOtp ) {
-                throw { status: 400, message: "OTP Expired, Click Re-Send Otp" }
+                throw { status: BAD_REQUEST, message: OTP_EXPIRED }
             } else if (storedOtp.otp != otpData ) {
-                throw { status: 400, message: "Invalid OTP" }
+                throw { status: BAD_REQUEST, message: INVALID_OTP  }
             }
 
             await this.userRepository.create({
@@ -38,7 +41,7 @@ export class VerifySignupOtpUseCase{
             if (error.status && error.message) {
                throw error;
             }
-            throw { status: 500, message: "Account Verification failed, (something went wrong)" };
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
     

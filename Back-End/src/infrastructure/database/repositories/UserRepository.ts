@@ -8,6 +8,9 @@ import UserModel from "../models/UserModel.js";
 import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
 import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
 
+//!mistake in this repository (i have am violatin srp rule need to re-work) 
+//split the logic into indivijual
+
 export class UserRepository implements IUserRepository {
     async findByEmail(email: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
@@ -24,6 +27,8 @@ export class UserRepository implements IUserRepository {
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>()
     }
+
+    
 
     async findByUserGoogleId(googleId: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')

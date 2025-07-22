@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCategoryForm } from "@/hooks/useCategoryForm";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { Messages } from "@/utils/constant";
 
 interface AddCategoryProps {
   open: boolean;
@@ -28,13 +30,13 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
     try {
       const res = await AuthService.addCategoryApi(formData)
 
-      if (res.status == 200) {
+      if (res.status == HttpStatusCode.OK) {
         toast.success(res.data.message)
         triggerRefresh()
         setOpen(false)
       }
     } catch (error:any) {
-      const errorMsg = error?.response?.data?.message ||"Failed to Add Category";
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_CATEGORY_RESPONSE_MSG;
       toast.error(errorMsg);
 
     } finally {

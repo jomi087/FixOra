@@ -1,5 +1,6 @@
-import { RoleEnum } from "../../../../../shared/constant/Roles.js";
-import { SigninDTO } from "../../../../InputDTO's/SigninDTO.js";
+import { RoleEnum } from "../../../../shared/constant/Roles.js";
+import { SigninDTO } from "../../../DTO's/SigninDTO.js";
+
 
 export type AuthData = {
   userData : any; 
