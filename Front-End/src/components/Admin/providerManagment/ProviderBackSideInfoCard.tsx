@@ -1,7 +1,7 @@
 import type { ProviderData } from "@/shared/Types/user";
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";
 import { toPascalCase } from "@/utils/helper/utils";
-import CustomLink from "../ui/Custom/CustomLink";
+import CustomLink from "../../ui/Custom/CustomLink";
 
 const ProviderBackSideInfoCard: React.FC<{ data: ProviderData }> = ({ data }) => {
 

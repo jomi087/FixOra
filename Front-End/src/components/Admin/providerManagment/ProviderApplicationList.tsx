@@ -1,4 +1,4 @@
-import ProviderListTable from "@/components/admin/ProviderListTable"
+import ProviderListTable from "@/components/admin/providerManagment/ProviderListTable"
 import FilterSelect from "@/components/common/Others/FilterSelect"
 import Pagination from "@/components/common/Others/Pagination"
 import SearchInput from "@/components/common/Others/SearchInput"

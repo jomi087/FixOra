@@ -4,11 +4,11 @@ import type { ProviderList } from "@/shared/Types/user";
 import { formatDOB, toPascalCase } from "@/utils/helper/utils";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { Button } from "../ui/button";
-import ReasonDialog from "../common/Others/ReasonDialog";
+import { Button } from "../../ui/button";
+import ReasonDialog from "../../common/Others/ReasonDialog";
 import { KYCStatus } from "@/shared/enums/KycStatus";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import CustomLink from "../ui/Custom/CustomLink";
+import CustomLink from "../../ui/Custom/CustomLink";
 
 
 interface ProviderKYCDialogProps {

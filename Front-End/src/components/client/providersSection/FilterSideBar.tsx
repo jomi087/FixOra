@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { Category } from "@/shared/Types/category";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { resetFilters, setAvailabilityFilter, setNearByFilter, setRatingFilter, setSelectedService } from "@/store/user/filterSlice";
 

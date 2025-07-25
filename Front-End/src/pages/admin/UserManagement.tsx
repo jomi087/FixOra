@@ -1,6 +1,6 @@
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
-import UserInfoCard from "@/components/admin/UserInfoCard";
+import UserInfoCard from "@/components/admin/userManagment/UserInfoCard";
 import Pagination from "@/components/common/Others/Pagination";
 import { adminSideBarOptions, Messages } from "@/utils/constant";
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";

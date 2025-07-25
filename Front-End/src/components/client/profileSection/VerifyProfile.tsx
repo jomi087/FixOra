@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+
 import type { ProfileEdit } from "@/shared/Types/user";
 import type { Address } from "@/shared/Types/location";
 
@@ -15,16 +16,18 @@ import AuthService from "@/services/AuthService";
 import { getCoordinatesFromAddress } from "@/utils/helper/forwardGeocodingLocation";
 import { Userinfo } from "@/store/user/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
-import AddressDialog from "../common/Others/AddressDialog";
+import AddressDialog from "../../common/Others/AddressDialog";
+import { useNavigate } from "react-router-dom";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
 
 
-interface EditProfileProps {
+
+interface VerifyProfileProps {
     toggle: (editMode: boolean) => void;
 }
 
-const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
+const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
 
     const { user } = useAppSelector((state) => state.auth);
     const [form, setForm] = useState<ProfileEdit>({
@@ -48,7 +51,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
-    
+    const navigate = useNavigate()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -169,29 +172,29 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
             return;
         }
 
-        const isSame = (
+        const isSame =(
             form.fname === user?.fname &&
             form.lname === user?.lname &&
             form.mobile === user?.mobileNo &&
             JSON.stringify(form.location) === JSON.stringify(user?.location)
-        );
+        )
 
         if (isSame) {
-            toast.info("No changes Made.");
+            toggle(true)
             return;
         }
+
 
         setLoading(true)
         try {
             const res = await AuthService.editProfileApi(form)
             if (res.status == HttpStatusCode.OK) {
-                console.log(res.data)
                 dispatch(Userinfo({ user: { ...user, ...res.data.user } }));
                 toast.success("Updated");
-                toggle(false)
+                toggle(true)
             }
         } catch (error:any) {
-            const errorMsg = error?.response?.data?.message ||"profile modification failed";
+            const errorMsg = error?.response?.data?.message || Messages.PROFILE_MODIFICATION_FAILED;
             toast.error(errorMsg);
         } finally {
             setLoading(false)
@@ -199,8 +202,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
     };
 
     return (
-        <div className="flex-1 p-8 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-semibold mb-6">My Profile </h2>
+        <div className="flex-1 p-4 max-w-3xl mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* First Name */}
                 <div>
@@ -212,33 +214,39 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
                     onChange={handleChange}
                     placeholder="Enter first name"
                     className="dark:text-white"
-                />
+                    />
+                    <p className="text-[12px] font-extralight before:content-['*'] before:text-red-500 before:mr-1">
+                        Make sure your Name is exactly the same as in your ID card
+                    </p>
                 </div>
 
                 {/* Last Name */}
                 <div>
-                <Label htmlFor="lname" className="mb-2 ml-1 ">Last Name</Label>
-                <Input
-                    id="lname"
-                    name="lname"
-                    value={form.lname}
-                    onChange={handleChange}
-                    placeholder="Enter last name"
-                    className="dark:text-white"
-                />
+                    <Label htmlFor="lname" className="mb-2 ml-1 ">Last Name</Label>
+                    <Input
+                        id="lname"
+                        name="lname"
+                        value={form.lname}
+                        onChange={handleChange}
+                        placeholder="Enter last name"
+                        className="dark:text-white"
+                        />
+                    <p className="text-[12px] font-extralight before:content-['*'] before:text-red-500 before:mr-1">
+                        Make sure your Name is exactly the same as in your ID card
+                    </p>    
                 </div>
 
                 {/* Mobile */}
                 <div>
-                <Label htmlFor="mobile" className="mb-2 ml-1 ">Mobile Number</Label>
-                <Input
-                    id="mobile"
-                    name="mobile"
-                    value={form.mobile}
-                    onChange={handleChange}
-                    className="dark:text-white"
-                    placeholder="Enter mobile number"
-                />
+                    <Label htmlFor="mobile" className="mb-2 ml-1 ">Mobile Number</Label>
+                    <Input
+                        id="mobile"
+                        name="mobile"
+                        value={form.mobile}
+                        onChange={handleChange}
+                        className="dark:text-white"
+                        placeholder="Enter mobile number"
+                    />
                 </div>
 
                 {/* Address */}
@@ -280,16 +288,16 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
 
                 {/* Buttons */}
                 <div className="flex items-center justify-between">
-                    <Button type="submit" disabled={loading}>Update Profile</Button>
                     <Button variant="outline" type="button"
-                        onClick={() => toggle(false)}
+                        onClick={() => navigate(-1)}
                     >
                         Go Back
                     </Button>
+                    <Button type="submit" disabled={loading}>Next</Button>
                 </div>
             </form>
         </div >
     );
 };
 
-export default EditProfile;
+export default VerifyProfile;

@@ -1,5 +1,5 @@
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard"
-import Services from "@/components/client/Services";
+import Services from "@/components/client/servicesSection/Services";
 import Footer from "@/components/common/layout/Footer";
 import Nav from "@/components/common/layout/Nav"
 import useFetchCategories from "@/hooks/useFetchCategories";

@@ -9,11 +9,11 @@ import { useProviderManagement } from "@/hooks/useProviderManagement";
 import SearchInput from "@/components/common/Others/SearchInput";
 import FilterSelect from "@/components/common/Others/FilterSelect";
 import { useNavigate } from "react-router-dom";
-import ProviderInfoCard from "@/components/admin/providerInfoCard";
 import { useMemo } from "react";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { toast } from "react-toastify";
+import ProviderInfoCard from "@/components/admin/providerManagment/ProviderInfoCard";
 
 
   const filterOptions= [
