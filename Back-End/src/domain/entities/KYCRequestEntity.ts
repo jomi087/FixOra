@@ -6,7 +6,7 @@ export interface KYCRequest {
     dob: Date;
     gender: Gender;
     serviceId: string;
-    specializationIds: string[];
+    specializationIds: string[]; //subvategory id
     profileImage: string;
     serviceCharge: number;
     kyc : {
@@ -27,6 +27,7 @@ export interface KYCRequest {
 export interface KYCRequestWithDetails {
     id: string;
     user: {
+        userId: string,
         fname: string;
         lname: string;
         email: string;
@@ -47,8 +48,8 @@ export interface KYCRequestWithDetails {
     };
     dob: Date;
     gender: Gender;
-    specializationIds: string[];
     service: {
+        categoryId: string
         name: string;
         subcategories: {
             subCategoryId: string;
@@ -69,5 +70,4 @@ export interface KYCRequestWithDetails {
     submittedAt: Date;
     reviewedAt?: Date;
     reviewedBy?: string
-
 }

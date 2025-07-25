@@ -5,7 +5,6 @@ import { User } from "../../../domain/entities/UserEntity.js";
 import { Provider } from "../../../domain/entities/ProviderEntity.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import UserModel from "../models/UserModel.js";
-import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
 import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
 
 //!mistake in this repository (i have am violatin srp rule need to re-work) 
@@ -28,12 +27,20 @@ export class UserRepository implements IUserRepository {
         return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>()
     }
 
-    
-
     async findByUserGoogleId(googleId: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOne({ googleId }).select(omitSelect).lean<Partial<User>>()
     }
+
+    async updateRole(userId : string, role : RoleEnum, omitFields : Array<keyof User>=[] ): Promise<Partial<User> | null>{
+        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
+        return await UserModel.findOneAndUpdate(
+            { userId },
+            { $set: { role } },
+            { new : true }
+        ).select(omitSelect).lean<Partial<User>>();
+    }
+    
 
     async update( filter: Partial<Pick<User, "email" | "userId" | "googleId" >> , updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
@@ -75,36 +82,6 @@ export class UserRepository implements IUserRepository {
         return { data : users, total}
     };
 
-    async findProvidersWithFilters(options: { searchQuery: string; filter: string }, currentPage: number, limit: number, omitFields: Array<keyof User | keyof Provider>=[]): Promise<{ data: Array<Partial<User> & Partial<Provider>>; total: number }> {
-        
-        const { searchQuery, filter } = options
-        const query: any = {
-            role: RoleEnum.Provider,
-        };
-
-        if (searchQuery) {
-            query.$or = [
-                { fname: { $regex: searchQuery, $options: "i" } },
-                { lname: { $regex: searchQuery, $options: "i" } },
-            ];
-        }
-
-        if (filter === "blocked") query.isBlocked = true;
-        else if (filter === "unblocked") query.isBlocked = false;
-        else if (filter === "online") query.isOnline = true;
-        else if (filter === "offline") query.isOnline = false;
-
-        const omitSelect = omitFields.map((field) => `-${field}`).join(" ");
-
-        const total = await UserModel.countDocuments(query);
-        const data = await UserModel.find(query)
-            .select(omitSelect)
-            .skip((currentPage - 1) * limit)
-            .limit(limit)
-            .lean<Array<Partial<User> & Partial<Provider>>>();
-
-        return { data, total };
-    }
 }
 
 

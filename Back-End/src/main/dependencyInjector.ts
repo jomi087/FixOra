@@ -92,13 +92,13 @@ import { ToggleUserStatusUseCase } from "../application/useCases/admin/ToggleUse
 const toggleUserStatusUseCase = new ToggleUserStatusUseCase(userRepository)
 
 import { GetProvidersUseCase } from "../application/useCases/admin/GetProvidersUseCase.js";
-const getProvidersUseCase = new GetProvidersUseCase(userRepository)
+const getProvidersUseCase = new GetProvidersUseCase(providerRepository)
 
 import { ProviderApplicationUseCase } from "../application/useCases/admin/ProviderApplicationUseCase.js";
 const providerApplicationUseCase = new ProviderApplicationUseCase(kycRequestRepository)
 
 import { UpdateKYCStatusUseCase } from "../application/useCases/admin/UpdateKYCStatusUseCase.js";
-const updateKYCStatusUseCase = new UpdateKYCStatusUseCase(kycRequestRepository,providerRepository)
+const updateKYCStatusUseCase = new UpdateKYCStatusUseCase(kycRequestRepository,providerRepository,userRepository)
 
 import { GetServiceUseCase } from "../application/useCases/admin/GetServiceUseCase.js";
 const getServiceUseCase = new GetServiceUseCase(categoryRepository)

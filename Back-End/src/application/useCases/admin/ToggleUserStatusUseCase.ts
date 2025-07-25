@@ -1,11 +1,12 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
 import { Messages } from "../../../shared/constant/Messages.js";
+import { IToggleUserStatusUseCase } from "../../Interface/useCases/Admin/IToggleUserStatusUseCase.js";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
 const { INTERNAL_ERROR, USER_NOT_FOUND } = Messages
 
-export class ToggleUserStatusUseCase {
+export class ToggleUserStatusUseCase implements IToggleUserStatusUseCase {
     constructor(
         private readonly userRepository : IUserRepository
     ) { }

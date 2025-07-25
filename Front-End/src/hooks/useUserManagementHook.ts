@@ -2,7 +2,7 @@ import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { CustomersData  } from "@/shared/Types/user";
 import { CCPP } from "@/utils/constant";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
 
@@ -16,7 +16,9 @@ export const useUserManagement = ()=>{
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = CCPP || 16
   
-  const totalPages = Math.ceil(totalCustomers / itemsPerPage);
+  const totalPages = useMemo(() =>
+    Math.ceil(totalCustomers / itemsPerPage)
+  ,[totalCustomers, itemsPerPage]);
   
   useEffect(() => {
     const fetchUser = async () => {

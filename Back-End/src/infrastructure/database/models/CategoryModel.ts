@@ -47,7 +47,6 @@ const CategorySchema = new mongoose.Schema<ICategoryModel>({
 },
     {
         timestamps: true,
-        _id: false
     }
 )
 

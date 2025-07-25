@@ -22,11 +22,8 @@ const ProviderList = () => {
     const [openConfirm, setOpenConfirm] = useState(false);
 
     const filterOptions= [  //sub category to be displayed 
-        { label: "All", value: "all" },
-        { label: "Blocked", value: "blocked" },
-        { label: "Unblocked", value: "unblocked" },
-        { label: "Online", value: "online" },
-        { label: "Offline", value: "offline" },
+        { label: "subCategory", value: "all" },
+
     ]
 
     return (
@@ -39,9 +36,9 @@ const ProviderList = () => {
             <div className="bg-footer-background text-body-text w-full px-4 md:px-6 py-4">
                         
                 <div className="hidden sm:flex gap-4 flex-row items-center justify-between ">              
-                    <div className="flex gap-3  items-center md:w-[400px]">
-                        <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
-                        <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} /> 
+                    <div className="flex gap-3  items-center md:w-[450px]">
+                        <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider"  />
+                        <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} className="md:w-44"   /> 
                     </div>
                     <div className="md:w-auto">
                         <Button

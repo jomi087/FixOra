@@ -1,8 +1,7 @@
-import { CategoryDTO } from "../../outputDTO's/CategoryDTO.js";
 import { Category } from "../../entities/CategoryEntity.js";
 
 export interface ICategoryRepository{
-    create(category: CategoryDTO): Promise<Category>;
+    create(category: Category): Promise<Category>;
     findByName(name: string): Promise<Category | null>;
     findById(id: string): Promise<Category>;
     save(category: Category): Promise<Category>; 

@@ -1,39 +1,44 @@
-// import { RoleEnum } from "../../../../domain/constant/Roles.js";
-// import { User } from "../../../../domain/entities/UserEntity.js";
-// import { IUserRepository } from "../../../../domain/interface/RepositoryInterface/IUserRepository.js";
-// import { IHashService } from "../../../../domain/interface/ServiceInterface/IHashService.js";
-// import { SigninDTO } from "../../../dtos/SigninDTO.js";
-// import { AuthData, IAuthStrategy } from "./interface/IAuthStrategy.js";
+import { User } from "../../../domain/entities/UserEntity.js";
+import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
+import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/constant/Messages.js";
+import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { SigninDTO } from "../../DTO's/SigninDTO.js";
+import { AuthData, IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy.js";
 
 
+const { FORBIDDEN, INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INVALID_CREDENTIALS, INTERNAL_ERROR,ACCOUNT_BLOCKED } = Messages;
 
-// export class ProviderAuthStrategy  implements IAuthStrategy  {
-//     constructor(
-//         private readonly Repository: I___Repository,
-//         private readonly hashService: IHashService
-//     ) {}
+export class ProviderAuthStrategy  implements IAuthStrategy  {
+    constructor(
+        private readonly userRepository: IUserRepository,
+        private readonly hashService: IHashService,
+        // private readonly providerRepository: IProviderRepository,
 
-//     async authenticate(credentials: SigninDTO): Promise<AuthData> {
-        
-//         try {
-//             const user = await this.Repository.findByEmail(credentials.email) as User;
+    ) {}
 
-//             if (!user || user.role != credentials.role || user.role != 'provider'  ) throw { status: 403, message: "Invalid credentials" };
-//             if (user.isBlocked) throw { status: 403, message: "Account blocked" };
-//             if (user.isVer)
+    async authenticate(credentials: SigninDTO): Promise<AuthData> {
+        try {
+            const user = await this.userRepository.findByEmail(credentials.email) as User;
 
-//             const isMatch = await this.hashService.compare(credentials.password, user.password );
-//             if (!isMatch) throw { status: 403, message: "Invalid credentials" };
+            if (!user || user.role != credentials.role || user.role != RoleEnum.Provider ) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };;
+            if (user.isBlocked) throw  { status: FORBIDDEN, message: ACCOUNT_BLOCKED  };
+
+            const isMatch = await this.hashService.compare(credentials.password, user.password as string );
+            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS }
             
-//             return { userData: user, role: RoleEnum.Provider };
+            return { userData: user, role: RoleEnum.Provider };
             
-//         } catch (error:any ) {
-//             if (error.status && error.message) throw error;
+        } catch (error:any ) {
+            if (error.status && error.message) throw error;
 
-//             throw {
-//                 status: 500,
-//                 message: "something went wrong ( ProviderAuthStrategy error )"
-//             };
-//         }
-//     }
-// }
+            throw {
+                status: INTERNAL_SERVER_ERROR,
+                message: INTERNAL_ERROR
+            };
+        }
+    }
+}

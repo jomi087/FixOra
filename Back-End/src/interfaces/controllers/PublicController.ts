@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { GetLandingDataUseCase } from "../../application/useCases/public/GetLandingDataUseCase.js";
+import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Public/IGetLandingDataUseCase.js";
 import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
 
 const { OK} = HttpStatusCode
 
 export class PublicController {
     constructor(
-        private getLandingDataUseCase : GetLandingDataUseCase
+        private getLandingDataUseCase : IGetLandingDataUseCase
     ){}
     
     async getLandingData(req: Request, res: Response, next: NextFunction): Promise<void> {

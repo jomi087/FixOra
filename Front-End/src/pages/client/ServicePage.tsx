@@ -2,19 +2,20 @@ import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard"
 import Services from "@/components/client/Services";
 import Footer from "@/components/common/layout/Footer";
 import Nav from "@/components/common/layout/Nav"
-import { fetchCategories } from "@/store/categorySlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useEffect } from "react";
+import useFetchCategories from "@/hooks/useFetchCategories";
 
 const ServicePage : React.FC = () => {
-    const dispatch = useAppDispatch()
-    const {categories,loading } = useAppSelector((state) => state.category)
+    // const dispatch = useAppDispatch()
+    // const {categories,loading } = useAppSelector((state) => state.category)
     
-    useEffect(() => {
-        if (categories.length === 0) {
-            dispatch(fetchCategories());
-        }
-    }, [dispatch, categories.length])
+    // useEffect(() => {
+    //     if (categories.length === 0) {
+    //         dispatch(fetchCategories());
+    //     }
+    // }, [dispatch, categories.length])
+
+    const {categories,loading} = useFetchCategories()
+
 
     return (
     <>

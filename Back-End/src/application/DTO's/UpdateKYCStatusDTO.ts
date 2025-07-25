@@ -8,5 +8,7 @@ export interface UpdateKYCStatusInputDTO {
 }
 
 export interface UpdateKYCStatusOutputDTO {
+  id: string,
   message: string;
+  
 }

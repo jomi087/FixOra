@@ -5,14 +5,14 @@ import { Messages } from "../../shared/constant/Messages.js";
 
 
 import { IGetCustomersUseCase } from "../../application/Interface/useCases/Admin/IGetCustomersUseCase.js";
-import { GetProvidersUseCase } from "../../application/useCases/admin/GetProvidersUseCase.js";
-import { GetServiceUseCase } from "../../application/useCases/admin/GetServiceUseCase.js";
-import { CreateServiceCategoryUseCase } from "../../application/useCases/admin/CreateServiceCategoryUseCase.js";
-import { ToggleCategoryStatusUseCase } from "../../application/useCases/admin/ToggleCategoryStatusUseCase.js";
-import { ToggleUserStatusUseCase } from "../../application/useCases/admin/ToggleUserStatusUseCase.js";
+import { IGetProvidersUseCase } from "../../application/Interface/useCases/Admin/IGetProvidersUseCase.js";
+import { IGetServiceUseCase } from "../../application/Interface/useCases/Admin/IGetServiceUseCase.js";
+import { ICreateServiceCategoryUseCase } from "../../application/Interface/useCases/Admin/ICreateServiceCategoryUseCase.js";
+import { IToggleCategoryStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleCategoryStatusUseCase.js";
+import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleUserStatusUseCase.js";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
 import { CategoryInputDTO } from "../../application/DTO's/CategoryInputDTO.js";
-import { ProviderApplicationUseCase } from "../../application/useCases/admin/ProviderApplicationUseCase.js";
+import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase.js";
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
@@ -21,14 +21,14 @@ const {  UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSIN
 export class AdminController {
     constructor(
         private getCustomersUseCase: IGetCustomersUseCase,
-        private toggleUserStatusUseCase: ToggleUserStatusUseCase,
-        private getProvidersUseCase: GetProvidersUseCase,
-        private providerApplicationUseCase: ProviderApplicationUseCase,
+        private toggleUserStatusUseCase: IToggleUserStatusUseCase,
+        private getProvidersUseCase: IGetProvidersUseCase,
+        private providerApplicationUseCase: IProviderApplicationUseCase,
         private updateKYCStatusUseCase : IUpdateKYCStatusUseCase,
-        private getServiceUseCase: GetServiceUseCase,
-        private createServiceCategoryUseCase: CreateServiceCategoryUseCase,
+        private getServiceUseCase: IGetServiceUseCase,
+        private createServiceCategoryUseCase: ICreateServiceCategoryUseCase,
         private imageUploaderService: IImageUploaderService,
-        private toggleCategoryStatusUseCase: ToggleCategoryStatusUseCase,
+        private toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
     ) { }
 
     async getCustomers(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -77,7 +77,7 @@ export class AdminController {
 
             res.status(OK).json({
                 success: true,
-                providerData: result.providerData,
+                providerData: result.data,
                 total: result.total
             });
             
@@ -122,7 +122,8 @@ export class AdminController {
 
             res.status(OK).json({
                 success: true,
-                message : result.message
+                message: result.message,
+                id : result.id
             });
 
         } catch (error) {
@@ -142,7 +143,7 @@ export class AdminController {
 
             res.status(OK).json({
                 success: true,               
-                catogoriesData: result.catogoriesData,
+                catogoriesData: result.data,
                 total : result.total
             });
 

@@ -18,26 +18,30 @@ export const useProviderManagement = () => {
     const itemsPerPage = PCPP ||  16
 
     useEffect(() => {
+
+
         const fetchProviders = async () => {
         setLoading(true);
-        try {
-            const res = await AuthService.getProviderApi(debouncedQuery,filter,currentPage,itemsPerPage);
-            if (res.status === HttpStatusCode.OK) {
-            setProvData(res.data.providerData);
-            setTotalProviders(res.data.total)
+            try {
+                const res = await AuthService.getProviderApi(debouncedQuery,filter,currentPage,itemsPerPage);
+                if (res.status === HttpStatusCode.OK) {
+                    setProvData(res.data.providerData);
+                    setTotalProviders(res.data.total)
+                }
+            } catch {
+                toast.error("Failed to fetch Providers");
+            } finally {
+                setLoading(false);
             }
-        } catch {
-            toast.error("Failed to fetch Providers");
-        } finally {
-            setLoading(false);
-        }
         };
         fetchProviders()
     }, [debouncedQuery,filter,currentPage]);
 
-    useEffect(() => {  
-        setCurrentPage(1) 
-    }, [debouncedQuery, filter])
+    useEffect(() => { // this loggic is use to bring the page to  1 (sceanrio => Imagine you are on page 3, then you type a new search.If you don’t reset to page 1, the UI will still try to fetch page 3 of the new search results → which might be empty.)
+    if (currentPage !== 1) { // this was  to avoid unnessesry rerend on page 1
+        setCurrentPage(1);
+    }
+    }, [debouncedQuery, filter]);
   
     return {
         provData,
@@ -49,6 +53,7 @@ export const useProviderManagement = () => {
         currentPage,
         searchQuery,
         setCurrentPage,
-        itemsPerPage
+        itemsPerPage,
+        setProvData
     }
 }

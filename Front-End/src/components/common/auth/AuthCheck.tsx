@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
-import { logout, Userinfo } from '../../../store/userSlice';
+import { logout, Userinfo } from '../../../store/user/userSlice';
 import AuthService from '../../../services/AuthService';
 import { HttpStatusCode } from '@/shared/enums/HttpStatusCode';
 

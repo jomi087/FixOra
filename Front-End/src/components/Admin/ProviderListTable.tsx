@@ -5,14 +5,20 @@ import ProviderKYCDialog from "./ProviderKYCDialog";
 
 interface ProviderListTableProps {
   data: ProviderList[]
+  setData: (data:ProviderList[])=>void
 }
 
-const ProviderListTable: React.FC<ProviderListTableProps> = ({ data }) => {
+const ProviderListTable: React.FC<ProviderListTableProps> = ({ data ,setData}) => {
   const [selectedProvider, setSelectedProvider] = useState<ProviderList | null>(null);
 
   const handleRowClick = (provider: ProviderList) => {
     setSelectedProvider(provider);
   };
+
+  const statusUpdatedData = (id: string) => {
+    const newData = data.filter((d) => d.id !== id)
+    setData(newData)
+  }
 
   return (
     <div className="w-full">
@@ -26,7 +32,7 @@ const ProviderListTable: React.FC<ProviderListTableProps> = ({ data }) => {
           >
             <p className="font-semibold">{idx + 1}. {list.user.fname} {list.user.lname}</p>
             <p className="text-sm text-gray-500">{list.user.email}</p>
-            <p className="text-sm">Service: <span className="font-medium">{list.serviceName}</span></p>
+            <p className="text-sm">Service: <span className="font-medium">{list.service.name}</span></p>
             <p className={`text-sm font-medium ${list.status === "Pending" ? "text-yellow-500" : "text-destructive"}`}>
               {list.status}
             </p>
@@ -57,7 +63,7 @@ const ProviderListTable: React.FC<ProviderListTableProps> = ({ data }) => {
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>{`${list.user.fname.toUpperCase()} ${list.user.lname.toUpperCase()}`}</TableCell>
                 <TableCell>{list.user.email}</TableCell>
-                <TableCell>{list.serviceName}</TableCell>
+                <TableCell>{list.service.name}</TableCell>
                 <TableCell className={`${list.status === "Pending" ? "text-yellow-500" : "text-destructive"}`}>
                   {list.status}
                 </TableCell>
@@ -68,7 +74,7 @@ const ProviderListTable: React.FC<ProviderListTableProps> = ({ data }) => {
       </div>
 
       {/* Dialog */}
-      <ProviderKYCDialog selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} />
+      <ProviderKYCDialog selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} updateData={ statusUpdatedData } />
     </div>
 
   );

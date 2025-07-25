@@ -16,6 +16,7 @@ export const Messages = {
 
     EMAIL_ALREADY_EXISTS: "Email already exists",
     CATEGORY_ALREADY_EXISTS: "Category name already exists",
+    PROVIDER_ALREADY_EXISTS: "Provider already exists",
 
     CATEGORY_NAME_REQUIRED: "Category name is required",
     CATEGORY_DESCRIPTION_REQUIRED: "Category description is required",

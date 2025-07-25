@@ -75,7 +75,6 @@ const userSchema = new mongoose.Schema<IUserModel>({
 },
     {
         timestamps: true,
-        _id: false
     },
 )
 

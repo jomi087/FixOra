@@ -1,20 +1,24 @@
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity.js";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
 import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
 import { Messages } from "../../../shared/constant/Messages.js";
+import { RoleEnum } from "../../../shared/constant/Roles.js";
 import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../DTO's/UpdateKYCStatusDTO.js";
 import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
+import { v4 as uuidv4 } from "uuid";
 
 
 const { INTERNAL_SERVER_ERROR,BAD_REQUEST,NOT_FOUND,CONFLICT} = HttpStatusCode
-const { INTERNAL_ERROR,INVALID_ACTION,KYC_REJECTED,KYC_APPROVED,KYC_ALREADY_REVIEWED,KYC_NOT_FOUND  } = Messages
+const { INTERNAL_ERROR,INVALID_ACTION,KYC_REJECTED,USER_NOT_FOUND,PROVIDER_ALREADY_EXISTS,KYC_APPROVED,KYC_ALREADY_REVIEWED,KYC_NOT_FOUND  } = Messages
 
 export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
     constructor(
         private readonly kycRequestRepository: IKYCRequestRepository,
-        private readonly providerRepository : IProviderRepository
+        private readonly providerRepository: IProviderRepository,
+        private readonly userRepository : IUserRepository
     )
     { }
     
@@ -23,12 +27,94 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
         if (!updated) throw { status: NOT_FOUND, message: KYC_NOT_FOUND };
     }
 
+    private validateIsPending(request: KYCRequest) {
+        if (request.status !== KYCStatus.Pending) throw { status: CONFLICT, message: KYC_ALREADY_REVIEWED }
+    }
+
+    private async rejectRequest(id: string, request: KYCRequest, reason?: string): Promise<string> {
+        
+        request.status = KYCStatus.Rejected;
+        request.reason = reason;
+        request.reviewedAt = new Date();
+
+        await this.update(id, request);
+
+        return KYC_REJECTED;
+    }
+
+    private async approveRequest(id: string, request: KYCRequest): Promise<string> {
+    
+        const existingProvider = await this.providerRepository.findByUserId(request.userId);
+        if (existingProvider) {
+            throw { status: CONFLICT, message: PROVIDER_ALREADY_EXISTS };
+        }
+
+        request.status = KYCStatus.Approved;
+        request.reviewedAt = new Date();
+        await this.update(id, request);
+
+        try {
+            await this.providerRepository.create({
+                providerId : uuidv4(),
+                userId: request.userId,
+                dob: request.dob,
+                gender: request.gender,
+                serviceId: request.serviceId,
+                specializationIds: request.specializationIds,
+                profileImage: request.profileImage,
+                serviceCharge: request.serviceCharge,
+                kyc: request.kyc,
+                isOnline: false,
+            });
+
+            const updatedUser  = await this.userRepository.updateRole(request.userId, RoleEnum.Provider,["password","refreshToken","googleId","createdAt","isBlocked"])
+            
+            if (!updatedUser) throw { status: NOT_FOUND, message: USER_NOT_FOUND }
+
+            return KYC_APPROVED;
+
+        } catch (error: any) {
+            //if db error then roll back
+            request.status = KYCStatus.Pending
+            request.reviewedAt = undefined
+            await this.update(id, request);
+
+            throw { status: INTERNAL_SERVER_ERROR , message : INTERNAL_ERROR }
+        }
+    }
+
+    async execute({ id, action, reason, adminId }: UpdateKYCStatusInputDTO): Promise<UpdateKYCStatusOutputDTO> {
+        try {
+            const request = await this.kycRequestRepository.findById(id);
+            if (!request) throw { status: NOT_FOUND, message: KYC_NOT_FOUND };
+
+            this.validateIsPending(request);
+            request.reviewedBy = adminId;
+            
+            let message: string;
+            if (action === KYCStatus.Rejected) {
+                message = await this.rejectRequest(id, request, reason);
+            } else if (action === KYCStatus.Approved) {
+                message = await this.approveRequest(id, request);
+            } else {
+                throw { status: BAD_REQUEST, message: INVALID_ACTION };
+            }
+            return { id , message };
+        } catch (error: any) {
+            if (error.status && error.message) throw error;
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        }
+    }
+
+}
+
+
+/* This is  how i wrote later  i splitter the code to make the execute loigc easy to understand 
     async execute({id,action,reason,adminId}:UpdateKYCStatusInputDTO): Promise<UpdateKYCStatusOutputDTO>{
         try {
             const request = await this.kycRequestRepository.findById(id)
-            if(!request) throw { status : NOT_FOUND , message : KYC_NOT_FOUND }
-
-            if(request.status !== KYCStatus.Pending) throw { status : CONFLICT , message : KYC_ALREADY_REVIEWED }
+            if (!request) throw { status: NOT_FOUND, message: KYC_NOT_FOUND }
+            
 
             const now = new Date();
 
@@ -44,6 +130,11 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
             }
 
             if (action === KYCStatus.Approved) {
+                // const existingProvider = await this.providerRepository.findByUserId(request.userId);
+                // if (existingProvider) {
+                //     throw { status: CONFLICT, message: "Provider already exists for this user" };
+                // }
+
                 request.status = KYCStatus.Approved;
                 request.reviewedAt = now;
                 request.reviewedBy = adminId;
@@ -74,4 +165,4 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
         }
 
     }
-}
+*/

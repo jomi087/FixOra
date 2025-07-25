@@ -1,4 +1,4 @@
-import { fetchCategories } from "@/store/categorySlice";
+import { fetchCategories } from "@/store/user/categorySlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
 

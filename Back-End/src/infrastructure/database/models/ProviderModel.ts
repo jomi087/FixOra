@@ -7,6 +7,12 @@ import { Gender } from '../../../shared/constant/Gender.js';
 export interface IProviderModel extends Document, Provider {}
 
 const providerSchema = new Schema<IProviderModel>({
+    providerId: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     userId: {
       type: String,
       required: true,
@@ -59,7 +65,7 @@ const providerSchema = new Schema<IProviderModel>({
     }
 }, {
     timestamps: true,
-    }
+  }
 );
 
 const ProviderModel = mongoose.model<IProviderModel>('Provider', providerSchema);

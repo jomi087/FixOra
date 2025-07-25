@@ -1,4 +1,3 @@
-import { CategoryDTO } from "../../../domain/outputDTO's/CategoryDTO.js";
 import { Category } from "../../../domain/entities/CategoryEntity.js";
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
 import CategoryModel from "../models/CategoryModel.js";
@@ -6,7 +5,7 @@ import { FilterQuery } from "mongoose";
 
 export class CategoryRepository implements ICategoryRepository {
 
-    async create(category: CategoryDTO): Promise < Category > {
+    async create(category: Category): Promise < Category > {
         const newCategory = new CategoryModel(category)
         await newCategory.save();
         return newCategory.toObject() as Category;
@@ -15,11 +14,11 @@ export class CategoryRepository implements ICategoryRepository {
     async findByName(name: string): Promise<Category | null> {
         return await CategoryModel.findOne({
             name: { $regex: `^${name.trim()}$`, $options: 'i' }
-        }).lean()
+        }).lean<Category>()
     }
 
     async findById(id: string): Promise<Category>{  
-        const category = await CategoryModel.findOne({categoryId : id }).lean()
+        const category = await CategoryModel.findOne({categoryId : id }).lean<Category>()
         if (!category) throw new Error("Category not found");
         return category
     }

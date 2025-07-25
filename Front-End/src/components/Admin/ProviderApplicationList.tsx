@@ -4,6 +4,7 @@ import Pagination from "@/components/common/Others/Pagination"
 import SearchInput from "@/components/common/Others/SearchInput"
 import AuthService from "@/services/AuthService"
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode"
+import type { ProviderList } from "@/shared/Types/user"
 import { Messages, PALPP } from "@/utils/constant"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -14,7 +15,7 @@ const ProviderApplicationList:React.FC = () => {
     const [searchQuery, setSearchQuery] = useState("")
     const [ filter, setFilter] = useState("Pending")
     const [debouncedQuery] = useDebounce(searchQuery, 300)
-    const [ providerApplications, setProviderApplications] = useState([]) //all type of kyc data like pending approved rejected
+    const [ providerApplications, setProviderApplications] = useState<ProviderList[]>([]) //all type of kyc data like pending approved rejected
     const [totalApplications , setTotalApplications ] = useState(0);
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = PALPP || 15
@@ -25,6 +26,7 @@ const ProviderApplicationList:React.FC = () => {
     const filterOptions= [
         { label: "Pending", value: "Pending" },  
         { label: "Rejected", value: "Rejected" },
+        { label: "Approved", value: "Approved" },
     ]
 
 
@@ -73,7 +75,7 @@ const ProviderApplicationList:React.FC = () => {
                         </div>
                     ) : (
                         <>
-                            <ProviderListTable data={providerApplications} />  
+                            <ProviderListTable data={providerApplications} setData={setProviderApplications} />  
                             {totalPages > 1 && (
                             <Pagination
                                 currentPage={currentPage}

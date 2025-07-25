@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { Category } from "@/shared/Types/category";
 import { Button } from "../ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { resetFilters, setAvailabilityFilter, setNearByFilter, setRatingFilter, setSelectedService } from "@/store/filterSlice";
+import { resetFilters, setAvailabilityFilter, setNearByFilter, setRatingFilter, setSelectedService } from "@/store/user/filterSlice";
 
 interface FilterSideBarProps {
   className?: string;

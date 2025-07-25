@@ -1,4 +1,4 @@
-import {Dialog,DialogContent,} from "@/components/ui/dialog";
+import {Dialog,DialogContent, DialogDescription, DialogTitle,} from "@/components/ui/dialog";
 import AuthService from "@/services/AuthService";
 import type { ProviderList } from "@/shared/Types/user";
 import { formatDOB, toPascalCase } from "@/utils/helper/utils";
@@ -8,14 +8,16 @@ import { Button } from "../ui/button";
 import ReasonDialog from "../common/Others/ReasonDialog";
 import { KYCStatus } from "@/shared/enums/KycStatus";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import CustomLink from "../ui/Custom/CustomLink";
 
 
 interface ProviderKYCDialogProps {
   selectedProvider: ProviderList | null;
   setSelectedProvider: (provider: ProviderList | null) => void;
+  updateData:(id:string)=>void
 }
 
-const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider, setSelectedProvider }) => {
+const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider, setSelectedProvider,updateData }) => {
   const [loading, setLoading] = useState(false)
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
@@ -25,8 +27,10 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
     setLoading(true)
     try {      
       const res = await AuthService.updateProviderKYC(selectedProvider.id,{action:KYCStatus.Approved})
-      if (res.status === HttpStatusCode.OK ) {
+      if (res.status === HttpStatusCode.OK) {
+        console.log(res.data)
         toast.success("KYC Approved");
+        updateData(res.data.id)
         setSelectedProvider(null);
       }
     } catch (error: any) {
@@ -43,8 +47,10 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
       const res = await AuthService.updateProviderKYC(selectedProvider.id,{ action: KYCStatus.Rejected, reason })
       if (res.status === HttpStatusCode.OK) {
         toast.success("KYC Rejected");
+        updateData(res.data.id)
         setRejectDialogOpen(false); 
         setSelectedProvider(null);
+        
       }
 
     } catch (error: any) {
@@ -65,7 +71,8 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
     >
       <DialogContent className="!max-w-2xl w-full rounded-none  shadow-xl h-full overflow-auto p-0  gap-0">
         <div className="flex flex-col md:flex-row gap-6 bg-hero-background font-serif ">
-          
+          <DialogTitle className="sr-only">Provider KYC Details</DialogTitle>
+            <DialogDescription className="sr-only">Detailed information about the provider’s KYC application</DialogDescription>
           {/* Profile Image */}
           <div className="flex-shrink-0 flex justify-center md:justify-start">
             <div className="w-52 h-52 shadow-lg overflow-hidden">
@@ -77,15 +84,16 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
             </div>
           </div>
 
-          <div className="flex-1 pt-3 text-center md:text-left">
+          <div className="flex-1 p-2.5 text-center md:text-left">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
               <p className="text-xl underline mt-1">
-                {selectedProvider.serviceName.toUpperCase()}
+                {selectedProvider.service.name.toUpperCase()}
               </p>
+              {/* For Mobile */}
               <span
-                className={`inline-block px-3 py-1 text-sm font-medium rounded-full mr-10 ${
-                  selectedProvider.status === "Pending"
-                    ? "bg-yellow-200 text-yellow-900": selectedProvider.status === "Approved"
+                className={`sm:inline-block md:hidden px-3 py-1 text-sm font-medium md:mr-10 rounded-2xl  ${
+                  selectedProvider.status === KYCStatus.Pending
+                    ? "bg-yellow-200 text-yellow-900": selectedProvider.status === KYCStatus.Approved
                     ? "bg-green-200 text-green-900" : "bg-red-200 text-red-900"
                 }`}
               >
@@ -99,6 +107,21 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
               <p><span className="font-medium">📱 Mobile:</span> {selectedProvider.user.mobileNo}</p>
               <p><span className="font-medium">🎂 DOB:</span> {formatDOB(selectedProvider.dob)}</p>
               <p><span className="font-medium">🚻 Gender:</span> {selectedProvider.gender}</p>
+            </div>
+          </div>
+
+          <div className="hidden md:flex items-center ">
+            <div className="">
+              <span
+                className={`inline-block px-3 py-1 text-sm font-medium rounded-3xl  md:mr-10 ${
+                  selectedProvider.status === KYCStatus.Pending && "bg-yellow-200 text-yellow-900"  }`}
+              >
+                { selectedProvider.status == KYCStatus.Pending
+                  ? KYCStatus.Pending : selectedProvider.status == KYCStatus.Approved
+                  ? <img src="/Approved.png" alt={selectedProvider.status} className="w-20" />  
+                  : <img src="/Rejected.png" alt={selectedProvider.status} className="w-20" />
+                }
+              </span>
             </div>
           </div>
         </div>
@@ -126,12 +149,13 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
               </h3>
               <div className="space-y-2 text-sm ">
                 <p>
-                  <span className="font-medium">Service:</span> {selectedProvider.serviceName}
+                  <span className="font-medium">Service:</span> {selectedProvider.service.name}
                 </p>
                 <p>
                   <span className="font-medium">Specializations:</span>{" "}
-                  {selectedProvider.specializationNames
-                    .map((s) => toPascalCase(s)).join(" | ")}
+                  {selectedProvider.service.subcategories
+                    .map((s) => toPascalCase(s.name)).join(" | ")
+                  }
                 </p>
                 <p>
                   <span className="font-medium">Service Charge:</span> ₹{selectedProvider.serviceCharge}
@@ -141,7 +165,7 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
           </div>
 
           {selectedProvider.reason && (
-            <div className="bg-white p-5 rounded-lg shadow-sm border">
+            <div className="p-5 rounded-lg shadow-sm border">
               <h3 className="font-semibold text-lg flex items-center gap-2 border-b pb-2 mb-3">
                 ⚠️ Reason
               </h3>
@@ -156,44 +180,41 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
               📝 KYC Documents
             </h3>
             <div className="flex flex-wrap justify-between gap-3">
-              <a
+              <CustomLink
                 href={selectedProvider.kyc.idCard}
-                target="_blank"
+                label="🆔 View ID Card"
                 className="flex items-center gap-2 px-4 py-2 text-sm rounded-md border border-blue-500 text-blue-600 hover:bg-blue-50 transition"
-              >
-                🆔 View ID Card
-              </a>
-              <a
+              />
+
+              <CustomLink
                 href={selectedProvider.kyc.certificate.education}
-                target="_blank"
+                label="🎓 Education Certificate"
                 className="flex items-center gap-2 px-4 py-2 text-sm rounded-md border border-green-500 text-green-600 hover:bg-green-50 transition"
-              >
-                🎓 Education Certificate
-              </a>
+              />
+
               { selectedProvider.kyc.certificate.experience && (
-                <a
+                <CustomLink
                   href={selectedProvider.kyc.certificate.experience}
-                  target="_blank"
+                  label="💼 Experience Certificate"
                   className="flex items-center gap-2 px-4 py-2 text-sm rounded-md border border-purple-500 text-purple-600 hover:bg-purple-50 transition"
-                >
-                  💼 Experience Certificate
-                </a>
+                />
               )}
 
             </div>
           </div>
-
-          <div className="flex justify-center gap-4 pt-4">
-            <Button
-              onClick={handleApprove}
-              variant="success"
-              disabled={loading}
-            >
-              ✅ Approve
-            </Button>
-            {/*Reject with reason*/}
-            <ReasonDialog handleRejectOnConfirm={handleReject} loading={loading} open={rejectDialogOpen} setOpen={setRejectDialogOpen} />
-          </div>
+          {selectedProvider.status === KYCStatus.Pending &&
+            <div className="flex justify-center gap-4 pt-4">
+              <Button
+                onClick={handleApprove}
+                variant="success"
+                disabled={loading}
+              >
+                ✅ Approve
+              </Button>
+              {/*Reject with reason diolouge*/}
+              <ReasonDialog handleRejectOnConfirm={handleReject} loading={loading} open={rejectDialogOpen} setOpen={setRejectDialogOpen} />
+            </div>
+          }
 
         </div>
       </DialogContent>

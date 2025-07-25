@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import React from "react";
 
 interface SearchInputProps {
   value: string;
@@ -7,7 +8,7 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({value,onChange,placeholder = "Search..."}) => {
+const SearchInput: React.FC<SearchInputProps> = React.memo(({ value, onChange, placeholder = "Search...", }) => {
   return (
     <div className="w-full">
       <Label className="sr-only">Search</Label>
@@ -19,6 +20,8 @@ const SearchInput: React.FC<SearchInputProps> = ({value,onChange,placeholder = "
       />
     </div>
   );
-};
+});
 
 export default SearchInput;
+
+

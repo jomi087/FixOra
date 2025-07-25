@@ -1,10 +1,8 @@
 //This is a version with createAsyncThunk [Regular version given below]
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Category } from "@/shared/Types/category";
 import AuthService from '@/services/AuthService';
 import { toast } from 'react-toastify';
-import { HttpStatusCode } from '@/shared/enums/HttpStatusCode';
 import { Messages } from '@/utils/constant';
 
 interface CategoryState{
@@ -25,9 +23,8 @@ export const fetchCategories = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const res = await AuthService.getActiveServicesApi()
-            if (res.status === HttpStatusCode.OK) {
-                return res.data.servicesData
-            }
+            return res.data.servicesData
+
         } catch (error:any) {
             const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
             toast.error(errorMsg)
@@ -46,7 +43,7 @@ const categorySlice = createSlice({
             state.loading = true;
             state.error = null;
         })
-        .addCase(fetchCategories.fulfilled, (state, action: PayloadAction<Category[]>) => {
+        .addCase(fetchCategories.fulfilled, (state, action) => {
             state.loading = false;
             state.categories = action.payload;
         })

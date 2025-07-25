@@ -1,5 +1,4 @@
 import type { Gender } from "../enums/Gender";
-import type { KYCStatus } from "../enums/KycStatus";
 import type { RoleEnum } from "../enums/roles";
 import type { AddressWithCoordinates } from "./location";
 
@@ -43,24 +42,93 @@ export type Provider = User & {
 }
 
 
-// export type ProviderImage = {
-//   image: string;
-// }
-
-export interface BaseUserData extends User {
+export interface CustomersData extends User {
   userId: string;
   role: RoleEnum;
   isBlocked: boolean;
   location?: AddressWithCoordinates;
 }
 
-export interface CustomersData extends BaseUserData {}
 
-
-export interface ProviderData extends BaseUserData {
-  image: string;
-  isOnline: boolean;
+export interface ProviderData  {
+  providerId : string
+  user: {
+    userId: string,
+    fname: string;
+    lname: string;
+    email: string;
+    mobileNo: string;
+    isBlocked: boolean;
+    location: {
+      houseinfo?: string;
+      street?: string;
+      district: string;
+      city: string;
+      locality: string;
+      state: string;
+      postalCode: string;
+      Coordinates: {
+          latitude: number;
+          longitude: number
+      };
+    };
+  };
+  dob: Date;
   gender: Gender;
+  service: {
+    categoryId: string
+    name: string;
+    subcategories: {
+        subCategoryId: string;
+        name: string
+    }[];
+  };
+  profileImage: string;
+  serviceCharge: number;
+  kyc : {
+    idCard: string;
+    certificate: {
+        education: string;
+        experience?: string;
+    };
+  },
+  isOnline: boolean;
+}
+
+
+export interface ProviderList {
+  id: string;
+  user: {
+    userId: string
+    fname: string;
+    lname: string;
+    email: string;
+    mobileNo: string;
+    location: {
+        houseinfo?: string;
+        street?: string;
+        district: string;
+        city: string;
+        locality: string;
+        state: string;
+        postalCode: string;
+        Coordinates:{
+            latitude: number;
+            longitude: number;
+        } 
+    }
+  };
+  dob: string;
+  gender: string;
+  service: {
+        categoryId: string
+        name: string;
+        subcategories: {
+            subCategoryId: string;
+            name: string
+        }[];
+    };
+  profileImage: string;
   serviceCharge: number;
   kyc: {
     idCard: string;
@@ -69,51 +137,10 @@ export interface ProviderData extends BaseUserData {
       experience?: string;
     };
   };
-  kycInfo: {
-    status: KYCStatus;
-    reason?: string;
-  };
-}
-
-
-export interface ProviderList {
-    id: string;
-    user: {
-        fname: string;
-        lname: string;
-        email: string;
-        mobileNo: string;
-        location: {
-            houseinfo?: string;
-            street?: string;
-            district: string;
-            city: string;
-            locality: string;
-            state: string;
-            postalCode: string;
-            Coordinates:{
-                latitude: number;
-                longitude: number;
-            } 
-        }
-    };
-    dob: string;
-    gender: string;
-    serviceName: string;
-    specializationNames: string[];
-    profileImage: string;
-    serviceCharge: number;
-    kyc: {
-            idCard: string;
-            certificate: {
-            education: string;
-            experience?: string;
-        };
-    };
-    status: string;
-    submittedAt: Date;
-    reason?: string;
-    reviewedAt?: Date;
-    reviewedBy?: string;
+  status: string;
+  reason?: string;
+  submittedAt: Date;
+  reviewedAt?: Date;
+  reviewedBy?: string;
 }
 

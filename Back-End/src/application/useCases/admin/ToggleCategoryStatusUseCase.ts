@@ -1,11 +1,12 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
 import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
 import { Messages } from "../../../shared/constant/Messages.js";
+import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/Admin/IToggleCategoryStatusUseCase.js";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode
 const { INTERNAL_ERROR } = Messages
 
-export class ToggleCategoryStatusUseCase {
+export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase{
     constructor(
         private readonly categoryRepository: ICategoryRepository
     ) { }

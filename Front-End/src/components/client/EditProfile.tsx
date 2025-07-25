@@ -13,7 +13,7 @@ import { getAddressFromCoordinates } from "@/utils/helper/reverseGeocodingLocati
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";
 import AuthService from "@/services/AuthService";
 import { getCoordinatesFromAddress } from "@/utils/helper/forwardGeocodingLocation";
-import { Userinfo } from "@/store/userSlice";
+import { Userinfo } from "@/store/user/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
 import AddressDialog from "../common/Others/AddressDialog";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";

@@ -11,11 +11,12 @@ interface FilterSelectProps {
   onChange: (val: string) => void;
   options: FilterOption[];
   placeholder?: string;
+  className?: string
 }
 
-const FilterSelect: React.FC<FilterSelectProps> = ({filter,onChange,options,placeholder="Search..."}) => {
+const FilterSelect: React.FC<FilterSelectProps> = ({filter,onChange,options,placeholder="Search...",className}) => {
   return (
-    <div className="">
+    <div className={`${className}`}>
       <Label className="sr-only">Filter</Label>
       <Select value={filter} onValueChange={onChange}>
         <SelectTrigger>

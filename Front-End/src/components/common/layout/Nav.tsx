@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { Messages, navItems } from "../../../utils/constant";
 import { useLocation } from 'react-router-dom'
 import AuthService from "../../../services/AuthService";
-import { logout } from "../../../store/userSlice";
+import { logout } from "../../../store/user/userSlice";
 import { toast } from "react-toastify";
 import { RoleEnum } from "@/shared/enums/roles";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";

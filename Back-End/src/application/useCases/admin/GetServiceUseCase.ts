@@ -1,24 +1,20 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
 import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
 import { Messages } from "../../../shared/constant/Messages.js";
+import { GetServicesInputDTO, GetServicesOutputDTO } from "../../DTO's/GetServiceDTO.js";
+import { IGetServiceUseCase } from "../../Interface/useCases/Admin/IGetServiceUseCase.js";
 
-interface filters {
-    searchQuery: string;
-    filter: string;
-    currentPage: number;
-    limit : number;
-}
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode
 const { INTERNAL_ERROR } = Messages
 
-export class GetServiceUseCase {
+export class GetServiceUseCase implements IGetServiceUseCase {
     constructor(
         private readonly categoryRepository : ICategoryRepository,
 
     ) {}
     
-    async execute(input : filters ) {    
+    async execute(input : GetServicesInputDTO ):Promise< GetServicesOutputDTO > {    
         try {
 
             const { searchQuery, filter, currentPage, limit } = input;
@@ -26,7 +22,7 @@ export class GetServiceUseCase {
             const catogories = await this.categoryRepository.findServicesWithFilters({ searchQuery, filter },currentPage, limit)
             
             return {
-                catogoriesData: catogories.data,
+                data: catogories.data,
                 total : catogories.total
             };
 

@@ -1,38 +1,27 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
+import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
 import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
 import { Messages } from "../../../shared/constant/Messages.js";
+import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../DTO's/GetProviderDTO.js";
+import { IGetProvidersUseCase } from "../../Interface/useCases/Admin/IGetProvidersUseCase.js";
 
-interface filters {
-    searchQuery: string;
-    filter: string;
-    currentPage: number;
-    limit: number;
-}
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode
 const { INTERNAL_ERROR} = Messages
 
-export class GetProvidersUseCase{
+export class GetProvidersUseCase implements IGetProvidersUseCase {
     constructor(
-        private readonly userRepository : IUserRepository,
+        private readonly providerRepository : IProviderRepository,
+
     ) {}
     
-    async execute(input: filters) {
+    async execute(input: GetProvidersInputDTO ):Promise<GetProvidersOutputDTO> {
         
         try {
             const { searchQuery, filter, currentPage, limit } = input
 
-            const users = await this.userRepository.findProvidersWithFilters(
-                { searchQuery, filter },
-                currentPage, limit,
-                ['password', 'refreshToken', 'googleId', 'userId', 'updatedAt']
-            )
-
-            return {
-                providerData: users.data,
-                total: users.total
-            };
+            const { data, total } = await this.providerRepository.findProvidersWithFilters({ searchQuery, filter }, currentPage, limit )
+            
+            return { data ,total };
             
         } catch (error: any) {
             if (error.status && error.message) {

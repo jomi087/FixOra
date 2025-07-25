@@ -3,11 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 import { CategoryInputDTO } from "../../DTO's/CategoryInputDTO.js";
 import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
 import { Messages } from "../../../shared/constant/Messages.js";
+import { ICreateServiceCategoryUseCase } from "../../Interface/useCases/Admin/ICreateServiceCategoryUseCase.js";
 
 const { BAD_REQUEST } = HttpStatusCode
 const { CATEGORY_ALREADY_EXISTS} = Messages
 
-export class CreateServiceCategoryUseCase {
+export class CreateServiceCategoryUseCase implements ICreateServiceCategoryUseCase {
   constructor(
     private readonly categoryRepository: ICategoryRepository
   ) {}

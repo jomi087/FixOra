@@ -1,6 +1,13 @@
+import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO.js";
+
+export interface ProviderApplicationInputDTO extends PaginationInputDTO {}
+
+export interface ProviderApplicationOutputDTO extends PaginationOutputDTO<ProviderApplicationDTO> { }
+
 export interface ProviderApplicationDTO {
     id: string;
     user: {
+        userId: string,
         fname: string;
         lname: string;
         email: string;
@@ -21,8 +28,14 @@ export interface ProviderApplicationDTO {
     };
     dob: Date;
     gender: string;
-    serviceName: string;
-    specializationNames: string[];
+    service: {
+        categoryId: string
+        name: string;
+        subcategories: {
+            subCategoryId: string;
+            name: string
+        }[];
+    };
     profileImage: string;
     serviceCharge: number;
     kyc: {

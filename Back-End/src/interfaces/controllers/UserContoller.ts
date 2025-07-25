@@ -75,7 +75,7 @@ export class UserController {
             const educationCertificateUrl = await this.imageUploaderService.uploadImage(files.educationCertificate[0].buffer, `FixOra/Provider/${name}`);
 
             const experienceCertificateUrl = files?.experienceCertificate?.[0] ?
-                await this.imageUploaderService.uploadImage(files.experienceCertificate[0].buffer,`FixOra/Provider/${name}`) : undefined;
+            await this.imageUploaderService.uploadImage(files.experienceCertificate[0].buffer,`FixOra/Provider/${name}`) : undefined;
 
               const { dob, gender, service, specialization, serviceCharge } = req.body;
 
