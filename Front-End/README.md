@@ -18,5 +18,6 @@
 
 * optimization 
     - used debouncing on search field
+    - used react memo on child componentes (to avoid unwanted re-render)
     - pagination
     - used more re-usable component manuly and also with the help of shadCN library

@@ -13,7 +13,7 @@ interface ReasonDialogProps {
   triggerStyle?: string;    
 }
 
-const ReasonDialog: React.FC<ReasonDialogProps> = ({handleRejectOnConfirm, loading, open, setOpen, triggerLabel = "❌ Reject",variantStyle = "destructive",triggerStyle}) => {
+const ReasonDialog: React.FC<ReasonDialogProps> = ({handleRejectOnConfirm, loading, open, setOpen, triggerLabel = "Reject",variantStyle = "destructive",triggerStyle}) => {
   const [reason, setReason] = useState("");
 
 

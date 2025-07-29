@@ -20,7 +20,7 @@ export interface ProviderApplicationDTO {
             locality: string;
             state: string;
             postalCode: string;
-            Coordinates:{
+            coordinates:{
                 latitude: number;
                 longitude: number;
             } 

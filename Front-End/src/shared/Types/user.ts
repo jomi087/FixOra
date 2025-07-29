@@ -41,7 +41,46 @@ export type Provider = User & {
   serviceCharge: number;
 }
 
+export type ActiveProviderDTO = {
+  providerId : string
+  user: {
+    userId: string,
+    fname: string;
+    lname: string;
+    mobileNo: string;
+    location: {
+      houseinfo?: string;
+      street?: string;
+      district: string;
+      city: string;
+      locality: string;
+      state: string;
+      postalCode: string;
+      coordinates: {
+        latitude: number;
+        longitude: number
+      };
+    };
+  };
+  gender: Gender;
+  service: {
+    categoryId: string
+    name: string;
+    subcategories: {
+        subCategoryId: string;
+        name: string
+    }[];
+  };
+  profileImage: string;
+  serviceCharge: number;
+  isOnline: boolean;
+  averageRating: number;
+  totalRatings: number;
+}
 
+
+//Admin 
+//userManagement
 export interface CustomersData extends User {
   userId: string;
   role: RoleEnum;
@@ -49,7 +88,7 @@ export interface CustomersData extends User {
   location?: AddressWithCoordinates;
 }
 
-
+//providerManagement
 export interface ProviderData  {
   providerId : string
   user: {
@@ -67,7 +106,7 @@ export interface ProviderData  {
       locality: string;
       state: string;
       postalCode: string;
-      Coordinates: {
+      coordinates: {
           latitude: number;
           longitude: number
       };
@@ -95,7 +134,7 @@ export interface ProviderData  {
   isOnline: boolean;
 }
 
-
+//providerKYCApplicationList
 export interface ProviderList {
   id: string;
   user: {
@@ -112,7 +151,7 @@ export interface ProviderList {
         locality: string;
         state: string;
         postalCode: string;
-        Coordinates:{
+        coordinates:{
             latitude: number;
             longitude: number;
         } 

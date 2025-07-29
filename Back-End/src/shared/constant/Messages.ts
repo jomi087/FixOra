@@ -13,6 +13,8 @@ export const Messages = {
 
     USER_NOT_FOUND: "User Not Found",
     EMAIL_NOT_FOUND: "Email Not Found",
+    
+    ADD_ADDRESS : "Please add an Address",
 
     EMAIL_ALREADY_EXISTS: "Email already exists",
     CATEGORY_ALREADY_EXISTS: "Category name already exists",

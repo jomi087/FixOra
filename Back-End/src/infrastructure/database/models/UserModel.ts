@@ -5,17 +5,28 @@ import { RoleEnum } from '../../../shared/constant/Roles.js'
 export interface IUserModel extends Document, User {}
 
 const addressSchema = new mongoose.Schema({
-  houseinfo: { type: String,  trim: true, default: "" },
-  street: { type: String,  trim: true },
-  district: { type: String,  trim: true },
-  city: { type: String,  trim: true },
-  locality: { type: String,  trim: true },
-  state: { type: String,  trim: true },
-  postalCode: { type: String,  trim: true },
-  coordinates: {
-    latitude: { type: Number},
-    longitude: { type: Number },
-  },
+    houseinfo: { type: String,  trim: true, default: "" },
+    street: { type: String,  trim: true },
+    district: { type: String,  trim: true },
+    city: { type: String,  trim: true },
+    locality: { type: String,  trim: true },
+    state: { type: String,  trim: true },
+    postalCode: { type: String,  trim: true },
+    coordinates: {
+        latitude: { type: Number},
+        longitude: { type: Number },
+    },
+    geo: {  // this was implimented to impliment the near by filter logic
+        type: {
+            type: String,
+            enum: ["Point"],
+            default: "Point",
+        },
+        coordinates: {
+            type: [Number],  // [longitude, latitude]
+            default: [0, 0],
+        },
+    },
 },{ _id: false });
 
 const userSchema = new mongoose.Schema<IUserModel>({
@@ -77,7 +88,7 @@ const userSchema = new mongoose.Schema<IUserModel>({
         timestamps: true,
     },
 )
-
+userSchema.index({ "location.geo": "2dsphere" });
 const UserModel = mongoose.model<IUserModel>('User', userSchema)
 
 export default UserModel

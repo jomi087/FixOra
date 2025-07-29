@@ -3,13 +3,11 @@ import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
 import Pagination from "@/components/common/Others/Pagination";
 import { adminSideBarOptions, Messages } from "@/utils/constant";
-//import {  ProvidersData } from "@/utils/constant";
 import { Button } from "@/components/ui/button";
 import { useProviderManagement } from "@/hooks/useProviderManagement";
 import SearchInput from "@/components/common/Others/SearchInput";
 import FilterSelect from "@/components/common/Others/FilterSelect";
 import { useNavigate } from "react-router-dom";
-import { useMemo } from "react";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { toast } from "react-toastify";
@@ -26,12 +24,19 @@ import ProviderInfoCard from "@/components/admin/providerManagment/ProviderInfoC
 
 const ProviderManagement: React.FC = () => {
   
-  const { provData,isLoading,totalProviders,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage,setProvData}=useProviderManagement()
-  
-  const totalPages = useMemo( 
-    () => Math.ceil(totalProviders / itemsPerPage),
-    [totalProviders, itemsPerPage]
-  );
+  const {
+    data: provData,
+    isLoading,
+    totalPages,
+    searchQuery,
+    setSearchQuery,
+    filter,
+    setFilter,
+    currentPage,
+    setCurrentPage,
+    setData: setProvData
+  } = useProviderManagement();
+
 
   const handleToggleStatus = async (userId: string) => {
     try {

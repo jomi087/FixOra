@@ -209,7 +209,7 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
                 variant="success"
                 disabled={loading}
               >
-                ✅ Approve
+                Approve
               </Button>
               {/*Reject with reason diolouge*/}
               <ReasonDialog handleRejectOnConfirm={handleReject} loading={loading} open={rejectDialogOpen} setOpen={setRejectDialogOpen} />

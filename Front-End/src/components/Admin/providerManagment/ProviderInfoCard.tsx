@@ -12,7 +12,11 @@ const ProviderInfoCard: React.FC<ProviderInfoCardProps> = React.memo(({ datas, o
   return (
     <div className="flex flex-wrap justify-center gap-6 px-4 py-6 max-w-7xl mx-auto">
       {datas.map((data) => (
-        <FlippableProviderCard key={data.providerId} data={data} onToggleStatus={onToggleStatus} />
+        <FlippableProviderCard
+          key={data.providerId}
+          data={data}
+          onToggleStatus={onToggleStatus}
+        />
       ))}
     </div>
   );

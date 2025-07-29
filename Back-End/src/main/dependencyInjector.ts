@@ -73,6 +73,9 @@ const signoutUseCase = new SignoutUseCase(userRepository)
 import { ActiveServiceUseCase } from "../application/useCases/client/ActiveServiceUseCase.js";
 const activeServiceUseCase = new ActiveServiceUseCase(categoryRepository)
 
+import { GetActiveProvidersUseCase } from "../application/useCases/client/GetActiveProvidersUseCase.js";
+const getActiveProvidersUseCase = new GetActiveProvidersUseCase(providerRepository)
+
 import { KYCRequestUseCase } from "../application/useCases/client/kYCRequestUseCase.js";
 const kycRequestUseCase = new KYCRequestUseCase(kycRequestRepository)
 
@@ -118,7 +121,7 @@ import { AdminController } from "../interfaces/controllers/AdminController.js";
 
 const publicController = new PublicController(getLandingDataUseCase)
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
-const userController = new UserController(activeServiceUseCase,kycRequestUseCase,imageUploaderService,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
+const userController = new UserController(activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
 const adminController = new AdminController(getCustomersUseCase,toggleUserStatusUseCase,getProvidersUseCase,providerApplicationUseCase,updateKYCStatusUseCase,getServiceUseCase,createServiceCategoryUseCase,imageUploaderService,toggleCategoryStatusUseCase,)
 
 export {

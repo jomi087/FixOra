@@ -2,7 +2,6 @@ import type { KYCStatus } from '@/shared/enums/KycStatus';
 import axiosInstance from './axiosConfig';
 import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
 
-
 class AuthService {  
     getBearerTokenConfig(token?: string) {
         return {
@@ -74,6 +73,10 @@ class AuthService {
         return axiosInstance.get('/api/user/services')
     }
 
+    getAuthProviderApi(params: { searchQuery: string, filter: string, currentPage: number, itemsPerPage: number, selectedService?: string; nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string }) {
+        return axiosInstance.get(`/api/user/providers`,{ params })
+    }
+
     providerKYCApi(data : FormData) {
         return axiosInstance.post('/api/user/provider-kyc', data, this.getMultiPartConfig())
     }
@@ -107,7 +110,7 @@ class AuthService {
     }
 
 
-    getProviderApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
+    getAllProviderApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
         return axiosInstance.get(`/api/admin/provider-management`,{
            params: { searchQuery, filter, currentPage, itemsPerPage }
         })

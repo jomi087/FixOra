@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config;
         const status = error.response?.status;
 
-        if (status === 401 && !originalRequest._retry) {
+        if (status === HttpStatusCode.UNAUTHORIZED && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
                 // Call refresh token endpoint

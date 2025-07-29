@@ -1,8 +1,24 @@
-import { AddressInputDTO } from "./AddressInputDTO.js";
+import { AddressDTO } from "./AddressDTO.js";
 
-export type EditProfileDTO = {
+export interface EditProfileInputDTO {
+    userId: string;
+    profileData: {
+        fname: string;
+        lname: string;
+        mobile: string;
+        location: AddressDTO;
+    };
+}
+
+export interface ProfileDTO {
     fname: string;
     lname: string;
-    mobile: string;
-    location: AddressInputDTO
+    mobileNo: string;
+    location: AddressDTO;
 }
+
+
+export interface UpdatedProfileOutputDTO {
+    data: ProfileDTO;
+}
+

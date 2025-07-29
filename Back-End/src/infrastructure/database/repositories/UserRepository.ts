@@ -6,6 +6,8 @@ import { Provider } from "../../../domain/entities/ProviderEntity.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import UserModel from "../models/UserModel.js";
 import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
+import { Category } from "../../../domain/entities/CategoryEntity.js";
+import ProviderModel from "../models/ProviderModel.js";
 
 //!mistake in this repository (i have am violatin srp rule need to re-work) 
 //split the logic into indivijual
@@ -40,6 +42,33 @@ export class UserRepository implements IUserRepository {
             { new : true }
         ).select(omitSelect).lean<Partial<User>>();
     }
+
+    async updateProfie(userId: string,
+        updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
+    ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">> {
+        const updatedUser = await UserModel.findOneAndUpdate({ userId }, 
+        {
+            $set: {
+                fname: updateData.fname,
+                lname: updateData.lname,
+                mobileNo: updateData.mobileNo,
+                location: updateData.location
+            }
+        },  
+        {
+            new: true,          
+            projection: {    
+            password: 0,
+            refreshToken: 0
+            }
+        }
+        ).lean(); 
+
+        if (!updatedUser) throw new Error("User not found");
+
+        return updatedUser;
+    }
+
     
 
     async update( filter: Partial<Pick<User, "email" | "userId" | "googleId" >> , updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
@@ -81,6 +110,7 @@ export class UserRepository implements IUserRepository {
 
         return { data : users, total}
     };
+
 
 }
 

@@ -5,7 +5,7 @@ export interface GetProvidersInputDTO extends PaginationInputDTO {}
 
 export interface GetProvidersOutputDTO extends PaginationOutputDTO<ProviderDTO> { }
 
-export interface ProviderDTO {
+interface ProviderDTO {
     providerId : string
     user: {
         userId: string,
@@ -21,10 +21,10 @@ export interface ProviderDTO {
         locality: string;
         state: string;
         postalCode: string;
-        Coordinates: {
-            latitude: number;
-            longitude: number
-        };
+            coordinates: {
+                latitude: number;
+                longitude: number
+            };
         };
     };
     dob: Date;

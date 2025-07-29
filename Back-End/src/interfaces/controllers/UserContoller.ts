@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { ActiveServiceUseCase } from "../../application/useCases/client/ActiveServiceUseCase.js";
-import { EditProfileDTO } from "../../application/DTO's/EditProfileDTO.js";
 import { UpdateProfileUseCase } from "../../application/useCases/client/UpdateProfileUseCase.js";
 import { VerifyPasswordUseCase } from "../../application/useCases/client/VerifyPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
@@ -10,18 +9,21 @@ import { KYCInputDTO } from "../../application/DTO's/KYCInputDTO.js";
 import { KYCRequestUseCase } from "../../application/useCases/client/kYCRequestUseCase.js";
 import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
 import { Messages } from "../../shared/constant/Messages.js";
+import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/Client/IGetActiveProvidersUseCase.js";
+import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase.js";
 
-const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED } = HttpStatusCode;
+const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED,UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
-    VERIFICATION_MAIL_SENT,PROFILE_UPDATED_SUCCESS } = Messages;
+    VERIFICATION_MAIL_SENT,PROFILE_UPDATED_SUCCESS, ADD_ADDRESS } = Messages;
 
 
 export class UserController {
     constructor(
         private activeServiceUseCase: ActiveServiceUseCase,
+        private getActiveProvidersUseCase : IGetActiveProvidersUseCase,
         private kycRequestUseCase: KYCRequestUseCase,
         private imageUploaderService: IImageUploaderService, 
-        private updateProfileUseCase: UpdateProfileUseCase,
+        private updateProfileUseCase: IUpdateProfileUseCase,
         private verifyPasswordUseCase: VerifyPasswordUseCase,
         private resetPasswordUseCase: ResetPasswordUseCase,
         
@@ -38,6 +40,45 @@ export class UserController {
 
         } catch (error) {
             console.error("editProfile error:", error);
+            next(error);
+        }
+    }
+
+    async activeProviders(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {
+                searchQuery = "", filter="",
+                currentPage = 1, itemsPerPage = 16,
+                selectedService, nearByFilter,
+                ratingFilter, availabilityFilter
+            } = req.query;
+
+            const user = req.user
+            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND }
+            if(!user.location || !user.location.coordinates) throw { status : UNPROCESSABLE_ENTITY , message : ADD_ADDRESS }
+            
+            const result = await this.getActiveProvidersUseCase.execute({
+                searchQuery: String(searchQuery),
+                filter: String(filter),
+                currentPage: Number(currentPage),
+                limit: Number(itemsPerPage),
+                extraFilter : {
+                    selectedService: selectedService ? String(selectedService) : undefined,
+                    nearByFilter: nearByFilter ? String(nearByFilter) : undefined,
+                    ratingFilter: ratingFilter ? Number(ratingFilter) : undefined,
+                    availabilityFilter: availabilityFilter ? String(availabilityFilter) : undefined,
+                },
+                coordinates : user.location.coordinates
+            })
+
+            res.status(OK).json({
+                success: true,
+                providerData: result.data,
+                total: result.total
+            });
+
+        } catch (error) {
+            console.error(" error:", error);
             next(error);
         }
     }
@@ -111,19 +152,20 @@ export class UserController {
     
     async editProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const profileData: EditProfileDTO = req.body
            
             if (!req.user?.userId) {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
             }
 
             const userId = req.user.userId
-            const result = await this.updateProfileUseCase.execute(profileData,userId)
+            const profileData = req.body
+
+            const updatedUser = await this.updateProfileUseCase.execute({ userId,profileData })
 
             res.status(OK).json({
                 success: true,
                 message: PROFILE_UPDATED_SUCCESS ,
-                user : result.user 
+                user : updatedUser
             })
     
         } catch (error) {

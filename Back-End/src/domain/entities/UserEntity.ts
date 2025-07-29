@@ -3,8 +3,8 @@
 import { RoleEnum } from "../../shared/constant/Roles.js";
 
 export interface Address {
-  houseinfo: string;
-  street: string;
+  houseinfo?: string;
+  street?: string;
   district: string;
   city: string;
   locality: string;
@@ -14,6 +14,10 @@ export interface Address {
       latitude: number;
       longitude: number;
   }
+  geo:{ // this was implimented to support distance-based filtering using $geoNear,
+    type: "Point";
+    coordinates: [number, number]; // [longitude, latitude]
+  };
 }
 
 export interface User {

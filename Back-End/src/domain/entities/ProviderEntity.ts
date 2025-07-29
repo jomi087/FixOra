@@ -38,7 +38,7 @@ export interface ProviderWithDetails {
       locality: string;
       state: string;
       postalCode: string;
-      Coordinates: {
+      coordinates: {
           latitude: number;
           longitude: number
       };
@@ -64,4 +64,6 @@ export interface ProviderWithDetails {
     };
   },
   isOnline: boolean;
+  averageRating?: number;  
+  totalRatings?: number; 
 }
