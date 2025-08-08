@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../shared/Messages.js";
 
 export const errorHandler = ( err: any, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || HttpStatusCode.INTERNAL_SERVER_ERROR;

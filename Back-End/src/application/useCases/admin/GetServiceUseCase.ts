@@ -1,6 +1,6 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 import { GetServicesInputDTO, GetServicesOutputDTO } from "../../DTO's/GetServiceDTO.js";
 import { IGetServiceUseCase } from "../../Interface/useCases/Admin/IGetServiceUseCase.js";
 

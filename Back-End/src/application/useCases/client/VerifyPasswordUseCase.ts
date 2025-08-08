@@ -4,8 +4,8 @@ import { User } from "../../../domain/entities/UserEntity.js";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 
 const { FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages

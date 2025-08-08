@@ -1,7 +1,7 @@
 import { KYCRequestWithDetails } from "../../../domain/entities/KYCRequestEntity.js";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 import { ProviderApplicationDTO, ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../DTO's/ProviderApplicationDTO.js";
 import { IProviderApplicationUseCase } from "../../Interface/useCases/Admin/IProviderApplicationUseCase.js";
 

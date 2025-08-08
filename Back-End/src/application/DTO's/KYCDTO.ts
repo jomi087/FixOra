@@ -1,6 +1,6 @@
-import { Gender } from "../../shared/constant/Gender.js";
+import { Gender } from "../../shared/Enums/Gender.js";
 
-export interface KYCInputDTO  {
+export interface KYCDTO  {
     userId: string;
     dob: string; // string from frontend (convert to Date in use case)
     gender: Gender;
@@ -16,3 +16,6 @@ export interface KYCInputDTO  {
         };
     };
 }
+
+
+export interface KYCInputDTO extends KYCDTO {}

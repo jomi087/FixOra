@@ -7,7 +7,6 @@ import type { RootState, AppDispatch } from './appStore';
 export const useAppDispatch = ()=> useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-
 /*
 //? Problem with regular useDispatch() and useSelector()
 1. useDispatch() is untyped -By default, useDispatch() returns a generic Dispatch<any> — which means TypeScript has no idea what actions or types you're dispatching.

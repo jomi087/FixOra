@@ -1,3 +1,4 @@
+import { COPYRIGHT_NOTICE, Support_Contact_No, Support_Mail } from "@/utils/constant";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -9,7 +10,7 @@ const Footer: React.FC<FooterProps> = ({ className ="" }) => {
   return (
     <footer className={`text-center py-10 ${className}`}>
       {/* Footer Links */}
-      <div className="flex flex-col md:flex-row justify-evenly gap-4 mb-6">
+      <div className="flex flex-col md:flex-row justify-evenly gap-4 mb-6"> 
         <Link to="#" className="hover:underline">
           Terms and Conditions
         </Link>
@@ -51,18 +52,16 @@ const Footer: React.FC<FooterProps> = ({ className ="" }) => {
 
       {/* Contact Information */}
       <div className="mb-6">
-        <p className="text-sm">
-          Email: <Link to="mailto:support@fixora.com" className="hover:underline">support@fixora.com</Link>
+        <p className="text-sm font-mono">
+          Support Mail: <Link to="/" className="hover:underline">{Support_Mail}</Link>
         </p>
-        <p className="text-sm">
-          Phone: <Link to="tel:+1234567890" className="hover:underline">+91 (000) 000-000</Link>
+        <p className="text-sm font-mono">
+          Contact No: <Link to="/" className="hover:underline">{Support_Contact_No}</Link>
         </p>
       </div>
 
       {/* Copyright */}
-      <p className="text-sm">
-        © 2025 FixOra. All rights reserved.
-      </p>
+      <p className="text-sm font-mono">{COPYRIGHT_NOTICE}</p>
     </footer>
   );
 };

@@ -4,11 +4,20 @@ import {
   LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
 } from "lucide-react";
 
+/******************************************************************************************************* */
+export const App_Name:string = "FixOra"
+export const Support_Mail: string = `support@${App_Name.toLocaleLowerCase()}.com`
+export const Support_Contact_No: string = "+91 7907728132"
+export const CURRENT_YEAR = 2025;
+export const COPYRIGHT_NOTICE = `© ${CURRENT_YEAR} ${App_Name}. All rights reserved.`;
+
 /********************************************* Image Sections *******************************************************/
 export const BGImage_404: string = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
 export const HeroSectionImage:string = "/Hero-removebg-preview.png"
 export const SingInThemeImage: string = "/signIn.png"
+
 /********************************************* Rules  *******************************************************/
+
 export const categoryImageSize: number = 1                                         //default set  to 2 mb
 export const providerImageSize: number = 1                                        //default set  to 2 mb
 export const KYCImageSize : number = 5                                           //default set  to 5 mb
@@ -18,6 +27,12 @@ export const CCPP = 8                                                    //CCPP 
 export const PCPP = 8                                                   //PCPP => Provider Cards Per page  -> default set to 16
 export const PALPP = 10                                                 //PALPP => Provider Application List Per Page  -> default set to 15
 export const SLPP = 7                                                  //SLPP => Service list Per page -> default set to 10
+export const DATE_RANGE_DAYS = 7; 
+export const TIME_SLOTS = {
+  STARTHOURS: 8,
+  ENDHOURS: 18,
+  INTERVAL : 60,
+}
 /******************************************* Messages *******************************************************/
 export const Messages = {
   FAILED_CATEGORY_RESPONSE_MSG: "Failed to add category",
@@ -71,7 +86,6 @@ export const navItems = [
   { name: 'Blog', to: '/user/blog', icon: <FileText size={18} /> },
   { name : 'Account' , to: '/user/account/profile', icon: <User  size={18} />}
 ];
-
 /********************************************* Side-Bar Sections *******************************************************/
 export interface SideBarOption {
   icon: React.ElementType;
@@ -86,6 +100,15 @@ export const userSideBarOptions: SideBarOption[] = [
   { icon: MessageSquareText, section: "Chats", to: "/user/account/chats" },
   { icon: Wallet, section: "Wallet", to: "/user/account/wallet" },
   { icon: ShieldAlert, section: "Dispute", to: "/user/account/dispute" },
+];
+
+//Admins Side Bar
+export const providerSideBarOptions: SideBarOption[] = [
+  { icon: LayoutDashboard, section: "Dashboard", to: "/provider/dashboard" },
+  { icon: AlertTriangle, section: "Chat", to: "/provider/chats" },
+  { icon: AlertTriangle, section: "Wallet", to: "/provider/wallet" },
+  { icon: AlertTriangle, section: "Blogs", to: "/provider/blogs" },
+  { icon: User, section: "Profile", to: "/provider/profile" },
 ];
 
 

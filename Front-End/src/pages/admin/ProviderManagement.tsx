@@ -119,28 +119,3 @@ const ProviderManagement: React.FC = () => {
 };
 
 export default ProviderManagement
-
-/*
-  const filteredProviders = useMemo(()=>{  //implimented useMemo for optimization and debounce
-    
-    return provData.filter((user) => {  
-      const matchSearch = user.fname?.toLowerCase().includes(debouncedQuery.toLowerCase())&& user.kycInfo.status === KYCStatus.Approved
-      let  matchFilter = true;
-      if (filter === "blocked") {   //isBlocked = true
-        matchFilter = user.isBlocked;
-      } else if (filter === "unblocked") {
-        matchFilter = !user.isBlocked;
-      } else if (filter === "online") {
-        matchFilter = user.isOnline
-      } else if (filter === "offline") {
-        matchFilter = !user.isOnline
-      }
-      return matchSearch && matchFilter
-    })
-  }, [debouncedQuery, filter, provData])
-  
-  const paginatiedProvider = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage
-    return filteredProviders.slice(start, start + itemsPerPage)
-  },[filteredProviders,currentPage])
-  */

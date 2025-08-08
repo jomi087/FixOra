@@ -5,28 +5,33 @@ import { VerifyPasswordUseCase } from "../../application/useCases/client/VerifyP
 import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
 import validateFile from "../utils/fileValidation.js";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
-import { KYCInputDTO } from "../../application/DTO's/KYCInputDTO.js";
-import { KYCRequestUseCase } from "../../application/useCases/client/kYCRequestUseCase.js";
-import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../shared/constant/Messages.js";
+import { KYCInputDTO } from "../../application/DTO's/KYCDTO.js";
+import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../shared/Messages.js";
 import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/Client/IGetActiveProvidersUseCase.js";
 import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase.js";
+import { IProviderBookingsInfoUseCase } from "../../application/Interface/useCases/Client/IProviderBookingsInfoUseCase.js";
+import { IBookingUseCase } from "../../application/Interface/useCases/Client/IBookingUseCase.js";
 
 const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED,UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
-    VERIFICATION_MAIL_SENT,PROFILE_UPDATED_SUCCESS, ADD_ADDRESS } = Messages;
+    VERIFICATION_MAIL_SENT,PROFILE_UPDATED_SUCCESS, ADD_ADDRESS,SUBMITTED_BOOKING_REQUEST } = Messages;
 
 
 export class UserController {
     constructor(
         private activeServiceUseCase: ActiveServiceUseCase,
+
         private getActiveProvidersUseCase : IGetActiveProvidersUseCase,
-        private kycRequestUseCase: KYCRequestUseCase,
+        private kycRequestUseCase: IKYCRequestUseCase,
         private imageUploaderService: IImageUploaderService, 
+        private providerBookingsInfoUseCase: IProviderBookingsInfoUseCase,
+        private bookingUseCase : IBookingUseCase,
         private updateProfileUseCase: IUpdateProfileUseCase,
+
         private verifyPasswordUseCase: VerifyPasswordUseCase,
         private resetPasswordUseCase: ResetPasswordUseCase,
-        
     ) { }
 
     async activeServices(req: Request, res: Response, next: NextFunction): Promise<void> { 
@@ -39,7 +44,7 @@ export class UserController {
             })
 
         } catch (error) {
-            console.error("editProfile error:", error);
+            console.error("activeServices error:", error);
             next(error);
         }
     }
@@ -78,7 +83,7 @@ export class UserController {
             });
 
         } catch (error) {
-            console.error(" error:", error);
+            console.error("activeProviders error:", error);
             next(error);
         }
     }
@@ -145,7 +150,52 @@ export class UserController {
             })
             
         } catch (error) {
-            console.error(" error:", error);
+            console.error("kycApplication error:", error);
+            next(error);
+        }
+    }
+
+    async providerBookings(req: Request, res: Response, next: NextFunction): Promise<void>{
+        try {
+            const { id } = req.params
+
+            const user = req.user
+            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND }
+            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS }
+            
+            const result = await this.providerBookingsInfoUseCase.execute({
+                id,
+                coordinates: user.location.coordinates
+            })
+
+            res.status(OK).json({
+                success: true,
+                providerBookingsInfoData : result
+            });
+
+        } catch (error) {
+            console.error("providerBookings error:", error);
+            next(error);
+        }
+    }
+
+    async createBooking(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { providerId,providerUserId,fullDate,time,issueTypeId,issue } = req.body
+            
+            const user = req.user
+            if (!user?.userId) throw { status: BAD_REQUEST, message: USER_NOT_FOUND }
+            const userId = user.userId
+
+            const booking = await this.bookingUseCase.execute({ userId, providerId, providerUserId, fullDate, time, issueTypeId, issue })
+            
+            res.status(200).json({
+                message: SUBMITTED_BOOKING_REQUEST,
+                booking
+            });
+
+        } catch (error) {
+            console.error("createBooking error:",error) ;
             next(error);
         }
     }
@@ -209,6 +259,6 @@ export class UserController {
             console.error("changePassword error:", error);
             next(error);
         }
-     }
+    }
 
 }

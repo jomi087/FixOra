@@ -9,7 +9,7 @@ export interface Subcategory {
 }
 
 export interface Category {
-  categoryId: string 
+  categoryId: string;
   name: string;
   description: string;
   image: string;

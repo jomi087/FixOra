@@ -1,28 +1,44 @@
-import renderStars from "@/components/common/StartRating"
+import renderStars from "@/components/common/StarRating"
 import type { ActiveProviderDTO} from "@/shared/Types/user"
 import { toPascalCase } from "@/utils/helper/utils"
 import { IoPersonCircleOutline } from "react-icons/io5"
+import { GrContactInfo } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
 
 interface ProvderCardProps {
     datas : ActiveProviderDTO[]
 }
 
 const ProviderCard: React.FC<ProvderCardProps> = ({ datas }) => {
+  const navigate = useNavigate()
   return (
     <div className="flex flex-wrap justify-center gap-6 px-4 py-6 max-w-7xl mx-auto">
       {datas.map((data) => (
         <div
           key={data.providerId}
           className="w-full sm:w-[45%] md:w-[30%] lg:w-[23%] transition-transform duration-300 hover:scale-105"
+          onClick={()=>navigate(`/user/provider/booking/${data.providerId}`)}
         >
           <div className="relative rounded-3xl cursor-pointer border border-gray-300 dark:border-white/20 shadow-lg shadow-black pb-2">
-            <div className="flex justify-center rounded-t-3xl">
+            <div className="flex justify-around  rounded-t-3xl">
+              <div className=" inline-block group pl-2 pt-3">  
+                <GrContactInfo size={18} />
+                    <div className="absolute left-3 top-9 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out  min-w-[150px] rounded-md border border-gray-300 bg-foreground text-primary-foreground p-2 shadow-md z-50">
+                    <ul>
+                      {data.service.subcategories.map((sub) => (
+                        <li key={sub.subCategoryId} className="text-[12px]">{toPascalCase(sub.name)}</li>
+                      ))}
+                    </ul>
+                  </div>
+              </div>
+
               <button
-                className={`text-xs md:text-sm font-semibold px-4 py-1 md:px-10 `}
+                className={`text-xs md:text-sm font-semibold px-4 pt-2  `}
               >
                 {`${toPascalCase(data.service.name)}`}
               </button>
-              <div className="absolute top-2 right-3 group">
+
+              <div className="pr-2 pt-3">
                   <div
                       title={data.isOnline ? "Online" : "Offline"}
                       className="relative flex items-center justify-center"

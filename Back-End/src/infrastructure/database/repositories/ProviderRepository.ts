@@ -2,9 +2,9 @@ import { Category } from "../../../domain/entities/CategoryEntity.js";
 import { Provider, ProviderWithDetails } from "../../../domain/entities/ProviderEntity.js";
 import { User } from "../../../domain/entities/UserEntity.js";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { RoleEnum } from "../../../shared/Enums/Roles.js";
 import ProviderModel from "../models/ProviderModel.js";
-import UserModel from "../models/UserModel.js";
+
 
 export class ProviderRepository implements IProviderRepository{
     async create(data: Provider): Promise<void> {
@@ -14,6 +14,7 @@ export class ProviderRepository implements IProviderRepository{
     async findByUserId(userId: string): Promise<Provider | null>{
         return await ProviderModel.findOne({userId}).lean()
     }
+    
 
     async findProvidersWithFilters(option: { searchQuery: string; filter: string }, currentPage: number, limit: number): Promise<{ data: ProviderWithDetails[]; total: number }> {
         const { searchQuery, filter } = option;
@@ -132,170 +133,53 @@ export class ProviderRepository implements IProviderRepository{
             total: result[0].totalCount[0]?.total || 0
         }
     }
-        
-    async findActiveProvidersWithFilters(
-        option: {
-            searchQuery: string;
-            filter: string;
-            extraFilter?: {
-                selectedService?: string;
-                nearByFilter?: string;
-                ratingFilter?: number;
-                availabilityFilter?: string;
-            },
-            coordinates : {
-                latitude: number;
-                longitude: number;
-            }
-        },
-        currentPage: number, limit: number
-    ): Promise<{ data: { user: Partial<User>, provider: Partial<Provider>, category: Partial<Category>, averageRating: number;  totalRatings: number; }[]; total: number }>{
-        
-        
-        const { searchQuery, filter, extraFilter, coordinates } = option;
-        const skip = (currentPage - 1) * limit;
 
-        const pipeline: any[] = []
-        const hasNearbyFilter = extraFilter?.nearByFilter && coordinates?.latitude && coordinates?.longitude;
-        
-        if ( hasNearbyFilter ) {
-            let minDistance = 0
-            let maxDistance = Infinity
-        
-            switch (extraFilter.nearByFilter) {
-                case "0to5km":
-                    maxDistance = 5000;
-                    break;
-                case "0to10km":
-                    minDistance = 0;
-                    maxDistance = 10000;
-                    break;
-                case "0to15km":
-                    minDistance = 0;
-                    maxDistance = 15000;
-                    break;
-                default :
-                    break
-            }
-                    
-            pipeline.push(
-                {
-                    $geoNear: {  //$geoNear is a stage like $match $group ....
-                        near: {
-                            type: "Point",
-                                coordinates: [coordinates.longitude, coordinates.latitude]
-                        },
-                        distanceField: "distance",
-                        maxDistance: maxDistance,
-                        spherical: true,
-                        key: "location.geo",
-                        distanceMultiplier: 0.001,
-                    },
-                },
-                {
-                    $match: {
-                        distance: { $gte: minDistance * 0.001, $lt: maxDistance * 0.001 }
-                    }
-                },
-            )
+    async findProviderBookingsById(providerId: string): Promise<{
+        user: Pick<User, "userId" | "fname" | "lname">,
+        provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
+        category: Pick<Category, "categoryId" | "name" | "subcategories" >
+    }>{
 
-        }
-
-        const sortCondition: any = {}
-        switch (filter) {
-            case 'ascending':
-                sortCondition["fname"] = 1;
-                break;
-            case 'descending':
-                sortCondition["fname"] = -1;
-                break;
-            default:
-                sortCondition["averageRating"] = -1;
-                break;   
-        }
-    
         const matchUserConditions :any = {
-            role: "provider",
-            isBlocked: false,
+            "userDetails.role" : "provider",
+            "userDetails.isBlocked" : false,
         };
 
-        if (searchQuery.trim()) {
-            matchUserConditions.$or = [
-                { "fname": { $regex: searchQuery, $options: "i" } },
-                { "lname": { $regex: searchQuery, $options: "i" } },
-            ]
-        }
-
-        const matchServiceCondition: any = {};
-        if (extraFilter?.selectedService) {
-            matchServiceCondition["serviceDetails.categoryId"] = extraFilter.selectedService
-        }
-
-        const matchRatingCondition:any = {}            
-        if (extraFilter?.ratingFilter) {
-            matchRatingCondition["averageRating"]  = { $gte: extraFilter.ratingFilter }
-        }
-
-        //logic for availabilty filter to be added (will add later on the basis of booking)
-        
-
-        pipeline.push(
+        const pipeline: any[] = [
+            { $match: { providerId: providerId } },
             {
-                $lookup: {  
-                    from: "providers",
-                    localField: "userId",  //field in user
-                    foreignField: "userId", //field in provider
-                    as : "providerDetails",
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "userId",
+                    as: 'userDetails'
                 },
-            }, { $unwind: "$providerDetails" },
-            { $match :  matchUserConditions  },
+            },
+            { $unwind: "$userDetails" },
+            { $match :  matchUserConditions },
             {
                 $lookup: {
                     from: "categories",
-                    localField: "providerDetails.serviceId",
+                    localField: "serviceId",
                     foreignField: "categoryId",
                     as: "serviceDetails"
                 }
             }, { $unwind: "$serviceDetails" },
-            { $match :  matchServiceCondition  },
-            {
-                $lookup: {
-                    from: "ratings",              
-                    localField: "providerDetails.providerId",      
-                    foreignField: "providerId",    
-                    as: "ratings"
-                }
-            },
-            {
-                $addFields: {
-                    averageRating: { 
-                        $cond: [
-                            { $gt: [{ $size: "$ratings" }, 0] },
-                            { $avg: "$ratings.rating" },  // avg rating if exists
-                            0                             // else default 0
-                        ]
-                    },
-                    totalRatings: { $size: "$ratings" } // how many ratings
-                }
-            },
-            { $match: matchRatingCondition },
-            { $sort: sortCondition },
+            { $match: { "serviceDetails.isActive": true } },
             {
                 $project: {
                     _id: 0,
                     user: {
-                        userId: "$userId",
-                        fname: "$fname",
-                        lname: "$lname",
-                        mobileNo: "$mobileNo",
-                        location: "$location",
+                        userId: "$userDetails.userId",
+                        fname: "$userDetails.fname",
+                        lname: "$userDetails.lname",
                     },
                     provider: {
-                        providerId: "$providerDetails.providerId",
-                        gender: "$providerDetails.gender",
-                        profileImage: "$providerDetails.profileImage",
-                        serviceCharge: "$providerDetails.serviceCharge",
-                        isOnline: "$providerDetails.isOnline",
+                        providerId: "$providerId",
+                        gender: "$gender",
+                        profileImage: "$profileImage",
+                        serviceCharge: "$serviceCharge",
+                        isOnline: "$isOnline"
                     },
                     category: {
                         categoryId: "$serviceDetails.categoryId",
@@ -306,7 +190,7 @@ export class ProviderRepository implements IProviderRepository{
                                     $filter: {
                                         input: "$serviceDetails.subcategories",
                                         as: "sub",
-                                        cond: { $in: ["$$sub.subCategoryId",  "$providerDetails.specializationIds"] } 
+                                        cond: { $in: ["$$sub.subCategoryId",  "$specializationIds"] } 
                                     }
                                 },
                                 as: "sub",
@@ -317,39 +201,19 @@ export class ProviderRepository implements IProviderRepository{
                             }
                         }
                     },
-                    averageRating: 1,
-                    totalRatings: 1,
-                    ...(hasNearbyFilter && {distance:1})
-                }
-            },
-            {
-                $facet: {
-                    data: [
-                       
-                        { $skip: skip },
-                        { $limit: limit }
-                    ],
-                    totalCount: [
-                        { $count: "total" }
-                    ]
+
                 }
             }
-        )
+        ]
 
-
-        interface AggregatedFacetResult {
-            data : { user: Partial<User>, provider: Partial<Provider>, category: Partial<Category>, averageRating: number, totalRatings: number; }[];
-            totalCount: { total: number }[];
+        interface AggregatedResult {
+            user: Pick<User, "userId" | "fname" | "lname">,
+            provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
+            category: Pick<Category, "categoryId" | "name" | "subcategories" >
         }
 
-        const result = await UserModel.aggregate<AggregatedFacetResult>(pipeline)
-        console.log(result[0].data)
-
-
-        return {
-            data: result[0].data || [],
-            total: result[0].totalCount[0]?.total || 0
-        }
+        const result = await ProviderModel.aggregate<AggregatedResult>(pipeline)
+        return result[0]
     }
     
 }

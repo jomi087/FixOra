@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 import { SigninDTO } from "../../DTO's/SigninDTO.js";
 import { AuthStrategyFactory } from "../../strategies/auth/AuthStrategyFactory.js";
 
@@ -21,11 +21,9 @@ export class SigninUseCase {
             // a Role Strategy Map — dynamic role-to-strategy resolution.
             
             //from here
-            console.log(credentials.role)
             const strategy = this.authFactory.getStrategy(credentials.role);
             const authenticatedUser = await strategy.authenticate(credentials);
             //till here 
-
             const { userData, role } = authenticatedUser
 
             const payload = {

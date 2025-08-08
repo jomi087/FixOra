@@ -28,7 +28,7 @@ const LandingPage: React.FC = () => {
         }
       } catch (error: any) {
         // console.log(error)
-        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
+        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
         toast.error(errorMsg);
       } finally {
         setLoading(false)

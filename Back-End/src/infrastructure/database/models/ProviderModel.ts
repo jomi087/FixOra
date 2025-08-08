@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { Provider } from '../../../domain/entities/ProviderEntity.js';
-import { KYCStatus } from '../../../shared/constant/KYCstatus.js';
-import { Gender } from '../../../shared/constant/Gender.js';
+import { KYCStatus } from '../../../shared/Enums/KYCstatus.js';
+import { Gender } from '../../../shared/Enums/Gender.js';
 
 // Extend Document with Provider
 export interface IProviderModel extends Document, Provider {}
@@ -43,6 +43,7 @@ const providerSchema = new Schema<IProviderModel>({
   serviceCharge: {
     type: Number,
     required: true,
+    min: [300, 'Service charge must be at least 300'],
   },
   kyc: {
       idCard: {

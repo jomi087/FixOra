@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../shared/constant/Roles.js";
+import { RoleEnum } from "../../shared/Enums/Roles.js";
 
 export type SigninDTO = {
     email: string;

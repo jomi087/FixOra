@@ -1,9 +1,10 @@
-import { RoleEnum } from "../../shared/constant/Roles.js";
+import { RoleEnum } from "../../shared/Enums/Roles.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IHashService } from "../../domain/interface/ServiceInterface/IHashService.js";
 import { AuthStrategyFactory } from "../../application/strategies/auth/AuthStrategyFactory.js";
 import { CustomerAuthStrategy } from "../../application/strategies/auth/CustomerAuthStrategy.js";
 import { AdminAuthStrategy } from "../../application/strategies/auth/AdminAuthStrategy.js";
+import { ProviderAuthStrategy } from "../../application/strategies/auth/ProviderAuthStrategy.js";
 
 
 export function configureAuthStrategies( userRepository: IUserRepository, hashService: IHashService): AuthStrategyFactory {  
@@ -15,7 +16,7 @@ export function configureAuthStrategies( userRepository: IUserRepository, hashSe
     authFactory.register(RoleEnum.Customer, customerStrategy); 
 
     // Register Provider authentication strategy
-    const providerStrategy = new CustomerAuthStrategy(userRepository, hashService);
+    const providerStrategy = new ProviderAuthStrategy(userRepository, hashService);
     authFactory.register(RoleEnum.Provider, providerStrategy); 
 
     // Register admin authentication strategy

@@ -1,7 +1,7 @@
 import { Address } from "../../../domain/entities/UserEntity.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 import {  EditProfileInputDTO, ProfileDTO, UpdatedProfileOutputDTO } from "../../DTO's/EditProfileDTO.js";
 import { IUpdateProfileUseCase } from "../../Interface/useCases/Client/IUpdateProfileUseCase.js";
 

@@ -23,6 +23,9 @@
   .bg-hero-background {
     background: var(--herobackground);
   }
+  .bg-gradient-background {
+    background: var(--gradientbackground);
+  }
 }
 
 :root{
@@ -32,6 +35,7 @@
     --bodytext : #000;
     --footerbackground : #fdfefe;
     --footertext : #000;
+    --gradientbackground : linear-gradient(to right, #3b82f6, #9333ea);
     --herobackground : linear-gradient(to right, #3b82f6, #9333ea);
     --sidebarbackground : #1e2939 ;
     --userIcon : #000;
@@ -77,6 +81,7 @@
     --bodytext : #fff ;
     --footerbackground : #1e2129  ;
     --footertext : #fff;
+    --gradientbackground : linear-gradient(to right, #3b82f6, #9333ea);
     --herobackground: rgb(0, 0, 0);
     --cardborder : #fff;
     --sidebarbackground : oklch(64.6% 0.222 41.116);
@@ -98,7 +103,7 @@
     --destructive: oklch(0.704 0.191 22.216);
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
+    --ring: oklch(0.656 0 0/20%);
     --chart-1: oklch(0.488 0.243 264.376);
     --chart-2: oklch(0.696 0.17 162.48);
     --chart-3: oklch(0.769 0.188 70.08);

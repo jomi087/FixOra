@@ -6,6 +6,7 @@ export interface IKYCRequestRepository {
     create(data: KYCRequest): Promise<void>;
     updateById(id: string, updateData: Partial<KYCRequest>): Promise<KYCRequest | null>;
     updateByUserId(userId: string, updateData: Partial<KYCRequest>): Promise<KYCRequest | null>;
+    
     findWithFilters(
         option: { searchQuery: string; filter: string },
         currentPage: number, limit: number

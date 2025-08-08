@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { User } from "../../domain/entities/UserEntity.js";
-import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../shared/Messages.js";
 
 const { UNAUTHORIZED,FORBIDDEN } = HttpStatusCode
 const { TOKEN_EXPIRED,INVALID_TOKEN,USER_NOT_FOUND,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED } = Messages
@@ -51,7 +51,7 @@ export class UserAuthMiddleware {  //verify Jwt
                 res.clearCookie('accessToken', options)
                 res.clearCookie('refreshToken', options)
                 await this.userRepository.update({ userId: user.userId }, { refreshToken: "" });
-                res.status(FORBIDDEN).json({ message: ACCOUNT_BLOCKED });
+                res.status(UNAUTHORIZED).json({ message: ACCOUNT_BLOCKED });
                 return;
             }
 

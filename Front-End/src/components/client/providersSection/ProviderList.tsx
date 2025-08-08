@@ -35,7 +35,6 @@ const ProviderList = () => {
     
     return (
         <div>
-
             <div className="bg-footer-background text-body-text w-full px-4 md:px-6 py-4">
                         
                 <div className="hidden sm:flex gap-4 flex-row items-center justify-between ">              

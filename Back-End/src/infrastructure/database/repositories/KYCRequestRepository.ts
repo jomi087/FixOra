@@ -1,7 +1,7 @@
 import { KYCRequest, KYCRequestWithDetails } from "../../../domain/entities/KYCRequestEntity.js";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
-import { Gender } from "../../../shared/constant/Gender.js";
-import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
+import { Gender } from "../../../shared/Enums/Gender.js";
+import { KYCStatus } from "../../../shared/Enums/KYCstatus.js";
 import KYCRequestModel from "../models/KYCRequestModel.js";
 import { ObjectId } from "mongodb";
 

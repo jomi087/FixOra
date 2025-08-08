@@ -1,4 +1,4 @@
-import { Gender } from "../../shared/constant/Gender.js";
+import { Gender } from "../../shared/Enums/Gender.js";
 
 export interface Provider {
   providerId: string;

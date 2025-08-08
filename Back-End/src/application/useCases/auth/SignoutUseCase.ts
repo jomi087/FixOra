@@ -1,6 +1,6 @@
 import { UserRepository } from "../../../infrastructure/database/repositories/UserRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 
 const { BAD_REQUEST,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
