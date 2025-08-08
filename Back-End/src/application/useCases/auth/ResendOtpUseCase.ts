@@ -3,8 +3,8 @@ import { UserInputDTO } from "../../DTO's/UserInputDTO.js";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 
 const {FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const {UNAUTHORIZED_MSG,INTERNAL_ERROR} = Messages

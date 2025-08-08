@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { UserInputDTO } from "../../DTO's/UserInputDTO.js";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { RoleEnum } from "../../../shared/Enums/Roles.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 
 const { FORBIDDEN,BAD_REQUEST, INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { UNAUTHORIZED_MSG, INVALID_OTP, OTP_EXPIRED, INTERNAL_ERROR } = Messages

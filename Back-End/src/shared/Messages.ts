@@ -40,6 +40,8 @@ export const Messages = {
     PENDING_KYC_REQUEST: "You already have a pending KYC request. Please wait for admin review.",
     KYC_ALREADY_APPROVED: "Your KYC is already approved. No need to reapply.",
 
+    SUBMITTED_BOOKING_REQUEST: "Booking request submitted",
+
     INVALID_CREDENTIALS: "Invalid credentials",
     INVALID_ROLE: "Invalid role",
     INVALID_PASSWORD: "Invalid Password",

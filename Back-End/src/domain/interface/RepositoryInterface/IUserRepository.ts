@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { RoleEnum } from "../../../shared/Enums/Roles.js";
 import { Category } from "../../entities/CategoryEntity.js";
 import { Provider } from "../../entities/ProviderEntity.js";
 import { User } from "../../entities/UserEntity.js";
@@ -16,15 +16,49 @@ export interface IUserRepository {
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
     ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">>
 
+//spli this method
     update(filter: Partial<Pick<User, "userId" | "email">>, updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    
+//____________
+
     findUsersWithFilters(
         options: { searchQuery: string; filter: string },
         currentPage: number, limit: number,
         omitFields?: Array<keyof User>
     ): Promise<{ data: Partial<User>[]; total: number }>;
     
-    
+    findActiveProvidersWithFilters(
+        option: {
+            searchQuery: string;
+            filter: string
+            extraFilter?: {
+                selectedService?: string;
+                nearByFilter?: string;
+                ratingFilter?: number;
+                availabilityFilter?: string;
+            },
+            coordinates: {
+                latitude: number;
+                longitude: number;
+            }
+        },
+        currentPage: number, limit: number
+    ): Promise<{
+        data: {
+            user: Pick<User, "userId" | "fname" | "lname">,
+            provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
+            category: Pick<Category, "categoryId" | "name" | "subcategories" >
+            averageRating: number,
+            totalRatings: number
+        }[];
+        total: number
+    }>
+
+    findProviderBookingsById(providerId: string , coordinates: { latitude: number;longitude: number }): Promise<{
+        user: Pick<User, "userId" | "fname" | "lname">,
+        provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
+        category: Pick<Category, "categoryId" | "name" | "subcategories">
+        distanceFee: number
+    }>
 }
 
 /*

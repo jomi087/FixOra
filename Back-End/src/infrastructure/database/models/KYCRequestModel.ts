@@ -1,14 +1,14 @@
 import { Schema ,Document,model } from "mongoose";
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity.js";
-import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
-import { Gender } from "../../../shared/constant/Gender.js";
+import { KYCStatus } from "../../../shared/Enums/KYCstatus.js";
+import { Gender } from "../../../shared/Enums/Gender.js";
 
 export interface IKYCRequestModel extends Document,KYCRequest{}
 
 const KYCRequestSchema = new Schema<IKYCRequestModel>({
     userId: {
         type: String,
-        // unique : true,
+        unique : true,
         required: true
     },
     dob: {

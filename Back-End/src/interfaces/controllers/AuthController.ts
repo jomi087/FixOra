@@ -12,8 +12,8 @@ import { SignoutUseCase } from "../../application/useCases/auth/SignoutUseCase.j
 import { ForgotPasswordUseCase } from "../../application/useCases/auth/ForgotPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
 import { GoogleSigninUseCase } from "../../application/useCases/auth/GoogleSigninUseCase.js";
-import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../shared/Messages.js";
 
 const { OK, BAD_REQUEST,UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,USER_NOT_FOUND,
@@ -151,7 +151,6 @@ export class AuthController {
           message: SIGNIN_SUCCESSFUL,
           userData: result.userData,
         });
-      
     } catch(error) {
       console.log("signin error", error);
       next(error);

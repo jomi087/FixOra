@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom"
 import type { Signup } from "@/shared/Types/user";
 import { RoleEnum } from "@/shared/enums/roles";
+import { App_Name } from "@/utils/constant";
 
 
 interface signUpProps{
@@ -196,7 +197,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
               type="submit"
               disabled={loading}
               aria-busy={loading}
-              aria-label="Sign up to FixOra"
+              aria-label={`Sign up to ${App_Name}`}
               className={`w-full py-3 rounded-full font-semibold text-white shadow-lg transition-colors duration-300 ${
                 loading
                   ? "bg-blue-400 cursor-not-allowed"

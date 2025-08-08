@@ -47,20 +47,6 @@ export type ActiveProviderDTO = {
     userId: string,
     fname: string;
     lname: string;
-    mobileNo: string;
-    location: {
-      houseinfo?: string;
-      street?: string;
-      district: string;
-      city: string;
-      locality: string;
-      state: string;
-      postalCode: string;
-      coordinates: {
-        latitude: number;
-        longitude: number
-      };
-    };
   };
   gender: Gender;
   service: {
@@ -76,6 +62,30 @@ export type ActiveProviderDTO = {
   isOnline: boolean;
   averageRating: number;
   totalRatings: number;
+}
+
+
+export type ProviderBookingsInfoDTO = {
+    providerId : string
+    user: {
+        userId: string,
+        fname: string;
+        lname: string;
+    };
+    gender: Gender;
+    service: {
+        categoryId: string
+        name: string;
+        subcategories: {
+            subCategoryId: string;
+            name: string
+        }[];
+    };
+    profileImage: string;
+    serviceCharge: number;
+    isOnline: boolean;
+    distanceFee:number
+    //array add Booking data (date and time (available not available booked selected etc ...))  
 }
 
 

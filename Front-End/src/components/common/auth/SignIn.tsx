@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { RoleEnum } from "@/shared/enums/roles";
+import { App_Name } from "@/utils/constant";
 
 interface signInProps {
     singInThemeImage : string;
@@ -43,7 +44,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotP
                 { isSignInForm ? `Welcome Back  ` : "Verify-Email" }
                 </h2>
                 {isSignInForm && <p className=" text-center text-black text-sm font-semibold">
-                    { role == "provider" ? `Lets get back to work!` : `Sign in to your FixOra account to continue`}
+                    { role == "provider" ? `Lets get back to work!` : `Sign in to your ${App_Name} account to continue`}
                 </p>
                 }
 
@@ -106,7 +107,7 @@ const SignIn:React.FC<signInProps> = ( { singInThemeImage, signInSubmit, forgotP
                             type="submit"
                             disabled={loading}
                             aria-busy={loading}
-                            aria-label={ "Sign in to FixOra" }
+                            aria-label={ `Sign in to ${{App_Name}}` }
                             className={`w-full py-3 rounded-full font-semibold text-white shadow-lg transition-colors duration-300 cursor-pointer ${loading
                                     ? "bg-blue-400 cursor-not-allowed"
                                     : "bg-blue-800 hover:bg-blue-900"

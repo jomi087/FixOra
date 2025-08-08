@@ -1,4 +1,4 @@
-import { Gender } from "../../shared/constant/Gender.js";
+import { Gender } from "../../shared/Enums/Gender.js";
 import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO.js";
 
 export interface GetProvidersInputDTO extends PaginationInputDTO {}

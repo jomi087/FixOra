@@ -1,4 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
+import { RoleEnum } from '@/shared/enums/roles.ts'
+
 import ErrorBoundary from '../pages/common/ErrorBoundary.tsx'
 import PageNotFound from '../components/common/Others/PageNotFound'
 import SignInPage from '../pages/common/SignInPage.tsx'
@@ -10,16 +12,19 @@ import LandingPage from '../pages/client/LandingPage'
 import ProfilePage from '../pages/client/ProfilePage.tsx'
 import ChangePasswordPage from '@/pages/client/ChangePassword.tsx'
 
-import Dashboard from '../pages/admin/Dashboard'
+import ProviderDashboardPage  from '@/pages/provider/DashboardPage.tsx'
+import AdminDashboardPage from '../pages/admin/DashboardPage.tsx'
 import UserManagement from '../pages/admin/UserManagement'
 import ProviderManagement from '../pages/admin/ProviderManagement'
 import ServiceManagement from '../pages/admin/ServiceManagement'
 import ProtectedRoute from './ProtectedRoutes.tsx'
-import { RoleEnum } from '@/shared/enums/roles.ts'
 import ServicePage from '@/pages/client/ServicePage.tsx'
 import ProvidersPage from '@/pages/client/ProvidersPage.tsx'
 import VerifictionFormPage from '@/pages/client/VerifictionPage.tsx'
 import ProviderApplicationPage from '@/pages/admin/ProviderApplicationPage.tsx'
+import ProviderBookingPage from '@/pages/client/ProviderBookingPage.tsx'
+import Testing from '@/pages/provider/Testing.tsx'
+import SocketWrapper from '@/pages/common/SocketWrapper.tsx'
 
 
 const router = createBrowserRouter([
@@ -63,6 +68,22 @@ const router = createBrowserRouter([
         </ErrorBoundary >
     },
     {
+        path: '/user/provider-KYC',
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                <VerifictionFormPage/>
+            </ProtectedRoute>
+        </ErrorBoundary>
+    },
+    {
+        path: '/user/provider/booking/:providerId',
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                <ProviderBookingPage/>
+            </ProtectedRoute>
+        </ErrorBoundary >
+    },
+    {
         path: '/user/account/profile',
         element: <ErrorBoundary>
             <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
@@ -80,19 +101,32 @@ const router = createBrowserRouter([
     },
     //Provider Routes
     {
-        path: '/provider/KYC',
+        path: '/provider/dashboard',
         element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                <VerifictionFormPage/>
+            <ProtectedRoute allowedRoles={[RoleEnum.PROVIDER]}>
+                <SocketWrapper>
+                    <ProviderDashboardPage />
+                </SocketWrapper>    
             </ProtectedRoute>
         </ErrorBoundary>
     },
+    {
+        path: '/provider/test',
+        element: <ErrorBoundary>
+            <ProtectedRoute allowedRoles={[RoleEnum.PROVIDER]}>
+                <SocketWrapper>
+                    <Testing />
+                </SocketWrapper> 
+            </ProtectedRoute>
+        </ErrorBoundary>
+    },
+
     // Admin Routes
     {
         path: '/admin/dashboard',
         element: <ErrorBoundary>
             <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
-                <Dashboard />
+                <AdminDashboardPage />
             </ProtectedRoute>
             </ErrorBoundary >
     },

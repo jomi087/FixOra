@@ -1,7 +1,7 @@
 # Thing i have learned in this project
-_____________________________________________________________________________________________________________________________________
+__________________________________________________________________________________
 ## Front-End
---------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
 * dynamic css styling && dark anf light mode
 
 * **importance or A11Y (Accessability)**
@@ -41,9 +41,29 @@ ________________________________________________________________________________
 * purpose of lookup 
 
 *  scinario of facet and what it is -> $facet allows you to run multiple pipelines in parallel on the same input and combine their results into a single document.
-______________________________________________________________________________________________________________________________________
+
+*  ⚠️ Why we use http.createServer(app) instead of app.listen()
+    _____________________
+    - While app.listen(port) works fine for normal REST APIs,
+        - it's just a shorthand for:
+            - const server = http.createServer(app);
+            - server.listen(port);
+
+    - However, app.listen() does NOT expose the `server` instance,
+        - which is required if you need to:
+            - Attach Socket.IO or WebSocket
+            - Gracefully shut down the server (server.close())
+            - Customize low-level behavior (e.g., HTTPS, timeouts)
+
+    - Therefore, we use:
+        - const server = http.createServer(app);
+        - server.listen(port);
+
+
+_______________________________________________________________________
 ## Node (express) version
----------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+
 * advance version of mongodb connection with ( Retry , Fallback URI )
 
 * DIP -> dependency investion principle
@@ -55,17 +75,24 @@ ________________________________________________________________________________
 * ocp Open/Close principle in Solid
 
 * Use of Refresh Token and Its Purpose
-______________________________________________________________________________________________________________________________________
+_______________________________________________________________________
 ## Modules 
----------------------------------------------------------------------------------------------------------------------------------------
-* **react-Icon** best as of now (05/2025) 
-
+-----------------------------------------------------------------------
 * **lucid-react** another module for icon
 * **swiper** for slider ui
 * **Spline** for intigrating 3d object 
 * **shadcn** for  customizable UI components [ this library built with: React 
 Tailwind, CSS Radix, UI (for accessibility and behavior) ,TypeScript ]
-
+* **data-fns** for data time etc.... (more controllable)
+_______________________________________________________________________
+## Good Parctice
+------------------------------------------------------------------------
+* wrtiting static string all in one basket [ like Messages,StatusCode ]
+* env separation for production and for developments
+_______________________________________________________________________
 ## others
+------------------------------------------------------------------------
     what is SSO (Single-Sign-On) and what is OAUTH 
     status code 204(no content) pecularities
+    
+

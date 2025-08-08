@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 import { IToggleUserStatusUseCase } from "../../Interface/useCases/Admin/IToggleUserStatusUseCase.js";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode

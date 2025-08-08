@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { passwordField } from "./fields.js"
-import { Messages } from "../../shared/constant/Messages.js"
+import { Messages } from "../../shared/Messages.js"
 
 export const resetPasswordSchema = z.object({
     token: z.string(),

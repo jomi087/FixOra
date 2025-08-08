@@ -5,8 +5,8 @@ import type { SignOptions } from 'jsonwebtoken';
 
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
-import { Messages } from "../../../shared/constant/Messages.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
 const { INTERNAL_ERROR, EMAIL_NOT_FOUND  } = Messages

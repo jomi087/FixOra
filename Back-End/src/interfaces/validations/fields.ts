@@ -19,4 +19,11 @@ export const postalCodeField = z.string().min(6, "Address invalid, Postal code i
 export const latitudeField =  z.number().min(-90).max(90)
 export const longitudeField = z.number().min(-180).max(180)
 
+export const providerIdField = z.string({ required_error: "Provider info is missing" }).uuid("Invalid provider ID format")
+export const providerUserIdField = z.string({ required_error: "Provider info is missing" }).uuid("Invalid provider ID format")
+export const fullDateField = z.string({ required_error: "Date is required" }).regex(/^\d{2}-\d{2}-\d{4}$/, "Date must be in DD-MM-YYYY format")
+export const timeField = z.string({ required_error: "Time is required" }).regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format")
+export const issueTypeIdField = z.string({ required_error: "Issue Type ID is required" }).uuid("Invalid issue type ID format")
+export const issueField = z.string({ required_error: "Issue is required" }).min(3, "Issue description must be at least 3 characters long")
+
 

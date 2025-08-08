@@ -2,9 +2,9 @@ import { User } from "../../../domain/entities/UserEntity.js";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
+import { RoleEnum } from "../../../shared/Enums/Roles.js";
 import { SigninDTO } from "../../DTO's/SigninDTO.js";
 import { AuthData, IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy.js";
 
@@ -30,7 +30,7 @@ export class ProviderAuthStrategy  implements IAuthStrategy  {
             const isMatch = await this.hashService.compare(credentials.password, user.password as string );
             if (!isMatch) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS }
             
-            return { userData: user, role: RoleEnum.Provider };
+            return { userData: user, role: RoleEnum.Provider, };
             
         } catch (error:any ) {
             if (error.status && error.message) throw error;

@@ -1,7 +1,3 @@
-// import AuthService from "@/services/AuthService";
-// import { useEffect } from "react"
-// import { toast } from "react-toastify"
-
 import ProviderApplicationList from "@/components/admin/providerManagment/ProviderApplicationList"
 import Nav from "@/components/common/layout/Nav"
 import SideBar from "@/components/common/Others/SideBar"

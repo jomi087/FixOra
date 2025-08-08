@@ -1,4 +1,4 @@
-import type { Address, AddressWithCoordinates } from "@/shared/Types/location";
+import type { Address } from "@/shared/Types/location";
 
 export const getFormattedAddress = (location: Address): string => {
   return [

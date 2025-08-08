@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import appStore from './store/appStore';
 import AuthCheck from './components/common/auth/AuthCheck';
 import { useState } from 'react';
-import PageLoader from './components/common/PageLoader';
-import ToastConfig from './components/common/ToastConfig';
+import PageLoader from './components/common/Others/PageLoader';
+import ToastConfig from './components/common/Others/ToastConfig';
 
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
         {!authChecked ? <PageLoader/> : <RouterProvider router={router} />}
         <AuthCheck  onComplete={() => setAuthChecked(true)} />
       </Provider>
+
     </>
   )
 }

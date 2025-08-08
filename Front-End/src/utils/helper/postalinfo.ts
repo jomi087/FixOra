@@ -1,5 +1,4 @@
 import axios from "axios"
-import { toast } from "react-toastify";
 import { Messages } from "../constant";
 
 // work for indian postal

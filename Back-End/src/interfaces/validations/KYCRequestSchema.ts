@@ -1,8 +1,8 @@
 //implimented with zod was bit hard so validated with plain js
 
 import { Request, Response, NextFunction } from "express";
-import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../shared/Messages.js";
 
 const { BAD_REQUEST} = HttpStatusCode
 const { SERVICE_REQUIRED, INVALID_SPECIALIZATION, SERVICE_CHARGE_RANGE,AT_LEAST_ONE_SUBCATEGORY_REQUIRED,

@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { RoleEnum } from "../../../shared/Enums/Roles.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService.js";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND,FORBIDDEN } = HttpStatusCode
 const { INTERNAL_ERROR, USER_NOT_FOUND, ACCOUNT_BLOCKED } = Messages

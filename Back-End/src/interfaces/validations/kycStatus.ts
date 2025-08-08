@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Messages } from "../../shared/constant/Messages.js";
+import { Messages } from "../../shared/Messages.js";
 
 export const kycStatus = z.object({
   action: z.enum(["Pending", "Approved", "Rejected"], {

@@ -5,7 +5,7 @@ import type { MainCategory } from '@/shared/Types/category';
 
 
 //temp data
-import { providers } from '../../utils/constant';
+import { App_Name, providers } from '../../utils/constant';
 import { useNavigate } from 'react-router-dom';
 import { slugify } from '@/utils/helper/utils';
 import { useAppSelector } from '@/store/hooks';
@@ -32,7 +32,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
     }
   }
   return (
-    <section id="learnMore" className={'py-10'} aria-label="Information about FixOra services and providers" >
+    <section id="learnMore" className={'py-10'} aria-label={`Information about ${App_Name} services and providers`} >
       <div className="container mx-auto px-4">
 
         {/*  About */}
@@ -41,7 +41,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
         </h3>
 
         <p className="text-center text-sm sm:text-lg font-mono md:w-3/4 mx-auto">
-          FixOra is your all-in-one solution for home repair services. Whether it's appliances, electrical issues, or plumbing needs – book trusted professionals in just a few taps. Fast, reliable, and hassle-free.
+          {`${App_Name} is your all-in-one solution for home repair services. Whether it's appliances, electrical issues, or plumbing needs – book trusted professionals in just a few taps. Fast, reliable, and hassle-free.`}
         </p>
   
         {/* Service Slider */}
@@ -98,9 +98,9 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
 
         {/* Certified Provider */}
         <div className="mt-10">
-          <h3 className="text-xl font-medium text-center pb-5">Why Choose FixOra?</h3>
+          <h3 className="text-xl font-medium text-center pb-5">Why Choose {App_Name}?</h3>
           <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto">
-            FixOra is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need.
+            {` ${App_Name} is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need`}
           </p>
           <div className ='grid grid-cols-1 md:grid-cols-2 mt-20   to-blue-500 from-amber-500  p-10'>
             <div className=''>
@@ -128,7 +128,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
             <div>
               <h3 className="text-xl font-medium text-center mt-4">Certified Providers</h3>
               <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4  mx-auto m-10   ">
-                FixOra is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need.
+                {`${App_Name} is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need.`}
               </p>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../DTO's/GetCustomerDTO.js";
 import { IGetCustomersUseCase } from "../../Interface/useCases/Admin/IGetCustomersUseCase.js";
 

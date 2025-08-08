@@ -1,4 +1,4 @@
-import { Gender } from "../../shared/constant/Gender.js";
+import { Gender } from "../../shared/Enums/Gender.js";
 import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO.js";
 
 export interface GetActiveProvidersInputDTO extends PaginationInputDTO{
@@ -22,20 +22,6 @@ export interface ActiveProviderDTO {
         userId: string,
         fname: string;
         lname: string;
-        mobileNo: string;
-        location: {
-            houseinfo?: string;
-            street?: string;
-            district: string;
-            city: string;
-            locality: string;
-            state: string;
-            postalCode: string;
-            coordinates: {
-                latitude: number;
-                longitude: number
-            };
-        };
     };
     gender: Gender;
     service: {

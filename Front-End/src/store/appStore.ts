@@ -3,6 +3,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './user/userSlice';
 import categoryReducer from './user/categorySlice';
 import filterReducer from './user/filterSlice';
+import providerBookingReducer from './user/providerBookingSlice';
+
 
 
 const appStore = configureStore ({
@@ -10,6 +12,7 @@ const appStore = configureStore ({
         auth: authReducer,
         category: categoryReducer,
         filter: filterReducer,
+        providerBooking: providerBookingReducer,
     }
 })
 

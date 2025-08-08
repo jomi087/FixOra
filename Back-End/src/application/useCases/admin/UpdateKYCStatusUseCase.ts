@@ -2,10 +2,10 @@ import { KYCRequest } from "../../../domain/entities/KYCRequestEntity.js";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
-import { Messages } from "../../../shared/constant/Messages.js";
-import { RoleEnum } from "../../../shared/constant/Roles.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { KYCStatus } from "../../../shared/Enums/KYCstatus.js";
+import { Messages } from "../../../shared/Messages.js";
+import { RoleEnum } from "../../../shared/Enums/Roles.js";
 import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../DTO's/UpdateKYCStatusDTO.js";
 import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
 import { v4 as uuidv4 } from "uuid";
@@ -19,8 +19,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
         private readonly kycRequestRepository: IKYCRequestRepository,
         private readonly providerRepository: IProviderRepository,
         private readonly userRepository : IUserRepository
-    )
-    { }
+    ){ }
     
     private async update (id:string, request:KYCRequest) : Promise<void> {
         const updated = await this.kycRequestRepository.updateById(id, request);

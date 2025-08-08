@@ -29,7 +29,7 @@ class AuthService {
        }
     }
     
-    //!  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
+    //#  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
     /*********************************************************************************************************************** */
     
     getLandingDataApi() {
@@ -73,12 +73,20 @@ class AuthService {
         return axiosInstance.get('/api/user/services')
     }
 
-    getAuthProviderApi(params: { searchQuery: string, filter: string, currentPage: number, itemsPerPage: number, selectedService?: string; nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string }) {
+    getAuthProvidersApi(params: { searchQuery: string, filter: string, currentPage: number, itemsPerPage: number, selectedService?: string; nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string }) {
         return axiosInstance.get(`/api/user/providers`,{ params })
     }
 
     providerKYCApi(data : FormData) {
         return axiosInstance.post('/api/user/provider-kyc', data, this.getMultiPartConfig())
+    }
+
+    providerBookingsInfoApi(id: string) {
+        return axiosInstance.get(`/api/user/provider/bookings/${id}`)
+    }
+
+    BookingApplicationApi(payload : { providerId: string, providerUserId : string, fullDate: string; time: string; issueTypeId: string; issue: string; }) {
+        return axiosInstance.post(`/api/user/provider/booking`,payload,this.getJsonConfig())
     }
 
     editProfileApi(form: ProfileEdit) {

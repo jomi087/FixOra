@@ -1,14 +1,15 @@
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity.js";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { KYCStatus } from "../../../shared/constant/KYCstatus.js";
-import { Messages } from "../../../shared/constant/Messages.js";
-import { KYCInputDTO } from "../../DTO's/KYCInputDTO.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { KYCStatus } from "../../../shared/Enums/KYCstatus.js";
+import { Messages } from "../../../shared/Messages.js";
+import { KYCInputDTO } from "../../DTO's/KYCDTO.js";
+import { IKYCRequestUseCase } from "../../Interface/useCases/Client/IKYCRequestUseCase.js";
 
 const { BAD_REQUEST} = HttpStatusCode
 const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED } = Messages
 
-export class KYCRequestUseCase {
+export class KYCRequestUseCase implements IKYCRequestUseCase {
     constructor(
         private readonly kycRequestRepository : IKYCRequestRepository
     ) { }

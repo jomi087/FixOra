@@ -1,4 +1,4 @@
-import { HeroSectionImage } from "../../utils/constant";
+import { App_Name, HeroSectionImage } from "../../utils/constant";
 import { Link } from "react-router-dom";
 
 
@@ -10,7 +10,7 @@ const Hero:React.FC = () => {
         {/* Text Content */}
         <div className="md:w-1/2 text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-            Welcome to FixOra
+            Welcome to {App_Name}
           </h1>
           <p className="md:text-xl mb-6">
             Your one-stop solution for connecting with trusted service providers. 
@@ -21,14 +21,14 @@ const Hero:React.FC = () => {
               to="/services"
               className=" bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition "
               role="button"
-              aria-label="Get started with FixOra services"
+              aria-label={`Get started with ${App_Name} services`}
             >
               Get Started
             </Link>
             <Link
               to="/"
               role='button'
-              aria-label="Learn more about FixOra and how it works"
+              aria-label={`Learn more about ${App_Name} and how it works`}
               className="bg-transparent border border-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-blue-600 transition"
             >
               Learn More

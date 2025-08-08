@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Public/IGetLandingDataUseCase.js";
-import { HttpStatusCode } from "../../shared/constant/HttpStatusCode.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
 
 const { OK} = HttpStatusCode
 

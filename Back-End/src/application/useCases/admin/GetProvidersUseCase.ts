@@ -1,6 +1,6 @@
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../DTO's/GetProviderDTO.js";
 import { IGetProvidersUseCase } from "../../Interface/useCases/Admin/IGetProvidersUseCase.js";
 

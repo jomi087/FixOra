@@ -9,8 +9,8 @@ import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmail
 import { SignupDTO } from "../../DTO's/SignupDTO.js";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
-import { HttpStatusCode } from "../../../shared/constant/HttpStatusCode.js";
-import { Messages } from "../../../shared/constant/Messages.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { Messages } from "../../../shared/Messages.js";
 
 const { CONFLICT, INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { EMAIL_ALREADY_EXISTS, INTERNAL_ERROR } = Messages
