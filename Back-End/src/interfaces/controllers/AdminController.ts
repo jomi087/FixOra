@@ -14,12 +14,14 @@ import { IImageUploaderService } from "../../domain/interface/ServiceInterface/I
 import { CategoryInputDTO } from "../../application/DTO's/CategoryInputDTO.js";
 import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase.js";
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const {  UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
 
 export class AdminController {
     constructor(
+        private loggerService: ILoggerService,
         private getCustomersUseCase: IGetCustomersUseCase,
         private toggleUserStatusUseCase: IToggleUserStatusUseCase,
         private getProvidersUseCase: IGetProvidersUseCase,
@@ -47,8 +49,8 @@ export class AdminController {
                 total: result.total
             });
             
-        } catch (error) {
-            console.error("getCustomers error:", error);
+        } catch (error:any) {
+            this.loggerService.error(`getCustomers error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -59,8 +61,8 @@ export class AdminController {
             await this.toggleUserStatusUseCase.execute(userId);
 
             res.status(OK).json({ success: true });
-        } catch (error) {
-            console.error("Error toggling status:", error)
+        } catch (error:any) {
+            this.loggerService.error(`toggleUserStatus error:, ${error.message}`,{stack : error.stack});
             next(error)
         }
     }
@@ -81,8 +83,8 @@ export class AdminController {
                 total: result.total
             });
             
-        } catch (error) {
-            console.error("getProviders error:", error);
+        } catch (error:any) {
+            this.loggerService.error(`getProviders error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -102,8 +104,8 @@ export class AdminController {
                 total: result.total
             });
 
-        } catch (error) {
-            console.error("getProviders error:", error);
+        } catch (error:any) {
+            this.loggerService.error(`getProviderApplications error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -126,8 +128,8 @@ export class AdminController {
                 id : result.id
             });
 
-        } catch (error) {
-            console.error("updateKYCStatus error:", error);
+        } catch (error:any) {
+            this.loggerService.error(`updateKYCStatus error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -147,8 +149,8 @@ export class AdminController {
                 total : result.total
             });
 
-        } catch (error) {
-            console.error("getService error:", error);
+        } catch (error:any) {
+            this.loggerService.error(`getService error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -193,7 +195,8 @@ export class AdminController {
                 message: CATEGORY_CREATED_SUCCESS,
             });
 
-        } catch (error) {
+        } catch (error: any) {
+            this.loggerService.error(`activeServices error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -204,8 +207,8 @@ export class AdminController {
             await this.toggleCategoryStatusUseCase.execute(categoryId);
 
             res.status(OK).json({ success: true });
-        } catch (error) {
-            console.error("Error toggling status:", error)
+        } catch (error:any) {
+            this.loggerService.error(`toggleCategoryStatus Error:, ${error.message}`,{stack : error.stack});
             next(error)
         }
     }

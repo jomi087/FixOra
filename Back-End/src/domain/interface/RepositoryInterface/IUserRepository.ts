@@ -1,4 +1,5 @@
 import { RoleEnum } from "../../../shared/Enums/Roles.js";
+import { Booking } from "../../entities/BookingEntity.js";
 import { Category } from "../../entities/CategoryEntity.js";
 import { Provider } from "../../entities/ProviderEntity.js";
 import { User } from "../../entities/UserEntity.js";
@@ -57,6 +58,7 @@ export interface IUserRepository {
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
+        booking: Pick<Booking, "bookingId" | "fullDate" | "time" | "status">[]
         distanceFee: number
     }>
 }

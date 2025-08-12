@@ -1,7 +1,8 @@
-const Testing = () => {
-    
+const Testing = () => {  
   return (
-    <div>Testing</div>
+    <div>
+      testing
+    </div>
   )
 }
 

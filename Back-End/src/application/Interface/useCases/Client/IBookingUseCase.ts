@@ -1,5 +1,5 @@
-import { BookingInputDTO, BookingOutputDTO } from "../../../DTO's/BookingDTO.js";
+import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } from "../../../DTO's/BookingDTO/CreateBookingApplicationDTO .js";
 
 export interface IBookingUseCase{
-    execute(input : BookingInputDTO ):Promise<BookingOutputDTO>
+    execute(input : CreateBookingApplicationInputDTO ):Promise<CreateBookingApplicationOutputDTO>
 }

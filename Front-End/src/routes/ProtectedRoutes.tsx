@@ -11,7 +11,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children, allowedRoles } : ProtectedRouteProps) => {
   const { isAuthenticated,user } = useAppSelector((state) => state.auth)
-  console.log(isAuthenticated,user)
+  //console.log(isAuthenticated,user)
   const location = useLocation()
 
   if (!isAuthenticated || !user) { 

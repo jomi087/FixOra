@@ -1,6 +1,7 @@
-import type { KYCStatus } from '@/shared/enums/KycStatus';
 import axiosInstance from './axiosConfig';
 import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
+import type { KYCStatus } from '@/shared/enums/KycStatus';
+import type { BookingStatus } from '@/shared/enums/BookingStatus';
 
 class AuthService {  
     getBearerTokenConfig(token?: string) {
@@ -86,7 +87,8 @@ class AuthService {
     }
 
     BookingApplicationApi(payload : { providerId: string, providerUserId : string, fullDate: string; time: string; issueTypeId: string; issue: string; }) {
-        return axiosInstance.post(`/api/user/provider/booking`,payload,this.getJsonConfig())
+        console.log("payload",payload)
+        return axiosInstance.post(`/api/user/provider/booking`, payload, this.getJsonConfig())
     }
 
     editProfileApi(form: ProfileEdit) {
@@ -102,9 +104,17 @@ class AuthService {
     }
 
     /*********************************************************************************************************************** */
+    
+    UpdateBookingStatusApi(bookingId: string, action : Exclude<BookingStatus, BookingStatus.PENDING> , reason:string ) {
+        return axiosInstance.patch(`/api/provider/booking/${bookingId}/status`, {
+            status: action,
+            reason
+        })
+    }
 
-
-
+    BookingInfoApi() {
+        return axiosInstance.get(`/api/provider/bookings`)
+    }
 
     /*********************************************************************************************************************** */
     getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {

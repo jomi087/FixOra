@@ -1,12 +1,12 @@
 import renderStars from "@/components/common/StarRating"
-import type { ActiveProviderDTO} from "@/shared/Types/user"
+import type { ActiveProvider} from "@/shared/Types/user"
 import { toPascalCase } from "@/utils/helper/utils"
 import { IoPersonCircleOutline } from "react-icons/io5"
 import { GrContactInfo } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
 interface ProvderCardProps {
-    datas : ActiveProviderDTO[]
+    datas : ActiveProvider[]
 }
 
 const ProviderCard: React.FC<ProvderCardProps> = ({ datas }) => {

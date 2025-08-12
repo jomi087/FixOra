@@ -1,53 +1,59 @@
 import socket from '@/services/soket';
 import type { BookingRequestPayload } from '@/shared/Types/booking';
 import { useAppSelector } from '@/store/hooks';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 import BookingApplicationDialouge from '../../components/provider/BookingApplicationDialouge';
-
+import { toast } from 'react-toastify';
 
 const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAppSelector((state) => state.auth);
-    const [bookingDialog, setBookingDialog] = useState< BookingRequestPayload | null >(null)
-
+    const [bookingDialog, setBookingDialog] = useState<BookingRequestPayload | null>(null);
+    const isConnected = useRef(false);
 
     useEffect(() => {
-        if (!user) return
-        socket.connect();
+        if (!user) return;
 
-        socket.on("connect", () => console.log("Socket connected:", socket.id));
+        if (!isConnected.current) { //We don't accidentally call socket.connect() again on every render useRef will not re-render
+            socket.connect();
+            isConnected.current = true;
+        }
 
-        socket.on("booking:requested", (payload:BookingRequestPayload) => {
-            console.log("New booking request", payload);
-            setBookingDialog(payload)
-        });
+        const handleConnect = () => {
+            console.log('Socket connected:', socket.id);
+        };
+
+        const handleBookingRequested = (payload: BookingRequestPayload) => {
+            console.log('New booking request', payload);
+            setBookingDialog(payload);
+        };
+
+        const handleConnectError = (err: any) => {
+            console.error('Socket connect error:', err.message, err);
+            toast.error(err.message);
+        };
+
+        socket.on('connect', handleConnect);
+        socket.on('booking:requested', handleBookingRequested);
+        socket.on('connect_error', handleConnectError);
 
         return () => {
-            socket.off("booking:requested");
-             socket.disconnect()
-        }
-    },[user])
+            socket.off('connect', handleConnect); 
+            socket.off('booking:requested', handleBookingRequested);
+            socket.off('connect_error', handleConnectError);
+        };
+    }, [user]);
 
     return (
         <>
-            {children}
+            { children }
             { bookingDialog && (
-                <BookingApplicationDialouge  data={bookingDialog} onClose={()=>setBookingDialog(null) }
+                <BookingApplicationDialouge
+                    data={bookingDialog}
+                    onClose={() => setBookingDialog(null)}
                 />
             )}
         </>
-    )
-}
+    );
+};
 
-export default SocketWrapper
-
-
-        // if (user.role === RoleEnum.CUSTOMER) {
-        //     socket.on("booking:responded", (payload: BookingResponsePayload) => {
-        //         console.log("Provider responded →", payload);
-        //         if (payload.status === "ACCEPTED") {
-        //             toast.success("Your booking was accepted!");
-        //         } else {
-        //             toast.error(" Your booking was rejected.");
-        //         }
-        //     });
-        // }
+export default SocketWrapper;

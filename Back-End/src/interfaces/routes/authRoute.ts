@@ -2,12 +2,10 @@ import express from 'express'
 const router = express.Router();
 
 import { validateRequest } from '../middleware/validateRequest.js';
-import { signupSchema } from '../validations/signupSchema.js';
-import { signinSchema } from '../validations/signinSchema.js';
+import { forgotPasswordSchema, resetPasswordSchema, signinSchema, signupSchema } from '../validations/authSchema.js';
 
-import { authController, userAuthMiddleware } from '../../main/dependencyInjector.js'; 
-import { forgotPasswordSchema } from '../validations/forgotPasswordSchema.js';
-import { resetPasswordSchema } from '../validations/resetPasswordSchema.js';
+import { authController, AuthMiddleware } from '../../main/dependencyInjector.js'; 
+
 
 router.post('/signup', validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next))
 router.post('/verify-otp', (req, res, next) => authController.verifySignupAc(req, res, next))
@@ -18,10 +16,10 @@ router.post('/google-signin',(req, res,next) => authController.googleSignin(req,
 router.post('/forgot-password', validateRequest(forgotPasswordSchema), (req, res, next)=> authController.forgotPassword(req, res, next))
 router.patch('/reset-password', validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next))
 
-router.get('/check', userAuthMiddleware, (req, res, next) => authController.checkAuth(req, res, next))
+router.get('/check', AuthMiddleware(), (req, res, next) => authController.checkAuth(req, res, next))
 
 router.post('/refresh-token', (req, res, next) => authController.refreshToken(req, res, next))
-router.post('/signout', userAuthMiddleware, (req,res,next)=> authController.signout(req, res, next))
+router.post('/signout', AuthMiddleware(), (req,res,next)=> authController.signout(req, res, next))
 
 export default router
 
@@ -93,7 +91,7 @@ const signinUseCase = new SigninUseCase(authFactory, tokenService, userRepositor
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService)
 
 import { AuthController } from '../controllers/AuthController.js';
-import { userAuth } from '../middleware/userAuthMiddleware.js';
+import { userAuth } from '../middleware/AuthMiddleware.js';
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase,resendOtpUseCase,signinUseCase,refreshTokenUseCase) 
 

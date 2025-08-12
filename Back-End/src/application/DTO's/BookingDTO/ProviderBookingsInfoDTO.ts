@@ -1,7 +1,8 @@
-import { Gender } from "../../shared/Enums/Gender.js";
+import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+import { Gender } from "../../../shared/Enums/Gender.js";
 
 export interface ProviderBookingsInfoDTO {
-    providerId : string
+    providerId: string;
     user: {
         userId: string,
         fname: string;
@@ -13,15 +14,19 @@ export interface ProviderBookingsInfoDTO {
         name: string;
         subcategories: {
             subCategoryId: string;
-            name: string
+            name: string;
         }[];
     };
+    bookings: {
+        bookingId: string;
+        fullDate: string;
+        time: string;
+        status: BookingStatus
+    }[],
     profileImage: string;
     serviceCharge: number;
     isOnline: boolean;
-    distanceFee:number
-
-    //array add Booking data (date and time (available not available booked selected etc ...))  
+    distanceFee: number;
 }
 
 export interface ProviderBookingsInfoInputDTO{

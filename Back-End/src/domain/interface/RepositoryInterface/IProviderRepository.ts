@@ -8,12 +8,7 @@ export interface IProviderRepository {
 
     findProvidersWithFilters( option: { searchQuery: string; filter: string }, currentPage: number, limit: number ): Promise<{ data: ProviderWithDetails []; total: number }> 
     
-    //move this to user Repo and impliment distance logic
-    findProviderBookingsById(providerId: string): Promise<{
-        user: Pick<User, "userId" | "fname" | "lname">,
-        provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
-        category: Pick<Category, "categoryId" | "name" | "subcategories" >
-    }>
+
     
 
     

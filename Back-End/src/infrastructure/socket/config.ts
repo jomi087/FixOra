@@ -1,11 +1,12 @@
 import { Server as SocketIOServer } from "socket.io";
 import { Server as HTTPServer } from "http";
 import { socketAuthMiddleware } from "./authMiddleware.js";
+import type { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
 
 
 export let ioInstance: SocketIOServer;
 
-export const initializeSocket = (httpServer: HTTPServer) => {
+export const initializeSocket = (httpServer: HTTPServer, logger:ILoggerService) => {
   ioInstance = new SocketIOServer(httpServer, {
       cors: {
       origin: process.env.FRONTEND_URL, //env
@@ -13,21 +14,23 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       credentials: true,
       },
   });
-  // console.log("ioInstance", ioInstance)
-  // ioInstance._connectTimeout = 10000
-  ioInstance.use(socketAuthMiddleware);
-
+  ioInstance.use(socketAuthMiddleware(logger));
   
   //socket Event listners
   ioInstance.on("connection", (socket) => {
     const { userId, role } = socket.data;
   
     socket.join(userId)
-    console.log(`${role} ${userId} joined room ${userId}`);
+    logger.info(`${role} ${userId} joined room ${userId}`);
     
-    socket.on("disconnect", () => {
-        console.log("Provider disconnected:", socket.id);
+    socket.on("disconnect", (reason) => {
+        logger.info(`User ${userId} disconnected. Reason: ${reason}`);
     });
+
+    socket.on("error", (error) => {
+      logger.error(`Socket error for user ${userId}:`, error);
+    });
+
   })
 
   return ioInstance;         

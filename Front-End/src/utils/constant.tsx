@@ -61,6 +61,11 @@ export const Messages = {
   FAILED_TO_UPDATE_STATUS: "Failed to update status",
   INVALID_OR_UNAVAILABLE_PINCODE: "Invalid or unavailable Pincode",
   NETWORK_ERROR_FETCHING_POSTAL_INFO: "Network error while fetching postal info",
+  BOOKING_STATUS_FAILED: "Failed to update booking status",
+  ACCESS_DENID : "You don't have permission to access this resource.",
+
+  
+  //move to validation section
   SERVICE_REQUIRED: "Service required",
   DOB_REQUIRED: "Date of birth is required",
   SERVICE_CHARGE_RANGE: "Service charge must be between 300 and 500",
@@ -69,6 +74,17 @@ export const Messages = {
   EXPERIENCE_CERT_INVALID: "Experience certificate must be a valid JPG/PNG <= 5MB",
   GENDER_REQUIRED: "Select a gender",
   IMAGE_TYPE_INVALID: "Only JPEG, PNG, or JPG images are allowed.",
+}
+
+export const validationMsg = {
+  ISSUE_TYPE_REQUIRED : "Issue Type is required.",
+  ISSUE_DESCRIPTION_REQUIRED: "Please describe the issue.",
+  REASON_INVALID: "Please enter a valid Reason"
+}
+
+export const placeHolder = {
+  ISSUE_TYPE : "Select issue type", 
+  ISSUE_DESCRIPTION: "Briefly describe the problem you're facing"
 
 }
 /******************************************* Reset Password Constraints Sections *******************************************************/

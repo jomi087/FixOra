@@ -10,36 +10,48 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 //From Local files
-import mongoConnect from '../infrastructure/database/connection.js';
+import { BodyParserLimits } from '../shared/constants.js';
+
 import publicRouter from '../interfaces/routes/publicRouter.js'
 import authRouter from '../interfaces/routes/authRoute.js';
 import userRouter from '../interfaces/routes/userRoute.js'
 import providerRouter from '../interfaces/routes/providerRoute.js'
 import adminRouter from '../interfaces/routes/adminRoute.js'
 
-import { errorHandler } from '../interfaces/middleware/errorHandler.js'; 
-import { BodyParserLimits } from '../shared/constants.js';
+import mongoConnect from '../infrastructure/database/connection.js';
 import { initializeSocket } from '../infrastructure/socket/config.js';
 
+import { errorHandler } from './dependencyInjector.js';
+import { WinstonLogger } from '../infrastructure/services/WinstonLoggerService.js';
+const logger = new WinstonLogger();
+
 const app: Express = express()
-const port = process.env.PORT ;
+const port = process.env.PORT;
+
+const stream = {
+  write: (message: string) => {
+    logger.info(message.trim());  // send morgan logs to Winston
+  }
+};
+
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization','X-Requested-With','Accept','Origin']
+}
 
 const __filename = fileURLToPath(import.meta.url) // why this way cz esmodule dosent directly support __dirname 
 const __dirname = path.dirname(__filename)
 
-const corsOptions = { 
-    origin: process.env.FRONTEND_URL ,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
-}
+
 
 // Connect to MongoDB
-mongoConnect()
+mongoConnect(logger)
 
 //Middleware
 app.use(cookieParser())
-app.use(morgan('tiny'))  //logs incoming http request
+app.use(morgan('tiny', { stream }));
 app.use(cors(corsOptions))
 app.use(express.json({ limit: BodyParserLimits.JSON_LIMIT }))//Your server will only accept JSON request bodies up to 1 mB in size
 app.use(express.urlencoded({ extended: true, limit: BodyParserLimits.URLENCODED_LIMIT }))
@@ -54,9 +66,11 @@ app.use('/api/admin', adminRouter)
 app.use(errorHandler)
 
 const server = http.createServer(app); // this was implimented so that i can get the server instanace (server obj) which is required is socket i.O other-wise we only use the listen method of server
-const io = initializeSocket(server)
-console.log("Socket.IO initialized");
+initializeSocket(server,logger)
+logger.info('Socket.IO initialized');
+
 
 server.listen(port, () => {
-    console.log(`Server is started running in http://localhost:${port}`)
+  logger.info(`Server is started running in http://localhost:${port}`)
 })
+

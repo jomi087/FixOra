@@ -191,7 +191,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
                 toggle(false)
             }
         } catch (error:any) {
-            const errorMsg = error?.response?.data?.message ||"profile modification failed";
+            const errorMsg = error?.response?.data?.message ||Messages.PROFILE_MODIFICATION_FAILED;
             toast.error(errorMsg);
         } finally {
             setLoading(false)

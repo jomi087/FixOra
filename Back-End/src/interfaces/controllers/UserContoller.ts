@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { ActiveServiceUseCase } from "../../application/useCases/client/ActiveServiceUseCase.js";
-import { UpdateProfileUseCase } from "../../application/useCases/client/UpdateProfileUseCase.js";
 import { VerifyPasswordUseCase } from "../../application/useCases/client/VerifyPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
-import validateFile from "../utils/fileValidation.js";
+import validateFile from "../validations/fileValidation.js";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
 import { KYCInputDTO } from "../../application/DTO's/KYCDTO.js";
 import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase.js";
@@ -13,6 +12,7 @@ import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases
 import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase.js";
 import { IProviderBookingsInfoUseCase } from "../../application/Interface/useCases/Client/IProviderBookingsInfoUseCase.js";
 import { IBookingUseCase } from "../../application/Interface/useCases/Client/IBookingUseCase.js";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
 
 const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED,UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -21,15 +21,14 @@ const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED
 
 export class UserController {
     constructor(
+        private loggerService: ILoggerService,
         private activeServiceUseCase: ActiveServiceUseCase,
-
         private getActiveProvidersUseCase : IGetActiveProvidersUseCase,
         private kycRequestUseCase: IKYCRequestUseCase,
         private imageUploaderService: IImageUploaderService, 
         private providerBookingsInfoUseCase: IProviderBookingsInfoUseCase,
         private bookingUseCase : IBookingUseCase,
         private updateProfileUseCase: IUpdateProfileUseCase,
-
         private verifyPasswordUseCase: VerifyPasswordUseCase,
         private resetPasswordUseCase: ResetPasswordUseCase,
     ) { }
@@ -42,9 +41,8 @@ export class UserController {
                 success: true,
                 servicesData
             })
-
-        } catch (error) {
-            console.error("activeServices error:", error);
+        } catch (error:any) {
+            this.loggerService.error(`activeServices error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -82,8 +80,8 @@ export class UserController {
                 total: result.total
             });
 
-        } catch (error) {
-            console.error("activeProviders error:", error);
+        } catch (error : any) {
+            this.loggerService.error(`activeProviders error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -149,8 +147,8 @@ export class UserController {
                 message: KYC_REQUEST_STATUS(result)
             })
             
-        } catch (error) {
-            console.error("kycApplication error:", error);
+        } catch (error : any) {
+            this.loggerService.error(`kycApplication error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -173,8 +171,8 @@ export class UserController {
                 providerBookingsInfoData : result
             });
 
-        } catch (error) {
-            console.error("providerBookings error:", error);
+        } catch (error : any) {
+            this.loggerService.error(`providerBookings error:, ${error.message}`,{stack : error.stack});   
             next(error);
         }
     }
@@ -194,8 +192,8 @@ export class UserController {
                 booking
             });
 
-        } catch (error) {
-            console.error("createBooking error:",error) ;
+        } catch (error : any) {
+            this.loggerService.error(`createBooking error:, ${error.message}`,{stack : error.stack}); 
             next(error);
         }
     }
@@ -218,8 +216,8 @@ export class UserController {
                 user : updatedUser
             })
     
-        } catch (error) {
-            console.error("editProfile error:", error);
+        } catch (error : any) {
+            this.loggerService.error(`editProfile error:, ${error.message}`, { stack: error.stack }); 
             next(error);
         }
     }
@@ -238,8 +236,8 @@ export class UserController {
                 success: true,
                 message: VERIFICATION_MAIL_SENT ,
             })
-        } catch (error) {
-            console.error("verifyPassword error:", error);
+        } catch (error : any) {
+            this.loggerService.error(`verifyPassword error:, ${error.message}`,{stack : error.stack}); 
             next(error);
         }
     }
@@ -255,8 +253,8 @@ export class UserController {
                 message: VERIFICATION_MAIL_SENT
             });
 
-        } catch (error) {
-            console.error("changePassword error:", error);
+        } catch (error : any) {
+            this.loggerService.error(`changePassword error:, ${error.message}`,{stack : error.stack}); 
             next(error);
         }
     }

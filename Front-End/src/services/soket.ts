@@ -1,32 +1,18 @@
-import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 export const socket = io(import.meta.env.VITE_API_URL,{ //env
   withCredentials: true,  
   transports: ["websocket"],
   reconnectionAttempts: 5,
-  timeout: 10000    // fail connection after 10s if no response
-});
-// console.log(socket)
-
-socket.on("connect_error", (err) => {
-  console.error("Socket connect error:", err.message, err); 
-  toast.error(err.message);  
-});
-
-// Show reconnect attempt
-socket.on("reconnect_attempt", (attemptNumber) => {
-  toast.info(`Reconnecting... (Attempt ${attemptNumber} of 5)`, { autoClose: 2000 });
-});
-
-// Reconnection success
-socket.on("reconnect", (attemptNumber) => {
-  toast.success("Reconnected successfully after " + attemptNumber + " attempt(s).", { autoClose: 3000 });
-});
-
-// Final failure after max attempts
-socket.on("reconnect_failed", () => {
-  toast.error("Failed to reconnect after multiple attempts.");
+  timeout: 10000,    // fail connection after 10s if no response
+  autoConnect: false,  // socket doesn't auto-connect on import.
 });
 
 export default socket;
+
+/* 
+  By default autoConnect is true 
+  Reason for turning it off : If we allow  defualt autoConnect, the socket will try to connect immediately when the app starts,
+  even before the user's auth token is set or available (which causes the connection to fail).
+  By setting autoConnect to false, we manually connect only after user info is ready.(hence connecty manuly in socketwrapper)
+*/

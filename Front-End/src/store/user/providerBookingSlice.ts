@@ -1,12 +1,12 @@
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { ProviderBookingsInfoDTO } from "@/shared/Types/user";
+import type { ProviderBookingsInfo } from "@/shared/Types/user";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
 interface ProviderBookingState {
-    data?: ProviderBookingsInfoDTO;
+    data?: ProviderBookingsInfo;
     subCategories: {
         subCategoryId: string;
         name: string;
@@ -22,7 +22,7 @@ const initialState:ProviderBookingState = {
     error : null,
 }
 
-export const fetchProviderBookingInfo  = createAsyncThunk<ProviderBookingsInfoDTO,string>(
+export const fetchProviderBookingInfo  = createAsyncThunk<ProviderBookingsInfo,string>(
     "providerBooking/fetchData",
     async (providerId: string, { rejectWithValue }) => {
         try {
@@ -42,6 +42,11 @@ const providerBookingSlice = createSlice({
     name: "providerBooking",
     initialState,
     reducers: {
+        addBooking: (state, action) => { 
+            if (state.data?.bookings) {
+                state.data.bookings.push(action.payload);
+            }
+        },
         clearProviderBooking: (state) => {
             state.data = undefined;
             state.subCategories = [];
@@ -67,5 +72,5 @@ const providerBookingSlice = createSlice({
     }
 })
 
-export const { clearProviderBooking } = providerBookingSlice.actions
+export const { addBooking, clearProviderBooking } = providerBookingSlice.actions
 export default providerBookingSlice.reducer

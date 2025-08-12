@@ -14,6 +14,7 @@ import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPassw
 import { GoogleSigninUseCase } from "../../application/useCases/auth/GoogleSigninUseCase.js";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../shared/Messages.js";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
 
 const { OK, BAD_REQUEST,UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,USER_NOT_FOUND,
@@ -23,6 +24,7 @@ const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SU
 
 export class AuthController {
   constructor(
+    private loggerService: ILoggerService,
     private signupUseCase: SignupUseCase, //"the value comming from constructor will be an instance of the class SignupUseCase."
     private verifySignupOtpUseCase: VerifySignupOtpUseCase,
     private resendOtpUseCase: ResendOtpUseCase,
@@ -47,12 +49,12 @@ export class AuthController {
       })
 
       res.status(OK).json({
-          success: true,
+        success: true,
         message: OTP_SENT,
       });
 
     } catch (error: any) {
-      console.error("Signup error:", error);
+      this.loggerService.error(`Signup error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -72,7 +74,7 @@ export class AuthController {
       });
 
     } catch (error: any) {
-      console.error("Signup verification error:", error);
+      this.loggerService.error(`Signup verification error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -87,8 +89,8 @@ export class AuthController {
         message: OTP_SENT,
       });
 
-    } catch (error) {
-      console.error("resendOtp error:", error);
+    } catch (error:any) {
+      this.loggerService.error(`resendOtp error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -120,8 +122,8 @@ export class AuthController {
           message: SIGNIN_SUCCESSFUL,
           userData: result.userData,
         });
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      this.loggerService.error(`googleSignin error:, ${error.message}`,{stack : error.stack});
       next(error)
     }
     
@@ -151,8 +153,8 @@ export class AuthController {
           message: SIGNIN_SUCCESSFUL,
           userData: result.userData,
         });
-    } catch(error) {
-      console.log("signin error", error);
+    } catch(error:any) {
+      this.loggerService.error(`signin error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -168,7 +170,7 @@ export class AuthController {
       })
 
     } catch (error:any) {
-      console.error("ForgotPassword error:", error);
+      this.loggerService.error(`ForgotPassword error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -186,7 +188,7 @@ export class AuthController {
       });
 
     } catch (error: any) {
-      console.error("verifyOtp error:", error);
+      this.loggerService.error(`verifyOtp error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
     
@@ -208,7 +210,8 @@ export class AuthController {
           location : req.user?.location,
         }
       });
-    } catch (error) {
+    } catch (error: any) {
+      this.loggerService.error(`checkAuth error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -240,18 +243,13 @@ export class AuthController {
       });
 
     } catch (error:any) {
-      console.error("Refresh token error:", {
-        error: error.message,
-        status: error.status,
-        timestamp: new Date().toISOString()
-      });
+      this.loggerService.error(`Refresh token error:, ${error.message}`,{stack : error.stack});
 
       // Clear tokens on error
       const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_COOKIE_ENV === "production",
         sameSite: "lax" as const,
-        // path: "/"
       };
 
       res.clearCookie('accessToken', cookieOptions);
@@ -282,8 +280,8 @@ export class AuthController {
         .clearCookie('refreshToken', options)
         .json({ message : LOGGED_OUT })
       
-    } catch (error) {
-      console.log("signout error", error);
+    } catch (error:any) {
+      this.loggerService.error(`signout error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
