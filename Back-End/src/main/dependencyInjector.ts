@@ -4,6 +4,7 @@ import { CategoryRepository } from "../infrastructure/database/repositories/Cate
 import { KYCRequestRepository } from "../infrastructure/database/repositories/KYCRequestRepository.js";
 import { ProviderRepository } from "../infrastructure/database/repositories/ProviderRepository.js";
 
+import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService.js";
 import { EmailService } from "../infrastructure/services/EmailService.js";
 import { OtpGenratorservice } from "../infrastructure/services/OtpGeneratorService.js";
 import { HashService } from "../infrastructure/services/HashService.js";
@@ -19,6 +20,7 @@ const kycRequestRepository = new KYCRequestRepository()
 const providerRepository = new ProviderRepository()
 const bookingRepository = new BookingRepository()
 
+const loggerService = new WinstonLogger()
 const emailService = new EmailService(); 
 const otpGenratorservice = new OtpGenratorservice();
 const hashService = new HashService();
@@ -28,9 +30,11 @@ const imageUploaderService = new ImageUploaderService()
 const notificationService = new NotificationService()
 
 /******************************************************************************************************************************************************/
-import { createUserAuthMiddleware } from "../interfaces/middleware/userAuthMiddleware.js";
-const userAuthMiddleware = createUserAuthMiddleware(tokenService, userRepository)
+import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware.js";
+const AuthMiddleware = createAuthMiddleware(tokenService, userRepository)
 
+import { createErrorHandler } from "../interfaces/middleware/errorHandler.js";
+export const errorHandler = createErrorHandler(loggerService);
 
 /******************************************************************************************************************************************************/
 import { SignupUseCase } from "../application/useCases/auth/SignupUseCase.js";
@@ -88,6 +92,13 @@ const updateProfileUseCase = new UpdateProfileUseCase(userRepository)
 
 import { VerifyPasswordUseCase } from "../application/useCases/client/VerifyPasswordUseCase.js";
 const verifyPasswordUseCase = new VerifyPasswordUseCase(userRepository, hashService, emailService)
+/******************************************************************************************************************************************************
+                                                        Provider Specific
+******************************************************************************************************************************************************/
+import { UpdateBookingStatusUseCase } from "../application/useCases/providers/UpdateBookingStatusUseCase.js";
+const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository,notificationService)
+
+
 
 /******************************************************************************************************************************************************
                                                         Admin Specific
@@ -126,16 +137,16 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 import { BookingRepository } from "../infrastructure/database/repositories/BookingRepository.js";
 import { NotificationService } from "../infrastructure/services/NotificationService.js";
 
-const publicController = new PublicController(getLandingDataUseCase)
-const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
-const userController = new UserController(activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerBookingsInfoUseCase,bookingUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
-const providerController = new ProviderController()
-const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,)
+const publicController = new PublicController(loggerService, getLandingDataUseCase)
+const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
+const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerBookingsInfoUseCase,bookingUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
+const providerController = new ProviderController(loggerService, updateBookingStatusUseCase)
+const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,)
 
 export {
     publicController,
     authController,
-    userAuthMiddleware,
+    AuthMiddleware,
     userController,
     providerController,
     adminController

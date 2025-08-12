@@ -3,7 +3,7 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { Gender } from "../../../shared/Enums/Gender.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
-import { ProviderBookingsInfoDTO, ProviderBookingsInfoInputDTO, ProviderBookingsInfoOutputDTO } from "../../DTO's/ProviderBookingsInfoDTO.js";
+import { ProviderBookingsInfoDTO, ProviderBookingsInfoInputDTO, ProviderBookingsInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderBookingsInfoDTO.js";
 import { IProviderBookingsInfoUseCase } from "../../Interface/useCases/Client/IProviderBookingsInfoUseCase.js";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode
@@ -12,21 +12,16 @@ const { INTERNAL_ERROR } = Messages
 
 export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase{
     constructor(
-        //private readonly providerRepository: IProviderRepository,
-        private readonly userRepository : IUserRepository,
-
-        
+        private readonly userRepository : IUserRepository, 
     ) { }
     
     async execute(input: ProviderBookingsInfoInputDTO ): Promise<ProviderBookingsInfoOutputDTO>{
-        try {
-            
-            const {user ,provider, category,distanceFee} = await this.userRepository.findProviderBookingsById(input.id,input.coordinates)
-
+        try { 
+            const {user, provider, category, booking, distanceFee } = await this.userRepository.findProviderBookingsById(input.id,input.coordinates)
             const mappedData: ProviderBookingsInfoDTO = {
                 providerId: provider.providerId,
                 user: {
-                    userId: user.userId ,
+                    userId: user.userId , 
                     fname: user.fname,
                     lname: user.lname,
                 },
@@ -39,13 +34,18 @@ export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase
                         name: sub.name
                     }))
                 },
+                bookings:booking.map(bk => ({
+                    bookingId: bk.bookingId,
+                    fullDate: bk.fullDate,
+                    time: bk.time,
+                    status: bk.status,
+                })),
                 profileImage: provider.profileImage,
                 serviceCharge: provider.serviceCharge,
                 isOnline: provider.isOnline, 
-                distanceFee : distanceFee
+                distanceFee : distanceFee,
             }
             return mappedData
-
         } catch (error: any) {
             console.log(error)
             if (error.status && error.message) {

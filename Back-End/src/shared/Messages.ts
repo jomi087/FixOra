@@ -12,6 +12,7 @@ export const Messages = {
     PROFILE_UPDATED_SUCCESS: "Profile updated successfully",
 
     USER_NOT_FOUND: "User Not Found",
+    BOOKING_ID_NOT_FOUND : "BookingId Not Found",
     EMAIL_NOT_FOUND: "Email Not Found",
     
     ADD_ADDRESS : "Please add an Address",
@@ -19,6 +20,7 @@ export const Messages = {
     EMAIL_ALREADY_EXISTS: "Email already exists",
     CATEGORY_ALREADY_EXISTS: "Category name already exists",
     PROVIDER_ALREADY_EXISTS: "Provider already exists",
+    ALREADY_UPDATED : "Already Updated",
 
     CATEGORY_NAME_REQUIRED: "Category name is required",
     CATEGORY_DESCRIPTION_REQUIRED: "Category description is required",
@@ -41,6 +43,7 @@ export const Messages = {
     KYC_ALREADY_APPROVED: "Your KYC is already approved. No need to reapply.",
 
     SUBMITTED_BOOKING_REQUEST: "Booking request submitted",
+    ALREDY_BOOKED : "Slot is already booked",
 
     INVALID_CREDENTIALS: "Invalid credentials",
     INVALID_ROLE: "Invalid role",
@@ -68,7 +71,7 @@ export const Messages = {
 
     INTERNAL_ERROR: "Something went wrong. Please try again later",
     UNAUTHORIZED_MSG: "Unauthorized",
-    FORBIDDEN: "Access denied",
+    FORBIDDEN_MSG: "Access denied",
 
     LOGGED_OUT: "Logged Out",
 

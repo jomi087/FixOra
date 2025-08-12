@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Public/IGetLandingDataUseCase.js";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
 
 const { OK} = HttpStatusCode
 
 export class PublicController {
     constructor(
+        private loggerService: ILoggerService,
         private getLandingDataUseCase : IGetLandingDataUseCase
     ){}
     
@@ -17,8 +19,8 @@ export class PublicController {
                 landingData
             })
             
-        } catch (error) {
-            console.error("getLandingData error:", error);
+        } catch (error:any) {
+            this.loggerService.error(`getLandingData error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, PCPP } from "@/utils/constant";
-import type { ActiveProviderDTO } from "@/shared/Types/user";
+import type { ActiveProvider } from "@/shared/Types/user";
 import { setApplyFilters, setReset } from "@/store/user/filterSlice";
 
 export const useAuthProvider = () => {
@@ -19,7 +19,7 @@ export const useAuthProvider = () => {
 
     const {selectedService,nearByFilter,ratingFilter,availabilityFilter,applyFilter,reset } = useAppSelector((state)=>state.filter)    
 
-    const [data, setData] = useState<ActiveProviderDTO[]>([]);
+    const [data, setData] = useState<ActiveProvider[]>([]);
     const [isLoading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");

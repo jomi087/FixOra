@@ -42,7 +42,7 @@ ________________________________________________________________________________
 
 *  scinario of facet and what it is -> $facet allows you to run multiple pipelines in parallel on the same input and combine their results into a single document.
 
-*  ⚠️ Why we use http.createServer(app) instead of app.listen()
+* Why we use http.createServer(app) instead of app.listen()
     _____________________
     - While app.listen(port) works fine for normal REST APIs,
         - it's just a shorthand for:
@@ -58,7 +58,14 @@ ________________________________________________________________________________
     - Therefore, we use:
         - const server = http.createServer(app);
         - server.listen(port);
-
+        
+* Another Rule of RestAPI 
+    - Resource Identification Happens in the URL via Path Params 
+        logic for geting a specific resource its identification must not be passed by body instead it should be pass via url that also  via path Params not by query parm 
+            - Path param → when identifying a single, specific resource.
+            - Query param → when filtering, sorting, or paginating collections.
+        
+    - Body is for Changes, Not Identification (in body onlythe data which need to be updates need to passed via body)
 
 _______________________________________________________________________
 ## Node (express) version
@@ -75,6 +82,10 @@ _______________________________________________________________________
 * ocp Open/Close principle in Solid
 
 * Use of Refresh Token and Its Purpose
+
+* looger's 
+    - Morgan → for logging incoming HTTP requests
+    - Winston → for logging all other logs (errors, warnings, custom debug/info logs)
 _______________________________________________________________________
 ## Modules 
 -----------------------------------------------------------------------

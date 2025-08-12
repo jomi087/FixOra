@@ -1,8 +1,9 @@
-//implimented with zod was bit hard so validated with plain js
+import { z } from "zod";
+import { Messages } from "../../shared/Messages.js";
 
+//implimented with zod was bit hard so validated with plain js
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
 
 const { BAD_REQUEST} = HttpStatusCode
 const { SERVICE_REQUIRED, INVALID_SPECIALIZATION, SERVICE_CHARGE_RANGE,AT_LEAST_ONE_SUBCATEGORY_REQUIRED,
@@ -86,3 +87,17 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
         next(error);
     }
 }
+
+export const kycStatus = z.object({
+  action: z.enum(["Pending", "Approved", "Rejected"], {
+    message: Messages.INVALID_ACTION
+  }),
+  reason: z.string().optional()
+}).refine(
+  (data) => data.action !== "Rejected" || (data.reason && data.reason.trim().length > 0),
+  {
+    message: Messages.REASON_REQUIRED_ON_REJECTION,
+    path: ["reason"],
+  }
+);
+

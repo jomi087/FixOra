@@ -10,6 +10,7 @@ export interface Booking {
     issueTypeId: string;
     issue: string;
     status: BookingStatus;
+    reason?: string;
     createdAt?: Date;    
     updatedAt?: Date; 
 }

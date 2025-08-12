@@ -7,6 +7,8 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import UserModel from "../models/UserModel.js";
 import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
 import { Category } from "../../../domain/entities/CategoryEntity.js";
+import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+import { Booking } from "../../../domain/entities/BookingEntity.js";
 
 //!mistake in this repository (i have am violatin srp rule need to re-work) 
 //split the logic into indivijual
@@ -342,10 +344,11 @@ export class UserRepository implements IUserRepository {
         }
     }
 
-    async findProviderBookingsById(providerId: string , coordinates: { latitude: number;longitude: number }): Promise<{
+    async findProviderBookingsById(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
+        booking: Pick<Booking, "bookingId" | "fullDate" | "time" | "status">[]
         distanceFee: number
     }>{
         const matchConditions :any = {
@@ -386,6 +389,14 @@ export class UserRepository implements IUserRepository {
                 }
             }, { $unwind: "$serviceDetails" },
             { $match: { "serviceDetails.isActive": true } },
+            {
+                $lookup: {
+                    from: "bookings",
+                    localField: "providerDetails.providerId",
+                    foreignField: "providerId",
+                    as : 'bookingDetails'
+                }
+            },
             {
                 $addFields: {
                     distanceFee: {
@@ -444,7 +455,25 @@ export class UserRepository implements IUserRepository {
                             }
                         }
                     },
-                    distanceFee:1
+                    booking : {
+                        $map: {
+                            input: {
+                                $filter: {
+                                    input: "$bookingDetails",
+                                    as: "booking",
+                                    cond: { $in: ["$$booking.status", ["ACCEPTED", "PENDING"]] }
+                                }
+                            },
+                            as: "booking",
+                            in: {
+                                bookingId: "$$booking.bookingId",
+                                fullDate: "$$booking.fullDate",
+                                time: "$$booking.time",
+                                status: "$$booking.status"
+                            }
+                        }
+                    },
+                    distanceFee:1,
                 }
             }
         ]
@@ -453,10 +482,12 @@ export class UserRepository implements IUserRepository {
             user: Pick<User, "userId" | "fname" | "lname">,
             provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
             category: Pick<Category, "categoryId" | "name" | "subcategories">
+            booking: Pick<Booking, "bookingId" | "fullDate" | "time" | "status">[]
             distanceFee: number
         }
 
         const result = await UserModel.aggregate<AggregatedResult>(pipeline)
+        //console.log("come on",result[0])
         return result[0]
     }
 }

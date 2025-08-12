@@ -3,13 +3,13 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { Messages } from "../../../shared/Messages.js";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { BookingInputDTO, BookingOutputDTO } from "../../DTO's/BookingDTO.js";
+import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } from "../../DTO's/BookingDTO/CreateBookingApplicationDTO .js";
 import { IBookingUseCase } from "../../Interface/useCases/Client/IBookingUseCase.js";
 import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService.js";
 
-const { INTERNAL_SERVER_ERROR,} = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR,CONFLICT} = HttpStatusCode
+const { INTERNAL_ERROR,ALREDY_BOOKED } = Messages
 
 export class BookingUseCase implements IBookingUseCase{
     constructor(
@@ -17,19 +17,24 @@ export class BookingUseCase implements IBookingUseCase{
         private readonly notificationService : INotificationService
     ) { }
     
-    async execute(input: BookingInputDTO): Promise<BookingOutputDTO> {
+    async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
+
+            let CheckExistingBooking = await this.bookingRepository.findExistingBooking(input.providerId, input.time, input.fullDate) 
+            if (CheckExistingBooking && (CheckExistingBooking.status !== BookingStatus.REJECTED)) {
+                throw {status :CONFLICT , message : ALREDY_BOOKED}
+            } 
+
             const newBooking: Booking = {
                 bookingId : uuidv4(),
                 ...input,
                 status: BookingStatus.PENDING
             }
-            
+
             let bookingId = await this.bookingRepository.create(newBooking)
             let {user,provider, booking,subCategory}  = await this.bookingRepository.findCurrentBookingDetails(bookingId)
 
-            const mappedData: BookingOutputDTO = {
-                bookingId: booking.bookingId,
+            const mappedData: CreateBookingApplicationOutputDTO = {
                 user: {
                     userId: user.userId,
                     fname: user.fname,
@@ -45,9 +50,12 @@ export class BookingUseCase implements IBookingUseCase{
                     issueTypeId: subCategory.subCategoryId,
                     name : subCategory.name,
                 },
-                fullDate: booking.fullDate,
-                time: booking.time,
-                issue: booking.issue,
+                bookings: {
+                    bookingId: booking.bookingId,
+                    fullDate: booking.fullDate,
+                    time: booking.time,
+                    status: booking.status
+                }
             }
 
             let id = mappedData.provider.providerUserId

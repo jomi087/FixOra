@@ -1,3 +1,4 @@
+import type { BookingStatus } from "../enums/BookingStatus";
 import type { Gender } from "../enums/Gender";
 import type { RoleEnum } from "../enums/roles";
 import type { AddressWithCoordinates } from "./location";
@@ -41,7 +42,7 @@ export type Provider = User & {
   serviceCharge: number;
 }
 
-export type ActiveProviderDTO = {
+export type ActiveProvider = {
   providerId : string
   user: {
     userId: string,
@@ -65,7 +66,7 @@ export type ActiveProviderDTO = {
 }
 
 
-export type ProviderBookingsInfoDTO = {
+export type ProviderBookingsInfo = {
     providerId : string
     user: {
         userId: string,
@@ -81,11 +82,16 @@ export type ProviderBookingsInfoDTO = {
             name: string
         }[];
     };
+    bookings: {
+      bookingId: string;
+      fullDate: string;
+      time: string;
+      status: BookingStatus;
+    }[],
     profileImage: string;
     serviceCharge: number;
     isOnline: boolean;
-    distanceFee:number
-    //array add Booking data (date and time (available not available booked selected etc ...))  
+    distanceFee: number;
 }
 
 

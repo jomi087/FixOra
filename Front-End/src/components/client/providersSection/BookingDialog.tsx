@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { toPascalCase } from "@/utils/helper/utils"
 import { useAppSelector } from "@/store/hooks"
 import { useState } from "react"
+import { placeHolder, validationMsg } from "@/utils/constant"
 
 
 
@@ -36,12 +37,12 @@ const BookingDialog:React.FC<BookingDialogProps > = ({isDialogOpen,setIsDialogOp
         const newError = { serviceError: "", descriptionError: "" };
 
         if (!selectedServiceId.trim()) {
-            newError.serviceError = "Issue Type is required.";
+            newError.serviceError = validationMsg.ISSUE_TYPE_REQUIRED;
             hasError = true;
         }
 
         if (description.trim().length === 0) {
-            newError.descriptionError = "Please describe the issue.";
+            newError.descriptionError = validationMsg.ISSUE_DESCRIPTION_REQUIRED;
             hasError = true;
         }
 
@@ -80,7 +81,7 @@ const BookingDialog:React.FC<BookingDialogProps > = ({isDialogOpen,setIsDialogOp
                                 }}
                             >
                                 <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="Select issue type" />
+                                    <SelectValue placeholder={placeHolder.ISSUE_TYPE} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {subCategories.map((sub) => (
@@ -107,9 +108,8 @@ const BookingDialog:React.FC<BookingDialogProps > = ({isDialogOpen,setIsDialogOp
                                     if (val.trim().length > 0) {
                                         setError((prev) => ({ ...prev, descriptionError: "" }));        
                                     }
-
                                 }}
-                                placeholder="Briefly describe the problem you're facing"
+                                placeholder= { placeHolder.ISSUE_DESCRIPTION }
                             />
                         {error.descriptionError && ( <p className="text-sm text-red-500">{error.descriptionError}</p>)} 
                         </div>

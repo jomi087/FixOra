@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const optionalStringField = z.string().optional();
+
 export const firstNameField = z.string().trim().min(3, "First name is required, minimum 4 Characters");
 export const lastNameField = z.string().trim().min(2, "Last name is required, minimum 2 Characters");
 export const emailField = z.string().trim().email("Invalid email format");
@@ -25,5 +27,10 @@ export const fullDateField = z.string({ required_error: "Date is required" }).re
 export const timeField = z.string({ required_error: "Time is required" }).regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format")
 export const issueTypeIdField = z.string({ required_error: "Issue Type ID is required" }).uuid("Invalid issue type ID format")
 export const issueField = z.string({ required_error: "Issue is required" }).min(3, "Issue description must be at least 3 characters long")
+
+export const statusField = z.enum(["ACCEPTED", "REJECTED"], {
+    required_error: "Status is missing",
+    invalid_type_error: "Status must be ACCEPTED or REJECTED",
+})
 
 

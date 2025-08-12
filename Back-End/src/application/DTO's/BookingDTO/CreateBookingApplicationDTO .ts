@@ -1,4 +1,6 @@
-export interface BookingDTO{
+import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+
+export interface CreateBookingApplicationDTO {
     userId: string;
     providerId: string
     providerUserId : string
@@ -8,10 +10,9 @@ export interface BookingDTO{
     issue: string;
 }
 
-export interface BookingInputDTO extends BookingDTO { }
+export interface CreateBookingApplicationInputDTO  extends CreateBookingApplicationDTO { }
 
-export interface BookingOutputDTO {
-    bookingId: string;
+export interface CreateBookingApplicationOutputDTO  {
     user: {
         userId: string;
         fname: string;
@@ -28,7 +29,10 @@ export interface BookingOutputDTO {
         issueTypeId: string;
         name : string
     }
-    fullDate: string;
-    time: string;
-    issue: string;
+    bookings: {
+      bookingId: string;
+      fullDate: string;
+      time: string;
+      status: BookingStatus;
+    }
 }

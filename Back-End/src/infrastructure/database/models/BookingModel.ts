@@ -43,6 +43,9 @@ const BookingSchema = new Schema<IBookingModel>({
         enum: Object.values(BookingStatus),
         default: BookingStatus.PENDING
     },
+    reason: {
+        type : String
+    }
 }, { timestamps: true })
 
 const BookingModel = model<IBookingModel>('Booking', BookingSchema);

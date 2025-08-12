@@ -25,6 +25,9 @@ import ProviderApplicationPage from '@/pages/admin/ProviderApplicationPage.tsx'
 import ProviderBookingPage from '@/pages/client/ProviderBookingPage.tsx'
 import Testing from '@/pages/provider/Testing.tsx'
 import SocketWrapper from '@/pages/common/SocketWrapper.tsx'
+import ProviderLayout from '@/components/common/layout/ProviderLayout.tsx'
+import UserLayout from '@/components/common/layout/UserLayout.tsx'
+import AdminLayout from '@/components/common/layout/AdminLayout.tsx'
 
 
 const router = createBrowserRouter([
@@ -52,115 +55,60 @@ const router = createBrowserRouter([
     },
     //client Routes
     {
-        path: '/user/services',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                <ServicePage/>
-            </ProtectedRoute>
-        </ErrorBoundary >
-    },
-    {
-        path: '/user/providers',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                <ProvidersPage/>
-            </ProtectedRoute>
-        </ErrorBoundary >
-    },
-    {
-        path: '/user/provider-KYC',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                <VerifictionFormPage/>
-            </ProtectedRoute>
-        </ErrorBoundary>
-    },
-    {
-        path: '/user/provider/booking/:providerId',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                <ProviderBookingPage/>
-            </ProtectedRoute>
-        </ErrorBoundary >
-    },
-    {
-        path: '/user/account/profile',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                <ProfilePage />
-            </ProtectedRoute>
-        </ErrorBoundary >
-    },
-    {
-        path: '/user/account/change-password',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                <ChangePasswordPage />
-            </ProtectedRoute>
-        </ErrorBoundary>
+        path: '/user',
+        element: (
+            <ErrorBoundary>
+                <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
+                    <SocketWrapper>
+                        <UserLayout />
+                    </SocketWrapper>    
+                </ProtectedRoute>
+            </ErrorBoundary>
+        ),
+        children: [
+            { path: 'services', element:  <ServicePage/> },
+            { path: 'providers', element: <ProvidersPage /> },
+            { path: 'provider-KYC', element:  <VerifictionFormPage/> },
+            { path: 'provider/booking/:providerId', element:  <ProviderBookingPage/> },
+            { path: 'account/profile', element:  <ProfilePage/> },
+            { path: 'account/change-password', element:  <ChangePasswordPage/> },
+        ],
     },
     //Provider Routes
     {
-        path: '/provider/dashboard',
-        element: <ErrorBoundary>
+        path: '/provider',
+        element: (
+            <ErrorBoundary>
             <ProtectedRoute allowedRoles={[RoleEnum.PROVIDER]}>
                 <SocketWrapper>
-                    <ProviderDashboardPage />
-                </SocketWrapper>    
+                    <ProviderLayout />
+                </SocketWrapper>
             </ProtectedRoute>
-        </ErrorBoundary>
+            </ErrorBoundary>
+        ),
+        children: [
+            { path: 'dashboard', element: <ProviderDashboardPage /> },
+            { path: 'test', element: <Testing /> },
+        ],
     },
-    {
-        path: '/provider/test',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.PROVIDER]}>
-                <SocketWrapper>
-                    <Testing />
-                </SocketWrapper> 
-            </ProtectedRoute>
-        </ErrorBoundary>
-    },
-
     // Admin Routes
     {
-        path: '/admin/dashboard',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
-                <AdminDashboardPage />
-            </ProtectedRoute>
+        path: '/admin',
+        element : (
+             <ErrorBoundary>
+                <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
+                    <AdminLayout />
+                </ProtectedRoute>
             </ErrorBoundary >
-    },
-    {
-        path: '/admin/users',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
-                <UserManagement />
-            </ProtectedRoute>
-        </ErrorBoundary>
-    },
-    {
-        path: '/admin/providers',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
-                <ProviderManagement />
-            </ProtectedRoute>
-        </ErrorBoundary>
-    },
-    {
-        path: '/admin/provider-request',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
-                <ProviderApplicationPage/>
-            </ProtectedRoute>
-        </ErrorBoundary>
-    },
-    {
-        path: '/admin/services',
-        element: <ErrorBoundary>
-            <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
-                <ServiceManagement />
-            </ProtectedRoute>
-        </ErrorBoundary>
+        ),
+        children: [
+            { path: 'dashboard', element: <AdminDashboardPage /> },
+            { path: 'users', element: <UserManagement /> },
+            { path: 'providers', element: <ProviderManagement /> },
+            { path: 'provider-request', element: <ProviderApplicationPage /> },
+            { path: 'services', element: <ServiceManagement /> },
+
+        ]
     },
     {
         path: '*',
