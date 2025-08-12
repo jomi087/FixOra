@@ -8,6 +8,9 @@ This project is a TypeScript-based back-end application with es6 modules  that s
 4. backend validation with zod library (A TypeScript-first schema declaration and validation library )
 5. implimented JWT -For better ux, Implimented refresh token with accessToken( used Rotating Refresh Tokens logic & store RToken in db for better security )
 6. Google OAuth authentication backend with support for PKCE-based code exchange, JWT issuance, refresh token
+7. realTime bi-directional Comunication via socket IO  which leverages webSocket and event driven architecture 
+8. Implemented a daily-rotating, level-based Winston logger with separate compressed error and combined logs, automatic retention, JSON formatting, and developer-friendly console output.
+
 
 ## Run the application :
 > ```npm run build ```
