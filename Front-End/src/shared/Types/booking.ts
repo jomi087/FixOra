@@ -1,3 +1,5 @@
+import type { BookingStatus } from "../enums/BookingStatus";
+
 export type BookingRequestPayload = {
   bookingId: string;
   userName: string;
@@ -5,4 +7,12 @@ export type BookingRequestPayload = {
   fullDate: string;
   time: string;
   issue: string;
+}
+
+export type BookingResponsePayload = {
+  bookingId: string;
+  status: BookingStatus;
+  fullDate: string;
+  time: string;
+  reason?: string;
 }

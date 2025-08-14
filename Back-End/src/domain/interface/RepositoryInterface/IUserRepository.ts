@@ -5,19 +5,21 @@ import { Provider } from "../../entities/ProviderEntity.js";
 import { User } from "../../entities/UserEntity.js";
 import { UserDTO }  from "../../outputDTO's/UserDTO.js";
 
-//!Bad Practice in this repository (findUsersWithFilters and update)(i am violating srp rule need to re-work)
+//!Bad Practice in this repository (update)(i am violating srp rule need to re-work)
 
 export interface IUserRepository {
     create(user: UserDTO): Promise <User>;   
     findByEmail(email: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserGoogleId(googleId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    updateRole(userId : string, role : RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+    
+    updateRole(userId: string, role: RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+    
     updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
     ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">>
 
-//spli this method
+//split this method
     update(filter: Partial<Pick<User, "userId" | "email">>, updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
 //____________
 

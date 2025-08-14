@@ -14,6 +14,9 @@ export const Messages = {
     USER_NOT_FOUND: "User Not Found",
     BOOKING_ID_NOT_FOUND : "BookingId Not Found",
     EMAIL_NOT_FOUND: "Email Not Found",
+    PROVIDER_NOT_FOUND: "Provider Not Found",
+    NOT_FOUND_MSG: "Data Not Found",
+
     
     ADD_ADDRESS : "Please add an Address",
 

@@ -13,6 +13,7 @@
 10. handleing api+state effiicently with the help of redux-Thunk
 11. Shimmer UI, for better U.X 
 12. Quick Navigation with BreadCrumbs
+13. Animated loading UI implimentation via lottieFiles( lottie-react )
 
 * optimization 
     - used debouncing on search field

@@ -9,7 +9,7 @@ import OtpPage from '../pages/common/OtpPage.tsx'
 import ResetPasswordPage from '../pages/common/ResetPasswordPage.tsx'
 
 import LandingPage from '../pages/client/LandingPage'
-import ProfilePage from '../pages/client/ProfilePage.tsx'
+import ClientProfilePage  from '../pages/client/ProfilePage.tsx'
 import ChangePasswordPage from '@/pages/client/ChangePassword.tsx'
 
 import ProviderDashboardPage  from '@/pages/provider/DashboardPage.tsx'
@@ -23,7 +23,7 @@ import ProvidersPage from '@/pages/client/ProvidersPage.tsx'
 import VerifictionFormPage from '@/pages/client/VerifictionPage.tsx'
 import ProviderApplicationPage from '@/pages/admin/ProviderApplicationPage.tsx'
 import ProviderBookingPage from '@/pages/client/ProviderBookingPage.tsx'
-import Testing from '@/pages/provider/Testing.tsx'
+import ProviderProfilePage  from '@/pages/provider/ProfilePage.tsx'
 import SocketWrapper from '@/pages/common/SocketWrapper.tsx'
 import ProviderLayout from '@/components/common/layout/ProviderLayout.tsx'
 import UserLayout from '@/components/common/layout/UserLayout.tsx'
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
             { path: 'providers', element: <ProvidersPage /> },
             { path: 'provider-KYC', element:  <VerifictionFormPage/> },
             { path: 'provider/booking/:providerId', element:  <ProviderBookingPage/> },
-            { path: 'account/profile', element:  <ProfilePage/> },
+            { path: 'account/profile', element:  <ClientProfilePage/> },
             { path: 'account/change-password', element:  <ChangePasswordPage/> },
         ],
     },
@@ -88,7 +88,7 @@ const router = createBrowserRouter([
         ),
         children: [
             { path: 'dashboard', element: <ProviderDashboardPage /> },
-            { path: 'test', element: <Testing /> },
+            { path: 'profile', element: <ProviderProfilePage/> },
         ],
     },
     // Admin Routes

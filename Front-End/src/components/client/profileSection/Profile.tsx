@@ -9,9 +9,10 @@ import ChangePassowrdDialog from "./ChangePassowrdDialog";
 import { validatePassword } from "@/utils/validation/formValidation";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
+import { RoleEnum } from "@/shared/enums/roles";
 
 interface ProfileProps { 
-    toggle: (editMode: boolean) => void;
+    toggle?: (editMode: boolean) => void;
 }
 
 const Profile: React.FC<ProfileProps> = ({ toggle }) => {
@@ -21,7 +22,10 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const { user } = useAppSelector((state) => state.auth);
-
+    if (user?.role === RoleEnum.CUSTOMER && !toggle) {
+        throw new Error(" The 'toggle' prop is required ");
+    }
+    
     const handleChangePassword = async (password:string) => { 
         const error = validatePassword(password)
         if (error) {
@@ -51,13 +55,25 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8 p-10 rounded-xl shadow-lg border border-gray-200 bg-white dark:bg-gray-900 cursor-context-menu">
                 {/* Profile Image & Name */}
                 <div className="flex flex-col items-center text-center md:w-1/2 md:border-r-2">
-                    <HiUserCircle size={200} className="text-userIcon-text" />
+                    {user?.fname ? (
+                        <div className="flex items-center justify-center w-[88px] h-[88px] md:w-[132px] md:h-[132px] border-2 rounded-full shadow-2xl bg-primary text-primary-foreground">
+                            <span className="text-6xl sm:text-7xl md:text-8xl font-bold">
+                                {user.fname[0]?.toUpperCase()}
+                            </span>
+                        </div>
+                    ) : (
+                        <HiUserCircle size={160} className="text-userIcon-text" />
+                    )}
+
                     <h3 className="text-xl font-semibold mt-4 flex items-center gap-2 ">
                         {`${user?.fname} ${user?.lname} `}
-                        <CiEdit size={20}
+                        {user?.role === RoleEnum.CUSTOMER && toggle && (
+                        <CiEdit
+                            size={20}
                             className="cursor-pointer text-gray-500 hover:text-primary"
                             onClick={() => toggle(true)}
                         />
+                        )}
                     </h3>
                 </div>
                 {/* Info Section */}

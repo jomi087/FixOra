@@ -6,8 +6,8 @@ import { Messages } from "../../../shared/Messages.js";
 import { ProviderBookingsInfoDTO, ProviderBookingsInfoInputDTO, ProviderBookingsInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderBookingsInfoDTO.js";
 import { IProviderBookingsInfoUseCase } from "../../Interface/useCases/Client/IProviderBookingsInfoUseCase.js";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode
+const { INTERNAL_ERROR ,PROVIDER_NOT_FOUND} = Messages
 
 
 export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase{
@@ -17,7 +17,14 @@ export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase
     
     async execute(input: ProviderBookingsInfoInputDTO ): Promise<ProviderBookingsInfoOutputDTO>{
         try { 
-            const {user, provider, category, booking, distanceFee } = await this.userRepository.findProviderBookingsById(input.id,input.coordinates)
+            const providerData = await this.userRepository.findProviderBookingsById(input.id,input.coordinates)
+            
+            if (!providerData) {
+                throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND}; 
+            }
+
+            const { user, provider, category, booking, distanceFee } = providerData;
+
             const mappedData: ProviderBookingsInfoDTO = {
                 providerId: provider.providerId,
                 user: {

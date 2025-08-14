@@ -1,86 +1,61 @@
-import { useState } from "react"
+import { useEffect } from "react"
 
 import BookingDatesInfo from "@/components/common/BookingDatesInfo"
 import TimeSlotSelector from "@/components/common/TimeSlotSelector"
 import BookingDialog from "./BookingDialog"
 
-import { DATE_RANGE_DAYS, Messages, TIME_SLOTS } from "@/utils/constant"
-import { generateDateList, generateTimeSlots } from "@/utils/helper/Date&Time"
-import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { toast } from "react-toastify"
-import AuthService from "@/services/AuthService"
-import { HttpStatusCode } from "@/shared/enums/HttpStatusCode"
-import { addBooking } from "@/store/user/providerBookingSlice"
 import { BookingStatus } from "@/shared/enums/BookingStatus"
+import socket from "@/services/soket"
+import type { BookingResponsePayload } from "@/shared/Types/booking"
+
+import Lottie from 'lottie-react'
+import LodingAnimation from '@/assets/animations/BoxyLoading.json'
+import { toast } from "react-toastify"
+import { useBookingRequest } from "@/hooks/useBookingRequest"
 
 const BookingInfo:React.FC = () => {
        
-    const dates = generateDateList(DATE_RANGE_DAYS)
-    const timeSlots = generateTimeSlots(
-        TIME_SLOTS.STARTHOURS,
-        TIME_SLOTS.ENDHOURS,
-        TIME_SLOTS.INTERVAL
-    ); // Default: 9AM–6PM, every 30 min
-
-    const FirstDate = dates[0]?.fullDate || ""
-
-    const [selectedDate, setSelectedDate] = useState(FirstDate);
-    const [selectedTime, setSelectedTime] = useState("");
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-    const [selectedServiceId, setSelectedServiceId] = useState<string>("");
-    const [description, setDescription] = useState("")
-
-    const { data } = useAppSelector((state) => state.providerBooking)
-    const dispatch = useAppDispatch();
-        
-    const handleDateChange = (date: string) => {
-        setSelectedDate(date);
-        setSelectedTime(""); 
-    };
-
-    const handleTimeChange = (time: string) => {
-        setSelectedTime(time);
-        setIsDialogOpen(true)
-    }
-
-    const submitBooking = async() => {        
-        if (!data?.providerId) {
-            toast.error("provider data missing")
-            return
-        }
-        
-        const payload = {
-            providerId: data.providerId,
-            providerUserId: data.user.userId,
-            fullDate: selectedDate, //dd/mm/year
-            time: selectedTime, //11:00
-            issueTypeId: selectedServiceId, 
-            issue : description 
-        }
-        
-        try {
-            const res = await AuthService.BookingApplicationApi(payload)
-            if (res.status === HttpStatusCode.OK) {
-                //laoding time
-                //payment logic
-                if (res.data.booking.bookings.status !== BookingStatus.REJECTED) {
-                    dispatch(addBooking(res.data.booking.bookings))
-                }
-                toast.success(res.data.booking.bookings.status)
-                setIsDialogOpen(false);
-                setSelectedTime("");
-                setSelectedServiceId("");
-                setDescription("");
+    const {
+        isWaiting, setIsWaiting,
+        data,
+        dates,selectedDate, handleDateChange,
+        timeSlots, selectedTime, handleTimeChange,
+        isDialogOpen, setIsDialogOpen,
+        selectedServiceId, setSelectedServiceId,
+        description, setDescription,
+        submitBooking
+    } = useBookingRequest()
+    
+    
+    useEffect(() => {
+        const handleBookingResponse = (payload: BookingResponsePayload) => {
+            setIsWaiting(false);
+            
+            if (payload.status === BookingStatus.ACCEPTED) {
+                toast.success(`Booking on ${payload.fullDate} at ${payload.time} is Scheduled successfully`, {
+                    autoClose:10000
+                })
+            } else if (payload.status === BookingStatus.REJECTED) {
+                toast.warn(`Your Booking was Rejected`)
+                toast.info(`Reason: ${payload.reason}`)
             }
-        } catch (error: any) {
-            const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
-            toast.error(errorMsg);
         }
-    }
+        socket.on('booking:response', handleBookingResponse)
+
+        return () => {
+            socket.off("booking:response", handleBookingResponse);
+        };
+
+    }, []); 
 
     return (
         <>
+            { isWaiting &&
+                <div className="fixed inset-0 bg-black/60 z-[9999] flex flex-col items-center justify-center">
+                    <Lottie animationData={LodingAnimation} loop={true} className="w-40 h-40" />
+                    <p className="m-4 text-primary text-lg font-mono">Waiting for provider response...</p>
+                </div>
+            }
             { data ? (
                 <div className="shadow-lg shadow-ring border-2 mt-10 p-6 rounded-xl">
                     <h3 className="text-lg font-semibold mb-4">Booking Details</h3>
@@ -113,11 +88,13 @@ const BookingInfo:React.FC = () => {
                     No Data found.
                 </div>     
             )}
+
         </>
     )
 }
 
 export default BookingInfo
+
 
 
             {/* History  if need use it as another component*/}

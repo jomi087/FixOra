@@ -23,7 +23,7 @@ export class GetActiveProvidersUseCase implements IGetActiveProvidersUseCase{
             const { data, total } = await this.userRepository.findActiveProvidersWithFilters({ searchQuery, filter, extraFilter, coordinates }, currentPage, limit)
             
             // console.log("data data",data)
-
+            
             const mappedData: ActiveProviderDTO[] = data.map(({provider, user, category,averageRating,totalRatings }) => ({
                 providerId: provider.providerId,
                 user: {

@@ -14,7 +14,6 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
     constructor(
         private readonly bookingRepository: IBookingRepository,
         private readonly notificationService : INotificationService
-        
     ) { }
     
     async execute(input:UpdateBookingStatusInputDTO ): Promise<UpdateBookingStatusOutputDTO > {
@@ -40,6 +39,8 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
             this.notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
                 bookingId: updatedBookingData.bookingId,
                 status: updatedBookingData.status,
+                fullDate: updatedBookingData.fullDate,
+                time : updatedBookingData.time,
                 ...(status === BookingStatus.REJECTED && { reason: updatedBookingData.reason })
             });
 

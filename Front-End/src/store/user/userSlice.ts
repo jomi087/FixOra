@@ -8,7 +8,7 @@ interface info {
     lname: string;
     email: string;
     mobileNo: string;
-    role: string; 
+    role: string;
     location?: AddressWithCoordinates;
 }
 
