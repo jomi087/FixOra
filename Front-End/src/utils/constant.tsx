@@ -118,7 +118,7 @@ export const userSideBarOptions: SideBarOption[] = [
   { icon: ShieldAlert, section: "Dispute", to: "/user/account/dispute" },
 ];
 
-//Admins Side Bar
+//provider Side Bar
 export const providerSideBarOptions: SideBarOption[] = [
   { icon: LayoutDashboard, section: "Dashboard", to: "/provider/dashboard" },
   { icon: AlertTriangle, section: "Chat", to: "/provider/chats" },

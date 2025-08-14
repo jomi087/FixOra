@@ -24,7 +24,7 @@ export class SigninUseCase {
             const strategy = this.authFactory.getStrategy(credentials.role);
             const authenticatedUser = await strategy.authenticate(credentials);
             //till here 
-            const { userData, role } = authenticatedUser
+            const { userData, role } = authenticatedUser 
 
             const payload = {
                 id: userData.userId,
@@ -46,7 +46,8 @@ export class SigninUseCase {
                     email: updatedUserData.email,
                     mobileNo: updatedUserData.mobileNo,
                     role: updatedUserData.role,
-                    location : updatedUserData.location
+                    location: updatedUserData.location,
+                    image:userData?.profileImage
                 },
                 accessToken: acsToken,
                 refreshToken: refToken,

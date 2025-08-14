@@ -1,5 +1,4 @@
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
-import { Booking } from "../../entities/BookingEntity.js";
 
 interface ProviderBookingNotification {
     bookingId: string;
@@ -13,6 +12,8 @@ interface ProviderBookingNotification {
 interface UserResponsNotificaton{
     bookingId: string;
     status: BookingStatus;
+    fullDate: string;
+    time: string;
     reason?: string;
 }
 

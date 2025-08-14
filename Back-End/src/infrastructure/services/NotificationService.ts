@@ -14,7 +14,9 @@ interface ProviderBookingNotification {
 interface UserResponsNotificaton{
     bookingId: string;
     status: BookingStatus;
-    // message: string;
+    fullDate: string;
+    time: string;
+    reason?: string;
 }
 
 export class NotificationService implements INotificationService {

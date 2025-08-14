@@ -37,7 +37,7 @@ export class AuthMiddleware {  //verify Jwt
                 }
 
                 const decode = this.tokenService.verifyAccessToken(token) as { id: string, email: string, role: RoleEnum }
-                
+            
                 const user = await this.userRepository.findByUserId(decode.id, ["password", "refreshToken"]);
                 
                 if (!user) {

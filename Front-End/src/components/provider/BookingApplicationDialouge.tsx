@@ -58,8 +58,9 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
         }
 
         try {
-            await AuthService.UpdateBookingStatusApi(data.bookingId, actionType,reason)
+            await AuthService.UpdateBookingStatusApi(data.bookingId, actionType, reason)
             toast.success(actionType.toLocaleUpperCase());
+
         } catch (error:any) {
             const errorMsg = error?.response?.data?.message || Messages.BOOKING_STATUS_FAILED;
             toast.error(errorMsg);

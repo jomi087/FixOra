@@ -15,6 +15,7 @@ import { GoogleSigninUseCase } from "../../application/useCases/auth/GoogleSigni
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../shared/Messages.js";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
+import { RoleEnum } from "../../shared/Enums/Roles.js";
 
 const { OK, BAD_REQUEST,UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,USER_NOT_FOUND,
@@ -196,9 +197,12 @@ export class AuthController {
 
   async checkAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      
       if (!req.user) {
         throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
       }
+
+      
       res.status(OK).json({
         success: true,
         user: {
@@ -207,7 +211,8 @@ export class AuthController {
           email: req.user.email,
           mobileNo: req.user.mobileNo,
           role: req.user.role,
-          location : req.user?.location,
+          location: req.user?.location,
+          
         }
       });
     } catch (error: any) {

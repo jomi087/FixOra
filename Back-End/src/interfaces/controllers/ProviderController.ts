@@ -43,7 +43,7 @@ export class ProviderController {
             console.log("hi");
             const userId = req.user?.userId;
             console.log("aaaaaaaaaaaaaaauserId",userId);
-            throw { status: 404 , message : "blabla bla" }
+            // throw { status: 404 , message : "blabla bla" }
             // await this.getBookingsUseCase.execute()
 
             res.status(OK).json({

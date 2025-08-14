@@ -14,7 +14,7 @@ const ProfilePage = () => {
       <Nav className='bg-nav-background text-nav-text' />
       <main className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
         <SideBar SideBar={userSideBarOptions} className="border-r-1 my-8" />
-        {editMode ?
+        {editMode  ?
           <EditProfile toggle={setEditMode} />
           :
           <Profile toggle={setEditMode} />

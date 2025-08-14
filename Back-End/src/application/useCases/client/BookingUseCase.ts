@@ -8,8 +8,8 @@ import { IBookingUseCase } from "../../Interface/useCases/Client/IBookingUseCase
 import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService.js";
 
-const { INTERNAL_SERVER_ERROR,CONFLICT} = HttpStatusCode
-const { INTERNAL_ERROR,ALREDY_BOOKED } = Messages
+const { INTERNAL_SERVER_ERROR,CONFLICT,NOT_FOUND} = HttpStatusCode
+const { INTERNAL_ERROR,ALREDY_BOOKED,NOT_FOUND_MSG } = Messages
 
 export class BookingUseCase implements IBookingUseCase{
     constructor(
@@ -32,7 +32,13 @@ export class BookingUseCase implements IBookingUseCase{
             }
 
             let bookingId = await this.bookingRepository.create(newBooking)
-            let {user,provider, booking,subCategory}  = await this.bookingRepository.findCurrentBookingDetails(bookingId)
+            const bookingDataInDetails = await this.bookingRepository.findCurrentBookingDetails(bookingId)
+
+            if (!bookingDataInDetails) {
+                throw { status: NOT_FOUND, message: NOT_FOUND_MSG}; 
+            }
+
+            const {user,provider,booking,subCategory} = bookingDataInDetails
 
             const mappedData: CreateBookingApplicationOutputDTO = {
                 user: {

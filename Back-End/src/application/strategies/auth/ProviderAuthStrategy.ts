@@ -17,20 +17,19 @@ export class ProviderAuthStrategy  implements IAuthStrategy  {
         private readonly userRepository: IUserRepository,
         private readonly hashService: IHashService,
         // private readonly providerRepository: IProviderRepository,
-
     ) {}
 
     async authenticate(credentials: SigninDTO): Promise<AuthData> {
         try {
             const user = await this.userRepository.findByEmail(credentials.email) as User;
 
-            if (!user || user.role != credentials.role || user.role != RoleEnum.Provider ) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };;
+            if (!user || user.role != RoleEnum.Provider ) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };;
             if (user.isBlocked) throw  { status: FORBIDDEN, message: ACCOUNT_BLOCKED  };
 
             const isMatch = await this.hashService.compare(credentials.password, user.password as string );
             if (!isMatch) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS }
             
-            return { userData: user, role: RoleEnum.Provider, };
+            return { userData: user, role: RoleEnum.Provider };
             
         } catch (error:any ) {
             if (error.status && error.message) throw error;

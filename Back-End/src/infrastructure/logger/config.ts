@@ -12,7 +12,6 @@ if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
 }
 
-
 const combinedTransport = new DailyRotateFile({
     filename: path.join(logDir, "combined-%DATE%.log"),
     datePattern: "YYYY-MM-DD",          //  creates a new log file every day at midnight
