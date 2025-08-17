@@ -1,6 +1,6 @@
 import AuthService from '@/services/AuthService';
 import { DATE_RANGE_DAYS, Messages, TIME_SLOTS } from '@/utils/constant';
-import { generateDateList, generateTimeSlots } from '@/utils/helper/Date&Time';
+import { generateDateList, generateTimeSlots } from '@/utils/helper/date&time';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
@@ -13,13 +13,14 @@ const BookingInfo: React.FC = () => {
     const fetchData = async () => {
       try {
         const res = await AuthService.BookingInfoApi()
+        //logic will add later
       } catch (error:any) {
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
         toast.error(errorMsg); 
       }
     }
     fetchData()
-  })
+  },[])
   return (
     <div className=" border-1 border-primary/50 text-body-text overflow-x-auto w-screen mx-2 my-5 rounded-md shadow-2xl ">
       <div className="text-center py-4 bg-gradient-background   ">

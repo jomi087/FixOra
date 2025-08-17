@@ -16,3 +16,9 @@ export type BookingResponsePayload = {
   time: string;
   reason?: string;
 }
+
+export interface BookingAutoRejectPayload  {
+    bookingId: string
+    status: BookingStatus;
+    reason: string
+}

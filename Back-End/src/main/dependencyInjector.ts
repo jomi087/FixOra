@@ -3,6 +3,7 @@ import { OtpRepository } from "../infrastructure/database/repositories/OtpReposi
 import { CategoryRepository } from "../infrastructure/database/repositories/CategoryRepository.js";
 import { KYCRequestRepository } from "../infrastructure/database/repositories/KYCRequestRepository.js";
 import { ProviderRepository } from "../infrastructure/database/repositories/ProviderRepository.js";
+import { BookingRepository } from "../infrastructure/database/repositories/BookingRepository.js";
 
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService.js";
 import { EmailService } from "../infrastructure/services/EmailService.js";
@@ -11,6 +12,8 @@ import { HashService } from "../infrastructure/services/HashService.js";
 import { TokenService } from "../infrastructure/services/TokenService.js";
 import { GoogleOAuthService } from "../infrastructure/services/GoogleOAuthService.js";
 import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService.js";
+import { NotificationService } from "../infrastructure/services/NotificationService.js";
+import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService.js";
 
 
 const userRepository = new UserRepository();
@@ -28,6 +31,7 @@ const tokenService = new TokenService()
 const googleOAuthService = new GoogleOAuthService()
 const imageUploaderService = new ImageUploaderService()
 const notificationService = new NotificationService()
+const bookingSchedulerService = new BookingSchedulerService()
 
 /******************************************************************************************************************************************************/
 import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware.js";
@@ -85,7 +89,7 @@ import { ProviderBookingsInfoUseCase } from "../application/useCases/client/Prov
 const providerBookingsInfoUseCase = new ProviderBookingsInfoUseCase(userRepository)
 
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase.js";
-const bookingUseCase = new BookingUseCase(bookingRepository,notificationService)
+const bookingUseCase = new BookingUseCase(bookingRepository,notificationService,bookingSchedulerService)
 
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase.js";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository)
@@ -96,7 +100,7 @@ const verifyPasswordUseCase = new VerifyPasswordUseCase(userRepository, hashServ
                                                         Provider Specific
 ******************************************************************************************************************************************************/
 import { UpdateBookingStatusUseCase } from "../application/useCases/providers/UpdateBookingStatusUseCase.js";
-const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository,notificationService)
+const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository,notificationService,bookingSchedulerService)
 
 
 
@@ -134,8 +138,6 @@ import { AuthController } from "../interfaces/controllers/AuthController.js";
 import { UserController } from "../interfaces/controllers/UserContoller.js";
 import { AdminController } from "../interfaces/controllers/AdminController.js";
 import { ProviderController } from "../interfaces/controllers/ProviderController.js";
-import { BookingRepository } from "../infrastructure/database/repositories/BookingRepository.js";
-import { NotificationService } from "../infrastructure/services/NotificationService.js";
 
 const publicController = new PublicController(loggerService, getLandingDataUseCase)
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 

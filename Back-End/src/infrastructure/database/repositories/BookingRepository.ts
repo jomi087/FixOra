@@ -17,7 +17,14 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async findExistingBooking(providerId: string, time: string, fullDate: string): Promise<Booking|null>{
-        return await BookingModel.findOne({ providerId,time,fullDate }) 
+        return await BookingModel.findOne({
+            providerId,
+            time,
+            fullDate,
+            status: {
+                $nin: [BookingStatus.REJECTED] 
+            }
+        }) 
     }
 
     async updateStatus(bookingId: string, status: {status: BookingStatus, reason?: string }):Promise<Booking|null>{
@@ -110,4 +117,11 @@ export class BookingRepository implements IBookingRepository {
         const result = await BookingModel.aggregate<AggregatedResult>(pipeline)
         return result[0]
     }
+
+    async findPendingOlderThan(minutes: number): Promise<Booking[]>{
+        const cutoff = new Date(Date.now() - minutes * 60 * 1000);
+        return await BookingModel.find({status: "pending",createdAt: { $lt: cutoff }});
+    }
+    
+    
 }

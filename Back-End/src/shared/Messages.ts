@@ -46,7 +46,10 @@ export const Messages = {
     KYC_ALREADY_APPROVED: "Your KYC is already approved. No need to reapply.",
 
     SUBMITTED_BOOKING_REQUEST: "Booking request submitted",
-    ALREDY_BOOKED : "Slot is already booked",
+    ALREDY_BOOKED: "Slot is already booked",
+    PENDING_BOOKING: "Another booking is pending for this slot",
+
+    PROVIDER_NO_RESPONSE : "No response from provider",
 
     INVALID_CREDENTIALS: "Invalid credentials",
     INVALID_ROLE: "Invalid role",

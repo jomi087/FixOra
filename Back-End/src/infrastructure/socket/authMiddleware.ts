@@ -7,8 +7,6 @@ import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerS
 export const socketAuthMiddleware = (logger: ILoggerService) => {
   return (socket: Socket, next: (err?: ExtendedError) => void) => {
     try {
-      logger.info("Socket auth called. rawCookie: " + socket.handshake.headers.cookie);
-
       const rawCookie = socket.handshake.headers.cookie;
       if (!rawCookie) throw new Error("Unauthorized: No cookie provided");
 
@@ -28,7 +26,7 @@ export const socketAuthMiddleware = (logger: ILoggerService) => {
       next();
     } catch (error: any) {
       logger.error("Socket auth error:", error);
-      next(error);
+      next(error); 
     }
   };
 };

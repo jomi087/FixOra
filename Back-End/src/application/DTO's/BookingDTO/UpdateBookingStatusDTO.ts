@@ -12,5 +12,6 @@ export interface UpdateBookingStatusOutputDTO  {
   fullDate: string;
   time: string;
   status: BookingStatus;
+   reason?: string;
 }
  

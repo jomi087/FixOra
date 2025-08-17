@@ -1,12 +1,14 @@
 import { DATE_RANGE_DAYS, Messages, TIME_SLOTS } from "@/utils/constant"
-import { generateDateList, generateTimeSlots } from "@/utils/helper/Date&Time"
+import { generateDateList, generateTimeSlots } from "@/utils/helper/date&time"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { toast } from "react-toastify"
 import AuthService from "@/services/AuthService"
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode"
-import { addBooking } from "@/store/user/providerBookingSlice"
-import { useState } from "react"
+import { addBooking, removeBooking, updateBookingStatus } from "@/store/user/providerBookingSlice"
+import { useEffect, useState } from "react"
 import { BookingStatus } from "@/shared/enums/BookingStatus"
+import type { BookingResponsePayload } from "@/shared/Types/booking"
+import socket from "@/services/soket"
 
 export const useBookingRequest = () => {
     const dates = generateDateList(DATE_RANGE_DAYS)
@@ -16,7 +18,7 @@ export const useBookingRequest = () => {
         TIME_SLOTS.INTERVAL
     ); // Default: 9AM–6PM, every 30 min
 
-    const FirstDate = dates[0]?.fullDate || ""
+    const FirstDate = dates[0]?.fullDate || "" 
 
     const [selectedDate, setSelectedDate] = useState(FirstDate);
     const [selectedTime, setSelectedTime] = useState("");
@@ -60,8 +62,7 @@ export const useBookingRequest = () => {
         try {
             const res = await AuthService.BookingApplicationApi(payload)
             if (res.status === HttpStatusCode.OK) {
-
-                if (res.data.booking.bookings.status !== BookingStatus.REJECTED) {
+                if (res.data.booking.bookings.status == BookingStatus.PENDING){
                     dispatch(addBooking(res.data.booking.bookings))
                 }
                 setIsDialogOpen(false);
@@ -75,6 +76,34 @@ export const useBookingRequest = () => {
             toast.error(errorMsg);
         }
     }
+        
+    useEffect(() => {
+        const handleBookingResponse = (payload: BookingResponsePayload) => {
+            setIsWaiting(false);
+            
+            if (payload.status === BookingStatus.ACCEPTED) {
+                
+                dispatch(updateBookingStatus({
+                    bookingId: payload.bookingId,
+                    status: payload.status,
+                }))
+                
+                toast.success(`Booking on ${payload.fullDate} at ${payload.time} is Scheduled successfully`, {
+                    autoClose:10000
+                })
+            } else if (payload.status === BookingStatus.REJECTED) {
+                dispatch(removeBooking(payload.bookingId))
+                toast.warn(`Your Booking was Rejected`)
+                toast.info(`Reason: ${payload.reason}`)
+            }
+        }
+        socket.on('booking:response', handleBookingResponse)
+
+        return () => {
+            socket.off("booking:response", handleBookingResponse);
+        };
+
+    }, []); 
 
     return {
         isWaiting, setIsWaiting,

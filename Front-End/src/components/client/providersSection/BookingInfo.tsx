@@ -1,22 +1,15 @@
-import { useEffect } from "react"
-
 import BookingDatesInfo from "@/components/common/BookingDatesInfo"
 import TimeSlotSelector from "@/components/common/TimeSlotSelector"
 import BookingDialog from "./BookingDialog"
 
-import { BookingStatus } from "@/shared/enums/BookingStatus"
-import socket from "@/services/soket"
-import type { BookingResponsePayload } from "@/shared/Types/booking"
-
 import Lottie from 'lottie-react'
 import LodingAnimation from '@/assets/animations/BoxyLoading.json'
-import { toast } from "react-toastify"
 import { useBookingRequest } from "@/hooks/useBookingRequest"
 
 const BookingInfo:React.FC = () => {
-       
+    
     const {
-        isWaiting, setIsWaiting,
+        isWaiting, 
         data,
         dates,selectedDate, handleDateChange,
         timeSlots, selectedTime, handleTimeChange,
@@ -25,28 +18,7 @@ const BookingInfo:React.FC = () => {
         description, setDescription,
         submitBooking
     } = useBookingRequest()
-    
-    
-    useEffect(() => {
-        const handleBookingResponse = (payload: BookingResponsePayload) => {
-            setIsWaiting(false);
-            
-            if (payload.status === BookingStatus.ACCEPTED) {
-                toast.success(`Booking on ${payload.fullDate} at ${payload.time} is Scheduled successfully`, {
-                    autoClose:10000
-                })
-            } else if (payload.status === BookingStatus.REJECTED) {
-                toast.warn(`Your Booking was Rejected`)
-                toast.info(`Reason: ${payload.reason}`)
-            }
-        }
-        socket.on('booking:response', handleBookingResponse)
 
-        return () => {
-            socket.off("booking:response", handleBookingResponse);
-        };
-
-    }, []); 
 
     return (
         <>
