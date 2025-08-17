@@ -17,7 +17,14 @@ interface UserResponsNotificaton{
     reason?: string;
 }
 
+export interface AutoRejectNotification {
+    bookingId: string
+    status: BookingStatus;
+    reason: string
+}
+
 export interface INotificationService {
     notifyBookingRequestToProvider(providerUserId: string , payload : ProviderBookingNotification): void
-    notifyBookingResponseToUser(userId:string, payload : UserResponsNotificaton ):void
+    notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
+    notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
 }   

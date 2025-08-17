@@ -33,6 +33,10 @@ export const TIME_SLOTS = {
   ENDHOURS: 18,
   INTERVAL : 60,
 }
+// export const PROVIDER_RESPONSE_TIMEOUT_MS = BOOKING_REQUEST_TIMEOUT_MS 
+//   import.meta.env.MODE === "production" ? 5 * 60 * 1000 : 10 * 1000 ;     
+
+
 /******************************************* Messages *******************************************************/
 export const Messages = {
   FAILED_CATEGORY_RESPONSE_MSG: "Failed to add category",

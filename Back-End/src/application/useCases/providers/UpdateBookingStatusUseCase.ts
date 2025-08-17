@@ -1,9 +1,10 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository.js";
+import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService.js";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService.js";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
-import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../DTO's/BookingDTO/UpdateBookingStatusDTO .js";
+import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../DTO's/BookingDTO/UpdateBookingStatusDTO.js";
 import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/IUpdateBookingStatusUseCase.js";
 
 
@@ -13,7 +14,9 @@ const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED,} = Messages
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
     constructor(
         private readonly bookingRepository: IBookingRepository,
-        private readonly notificationService : INotificationService
+        private readonly notificationService: INotificationService,
+        private readonly bookingSchedulerService: IBookingSchedulerService
+        
     ) { }
     
     async execute(input:UpdateBookingStatusInputDTO ): Promise<UpdateBookingStatusOutputDTO > {
@@ -47,15 +50,14 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
             let mappedData:UpdateBookingStatusOutputDTO  = {
                 bookingId: updatedBookingData.bookingId, //uuid
                 userId: updatedBookingData.userId,
-                // providerId: updatedBookingData.providerId,
-                // providerUserId : updatedBookingData.providerUserId,
-                // issueTypeId: updatedBookingData.,
-                // issue: updatedBookingData.issue,
                 fullDate: updatedBookingData.fullDate,
                 time: updatedBookingData.time,
                 status: updatedBookingData.status,
                 ...(status === BookingStatus.REJECTED && { reason: updatedBookingData.reason })
             }
+            
+            const jobKey = `booking-${updatedBookingData.bookingId}`;
+            this.bookingSchedulerService.cancel(jobKey)
 
             return mappedData
 

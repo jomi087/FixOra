@@ -19,14 +19,26 @@ interface UserResponsNotificaton{
     reason?: string;
 }
 
+export interface AutoRejectNotification {
+    bookingId: string
+    status: BookingStatus;
+    reason: string
+}
+
 export class NotificationService implements INotificationService {
     notifyBookingRequestToProvider(providerUserId: string, payload: ProviderBookingNotification): void {
-        console.log("EMITTING booking:requested to providerId:", providerUserId, "payload:", payload)
+       // console.log("EMITTING booking:requested to providerId:", providerUserId, "payload:", payload)
         getIO().to(providerUserId).emit("booking:requested", payload);
     }
 
     notifyBookingResponseToUser(userId: string, payload:UserResponsNotificaton): void {
-        console.log("EMITTING booking:response to userId:", userId, "payload:", payload)
+     //   console.log("EMITTING booking:response to userId:", userId, "payload:", payload)
         getIO().to(userId).emit("booking:response", payload)
     }
+
+    notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void {
+       // console.log("EMITTING booking:autoReject to providerId:", providerUserId, "payload:", payload)
+        getIO().to(providerUserId).emit("booking:autoReject", payload);
+    }
+
 }

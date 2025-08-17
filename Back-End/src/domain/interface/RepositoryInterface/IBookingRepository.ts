@@ -9,7 +9,7 @@ export interface IBookingRepository {
   
   findExistingBooking(providerId :string , time : string, fullDate: string):Promise<Booking|null>
 
-  updateStatus(bookingId: string, status: {status: BookingStatus, reason?: string }):Promise<Booking|null>
+  updateStatus(bookingId: string, status: { status: BookingStatus, reason?: string }): Promise<Booking | null>
   
   findCurrentBookingDetails(bookingId: string): Promise<{
     user: Pick<User, "userId" | "fname" | "lname">

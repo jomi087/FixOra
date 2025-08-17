@@ -2,14 +2,14 @@ import type { BookingRequestPayload } from "@/shared/Types/booking";
 
 import {Dialog,DialogContent,DialogDescription,DialogFooter,DialogTitle,} from "@/components/ui/dialog";
 import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle,} from "@/components/ui/alert-dialog";
-import { useEffect, useRef, useState } from "react";
 import { BellRing } from "lucide-react";
-import notificationMp3 from '@/assets/bookingnotification.mp3'
+// import notificationMp3 from '@/assets/bookingnotification.mp3'
 import AuthService from "@/services/AuthService";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { toast } from "react-toastify";
 import { Messages, validationMsg } from "@/utils/constant";
 import { Input } from "../ui/input";
+import { useState } from "react";
 
 
 interface BookingApplicationDialogueProps {
@@ -24,33 +24,32 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
     const [reason, setReason] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
 
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+    //const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    useEffect(() => {
+    // useEffect(() => { //due to multiple request multiple notification sound came so that y i move this logic to socket wreapper
 
-        const sound = new Audio(notificationMp3);
-        sound.loop = true
-        sound.play()
-        audioRef.current = sound
+    //     const sound = new Audio(notificationMp3);
+    //     sound.loop = true
+    //     sound.play()
+    //     audioRef.current = sound
+    //     return () => {
+    //         audioRef.current?.pause();
+    //         audioRef.current = null;
+    //     }
 
-        return () => {
-            sound.pause()
-        }
-
-    }, []);
+    // }, []);
 
     const askConfirmation = (type: Exclude<BookingStatus, BookingStatus.PENDING>) => {
         setActionType(type);
         setConfirmOpen(true);
-        audioRef.current?.pause();
-        audioRef.current = null;
+        // audioRef.current?.pause();
+        // audioRef.current = null;
     };
     
-
     const handleConfirm =async () => {
 
-        audioRef.current?.pause();
-        audioRef.current = null;
+        // audioRef.current?.pause();
+        // audioRef.current = null;
 
         if (!actionType) return;
         if (actionType === BookingStatus.REJECTED && !reason.trim()) {
@@ -58,7 +57,7 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
         }
 
         try {
-            await AuthService.UpdateBookingStatusApi(data.bookingId, actionType, reason)
+            await AuthService.UpdateBookingStatusApi(data.bookingId, actionType, reason)  
             toast.success(actionType.toLocaleUpperCase());
 
         } catch (error:any) {

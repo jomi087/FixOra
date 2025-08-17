@@ -17,7 +17,7 @@ const ProviderBookingPage:React.FC = () => {
         if (providerId) {
             dispatch(fetchProviderBookingInfo(providerId))
         };
-    }, [providerId]);
+    }, [providerId]); 
 
     return (
         <div>

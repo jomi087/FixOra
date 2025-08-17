@@ -15,7 +15,6 @@ import { GoogleSigninUseCase } from "../../application/useCases/auth/GoogleSigni
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../shared/Messages.js";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
-import { RoleEnum } from "../../shared/Enums/Roles.js";
 
 const { OK, BAD_REQUEST,UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,USER_NOT_FOUND,
@@ -44,7 +43,7 @@ export class AuthController {
 
       res.cookie('tempToken', tempToken, {
         httpOnly: true,
-        secure: process.env.NODE_COOKIE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+        secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
         sameSite: "lax",
         maxAge: 10* 60 * 1000 // temp token  for 10 mints  
       })
@@ -108,13 +107,13 @@ export class AuthController {
         .status(OK)
         .cookie('accessToken', result.accessToken, {
           httpOnly: true,
-          secure: process.env.NODE_COOKIE_ENV === "production",
+          secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
         .cookie('refreshToken', result.refreshToken, {
           httpOnly: true,
-          secure: process.env.NODE_COOKIE_ENV === "production", 
+          secure: process.env.NODE_ENV === "production", 
           sameSite: "lax",
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
@@ -139,13 +138,13 @@ export class AuthController {
         .status(OK)
         .cookie('accessToken', result.accessToken, {
           httpOnly: true,
-          secure: process.env.NODE_COOKIE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+          secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
           sameSite: "lax",
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
         .cookie('refreshToken', result.refreshToken, {
           httpOnly: true,
-          secure: process.env.NODE_COOKIE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+          secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
           sameSite: "lax",
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
@@ -228,7 +227,7 @@ export class AuthController {
 
       const cookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_COOKIE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax" as const,
       };
 
@@ -253,7 +252,7 @@ export class AuthController {
       // Clear tokens on error
       const cookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_COOKIE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax" as const,
       };
 
@@ -276,7 +275,7 @@ export class AuthController {
 
       const options  = {
         httpOnly: true,
-        secure: process.env.NODE_COOKIE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax" as const
       }
       

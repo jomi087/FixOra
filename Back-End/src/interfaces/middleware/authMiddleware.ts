@@ -47,7 +47,7 @@ export class AuthMiddleware {  //verify Jwt
 
                 const options = {
                     httpOnly: true,
-                    secure: process.env.NODE_COOKIE_ENV === "production",
+                    secure: process.env.NODE_ENV === "production",
                     sameSite: "lax" as const
                 }
 

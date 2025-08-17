@@ -42,9 +42,22 @@ const providerBookingSlice = createSlice({
     name: "providerBooking",
     initialState,
     reducers: {
-        addBooking: (state, action) => { 
+        addBooking: (state, action) => {
             if (state.data?.bookings) {
                 state.data.bookings.push(action.payload);
+            }
+        },
+        updateBookingStatus: (state, action) => {
+            if (state.data?.bookings) {
+                const booking = state.data.bookings.find((b) => b.bookingId === action.payload.bookingId);
+                if (booking) {
+                    booking.status = action.payload.status;
+                }
+            }
+        },
+        removeBooking: (state, action) => { 
+            if (state.data?.bookings) {
+                state.data.bookings = state.data.bookings.filter((b)=>b.bookingId != action.payload)
             }
         },
         clearProviderBooking: (state) => {
@@ -72,5 +85,5 @@ const providerBookingSlice = createSlice({
     }
 })
 
-export const { addBooking, clearProviderBooking } = providerBookingSlice.actions
+export const { addBooking,updateBookingStatus,removeBooking, clearProviderBooking } = providerBookingSlice.actions
 export default providerBookingSlice.reducer
