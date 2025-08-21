@@ -35,3 +35,28 @@ export const generateTimeSlots = (startHour:number = 9, endHour:number = 18, int
     }
     return slots;
 }
+
+export const dateTime = (date: string, time: string) => {
+    
+    const [day, month, year] = date.split("-").map(Number) as [number,number,number]
+    const [hours, minutes] = time.split(":").map(Number) as [number,number]
+
+    return new Date(year, month - 1, day, hours, minutes);
+} 
+
+
+export const splitDateTime = (scheduledAt: string | Date) => {
+  const dateObj = new Date(scheduledAt);
+
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const year = dateObj.getFullYear();
+
+  const hours = String(dateObj.getHours()).padStart(2, "0");
+  const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+
+  return {
+    date: `${day}-${month}-${year}`, // e.g. "18-05-2025"
+    time: `${hours}:${minutes}`,     // e.g. "18:00"
+  };
+};

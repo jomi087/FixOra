@@ -1,4 +1,5 @@
 import { BookingStatus } from "@/shared/enums/BookingStatus";
+import { dateTime, splitDateTime } from "@/utils/helper/date&time";
 
 interface TimeSlotSelectorProps {
   timeSlots: {
@@ -11,8 +12,7 @@ interface TimeSlotSelectorProps {
   selectedDate: string;
   bookedSlots: {
     bookingId: string;
-    fullDate: string;
-    time: string;
+    scheduledAt: Date;
     status: BookingStatus;
   }[];
 }
@@ -30,21 +30,22 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
         {timeSlots.map((slot, idx) => {
           // Find booking for this slot on selectedDate
-          const booking = bookedSlots.find((b) =>
-              b.fullDate === selectedDate &&
-              b.time === slot.value &&
-              (b.status === BookingStatus.ACCEPTED ||b.status === BookingStatus.PENDING)
-          );
+          const booking = bookedSlots.find((b) => {
+            const { date, time } = splitDateTime(b.scheduledAt);
+            return (
+              date === selectedDate &&
+              time === slot.value &&
+              (b.status === BookingStatus.CONFIRMED ||b.status === BookingStatus.PENDING)
+            )
+          })
 
-          const [day, month, year] = selectedDate.split("-").map(Number) as [number, number, number];
-          const [hours, minutes] = slot.value.split(":").map(Number);
-          const bookingDateTime = new Date(year, month - 1, day, hours, minutes);
+          const bookingDateTime = dateTime (selectedDate,slot.value)
           const isTimePassed = bookingDateTime.getTime() <= Date.now();
 
           // Base styles
           let slotClass = "py-2 px-4 rounded-md border shadow-md shadow-ring text-sm hover:border-primary transition ";
 
-          if (booking?.status === BookingStatus.ACCEPTED) {
+          if (booking?.status === BookingStatus.CONFIRMED) {
             slotClass += "bg-chart-2 cursor-not-allowed";
           } else if (booking?.status === BookingStatus.PENDING) {
             slotClass += "bg-orange-400 cursor-not-allowed";
@@ -63,7 +64,7 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
               }}
               title={
                 booking
-                  ? booking.status === BookingStatus.ACCEPTED ? "Already booked" : "Booking on Process"
+                  ? booking.status === BookingStatus.CONFIRMED ? "Already booked" : "Booking on Process"
                   : isTimePassed ? "Un-Available" : "Book Now"
               }
               className={`${slotClass} ${selectedTime === slot.value && !booking  ? " border-primary " : "text-primary"}`}

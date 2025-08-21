@@ -13,6 +13,7 @@ import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Clie
 import { IProviderBookingsInfoUseCase } from "../../application/Interface/useCases/Client/IProviderBookingsInfoUseCase.js";
 import { IBookingUseCase } from "../../application/Interface/useCases/Client/IBookingUseCase.js";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
+import { ICreatePaymentUseCase } from "../../application/Interface/useCases/Client/ICreatePaymentUseCase.js";
 
 const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED,UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -27,7 +28,8 @@ export class UserController {
         private kycRequestUseCase: IKYCRequestUseCase,
         private imageUploaderService: IImageUploaderService, 
         private providerBookingsInfoUseCase: IProviderBookingsInfoUseCase,
-        private bookingUseCase : IBookingUseCase,
+        private bookingUseCase: IBookingUseCase,
+        private createPaymentUseCase : ICreatePaymentUseCase,
         private updateProfileUseCase: IUpdateProfileUseCase,
         private verifyPasswordUseCase: VerifyPasswordUseCase,
         private resetPasswordUseCase: ResetPasswordUseCase,
@@ -179,13 +181,19 @@ export class UserController {
 
     async createBooking(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { providerId,providerUserId,fullDate,time,issueTypeId,issue } = req.body
+            const { providerId,providerUserId,scheduledAt,issueTypeId,issue } = req.body
             
             const user = req.user
             if (!user?.userId) throw { status: BAD_REQUEST, message: USER_NOT_FOUND }
+            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS }
+
             const userId = user.userId
 
-            const booking = await this.bookingUseCase.execute({ userId, providerId, providerUserId, fullDate, time, issueTypeId, issue })
+            const booking = await this.bookingUseCase.execute({
+                userId, providerUserId, providerId,
+                scheduledAt, issueTypeId, issue,
+                coordinates: user.location.coordinates
+            })
             
             res.status(200).json({
                 message: SUBMITTED_BOOKING_REQUEST,
@@ -194,6 +202,20 @@ export class UserController {
 
         } catch (error : any) {
             this.loggerService.error(`createBooking error:, ${error.message}`,{stack : error.stack}); 
+            next(error);
+        }
+    }
+
+    async initiatePayment(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { bookingId } = req.body
+            const result = await this.createPaymentUseCase.execute(bookingId)
+            res.status(OK).json(
+               result
+            )
+
+        } catch (error : any) {
+            this.loggerService.error(`initiatePayment error:, ${error.message}`,{stack : error.stack}); 
             next(error);
         }
     }

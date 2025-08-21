@@ -24,9 +24,9 @@ const providerSchema = new Schema<IProviderModel>({
     required : true,
   },
   gender: {
-      type: String,
-      enum: Object.values(Gender),
-      required: true,
+    type: String,
+    enum: Object.values(Gender),
+    required: true,
   },
   serviceId: {
     type: String,

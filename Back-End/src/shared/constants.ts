@@ -4,7 +4,7 @@ export const BodyParserLimits = {
     URLENCODED_LIMIT: '1mb',
 };
 export const BOOKING_REQUEST_TIMEOUT_MS = 
-    process.env.NODE_ENV === "production" ? 5 * 60 * 1000 : 30 * 1000;     
+    process.env.NODE_ENV === "production" ? 5 * 60 * 1000 : 10 * 1000;     
 
  
 

@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import { ZodSchema } from "zod";
+import { ZodType  } from "zod";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../shared/Messages.js";
 
 type Location = "body" | "query" | "params";
 
-export const validateRequest = (schema: ZodSchema<any>, location: Location = "body") => (req: Request, res: Response, next: NextFunction): void => {
+export const validateRequest = (schema: ZodType <any>, location: Location = "body") => (req: Request, res: Response, next: NextFunction): void => {
   const target = req[location];
 
   const result = schema.safeParse(target);
   if (!result.success) {
-    const errorMessages = result.error.errors.map((err) => err.message);
+    const errorMessages = result.error.issues.map((err) => err.message);
     throw { status: HttpStatusCode.BAD_REQUEST, message: errorMessages[0] || errorMessages || Messages.VALIDATION_FAILED };
   };
 

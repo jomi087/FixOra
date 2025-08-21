@@ -1,17 +1,17 @@
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 
 export interface UpdateBookingStatusInputDTO  {
   bookingId: string;
-  status: Exclude<BookingStatus, BookingStatus.PENDING>;
+  action: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>;
   reason?: string;
 }
 
 export interface UpdateBookingStatusOutputDTO  {
   bookingId: string; 
   userId: string;
-  fullDate: string;
-  time: string;
+  scheduledAt: Date;
   status: BookingStatus;
-   reason?: string;
+  reason?: string;
 }
  

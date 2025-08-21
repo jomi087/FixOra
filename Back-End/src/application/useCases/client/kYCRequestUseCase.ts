@@ -46,8 +46,8 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
             
             await this.kycRequestRepository.create(newRequest)
             
-
             return "submitted"
+            
         } catch (error :any) {
             if (error.status && error.message) {
                throw error;

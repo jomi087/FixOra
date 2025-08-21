@@ -14,6 +14,7 @@ export class GetBookingsUseCase implements IGetBookingsUseCase {
     async execute(): Promise<any>{
         try {
             // const bookingData = await this.booking
+            
         } catch (error:any) {
             if (error.status && error.message) {
                throw error;

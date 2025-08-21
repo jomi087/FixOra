@@ -1,24 +1,23 @@
-import type { BookingStatus } from "../enums/BookingStatus";
+import type { ProviderResponseStatus } from "../enums/ProviderResponseStatus";
 
 export type BookingRequestPayload = {
   bookingId: string;
   userName: string;
   issueType: string;
-  fullDate: string;
-  time: string;
+  scheduledAt : Date,
   issue: string;
 }
 
 export type BookingResponsePayload = {
   bookingId: string;
-  status: BookingStatus;
-  fullDate: string;
-  time: string;
+  response: ProviderResponseStatus;
+  scheduledAt : Date,
   reason?: string;
+
 }
 
-export interface BookingAutoRejectPayload  {
-    bookingId: string
-    status: BookingStatus;
-    reason: string
+export type BookingAutoRejectPayload = {
+  bookingId: string
+  response: ProviderResponseStatus;
+  reason: string
 }

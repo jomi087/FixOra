@@ -10,16 +10,7 @@ const timeSlots = generateTimeSlots(TIME_SLOTS.STARTHOURS, TIME_SLOTS.ENDHOURS, 
 
 const BookingInfo: React.FC = () => {
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await AuthService.BookingInfoApi()
-        //logic will add later
-      } catch (error:any) {
-        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
-        toast.error(errorMsg); 
-      }
-    }
-    fetchData()
+    //dispatch(fetchBookingsInfo())
   },[])
   return (
     <div className=" border-1 border-primary/50 text-body-text overflow-x-auto w-screen mx-2 my-5 rounded-md shadow-2xl ">

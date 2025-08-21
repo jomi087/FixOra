@@ -3,13 +3,13 @@ import type { BookingRequestPayload } from "@/shared/Types/booking";
 import {Dialog,DialogContent,DialogDescription,DialogFooter,DialogTitle,} from "@/components/ui/dialog";
 import {AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle,} from "@/components/ui/alert-dialog";
 import { BellRing } from "lucide-react";
-// import notificationMp3 from '@/assets/bookingnotification.mp3'
 import AuthService from "@/services/AuthService";
-import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { toast } from "react-toastify";
 import { Messages, validationMsg } from "@/utils/constant";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { splitDateTime } from "@/utils/helper/date&time";
+import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 
 
 interface BookingApplicationDialogueProps {
@@ -20,10 +20,11 @@ interface BookingApplicationDialogueProps {
 const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({data,onClose,}) => {
     
     const [confirmOpen, setConfirmOpen] = useState(false);
-    const [actionType, setActionType] = useState<Exclude<BookingStatus, BookingStatus.PENDING> | null>(null);
+    const [actionType, setActionType] = useState<Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING> | null>(null);
     const [reason, setReason] = useState("")
     const [errorMsg, setErrorMsg] = useState("")
-
+    const { date, time } = splitDateTime(data.scheduledAt);
+ 
     //const audioRef = useRef<HTMLAudioElement | null>(null);
 
     // useEffect(() => { //due to multiple request multiple notification sound came so that y i move this logic to socket wreapper
@@ -39,7 +40,7 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
 
     // }, []);
 
-    const askConfirmation = (type: Exclude<BookingStatus, BookingStatus.PENDING>) => {
+    const askConfirmation = (type: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>) => {
         setActionType(type);
         setConfirmOpen(true);
         // audioRef.current?.pause();
@@ -52,7 +53,7 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
         // audioRef.current = null;
 
         if (!actionType) return;
-        if (actionType === BookingStatus.REJECTED && !reason.trim()) {
+        if (actionType === ProviderResponseStatus.REJECTED && !reason.trim()) {
             return setErrorMsg(validationMsg.REASON_INVALID);
         }
 
@@ -99,10 +100,10 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
                                 <span className="font-medium">Issue Type:</span> {data.issueType}
                             </p>
                             <p>
-                                <span className="font-medium">Date:</span> {data.fullDate}
+                                <span className="font-medium">Date:</span> {date}
                             </p>
                             <p>
-                                <span className="font-medium">Time:</span> {data.time}
+                                <span className="font-medium">Time:</span> {time}
                             </p>
                             <p>
                                 <span className="font-medium">Description:</span> {data.issue}
@@ -112,13 +113,13 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
                         <DialogFooter className="flex justify-end gap-3">
                             <button
                                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition"
-                                onClick={() => askConfirmation(BookingStatus.REJECTED)}
+                                onClick={() => askConfirmation(ProviderResponseStatus.REJECTED)}
                             >
                                 Reject
                             </button>
                             <button
                                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition"
-                                onClick={() => askConfirmation(BookingStatus.ACCEPTED)}
+                                onClick={() => askConfirmation(ProviderResponseStatus.ACCEPTED)}
                             >
                                 Accept
                             </button>
@@ -136,11 +137,11 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
                             Do you really want to{" "}
-                            {actionType === BookingStatus.ACCEPTED ? "accept" : "reject"}{" "}
+                            {actionType === ProviderResponseStatus.ACCEPTED ? "accept" : "reject"}{" "}
                             this booking ?
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    {actionType === BookingStatus.REJECTED &&
+                    {actionType === ProviderResponseStatus.REJECTED &&
                         <>
                             <Input 
                                 type="text"

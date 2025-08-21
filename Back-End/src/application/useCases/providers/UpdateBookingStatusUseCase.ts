@@ -1,8 +1,10 @@
+import { Booking } from "../../../domain/entities/BookingEntity.js";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository.js";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService.js";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService.js";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 import { Messages } from "../../../shared/Messages.js";
 import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../DTO's/BookingDTO/UpdateBookingStatusDTO.js";
 import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/IUpdateBookingStatusUseCase.js";
@@ -19,47 +21,49 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
         
     ) { }
     
-    async execute(input:UpdateBookingStatusInputDTO ): Promise<UpdateBookingStatusOutputDTO > {
+    async execute(input:UpdateBookingStatusInputDTO ): Promise<UpdateBookingStatusOutputDTO|null > {
         try {
-            const { bookingId, status, reason } = input;
+            const { bookingId, action, reason } = input;
 
             const booking = await this.bookingRepository.findByBookingId(bookingId);
             if (!booking) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  }
             }
 
-            if (booking.status !== BookingStatus.PENDING) {
+            if (booking.provider.response !== ProviderResponseStatus.PENDING) {
                 throw { status: CONFLICT, message: ALREADY_UPDATED }
             }
 
-            const updateData = (status === BookingStatus.REJECTED) ? { status: status, reason: reason } : { status : status }
+            let updatedBookingData: Booking | null
+            
+            if (action === ProviderResponseStatus.REJECTED) {
+                updatedBookingData = await this.bookingRepository.updateResponseAndStatus(bookingId, BookingStatus.CANCELLED, action, reason)
+            } else {
+                updatedBookingData = await this.bookingRepository.updateResponse(bookingId, action)
+            }
 
-            let updatedBookingData = await this.bookingRepository.updateStatus(bookingId, updateData )
             if (!updatedBookingData) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  }
             }
 
             this.notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
                 bookingId: updatedBookingData.bookingId,
-                status: updatedBookingData.status,
-                fullDate: updatedBookingData.fullDate,
-                time : updatedBookingData.time,
-                ...(status === BookingStatus.REJECTED && { reason: updatedBookingData.reason })
+                response : updatedBookingData.provider.response,
+                scheduledAt: updatedBookingData.scheduledAt,
+                ...(action === ProviderResponseStatus.REJECTED && { reason: updatedBookingData.provider.reason })
             });
 
-            let mappedData:UpdateBookingStatusOutputDTO  = {
-                bookingId: updatedBookingData.bookingId, //uuid
-                userId: updatedBookingData.userId,
-                fullDate: updatedBookingData.fullDate,
-                time: updatedBookingData.time,
-                status: updatedBookingData.status,
-                ...(status === BookingStatus.REJECTED && { reason: updatedBookingData.reason })
-            }
-            
             const jobKey = `booking-${updatedBookingData.bookingId}`;
             this.bookingSchedulerService.cancel(jobKey)
 
-            return mappedData
+            let mappedData = (action !== ProviderResponseStatus.REJECTED) ? {
+                bookingId: updatedBookingData.bookingId,
+                userId: updatedBookingData.userId,
+                scheduledAt: updatedBookingData.scheduledAt,
+                status: updatedBookingData.status,
+            } : null 
+
+            return mappedData;
 
         } catch (error :any) {
             if (error.status && error.message) {

@@ -1,27 +1,26 @@
-import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 
 interface ProviderBookingNotification {
     bookingId: string;
     userName: string;
     issueType: string;
-    fullDate: string;
-    time: string;
+    scheduledAt: Date
     issue: string;
 }
 
 interface UserResponsNotificaton{
     bookingId: string;
-    status: BookingStatus;
-    fullDate: string;
-    time: string;
+    response: ProviderResponseStatus;
+    scheduledAt: Date
     reason?: string;
 }
 
 export interface AutoRejectNotification {
     bookingId: string
-    status: BookingStatus;
+    response: ProviderResponseStatus;
     reason: string
 }
+
 
 export interface INotificationService {
     notifyBookingRequestToProvider(providerUserId: string , payload : ProviderBookingNotification): void

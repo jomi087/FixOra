@@ -1,27 +1,26 @@
 import { INotificationService } from "../../domain/interface/ServiceInterface/INotificationService.js";
 import { BookingStatus } from "../../shared/Enums/BookingStatus.js";
+import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse.js";
 import { getIO } from "../socket/config.js";
 
 interface ProviderBookingNotification {
     bookingId: string;
     userName: string;
     issueType: string;
-    fullDate: string;
-    time: string;
+    scheduledAt: Date
     issue: string;
 }
 
 interface UserResponsNotificaton{
     bookingId: string;
-    status: BookingStatus;
-    fullDate: string;
-    time: string;
+    response: ProviderResponseStatus;
+    scheduledAt: Date
     reason?: string;
 }
 
 export interface AutoRejectNotification {
     bookingId: string
-    status: BookingStatus;
+    response: ProviderResponseStatus;
     reason: string
 }
 

@@ -21,10 +21,10 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
     const { userId, role } = socket.data;
 
     socket.join(userId)
-    logger.info(`---------------${role} ${userId} joined room ${userId}-----------------`);
+    logger.info(`---------${role} ${userId} joined room ${userId}------------`);
 
     socket.on("disconnect", (reason) => {
-      logger.info(`--------------User ${userId} disconnected. Reason: ${reason}-------------`);
+      logger.info(`-----User ${userId} disconnected. Reason: ${reason}-------------`);
     });
 
     socket.on("error", (error) => {
