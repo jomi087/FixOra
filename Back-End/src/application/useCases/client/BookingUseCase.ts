@@ -9,6 +9,9 @@ import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService.js";
 import { BOOKING_REQUEST_TIMEOUT_MS } from "../../../shared/constants.js";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService.js";
+import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
+import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 
 const { INTERNAL_SERVER_ERROR,CONFLICT,NOT_FOUND} = HttpStatusCode
 const { INTERNAL_ERROR,ALREDY_BOOKED,PENDING_BOOKING,NOT_FOUND_MSG,BOOKING_ID_NOT_FOUND,PROVIDER_NO_RESPONSE } = Messages
@@ -17,100 +20,106 @@ export class BookingUseCase implements IBookingUseCase {
     constructor(
         private readonly bookingRepository: IBookingRepository,
         private readonly notificationService: INotificationService,
-        private readonly bookingSchedulerService: IBookingSchedulerService
+        private readonly bookingSchedulerService: IBookingSchedulerService,
+        private readonly userRepository : IUserRepository
     ) { }
     
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
 
-            let CheckExistingNoRejectedBooking = await this.bookingRepository.findExistingBooking(input.providerId, input.time, input.fullDate)
-           // console.log(CheckExistingNoRejectedBooking)
-            if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.status == BookingStatus.ACCEPTED)) {
+            let CheckExistingNoRejectedBooking = await this.bookingRepository.findExistingBooking(input.providerId, input.scheduledAt)
+
+            // console.log(CheckExistingNoRejectedBooking)
+            if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response  === ProviderResponseStatus.ACCEPTED)) {
                 throw { status: CONFLICT, message: ALREDY_BOOKED }
-            } else if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.status == BookingStatus.PENDING)) {
+            } else if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response  === ProviderResponseStatus.PENDING)) {
                 throw { status: CONFLICT, message: PENDING_BOOKING }
+            }
+            
+            let result = await this.userRepository.getServiceChargeWithDistanceFee(input.providerId,input.coordinates)
+            if (!result) {
+                throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+            }
+
+            const { serviceCharge, distanceFee } = result ;
+            
+            if (isNaN(serviceCharge) || isNaN(distanceFee)) {
+                throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
             }
 
             const newBooking: Booking = {
                 bookingId: uuidv4(),
-                ...input,
-                status: BookingStatus.PENDING
+                userId: input.userId,
+                providerUserId: input.providerUserId,
+                provider: {
+                    id: input.providerId,
+                    response : ProviderResponseStatus.PENDING
+                },
+                scheduledAt: input.scheduledAt,
+                issueTypeId: input.issueTypeId,
+                issue: input.issue,
+                status: BookingStatus.PENDING,
+                pricing: {
+                    baseCost: serviceCharge,
+                    distanceFee : distanceFee,
+                },
             }
 
             let bookingId = await this.bookingRepository.create(newBooking)
+            
             const bookingDataInDetails = await this.bookingRepository.findCurrentBookingDetails(bookingId)
 
             if (!bookingDataInDetails) {
                 throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
             }
 
-            const { user, provider, booking, subCategory } = bookingDataInDetails
+            const { userInfo, providerInfo, bookingInfo, subCategoryInfo } = bookingDataInDetails
 
-            const mappedData: CreateBookingApplicationOutputDTO = {
-                user: {
-                    userId: user.userId,
-                    fname: user.fname,
-                    lname: user.lname,
-                },
-                provider: {
-                    providerId: booking.providerId,
-                    providerUserId: provider.userId,
-                    fname: provider.fname,
-                    lname: provider.lname,
-                },
-                issueType: {
-                    issueTypeId: subCategory.subCategoryId,
-                    name: subCategory.name,
-                },
-                bookings: {
-                    bookingId: booking.bookingId,
-                    fullDate: booking.fullDate,
-                    time: booking.time,
-                    status: booking.status
-                }
-            }
-
-            let id = mappedData.provider.providerUserId
+            let id = providerInfo.userId
 
             this.notificationService.notifyBookingRequestToProvider(id, {
-                bookingId: booking.bookingId,
-                userName: `${mappedData.user.fname} ${mappedData.user.lname}`,
-                issueType: `${mappedData.issueType.name}`,
-                fullDate: booking.fullDate,
-                time: booking.time,
-                issue: booking.issue
+                bookingId: bookingInfo.bookingId,
+                userName: `${userInfo.fname} ${userInfo.lname}`,
+                issueType: `${subCategoryInfo.name}`,
+                scheduledAt : bookingInfo.scheduledAt,
+                issue: bookingInfo.issue
             })
 
-            const jobKey = `booking-${booking.bookingId}`;
+            const jobKey = `booking-${bookingInfo.bookingId}`;
 
-            this.bookingSchedulerService.scheduleAutoReject(jobKey, booking.bookingId, BOOKING_REQUEST_TIMEOUT_MS, async () => {
-                const currentBooking = await this.bookingRepository.findByBookingId(booking.bookingId);
+            this.bookingSchedulerService.scheduleAutoReject(jobKey, bookingInfo.bookingId, BOOKING_REQUEST_TIMEOUT_MS, async () => {
+                const currentBooking = await this.bookingRepository.findByBookingId(bookingInfo.bookingId);
                 
-                if (!currentBooking || currentBooking.status !== BookingStatus.PENDING) return
+                if (!currentBooking || currentBooking.provider.response !== ProviderResponseStatus.PENDING) return
 
-                let updatedBookingData = await this.bookingRepository.updateStatus(booking.bookingId, {
-                    status: BookingStatus.REJECTED,
-                    reason: PROVIDER_NO_RESPONSE,
-                })
+                let updatedBookingData = await this.bookingRepository.updateResponseAndStatus(
+                    bookingInfo.bookingId,
+                    BookingStatus.CANCELLED,
+                    ProviderResponseStatus.REJECTED,
+                    PROVIDER_NO_RESPONSE,
+                )
 
                 if (!updatedBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
-                
  
                 this.notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
                     bookingId: updatedBookingData.bookingId,
-                    status: updatedBookingData.status,
-                    fullDate: updatedBookingData.fullDate,
-                    time: updatedBookingData.time,
-                    reason: updatedBookingData.reason as string
+                    response : updatedBookingData.provider.response,
+                    scheduledAt : updatedBookingData.scheduledAt,
+                    reason: updatedBookingData.provider.reason as string
                 });
 
                 this.notificationService.notifyBookingAutoRejectToProvider(updatedBookingData.providerUserId, {
                     bookingId: updatedBookingData.bookingId,
-                    status: updatedBookingData.status,
-                    reason: updatedBookingData.reason as string
+                    response: updatedBookingData.provider.response,
+                    reason: updatedBookingData.provider.reason as string
                 });
             })
 
+            const mappedData: CreateBookingApplicationOutputDTO = {
+                bookingId: bookingInfo.bookingId,
+                scheduledAt: bookingInfo.scheduledAt,
+                status: bookingInfo.status
+            }
             return mappedData
             
         } catch (error: any) {

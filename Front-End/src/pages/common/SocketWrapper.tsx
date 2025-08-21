@@ -27,7 +27,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     if (!user) return;
-
+    
     if (!isConnected.current) { //We don't accidentally call socket.connect() again on every render useRef will not re-render
       socket.connect();
       isConnected.current = true;
@@ -44,7 +44,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
     const handleBookingAutoReject = (payload: BookingAutoRejectPayload) => {
       setBookingDialog((prev) => prev.filter((b)=> b.bookingId !== payload.bookingId ) ); 
-      toast.warn(`Booking was a auto Rejected`)
+      toast.warn(`Booking request of ${payload.bookingId} was a auto Rejected`)
       toast.info(`Reason: ${payload.reason}`)
     }
 

@@ -7,7 +7,7 @@ export interface ICategoryRepository{
     save(category: Category): Promise<Category>; 
     
     findActiveCategories(omitFields?: Array<keyof Category>): Promise<Partial<Category>[]>;
-    findActiveCategoriesWithActiveSubcategories(): Promise<Partial<Category>[]>;
+    findActiveCategoriesWithActiveSubcategories(): Promise<Category[]>;
 
     findServicesWithFilters(
         options: { searchQuery: string; filter: string },

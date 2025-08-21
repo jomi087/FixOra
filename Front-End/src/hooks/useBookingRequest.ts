@@ -1,14 +1,18 @@
 import { DATE_RANGE_DAYS, Messages, TIME_SLOTS } from "@/utils/constant"
-import { generateDateList, generateTimeSlots } from "@/utils/helper/date&time"
+import { dateTime, generateDateList, generateTimeSlots } from "@/utils/helper/date&time"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { toast } from "react-toastify"
 import AuthService from "@/services/AuthService"
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode"
-import { addBooking, removeBooking, updateBookingStatus } from "@/store/user/providerBookingSlice"
+import { addBooking, removeBooking } from "@/store/user/providerBookingSlice"
 import { useEffect, useState } from "react"
 import { BookingStatus } from "@/shared/enums/BookingStatus"
 import type { BookingResponsePayload } from "@/shared/Types/booking"
 import socket from "@/services/soket"
+import { PaymentMode } from "@/shared/enums/PaymentMode"
+import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus"
+import { loadStripe } from "@stripe/stripe-js";
+
 
 export const useBookingRequest = () => {
     const dates = generateDateList(DATE_RANGE_DAYS)
@@ -28,6 +32,9 @@ export const useBookingRequest = () => {
     const [description, setDescription] = useState("")
 
     const [isWaiting, setIsWaiting] = useState(false);
+    const [showModePayment, setShowModePayment] = useState(false)
+    const [ bookingId, setBookingId ] = useState("")
+
 
     const { data } = useAppSelector((state) => state.providerBooking)
     const dispatch = useAppDispatch();
@@ -51,19 +58,20 @@ export const useBookingRequest = () => {
         const payload = {
             providerId: data.providerId,
             providerUserId: data.user.userId,
-            fullDate: selectedDate, //dd/mm/year
-            time: selectedTime, //11:00
+            scheduledAt:  dateTime(selectedDate,selectedTime),
             issueTypeId: selectedServiceId,
             issue: description
         }
-
+        
+        //console.log("payload",payload)
         setIsWaiting(true);
 
         try {
             const res = await AuthService.BookingApplicationApi(payload)
+            console.log(res)
             if (res.status === HttpStatusCode.OK) {
-                if (res.data.booking.bookings.status == BookingStatus.PENDING){
-                    dispatch(addBooking(res.data.booking.bookings))
+                if ( res.data.booking.status == BookingStatus.PENDING ){
+                    dispatch(addBooking(res.data.booking))
                 }
                 setIsDialogOpen(false);
                 setSelectedTime("");
@@ -78,20 +86,14 @@ export const useBookingRequest = () => {
     }
         
     useEffect(() => {
-        const handleBookingResponse = (payload: BookingResponsePayload) => {
-            setIsWaiting(false);
-            
-            if (payload.status === BookingStatus.ACCEPTED) {
-                
-                dispatch(updateBookingStatus({
-                    bookingId: payload.bookingId,
-                    status: payload.status,
-                }))
-                
-                toast.success(`Booking on ${payload.fullDate} at ${payload.time} is Scheduled successfully`, {
-                    autoClose:10000
-                })
-            } else if (payload.status === BookingStatus.REJECTED) {
+        const handleBookingResponse = ( payload: BookingResponsePayload ) => {            
+            if (payload.response === ProviderResponseStatus.ACCEPTED) {
+                setBookingId(payload.bookingId)
+                setShowModePayment(true)
+
+            } else if (payload.response === ProviderResponseStatus.REJECTED) {
+                setIsWaiting(false);
+
                 dispatch(removeBooking(payload.bookingId))
                 toast.warn(`Your Booking was Rejected`)
                 toast.info(`Reason: ${payload.reason}`)
@@ -103,17 +105,42 @@ export const useBookingRequest = () => {
             socket.off("booking:response", handleBookingResponse);
         };
 
-    }, []); 
+    }, []);
+    
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!)
+    const handlePayment = async (paymentType:PaymentMode) => {
+        if (paymentType === PaymentMode.ONLINE) {
+            try {                
+                const res = await AuthService.paymentApi(bookingId)
+                const sessionId = res.data;
+
+                const stripe = await stripePromise;
+
+                if (!stripe) throw new Error(Messages.STRIPE_FAILED);
+                await stripe.redirectToCheckout({ sessionId: sessionId })
+                
+                setShowModePayment(false);
+                setIsWaiting(false);
+            } catch (error:any) {
+                console.log(error)
+                const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
+                toast.error(errorMsg);
+            }
+        } else if (paymentType === PaymentMode.WALLET) {
+            
+        }
+    }
 
     return {
-        isWaiting, setIsWaiting,
+        isWaiting,showModePayment,
         data,
         dates, selectedDate, handleDateChange,
         timeSlots, selectedTime, handleTimeChange,
         isDialogOpen, setIsDialogOpen,
         selectedServiceId, setSelectedServiceId,
         description, setDescription,
-        submitBooking
+        submitBooking,
+        handlePayment,
     }
 }
 

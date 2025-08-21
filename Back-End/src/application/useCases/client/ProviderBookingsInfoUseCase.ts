@@ -43,8 +43,7 @@ export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase
                 },
                 bookings:booking.map(bk => ({
                     bookingId: bk.bookingId,
-                    fullDate: bk.fullDate,
-                    time: bk.time,
+                    scheduledAt : bk.scheduledAt,
                     status: bk.status,
                 })),
                 profileImage: provider.profileImage,

@@ -1,7 +1,7 @@
 import axiosInstance from './axiosConfig';
 import type { ProfileEdit, Signin, Signup } from '@/shared/Types/user';
 import type { KYCStatus } from '@/shared/enums/KycStatus';
-import type { BookingStatus } from '@/shared/enums/BookingStatus';
+import type { ProviderResponseStatus } from '@/shared/enums/ProviderResponseStatus';
 
 class AuthService {  
     getBearerTokenConfig(token?: string) {
@@ -85,9 +85,13 @@ class AuthService {
         return axiosInstance.get(`/api/user/provider/bookings/${id}`)
     }
 
-    BookingApplicationApi(payload : { providerId: string, providerUserId : string, fullDate: string; time: string; issueTypeId: string; issue: string; }) {
-        console.log("payload",payload)
+    BookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
         return axiosInstance.post(`/api/user/provider/booking`, payload, this.getJsonConfig())
+    }
+
+    paymentApi(bookingId: string) {
+        console.log(bookingId,"jdfafjldjajfa;lkjf")
+        return axiosInstance.post(`/api/user/create-checkout-session`, {bookingId}, this.getJsonConfig())
     }
 
     editProfileApi(form: ProfileEdit) {
@@ -104,9 +108,9 @@ class AuthService {
 
     /*********************************************************************************************************************** */
     
-    UpdateBookingStatusApi(bookingId: string, action : Exclude<BookingStatus, BookingStatus.PENDING> , reason:string ) {
+    UpdateBookingStatusApi(bookingId: string, action : Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING> , reason:string ) {
         return axiosInstance.patch(`/api/provider/booking/${bookingId}/status`, {
-            status: action,
+            action,
             reason
         })
     }

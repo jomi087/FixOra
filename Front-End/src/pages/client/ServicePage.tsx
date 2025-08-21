@@ -16,7 +16,6 @@ const ServicePage : React.FC = () => {
 
     const {categories,loading} = useFetchCategories()
 
-
     return (
     <>
         <Nav className="bg-nav-background text-nav-text" />

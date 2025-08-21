@@ -29,7 +29,6 @@ export const useAuthProvider = () => {
 
     const [debouncedQuery] = useDebounce(searchQuery, 500);
     
-
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -49,6 +48,7 @@ export const useAuthProvider = () => {
                     setData(res.data.providerData ?? []);
                     setTotal(res.data.total ?? 0);
                 }  
+                
                 if (applyFilter) dispatch(setApplyFilters(false));
                 if (reset) dispatch(setReset(false));
 

@@ -2,37 +2,21 @@ import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
 
 export interface CreateBookingApplicationDTO {
     userId: string;
+    providerUserId: string
     providerId: string
-    providerUserId : string
-    fullDate: string;
-    time: string;
+    scheduledAt: Date;
     issueTypeId: string;
     issue: string;
+    coordinates: {
+        latitude: number;
+        longitude: number;
+    }
 }
 
 export interface CreateBookingApplicationInputDTO  extends CreateBookingApplicationDTO { }
 
 export interface CreateBookingApplicationOutputDTO  {
-    user: {
-        userId: string;
-        fname: string;
-        lname: string;
-    },
-    provider: {
-        providerId: string;
-        providerUserId: string;
-        fname: string;
-        lname: string;
-
-    }
-    issueType: {
-        issueTypeId: string;
-        name : string
-    }
-    bookings: {
       bookingId: string;
-      fullDate: string;
-      time: string;
+      scheduledAt: Date;
       status: BookingStatus;
-    }
 }

@@ -19,8 +19,7 @@ export interface ProviderBookingsInfoDTO {
     };
     bookings: {
         bookingId: string;
-        fullDate: string;
-        time: string;
+        scheduledAt: Date;
         status: BookingStatus
     }[],
     profileImage: string;

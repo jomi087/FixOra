@@ -60,9 +60,12 @@ export interface IUserRepository {
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
-        booking: Pick<Booking, "bookingId" | "fullDate" | "time" | "status">[]
+        booking: Pick<Booking, "bookingId" | "scheduledAt"| "status">[]
         distanceFee: number
     }>
+
+    getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{serviceCharge : number , distanceFee :number}|null>
+
 }
 
 /*

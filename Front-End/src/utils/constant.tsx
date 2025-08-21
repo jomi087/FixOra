@@ -66,7 +66,9 @@ export const Messages = {
   INVALID_OR_UNAVAILABLE_PINCODE: "Invalid or unavailable Pincode",
   NETWORK_ERROR_FETCHING_POSTAL_INFO: "Network error while fetching postal info",
   BOOKING_STATUS_FAILED: "Failed to update booking status",
-  ACCESS_DENID : "You don't have permission to access this resource.",
+  ACCESS_DENID: "You don't have permission to access this resource.",
+  STRIPE_FAILED:"Stripe failed to initialize",
+  PAYMENT_FAILED: "Payment Failed, Try again",
 
   
   //move to validation section

@@ -35,17 +35,18 @@ export class CategoryRepository implements ICategoryRepository {
 
     async findActiveCategories(omitFields: Array<keyof Category>=[]): Promise<Partial<Category>[]>{
         const omitSelect = omitFields?.map(field => `-${field}`).join(' ')
-        return await CategoryModel.find({isActive : true}).select(omitSelect).lean<Partial<Category>[]>()
+        return await CategoryModel.find({isActive : true}, { _id: 0, __v: 0 } ).select(omitSelect).lean<Partial<Category>[]>()
     }
 
 
-    async findActiveCategoriesWithActiveSubcategories(): Promise<Partial<Category>[]>{
+    async findActiveCategoriesWithActiveSubcategories(): Promise<Category[]>{
         const categories = await CategoryModel.aggregate([
             {
                 $match: { isActive: true }
             },
             {
                 $project: {
+                    _id : 0,
                     categoryId: 1, name: 1, description: 1, image: 1, isActive: 1, createdAt: 1, updatedAt: 1,
                     subcategories: {
                         $filter: {
@@ -57,7 +58,7 @@ export class CategoryRepository implements ICategoryRepository {
                 }
             }
         ]);
-        return categories as Partial<Category>[];
+        return categories as Category[];
     }
 
 

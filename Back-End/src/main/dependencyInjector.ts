@@ -14,7 +14,7 @@ import { GoogleOAuthService } from "../infrastructure/services/GoogleOAuthServic
 import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService.js";
 import { NotificationService } from "../infrastructure/services/NotificationService.js";
 import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService.js";
-
+import { PaymentService } from "../infrastructure/services/PaymentService.js";
 
 const userRepository = new UserRepository();
 const otpRepository = new OtpRepository();
@@ -32,6 +32,7 @@ const googleOAuthService = new GoogleOAuthService()
 const imageUploaderService = new ImageUploaderService()
 const notificationService = new NotificationService()
 const bookingSchedulerService = new BookingSchedulerService()
+const paymentService = new PaymentService(bookingRepository)
 
 /******************************************************************************************************************************************************/
 import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware.js";
@@ -89,7 +90,10 @@ import { ProviderBookingsInfoUseCase } from "../application/useCases/client/Prov
 const providerBookingsInfoUseCase = new ProviderBookingsInfoUseCase(userRepository)
 
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase.js";
-const bookingUseCase = new BookingUseCase(bookingRepository,notificationService,bookingSchedulerService)
+const bookingUseCase = new BookingUseCase(bookingRepository,notificationService,bookingSchedulerService,userRepository)
+
+import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase.js";
+const createPaymentUseCase = new CreatePaymentUseCase(paymentService)
 
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase.js";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository)
@@ -141,7 +145,7 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 
 const publicController = new PublicController(loggerService, getLandingDataUseCase)
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
-const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerBookingsInfoUseCase,bookingUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
+const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerBookingsInfoUseCase,bookingUseCase,createPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
 const providerController = new ProviderController(loggerService, updateBookingStatusUseCase)
 const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,)
 

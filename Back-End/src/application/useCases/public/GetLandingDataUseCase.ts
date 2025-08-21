@@ -15,10 +15,11 @@ export class GetLandingDataUseCase implements IGetLandingDataUseCase{
     async execute():Promise<GetLandingDataOutputDTO> {
         try {
             const categories = await this.categoryRepository.findActiveCategories(["subcategories"])
-            // top 5 providers image data  will add later  
+            // top 5 providers image data  will add later
             //top 6 blogs  data
+            //mapp all 3 data
             return {
-                categories
+                categories 
                 //providers
                 //blogs
             }

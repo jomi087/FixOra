@@ -11,6 +11,7 @@ const useFetchCategories   = () => {
         if (categories.length === 0) {
             dispatch(fetchCategories());
         }
+
     }, [dispatch, categories.length])
 
     return { categories , loading }

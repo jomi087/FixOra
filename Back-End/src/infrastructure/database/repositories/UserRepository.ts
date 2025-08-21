@@ -46,7 +46,7 @@ export class UserRepository implements IUserRepository {
 
     async updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
-    ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">> {
+    ) : Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">> {
         const updatedUser = await UserModel.findOneAndUpdate({ userId }, 
         {
             $set: {
@@ -348,7 +348,7 @@ export class UserRepository implements IUserRepository {
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
-        booking: Pick<Booking, "bookingId" | "fullDate" | "time" | "status">[]
+        booking: Pick<Booking, "bookingId" | "scheduledAt"| "status">[]
         distanceFee: number
     }>{
         const matchConditions :any = {
@@ -393,10 +393,12 @@ export class UserRepository implements IUserRepository {
                 $lookup: {
                     from: "bookings",
                     localField: "providerDetails.providerId",
-                    foreignField: "providerId",
+                    foreignField: "provider.id",
                     as : 'bookingDetails'
                 }
             },
+           // { $match: { "bookingDetails.scheduledAt": gtreaterthan ot equal to currentdate } },
+
             {
                 $addFields: {
                     distanceFee: {
@@ -461,14 +463,13 @@ export class UserRepository implements IUserRepository {
                                 $filter: {
                                     input: "$bookingDetails",
                                     as: "booking",
-                                    cond: { $in: ["$$booking.status", ["ACCEPTED", "PENDING"]] }
+                                    cond: { $in: ["$$booking.status", ["Confirmed", "Pending"]] }
                                 }
                             },
                             as: "booking",
                             in: {
                                 bookingId: "$$booking.bookingId",
-                                fullDate: "$$booking.fullDate",
-                                time: "$$booking.time",
+                                scheduledAt: "$$booking.scheduledAt",
                                 status: "$$booking.status"
                             }
                         }
@@ -482,16 +483,85 @@ export class UserRepository implements IUserRepository {
             user: Pick<User, "userId" | "fname" | "lname">,
             provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
             category: Pick<Category, "categoryId" | "name" | "subcategories">
-            booking: Pick<Booking, "bookingId" | "fullDate" | "time" | "status">[]
+            booking: Pick<Booking, "bookingId" | "scheduledAt" | "status">[]
             distanceFee: number
         }
 
         const result = await UserModel.aggregate<AggregatedResult>(pipeline)
-
-        
         //console.log("come on",result[0])
+
         return result[0]
     }
+
+    async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; }| null> {
+        const matchConditions :any = {
+            role : "provider",
+            isBlocked: false,
+            "providerDetails.providerId" : providerId
+        };
+        const pipeline: any[] = [
+            {
+                $geoNear: { 
+                    near: {
+                        type: "Point",
+                        coordinates: [coordinates.longitude, coordinates.latitude] //user location (customer)
+                    },
+                    distanceField: "distance",
+                    spherical: true,
+                    key: "location.geo", //provider location
+                    distanceMultiplier: 0.001,
+                },
+            },
+            {
+                $lookup: {
+                    from: "providers",
+                    localField: "userId",
+                    foreignField: "userId",
+                    as: 'providerDetails'
+                },
+            },
+            { $unwind: "$providerDetails" },
+            { $match: matchConditions },
+            {
+                $addFields: {
+                    distanceFee: {
+                        $switch: {
+                            branches: [
+                                {
+                                    case: { $lte: ["$distance", 5] },
+                                    then: 0,
+                                },
+                                {
+                                    case: { $and: [{ $gt: ["$distance", 5] }, { $lte: ["$distance", 10] }] },
+                                    then: 30,
+                                },
+                                {
+                                    case: { $and: [{ $gt: ["$distance", 10] }, { $lte: ["$distance", 15] }] },
+                                    then: 60,
+                                },
+                            ],
+                            default: 90, // For >15 km
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    serviceCharge: "$providerDetails.serviceCharge",
+                    distanceFee: 1
+                }
+            }
+
+        ]
+        interface AggregatedResult {  
+            serviceCharge: number;
+            distanceFee: number;
+        }
+
+        const result = await UserModel.aggregate<AggregatedResult>(pipeline)
+        return result[0]
+    }    
 }
 
 

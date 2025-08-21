@@ -13,7 +13,7 @@ export class GetCustomersUseCase implements IGetCustomersUseCase {
         private readonly userRepository : IUserRepository,
     ) {}
     
-    async execute(input :GetCustomersInputDTO ):Promise<GetCustomersOutputDTO>{    
+    async execute(input : GetCustomersInputDTO ):Promise<GetCustomersOutputDTO>{    
         try {            
             const { searchQuery, filter, currentPage, limit } = input;
 
@@ -22,6 +22,7 @@ export class GetCustomersUseCase implements IGetCustomersUseCase {
                 currentPage, limit,
                 ['password', 'refreshToken', 'googleId', 'updatedAt']
             )
+
 
             // remove omit and useMapper dto customerListalredy created
 
