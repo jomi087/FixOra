@@ -12,7 +12,7 @@ const { INTERNAL_ERROR } = Messages
 
 export class GetActiveProvidersUseCase implements IGetActiveProvidersUseCase{
     constructor(
-        private readonly userRepository : IUserRepository
+        private readonly _userRepository : IUserRepository
 
     ) { }
     
@@ -20,7 +20,7 @@ export class GetActiveProvidersUseCase implements IGetActiveProvidersUseCase{
         try {
             const { searchQuery, filter, currentPage, limit, extraFilter,coordinates } = input
 
-            const { data, total } = await this.userRepository.findActiveProvidersWithFilters({ searchQuery, filter, extraFilter, coordinates }, currentPage, limit)
+            const { data, total } = await this._userRepository.findActiveProvidersWithFilters({ searchQuery, filter, extraFilter, coordinates }, currentPage, limit)
             
             // console.log("data data",data)
             

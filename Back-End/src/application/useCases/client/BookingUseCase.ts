@@ -18,16 +18,16 @@ const { INTERNAL_ERROR,ALREDY_BOOKED,PENDING_BOOKING,NOT_FOUND_MSG,BOOKING_ID_NO
 
 export class BookingUseCase implements IBookingUseCase {
     constructor(
-        private readonly bookingRepository: IBookingRepository,
-        private readonly notificationService: INotificationService,
-        private readonly bookingSchedulerService: IBookingSchedulerService,
-        private readonly userRepository : IUserRepository
+        private readonly _bookingRepository: IBookingRepository,
+        private readonly _notificationService: INotificationService,
+        private readonly _bookingSchedulerService: IBookingSchedulerService,
+        private readonly _userRepository : IUserRepository
     ) { }
     
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
 
-            let CheckExistingNoRejectedBooking = await this.bookingRepository.findExistingBooking(input.providerId, input.scheduledAt)
+            let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(input.providerId, input.scheduledAt)
 
             // console.log(CheckExistingNoRejectedBooking)
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response  === ProviderResponseStatus.ACCEPTED)) {
@@ -36,7 +36,7 @@ export class BookingUseCase implements IBookingUseCase {
                 throw { status: CONFLICT, message: PENDING_BOOKING }
             }
             
-            let result = await this.userRepository.getServiceChargeWithDistanceFee(input.providerId,input.coordinates)
+            let result = await this._userRepository.getServiceChargeWithDistanceFee(input.providerId,input.coordinates)
             if (!result) {
                 throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
             }
@@ -65,9 +65,9 @@ export class BookingUseCase implements IBookingUseCase {
                 },
             }
 
-            let bookingId = await this.bookingRepository.create(newBooking)
+            let bookingId = await this._bookingRepository.create(newBooking)
             
-            const bookingDataInDetails = await this.bookingRepository.findCurrentBookingDetails(bookingId)
+            const bookingDataInDetails = await this._bookingRepository.findCurrentBookingDetails(bookingId)
 
             if (!bookingDataInDetails) {
                 throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
@@ -77,7 +77,7 @@ export class BookingUseCase implements IBookingUseCase {
 
             let id = providerInfo.userId
 
-            this.notificationService.notifyBookingRequestToProvider(id, {
+            this._notificationService.notifyBookingRequestToProvider(id, {
                 bookingId: bookingInfo.bookingId,
                 userName: `${userInfo.fname} ${userInfo.lname}`,
                 issueType: `${subCategoryInfo.name}`,
@@ -87,12 +87,12 @@ export class BookingUseCase implements IBookingUseCase {
 
             const jobKey = `booking-${bookingInfo.bookingId}`;
 
-            this.bookingSchedulerService.scheduleAutoReject(jobKey, bookingInfo.bookingId, BOOKING_REQUEST_TIMEOUT_MS, async () => {
-                const currentBooking = await this.bookingRepository.findByBookingId(bookingInfo.bookingId);
+            this._bookingSchedulerService.scheduleAutoReject(jobKey, bookingInfo.bookingId, BOOKING_REQUEST_TIMEOUT_MS, async () => {
+                const currentBooking = await this._bookingRepository.findByBookingId(bookingInfo.bookingId);
                 
                 if (!currentBooking || currentBooking.provider.response !== ProviderResponseStatus.PENDING) return
 
-                let updatedBookingData = await this.bookingRepository.updateResponseAndStatus(
+                let updatedBookingData = await this._bookingRepository.updateResponseAndStatus(
                     bookingInfo.bookingId,
                     BookingStatus.CANCELLED,
                     ProviderResponseStatus.REJECTED,
@@ -101,14 +101,14 @@ export class BookingUseCase implements IBookingUseCase {
 
                 if (!updatedBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
  
-                this.notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
+                this._notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
                     bookingId: updatedBookingData.bookingId,
                     response : updatedBookingData.provider.response,
                     scheduledAt : updatedBookingData.scheduledAt,
                     reason: updatedBookingData.provider.reason as string
                 });
 
-                this.notificationService.notifyBookingAutoRejectToProvider(updatedBookingData.providerUserId, {
+                this._notificationService.notifyBookingAutoRejectToProvider(updatedBookingData.providerUserId, {
                     bookingId: updatedBookingData.bookingId,
                     response: updatedBookingData.provider.response,
                     reason: updatedBookingData.provider.reason as string

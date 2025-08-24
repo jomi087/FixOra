@@ -12,14 +12,14 @@ const { INTERNAL_ERROR } = Messages
 
 export class ProviderApplicationUseCase implements IProviderApplicationUseCase{
     constructor(
-        private readonly kycRequestRepository : IKYCRequestRepository
+        private readonly _kycRequestRepository : IKYCRequestRepository
     ) { }
     
     async execute(input: ProviderApplicationInputDTO):Promise<ProviderApplicationOutputDTO> {
         try {
             const { searchQuery, filter, currentPage, limit } = input
             
-            const { data, total } = await this.kycRequestRepository.findWithFilters({ searchQuery, filter }, currentPage, limit)
+            const { data, total } = await this._kycRequestRepository.findWithFilters({ searchQuery, filter }, currentPage, limit)
             
             return { data,total } 
 

@@ -11,8 +11,8 @@ const { OK } = HttpStatusCode;
 
 export class ProviderController {
     constructor(
-        private loggerService: ILoggerService,
-        private updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
+        private _loggerService: ILoggerService,
+        private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
     ) {}
 
     async updateBookingStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -20,7 +20,7 @@ export class ProviderController {
             const {bookingId} = req.params 
             const { action,reason } = req.body
             
-            const data = await this.updateBookingStatusUseCase.execute({
+            const data = await this._updateBookingStatusUseCase.execute({
                 bookingId,
                 action,
                 reason : action === ProviderResponseStatus.REJECTED ? reason : undefined
@@ -32,7 +32,7 @@ export class ProviderController {
             })
 
         } catch (error:any) {
-            this.loggerService.error(`updateBookingStatus error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`updateBookingStatus error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -49,7 +49,7 @@ export class ProviderController {
                 success: true,    
             })
         } catch (error:any) {
-            this.loggerService.error(`bookings error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`bookings error:, ${error.message}`,{stack : error.stack});
             next(error);
         }   
     }

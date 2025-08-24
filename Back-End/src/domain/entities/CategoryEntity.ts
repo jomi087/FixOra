@@ -3,7 +3,7 @@ export interface Subcategory {
   name: string;
   description: string;
   image: string;
-  isActive?: boolean;
+  isActive: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -14,7 +14,7 @@ export interface Category {
   description: string;
   image: string;
   subcategories: Subcategory[];
-  isActive?: boolean;
+  isActive: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

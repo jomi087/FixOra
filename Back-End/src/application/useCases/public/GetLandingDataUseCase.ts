@@ -9,12 +9,12 @@ const { INTERNAL_ERROR } = Messages
 
 export class GetLandingDataUseCase implements IGetLandingDataUseCase{
     constructor(
-        private readonly categoryRepository : ICategoryRepository
+        private readonly _categoryRepository : ICategoryRepository
     ) { }
     
     async execute():Promise<GetLandingDataOutputDTO> {
         try {
-            const categories = await this.categoryRepository.findActiveCategories(["subcategories"])
+            const categories = await this._categoryRepository.findActiveCategories(["subcategories"])
             // top 5 providers image data  will add later
             //top 6 blogs  data
             //mapp all 3 data

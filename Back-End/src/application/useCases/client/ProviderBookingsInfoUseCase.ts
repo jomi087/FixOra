@@ -12,12 +12,12 @@ const { INTERNAL_ERROR ,PROVIDER_NOT_FOUND} = Messages
 
 export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase{
     constructor(
-        private readonly userRepository : IUserRepository, 
+        private readonly _userRepository : IUserRepository, 
     ) { }
     
     async execute(input: ProviderBookingsInfoInputDTO ): Promise<ProviderBookingsInfoOutputDTO>{
         try { 
-            const providerData = await this.userRepository.findProviderBookingsById(input.id,input.coordinates)
+            const providerData = await this._userRepository.findProviderBookingsById(input.id,input.coordinates)
             
             if (!providerData) {
                 throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND}; 

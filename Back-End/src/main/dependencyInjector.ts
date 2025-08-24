@@ -107,7 +107,6 @@ import { UpdateBookingStatusUseCase } from "../application/useCases/providers/Up
 const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository,notificationService,bookingSchedulerService)
 
 
-
 /******************************************************************************************************************************************************
                                                         Admin Specific
 ******************************************************************************************************************************************************/

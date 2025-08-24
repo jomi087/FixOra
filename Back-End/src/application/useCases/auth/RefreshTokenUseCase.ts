@@ -2,31 +2,32 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
+import { IRefreshTokenUseCase } from "../../Interface/useCases/Auth/IRefreshTokenUseCase.js";
 
 
 const { FORBIDDEN,NOT_FOUND } = HttpStatusCode
 const { UNAUTHORIZED_MSG,INVALID_REFRESH_TOKEN,USER_NOT_FOUND } = Messages
 
-export class RefreshTokenUseCase  {
+export class RefreshTokenUseCase implements IRefreshTokenUseCase {
   constructor(
-    private readonly tokenService: ITokenService ,
-    private readonly userRepository : IUserRepository
-  ) { }
+    private readonly _tokenService: ITokenService ,
+    private readonly _userRepository : IUserRepository
+  ) {}
 
-  async execute(refreshToken: string) {
+  async execute(refreshToken: string): Promise<{ accessToken:string, refreshToken:string}>{
     try {
       if (!refreshToken) {
         throw { status: FORBIDDEN,  message: UNAUTHORIZED_MSG  }
       }
 
-      const decoded = this.tokenService.verifyRefreshToken(refreshToken) as {
+      const decoded = this._tokenService.verifyRefreshToken(refreshToken) as {
         id: string;
         name: string;
         email: string;
         role: string;
       };
 
-      const user = await this.userRepository.findByUserId(decoded?.id,["password"])
+      const user = await this._userRepository.findByUserId(decoded?.id,["password"])
       if (!user || user.refreshToken !== refreshToken  ) {
         throw { status: FORBIDDEN, message: INVALID_REFRESH_TOKEN };
       }
@@ -38,11 +39,11 @@ export class RefreshTokenUseCase  {
         name: decoded.name,
       }
 
-      const newAccessToken = this.tokenService.generateAccessToken(payload);
-      const newRefreshToken = this.tokenService.generateRefreshToken(payload)
+      const newAccessToken = this._tokenService.generateAccessToken(payload);
+      const newRefreshToken = this._tokenService.generateRefreshToken(payload)
       
-      if (!await this.userRepository.update( { userId: decoded.id } ,{refreshToken : newRefreshToken } )) {
-          throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+      if (!await this._userRepository.resetRefreshTokenById( decoded.id, newRefreshToken )) {
+        throw { status: NOT_FOUND, message: USER_NOT_FOUND };
       }
 
       return  {

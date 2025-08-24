@@ -13,12 +13,12 @@ export class PaymentService implements IPaymentService {
   private stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2025-07-30.basil" })
 
   constructor(
-    private readonly bookingRepository: IBookingRepository,
+    private readonly _bookingRepository: IBookingRepository,
   ) { }
 
   async createPaymentIntent(bookingId: string): Promise<string> {
     try {
-      let booking = await this.bookingRepository.findByBookingId(bookingId)
+      let booking = await this._bookingRepository.findByBookingId(bookingId)
       if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
 
       let totalAmount = booking.pricing.baseCost + booking.pricing.distanceFee

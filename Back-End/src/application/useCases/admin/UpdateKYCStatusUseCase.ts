@@ -16,13 +16,13 @@ const { INTERNAL_ERROR,INVALID_ACTION,KYC_REJECTED,USER_NOT_FOUND,PROVIDER_ALREA
 
 export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
     constructor(
-        private readonly kycRequestRepository: IKYCRequestRepository,
-        private readonly providerRepository: IProviderRepository,
-        private readonly userRepository : IUserRepository
+        private readonly _kycRequestRepository: IKYCRequestRepository,
+        private readonly _providerRepository: IProviderRepository,
+        private readonly _userRepository : IUserRepository
     ){ }
     
     private async update (id:string, request:KYCRequest) : Promise<void> {
-        const updated = await this.kycRequestRepository.updateById(id, request);
+        const updated = await this._kycRequestRepository.updateById(id, request);
         if (!updated) throw { status: NOT_FOUND, message: KYC_NOT_FOUND };
     }
 
@@ -43,7 +43,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
 
     private async approveRequest(id: string, request: KYCRequest): Promise<string> {
     
-        const existingProvider = await this.providerRepository.findByUserId(request.userId);
+        const existingProvider = await this._providerRepository.findByUserId(request.userId);
         if (existingProvider) {
             throw { status: CONFLICT, message: PROVIDER_ALREADY_EXISTS };
         }
@@ -53,7 +53,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
         await this.update(id, request);
 
         try {
-            await this.providerRepository.create({
+            await this._providerRepository.create({
                 providerId : uuidv4(),
                 userId: request.userId,
                 dob: request.dob,
@@ -66,7 +66,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
                 isOnline: false,
             });
 
-            const updatedUser  = await this.userRepository.updateRole(request.userId, RoleEnum.Provider,["password","refreshToken","googleId","createdAt","isBlocked"])
+            const updatedUser  = await this._userRepository.updateRole(request.userId, RoleEnum.Provider,["password","refreshToken","googleId","createdAt","isBlocked"])
             
             if (!updatedUser) throw { status: NOT_FOUND, message: USER_NOT_FOUND }
 
@@ -84,7 +84,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
 
     async execute({ id, action, reason, adminId }: UpdateKYCStatusInputDTO): Promise<UpdateKYCStatusOutputDTO> {
         try {
-            const request = await this.kycRequestRepository.findById(id);
+            const request = await this._kycRequestRepository.findById(id);
             if (!request) throw { status: NOT_FOUND, message: KYC_NOT_FOUND };
 
             this.validateIsPending(request);

@@ -10,7 +10,7 @@ const { INTERNAL_ERROR} = Messages
 
 export class GetProvidersUseCase implements IGetProvidersUseCase {
     constructor(
-        private readonly providerRepository : IProviderRepository,
+        private readonly _providerRepository : IProviderRepository,
 
     ) {}
     
@@ -19,7 +19,7 @@ export class GetProvidersUseCase implements IGetProvidersUseCase {
         try {
             const { searchQuery, filter, currentPage, limit } = input
 
-            const { data, total } = await this.providerRepository.findProvidersWithFilters({ searchQuery, filter }, currentPage, limit )
+            const { data, total } = await this._providerRepository.findProvidersWithFilters({ searchQuery, filter }, currentPage, limit )
             
             return { data ,total };
             

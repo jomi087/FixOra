@@ -5,9 +5,9 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface info {
     fname: string;
-    lname: string;
+    lname?: string;
     email: string;
-    mobileNo: string;
+    mobileNo?: string;
     role: string;
     location?: AddressWithCoordinates;
 }

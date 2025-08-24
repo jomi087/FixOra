@@ -15,9 +15,9 @@ const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED,} = Messages
 
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
     constructor(
-        private readonly bookingRepository: IBookingRepository,
-        private readonly notificationService: INotificationService,
-        private readonly bookingSchedulerService: IBookingSchedulerService
+        private readonly _bookingRepository: IBookingRepository,
+        private readonly _notificationService: INotificationService,
+        private readonly _bookingSchedulerService: IBookingSchedulerService
         
     ) { }
     
@@ -25,7 +25,7 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
         try {
             const { bookingId, action, reason } = input;
 
-            const booking = await this.bookingRepository.findByBookingId(bookingId);
+            const booking = await this._bookingRepository.findByBookingId(bookingId);
             if (!booking) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  }
             }
@@ -37,16 +37,16 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
             let updatedBookingData: Booking | null
             
             if (action === ProviderResponseStatus.REJECTED) {
-                updatedBookingData = await this.bookingRepository.updateResponseAndStatus(bookingId, BookingStatus.CANCELLED, action, reason)
+                updatedBookingData = await this._bookingRepository.updateResponseAndStatus(bookingId, BookingStatus.CANCELLED, action, reason)
             } else {
-                updatedBookingData = await this.bookingRepository.updateResponse(bookingId, action)
+                updatedBookingData = await this._bookingRepository.updateResponse(bookingId, action)
             }
 
             if (!updatedBookingData) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  }
             }
 
-            this.notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
+            this._notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
                 bookingId: updatedBookingData.bookingId,
                 response : updatedBookingData.provider.response,
                 scheduledAt: updatedBookingData.scheduledAt,
@@ -54,7 +54,7 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
             });
 
             const jobKey = `booking-${updatedBookingData.bookingId}`;
-            this.bookingSchedulerService.cancel(jobKey)
+            this._bookingSchedulerService.cancel(jobKey)
 
             let mappedData = (action !== ProviderResponseStatus.REJECTED) ? {
                 bookingId: updatedBookingData.bookingId,

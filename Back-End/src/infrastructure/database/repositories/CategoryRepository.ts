@@ -62,7 +62,7 @@ export class CategoryRepository implements ICategoryRepository {
     }
 
 
-    async findServicesWithFilters(
+    async findServicesWithFilters (
         options: { searchQuery: string; filter: string },
         currentPage: number,limit: number,
         omitFields: Array<keyof Category> = []
@@ -86,12 +86,12 @@ export class CategoryRepository implements ICategoryRepository {
         const omitSelect = omitFields.map(field => `-${field}`).join(' ');
 
         const total = await CategoryModel.countDocuments(query);
-        const cartegories = await CategoryModel.find(query)
+        const cartegories = await CategoryModel.find(query,{_id:0,__v:0})
             .select(omitSelect)
             .skip((currentPage - 1) * limit)
             .limit(limit)
             .lean<Partial<Category>[]>();
-
+    
         return { data : cartegories, total}
     }
     

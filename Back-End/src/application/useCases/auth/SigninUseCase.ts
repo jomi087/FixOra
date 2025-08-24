@@ -2,26 +2,27 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
-import { SigninDTO } from "../../DTO's/SigninDTO.js";
+import { SigninInputDTO, SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO.js";
+import { ISigninUseCase } from "../../Interface/useCases/Auth/ISigninUseCase.js";
 import { AuthStrategyFactory } from "../../strategies/auth/AuthStrategyFactory.js";
 
 const {NOT_FOUND,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
 
-export class SigninUseCase {
+export class SigninUseCase implements ISigninUseCase {
     constructor(
-        private readonly authFactory: AuthStrategyFactory,
-        private readonly tokenService: ITokenService,
-        private readonly userRepository : IUserRepository,
+        private readonly _authFactory: AuthStrategyFactory,
+        private readonly _tokenService: ITokenService,
+        private readonly _userRepository : IUserRepository,
     ) {}
 
-    async execute(credentials: SigninDTO) {
+    async execute(credentials: SigninInputDTO): Promise<SignInOutputDTO>{
         try {
             // here i could had added if else way or switch way(show below ) but the issue is that then  i am violationg the OCP (open/close priciple  [must be open for extention and close for modification] in solid in fiture if there is more role comming then i dont need to modify signin logic jst d )
             // a Role Strategy Map — dynamic role-to-strategy resolution.
             
             //from here
-            const strategy = this.authFactory.getStrategy(credentials.role);
+            const strategy = this._authFactory.getStrategy(credentials.role);
             const authenticatedUser = await strategy.authenticate(credentials);
             //till here 
             const { userData, role } = authenticatedUser 
@@ -31,15 +32,16 @@ export class SigninUseCase {
                 email : userData.email,
                 role: role
             }
-            const acsToken  = this.tokenService.generateAccessToken(payload)
-            const refToken = this.tokenService.generateRefreshToken(payload)
+
+            const acsToken  = this._tokenService.generateAccessToken(payload)
+            const refToken = this._tokenService.generateRefreshToken(payload)
             
-            const updatedUserData = await this.userRepository.update({ userId: userData.userId } ,{refreshToken : refToken } ,["password","refreshToken"])
+            const updatedUserData = await this._userRepository.updateRefreshTokenAndGetUser( userData.userId, refToken )
             if (!updatedUserData) {
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             }
-            
-            return {
+
+            let mappedupdatedUserData = {
                 userData: {
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,
@@ -47,11 +49,12 @@ export class SigninUseCase {
                     mobileNo: updatedUserData.mobileNo,
                     role: updatedUserData.role,
                     location: updatedUserData.location,
-                    image:userData?.profileImage
                 },
                 accessToken: acsToken,
                 refreshToken: refToken,
-            };
+            }
+            
+            return mappedupdatedUserData
 
         } catch (error:any) {
             if (error.status && error.message) {
@@ -62,7 +65,7 @@ export class SigninUseCase {
     }
 }
 
-//to avoid this i dont dynamic role base stratergy
+//to avoid this._i dont dynamic role base stratergy
 // if (credentials.role == 'customer') {
 //     check
 //     userdata is there in  user collection db

@@ -1,5 +1,5 @@
 import { RoleEnum } from "../../../../shared/Enums/Roles.js";
-import { SigninDTO } from "../../../DTO's/SigninDTO.js";
+import { SigninInputDTO } from "../../../DTO's/AuthDTO/SigninDTO.js";
 
 
 
@@ -9,7 +9,7 @@ export type AuthData = {
 };
 
 export interface IAuthStrategy {
-  authenticate(credentials: SigninDTO): Promise<AuthData>;
+  authenticate(credentials: SigninInputDTO): Promise<AuthData>;
 }
 
 

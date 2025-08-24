@@ -4,7 +4,7 @@ import { IHashService } from "../../../domain/interface/ServiceInterface/IHashSe
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
 import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { SigninDTO } from "../../DTO's/SigninDTO.js";
+import { SigninInputDTO } from "../../DTO's/AuthDTO/SigninDTO.js";
 import { AuthData, IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy.js";
 
 const { FORBIDDEN, INTERNAL_SERVER_ERROR } = HttpStatusCode;
@@ -12,19 +12,18 @@ const { INVALID_CREDENTIALS, INTERNAL_ERROR } = Messages;
 
 export class AdminAuthStrategy  implements IAuthStrategy  {
     constructor(
-        private readonly userRepository: IUserRepository,
-        private readonly hashService: IHashService
+        private readonly _userRepository: IUserRepository,
+        private readonly _hashService: IHashService
     ) {}
 
-    async authenticate(credentials: SigninDTO): Promise<AuthData> {
+    async authenticate(credentials: SigninInputDTO): Promise<AuthData> {
         
         try {
-            const user = await this.userRepository.findByEmail(credentials.email) as User;
+            const user = await this._userRepository.findByEmail(credentials.email) as User;
 
             if (!user || user.role != credentials.role ||  user.role != RoleEnum.Admin  ) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };
-            const isMatch = await this.hashService.compare(credentials.password, user.password as string );
+            const isMatch = await this._hashService.compare(credentials.password, user.password as string );
             if (!isMatch) throw { status: FORBIDDEN , message: INVALID_CREDENTIALS };
-            
             return { userData: user, role: RoleEnum.Customer };
             
         } catch (error:any ) {

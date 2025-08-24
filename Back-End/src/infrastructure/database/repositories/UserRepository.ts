@@ -5,112 +5,166 @@ import { User } from "../../../domain/entities/UserEntity.js";
 import { Provider } from "../../../domain/entities/ProviderEntity.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import UserModel from "../models/UserModel.js";
-import { UserDTO } from "../../../domain/outputDTO's/UserDTO.js";
 import { Category } from "../../../domain/entities/CategoryEntity.js";
-import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
 import { Booking } from "../../../domain/entities/BookingEntity.js";
 
 //!mistake in this repository (i have am violatin srp rule need to re-work) 
 //split the logic into indivijual
 
 export class UserRepository implements IUserRepository {
-    async findByEmail(email: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+    async findByEmail(email: string, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOne({ email }).select(omitSelect).lean<Partial<User>>()  //mongo db methods 
     }
 
-    async create(user: UserDTO): Promise<User>{
+    async create(user: User): Promise<User> {
         const newUser = new UserModel(user)
         await newUser.save();
         return newUser.toObject() as User;
     }
 
-    async findByUserId(userId: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
+    async findByUserId(userId: string, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>()
     }
 
-    async findByUserGoogleId(googleId: string, omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
-        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
-        return await UserModel.findOne({ googleId }).select(omitSelect).lean<Partial<User>>()
+    async findByUserGoogleId(googleId: string): Promise< User | null> {
+        return await UserModel.findOne({ googleId }).lean<User>()
     }
 
-    async updateRole(userId : string, role : RoleEnum, omitFields : Array<keyof User>=[] ): Promise<Partial<User> | null>{
+    async updateRole(userId: string, role: RoleEnum, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
         const omitSelect = omitFields.map(field => `-${field}`).join(' ')
         return await UserModel.findOneAndUpdate(
             { userId },
             { $set: { role } },
-            { new : true }
+            { new: true }
         ).select(omitSelect).lean<Partial<User>>();
     }
 
     async updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
-    ) : Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">> {
-        const updatedUser = await UserModel.findOneAndUpdate({ userId }, 
-        {
-            $set: {
-                fname: updateData.fname,
-                lname: updateData.lname,
-                mobileNo: updateData.mobileNo,
-                location: updateData.location
+    ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">> {
+        const updatedUser = await UserModel.findOneAndUpdate({ userId },
+            {
+                $set: {
+                    fname: updateData.fname,
+                    lname: updateData.lname,
+                    mobileNo: updateData.mobileNo,
+                    location: updateData.location
+                }
+            },
+            {
+                new: true,
+                projection: {
+                    password: 0,
+                    refreshToken: 0
+                }
             }
-        },  
-        {
-            new: true,          
-            projection: {    
-            password: 0,
-            refreshToken: 0
-            }
-        }
-        ).lean(); 
+        ).lean();
 
         if (!updatedUser) throw new Error("User not found");
 
         return updatedUser;
     }
 
-//spli this method
-    async update( filter: Partial<Pick<User, "email" | "userId" | "googleId" >> , updates: Partial<User>,  omitFields:Array<keyof User>=[]): Promise<Partial<User>| null>{
-        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
-        return await UserModel.findOneAndUpdate(
-            filter,
-            { $set: updates },
-            { new: true }
-        ).select(omitSelect).lean<Partial<User>>()
+    async toogleUserStatusById(userId: string, isBlocked: boolean): Promise<boolean> {
+        const result = await UserModel.updateOne(
+            { userId },
+            { $set: { isBlocked } }
+        );
+        return result.modifiedCount > 0 
     }
-//_____________
 
-    async findUsersWithFilters(options: { searchQuery: string; filter: string },currentPage: number, limit: number, omitFields: Array<keyof User>=[]): Promise<{ data: Partial<User>[]; total: number }>{
+    async updateRefreshTokenAndGetUser (userId: string, refreshToken: string): Promise<Omit<User, "password"> | null> {
+        const result = await UserModel.findOneAndUpdate(
+            { userId },
+            { $set: { refreshToken }},
+            { new : true},
+        ).select("-password")
+        return result 
+    }
+
+    async resetRefreshTokenById(userId: string, refreshToken:string = ""): Promise<boolean> {
+        const result = await UserModel.updateOne(
+            { userId },
+            { $set: { refreshToken } }
+        );
+        return result.matchedCount  > 0 
+    }
+
+    async resetPasswordByEmail(email: string, password: string): Promise<boolean>{
+        const result = await UserModel.updateOne(
+            { email },
+            { $set: { password } }
+        );
+        return result.matchedCount  > 0 
+    }
+
+    async findUsersWithFilters(
+        options: { searchQuery: string; filter: string },
+        currentPage: number, limit: number,
+    ): Promise<{ data: Partial<User>[]; total: number }> {
         
-        const { searchQuery, filter } = options
-        const query: any = { role: RoleEnum.Customer };
-        //if (searchQuery) { query.fname = { $regex: searchQuery, $options: "i" }; }
+        const { searchQuery, filter } = options;
+        const match: any = { role: RoleEnum.Customer };
 
         if (searchQuery) {
-            query.$or = [
+            match.$or = [
                 { fname: { $regex: searchQuery, $options: "i" } },
-                { lname: { $regex: searchQuery, $options: "i" } },
+                { lname: { $regex: searchQuery, $options: "i" } }
             ];
         }
 
         if (filter === "blocked") {
-            query.isBlocked = true
+            match.isBlocked = true;
         } else if (filter === "unblocked") {
-            query.isBlocked = false
+            match.isBlocked = false;
         }
-        
-        const omitSelect = omitFields.map(field => `-${field}`).join(' ');
 
-        const total = await UserModel.countDocuments(query);
-        const users = await UserModel.find(query)
-            .select(omitSelect)
-            .skip((currentPage - 1) * limit)
-            .limit(limit)
-            .lean<Partial<User>[]>();
+        const pipeline: any[] = [
+            { $match: match },
+            {
+                $project: {
+                    _id: 0,
+                    userId: 1,
+                    fname: 1,
+                    lname: 1,
+                    email: 1,
+                    mobileNo : 1,
+                    role: 1,
+                    location :{
+                        houseinfo: 1,
+                        street: 1,
+                        district: 1,
+                        city: 1,
+                        locality: 1,
+                        state: 1,
+                        postalCode: 1,
+                        coordinates: 1
+                    } ,
+                    isBlocked : 1,
+                },
+            },
+            {
+                $facet: {
+                    data: [
+                        { $skip: (currentPage - 1) * limit },
+                        { $limit: limit }
+                    ],
+                    total: [{ $count: "count" }]
+                }
+            }
+        ];
 
-        return { data : users, total}
-    };
+        const result = await UserModel.aggregate(pipeline).exec();
+
+        const users = result[0]?.data ?? [];
+        const total = result[0]?.total[0]?.count ?? 0;
+
+        return { data: users, total };
+    }
+
+
 
     async findActiveProvidersWithFilters(
         option: {
@@ -136,18 +190,18 @@ export class UserRepository implements IUserRepository {
             averageRating: number; totalRatings: number;
         }[]; total: number
     }> {
-        
-        
+
+
         const { searchQuery, filter, extraFilter, coordinates } = option;
         const skip = (currentPage - 1) * limit;
 
         const pipeline: any[] = []
         const hasNearbyFilter = extraFilter?.nearByFilter && coordinates?.latitude && coordinates?.longitude;
-        
+
         if (hasNearbyFilter) {
             let minDistance = 0
             let maxDistance = Infinity
-        
+
             switch (extraFilter.nearByFilter) {
                 case "0to5km":
                     maxDistance = 5000;
@@ -163,7 +217,7 @@ export class UserRepository implements IUserRepository {
                 default:
                     break
             }
-                    
+
             pipeline.push(
                 {
                     $geoNear: {  //$geoNear is a stage like $match $group ....
@@ -199,7 +253,7 @@ export class UserRepository implements IUserRepository {
                 sortCondition["averageRating"] = -1;
                 break;
         }
-    
+
         const matchUserConditions: any = {
             role: "provider",
             isBlocked: false,
@@ -226,7 +280,7 @@ export class UserRepository implements IUserRepository {
         }
 
         //logic for availabilty filter to be added (will add later on the basis of booking)
-        
+
 
         pipeline.push(
             {
@@ -312,7 +366,7 @@ export class UserRepository implements IUserRepository {
             {
                 $facet: {
                     data: [
-                       
+
                         { $skip: skip },
                         { $limit: limit }
                     ],
@@ -334,7 +388,7 @@ export class UserRepository implements IUserRepository {
             totalCount: { total: number }[];
         }
 
-        const result = await UserModel.aggregate<AggregatedFacetResult>(pipeline)
+        const result = await UserModel.aggregate<AggregatedFacetResult>(pipeline).exec()
         // console.log(result[0].data)
 
 
@@ -348,18 +402,18 @@ export class UserRepository implements IUserRepository {
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
-        booking: Pick<Booking, "bookingId" | "scheduledAt"| "status">[]
+        booking: Pick<Booking, "bookingId" | "scheduledAt" | "status">[]
         distanceFee: number
-    }>{
-        const matchConditions :any = {
-            role : "provider",
+    }> {
+        const matchConditions: any = {
+            role: "provider",
             isBlocked: false,
-            "providerDetails.providerId" : providerId
+            "providerDetails.providerId": providerId
         };
 
         const pipeline: any[] = [
             {
-                $geoNear: { 
+                $geoNear: {
                     near: {
                         type: "Point",
                         coordinates: [coordinates.longitude, coordinates.latitude] //user location (customer)
@@ -379,7 +433,7 @@ export class UserRepository implements IUserRepository {
                 },
             },
             { $unwind: "$providerDetails" },
-            { $match :  matchConditions },
+            { $match: matchConditions },
             {
                 $lookup: {
                     from: "categories",
@@ -394,10 +448,10 @@ export class UserRepository implements IUserRepository {
                     from: "bookings",
                     localField: "providerDetails.providerId",
                     foreignField: "provider.id",
-                    as : 'bookingDetails'
+                    as: 'bookingDetails'
                 }
             },
-           // { $match: { "bookingDetails.scheduledAt": gtreaterthan ot equal to currentdate } },
+            // { $match: { "bookingDetails.scheduledAt": gtreaterthan ot equal to currentdate } },
 
             {
                 $addFields: {
@@ -416,8 +470,12 @@ export class UserRepository implements IUserRepository {
                                     case: { $and: [{ $gt: ["$distance", 10] }, { $lte: ["$distance", 15] }] },
                                     then: 60,
                                 },
+                                {                               
+                                    case: { $and: [{ $gt: ["$distance", 15] }, { $lte: ["$distance", 20] }] },
+                                    then: 90,
+                                },
                             ],
-                            default: 90, // For >15 km
+                            default: 150, // For >15 km
                         },
                     },
                 },
@@ -446,7 +504,7 @@ export class UserRepository implements IUserRepository {
                                     $filter: {
                                         input: "$serviceDetails.subcategories",
                                         as: "sub",
-                                        cond: { $in: ["$$sub.subCategoryId",  "$providerDetails.specializationIds"] } 
+                                        cond: { $in: ["$$sub.subCategoryId", "$providerDetails.specializationIds"] }
                                     }
                                 },
                                 as: "sub",
@@ -457,7 +515,7 @@ export class UserRepository implements IUserRepository {
                             }
                         }
                     },
-                    booking : {
+                    booking: {
                         $map: {
                             input: {
                                 $filter: {
@@ -474,11 +532,11 @@ export class UserRepository implements IUserRepository {
                             }
                         }
                     },
-                    distanceFee:1,
+                    distanceFee: 1,
                 }
             }
         ]
-        
+
         interface AggregatedResult {
             user: Pick<User, "userId" | "fname" | "lname">,
             provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
@@ -493,15 +551,15 @@ export class UserRepository implements IUserRepository {
         return result[0]
     }
 
-    async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; }| null> {
-        const matchConditions :any = {
-            role : "provider",
+    async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; } | null> {
+        const matchConditions: any = {
+            role: "provider",
             isBlocked: false,
-            "providerDetails.providerId" : providerId
+            "providerDetails.providerId": providerId
         };
         const pipeline: any[] = [
             {
-                $geoNear: { 
+                $geoNear: {
                     near: {
                         type: "Point",
                         coordinates: [coordinates.longitude, coordinates.latitude] //user location (customer)
@@ -554,14 +612,14 @@ export class UserRepository implements IUserRepository {
             }
 
         ]
-        interface AggregatedResult {  
+        interface AggregatedResult {
             serviceCharge: number;
             distanceFee: number;
         }
 
         const result = await UserModel.aggregate<AggregatedResult>(pipeline)
         return result[0]
-    }    
+    }
 }
 
 

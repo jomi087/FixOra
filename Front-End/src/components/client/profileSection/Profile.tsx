@@ -66,7 +66,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
                     )}
 
                     <h3 className="text-xl font-semibold mt-4 flex items-center gap-2 ">
-                        {`${user?.fname} ${user?.lname} `}
+                        {`${user?.fname} ${user?.lname ||""} `}
                         {user?.role === RoleEnum.CUSTOMER && toggle && (
                         <CiEdit
                             size={20}
@@ -85,7 +85,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
 
                     <div>
                         <span className="font-semibold">Mobile:</span>
-                        <p className="text-gray-600 dark:text-white ml-5">{`${user?.mobileNo}`}</p>
+                        <p className="text-gray-600 dark:text-white ml-5">{`${user?.mobileNo ? user.mobileNo : "N/A"}`}</p>
                     </div>
 
                     <div>

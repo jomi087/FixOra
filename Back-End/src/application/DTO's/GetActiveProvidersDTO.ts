@@ -21,7 +21,7 @@ export interface ActiveProviderDTO {
     user: {
         userId: string,
         fname: string;
-        lname: string;
+        lname?: string;
     };
     gender: Gender;
     service: {

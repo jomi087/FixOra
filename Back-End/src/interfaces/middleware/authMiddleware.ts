@@ -18,11 +18,10 @@ declare global {
     }
 }
 
-
 export class AuthMiddleware {  //verify Jwt
     constructor(
-        private tokenService: ITokenService,
-        private userRepository: IUserRepository
+        private _tokenService: ITokenService,
+        private _userRepository: IUserRepository
     ) {}
 
     handle(requiredRoles?: RoleEnum[]) {
@@ -36,11 +35,11 @@ export class AuthMiddleware {  //verify Jwt
                     return;
                 }
 
-                const decode = this.tokenService.verifyAccessToken(token) as { id: string, email: string, role: RoleEnum }
+                const decode = this._tokenService.verifyAccessToken(token) as { id: string, email: string, role: RoleEnum }
             
-                const user = await this.userRepository.findByUserId(decode.id, ["password", "refreshToken"]);
+                const user = await this._userRepository.findByUserId(decode.id, ["password", "refreshToken"]);
                 
-                if (!user) {
+                if (!user || !user.userId) {
                     res.status(UNAUTHORIZED).json({ message: USER_NOT_FOUND });
                     return;
                 }
@@ -54,7 +53,7 @@ export class AuthMiddleware {  //verify Jwt
                 if (user.isBlocked) {
                     res.clearCookie('accessToken', options)
                     res.clearCookie('refreshToken', options)
-                    await this.userRepository.update({ userId: user.userId }, { refreshToken: "" });
+                    await this._userRepository.resetRefreshTokenById(user.userId);
                     res.status(UNAUTHORIZED).json({ message: ACCOUNT_BLOCKED });
                     return;
                 }
@@ -64,7 +63,7 @@ export class AuthMiddleware {  //verify Jwt
                     if (!user.role || !requiredRoles.includes(user.role)) {
                         res.clearCookie('accessToken', options)
                         res.clearCookie('refreshToken', options)
-                        await this.userRepository.update({ userId: user.userId }, { refreshToken: "" });
+                        await this._userRepository.resetRefreshTokenById(user.userId);
                         res.status(UNAUTHORIZED).json({ message: FORBIDDEN_MSG });
                         return
                     }
