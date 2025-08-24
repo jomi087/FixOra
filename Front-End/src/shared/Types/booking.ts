@@ -21,3 +21,8 @@ export type BookingAutoRejectPayload = {
   response: ProviderResponseStatus;
   reason: string
 }
+
+export interface PaymentFailedNotification {
+  bookingId: string
+  reason: string
+}

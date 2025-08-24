@@ -10,7 +10,6 @@ import { INotificationService } from "../../../domain/interface/ServiceInterface
 import { BOOKING_REQUEST_TIMEOUT_MS } from "../../../shared/constants.js";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService.js";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
-import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment.js";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 
 const { INTERNAL_SERVER_ERROR,CONFLICT,NOT_FOUND} = HttpStatusCode
@@ -23,6 +22,38 @@ export class BookingUseCase implements IBookingUseCase {
         private readonly _bookingSchedulerService: IBookingSchedulerService,
         private readonly _userRepository : IUserRepository
     ) { }
+
+    private scheduleProviderResponseTimeout(bookingId:string): void{
+        const jobKey = `providerResponse-${bookingId}`;
+
+        this._bookingSchedulerService.scheduleTimeoutJob(jobKey, bookingId, BOOKING_REQUEST_TIMEOUT_MS, async () => {
+            const currentBooking = await this._bookingRepository.findByBookingId(bookingId);
+            
+            if (!currentBooking || currentBooking.provider.response !== ProviderResponseStatus.PENDING) return
+
+            let updatedBookingData = await this._bookingRepository.updateResponseAndStatus(
+                bookingId,
+                BookingStatus.CANCELLED,
+                ProviderResponseStatus.REJECTED,
+                PROVIDER_NO_RESPONSE,
+            )
+
+            if (!updatedBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+
+            this._notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
+                bookingId: updatedBookingData.bookingId,
+                response : updatedBookingData.provider.response,
+                scheduledAt : updatedBookingData.scheduledAt,
+                reason: updatedBookingData.provider.reason as string
+            });
+
+            this._notificationService.notifyBookingAutoRejectToProvider(updatedBookingData.providerUserId, {
+                bookingId: updatedBookingData.bookingId,
+                response: updatedBookingData.provider.response,
+                reason: updatedBookingData.provider.reason as string
+            });
+        })
+    }
     
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
@@ -84,36 +115,7 @@ export class BookingUseCase implements IBookingUseCase {
                 scheduledAt : bookingInfo.scheduledAt,
                 issue: bookingInfo.issue
             })
-
-            const jobKey = `booking-${bookingInfo.bookingId}`;
-
-            this._bookingSchedulerService.scheduleAutoReject(jobKey, bookingInfo.bookingId, BOOKING_REQUEST_TIMEOUT_MS, async () => {
-                const currentBooking = await this._bookingRepository.findByBookingId(bookingInfo.bookingId);
-                
-                if (!currentBooking || currentBooking.provider.response !== ProviderResponseStatus.PENDING) return
-
-                let updatedBookingData = await this._bookingRepository.updateResponseAndStatus(
-                    bookingInfo.bookingId,
-                    BookingStatus.CANCELLED,
-                    ProviderResponseStatus.REJECTED,
-                    PROVIDER_NO_RESPONSE,
-                )
-
-                if (!updatedBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
- 
-                this._notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
-                    bookingId: updatedBookingData.bookingId,
-                    response : updatedBookingData.provider.response,
-                    scheduledAt : updatedBookingData.scheduledAt,
-                    reason: updatedBookingData.provider.reason as string
-                });
-
-                this._notificationService.notifyBookingAutoRejectToProvider(updatedBookingData.providerUserId, {
-                    bookingId: updatedBookingData.bookingId,
-                    response: updatedBookingData.provider.response,
-                    reason: updatedBookingData.provider.reason as string
-                });
-            })
+            this.scheduleProviderResponseTimeout(bookingInfo.bookingId)
 
             const mappedData: CreateBookingApplicationOutputDTO = {
                 bookingId: bookingInfo.bookingId,

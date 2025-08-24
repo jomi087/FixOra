@@ -1,4 +1,5 @@
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+import { PaymentStatus } from "../../../shared/Enums/Payment.js";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 import { Booking } from "../../entities/BookingEntity.js";
 import { Subcategory } from "../../entities/CategoryEntity.js";
@@ -17,7 +18,14 @@ export interface IBookingRepository {
     reason?: string
   ): Promise<Booking | null>;
 
-  updateResponse(bookingId: string,response: ProviderResponseStatus,): Promise<Booking | null>;
+  updatePaymentResponseAndStatus(
+    bookingId: string,
+    status: BookingStatus,
+    paymentStatus : PaymentStatus,
+    reason?: string
+  ): Promise<Booking | null>;
+
+  updateResponseAndPaymentStatus(bookingId: string,response: ProviderResponseStatus,paymentStatus : PaymentStatus ): Promise<Booking | null>;
   
   findCurrentBookingDetails(bookingId: string): Promise<{
     userInfo: Pick<User, "userId" | "fname" | "lname">

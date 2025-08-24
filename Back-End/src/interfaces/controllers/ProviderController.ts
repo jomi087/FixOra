@@ -15,7 +15,7 @@ export class ProviderController {
         private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
     ) {}
 
-    async updateBookingStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async respondToBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const {bookingId} = req.params 
             const { action,reason } = req.body
