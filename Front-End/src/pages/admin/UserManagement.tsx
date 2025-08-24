@@ -22,9 +22,7 @@ const UserManagement: React.FC = () => {
   ]
 
   const handleToggleStatus = async (userId: string) => {
-    try {
-      console.log("userId", userId)
-      
+    try {      
       const res = await AuthService.toggleUserStatusApi(userId)
       if (res.status === HttpStatusCode.OK) {
         setCustData(prev =>

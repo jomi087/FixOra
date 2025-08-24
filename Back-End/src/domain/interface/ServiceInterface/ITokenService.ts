@@ -4,3 +4,4 @@ export interface ITokenService {
   verifyAccessToken(token: string): any;
   verifyRefreshToken(token: string): any;
 }
+

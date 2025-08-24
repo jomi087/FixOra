@@ -1,4 +1,4 @@
-import { AddressDTO } from "./AddressDTO.js";
+import { AddressDTO } from "./Common/AddressDTO.js";
 
 export interface EditProfileInputDTO {
     userId: string;

@@ -3,30 +3,26 @@ import { Booking } from "../../entities/BookingEntity.js";
 import { Category } from "../../entities/CategoryEntity.js";
 import { Provider } from "../../entities/ProviderEntity.js";
 import { User } from "../../entities/UserEntity.js";
-import { UserDTO }  from "../../outputDTO's/UserDTO.js";
 
 //!Bad Practice in this repository (update)(i am violating srp rule need to re-work)
 
 export interface IUserRepository {
-    create(user: UserDTO): Promise <User>;   
     findByEmail(email: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+    create(user: User): Promise <User>;   
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    findByUserGoogleId(googleId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    
+    findByUserGoogleId(googleId: string): Promise<User | null>;
     updateRole(userId: string, role: RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    
     updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
     ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">>
-
-//split this method
-    update(filter: Partial<Pick<User, "userId" | "email">>, updates: Partial<User>, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-//____________
+    toogleUserStatusById(userId: string, isBlocked: boolean): Promise<boolean>;
+    updateRefreshTokenAndGetUser(userId: string, refreshToken: string): Promise<Omit<User, "password"> | null>;
+    resetRefreshTokenById(userId: string, refreshToken?: string): Promise<boolean>;
+    resetPasswordByEmail(email: string, password: string): Promise<boolean>;
 
     findUsersWithFilters(
         options: { searchQuery: string; filter: string },
         currentPage: number, limit: number,
-        omitFields?: Array<keyof User>
     ): Promise<{ data: Partial<User>[]; total: number }>;
     
     findActiveProvidersWithFilters(

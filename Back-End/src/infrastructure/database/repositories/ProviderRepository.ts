@@ -75,7 +75,16 @@ export class ProviderRepository implements IProviderRepository{
                         lname: "$userDetails.lname",
                         email: "$userDetails.email",
                         mobileNo: "$userDetails.mobileNo",
-                        location: "$userDetails.location",
+                        location: {
+                            houseinfo: "$userDetails.location.houseinfo",
+                            street: "$userDetails.location.street",
+                            district: "$userDetails.location.district",
+                            city: "$userDetails.location.city",
+                            locality: "$userDetails.location.locality",
+                            state: "$userDetails.location.state",
+                            postalCode: "$userDetails.location.postalCode",
+                            coordinates: "$userDetails.location.coordinates"
+                        },
                         isBlocked: "$userDetails.isBlocked"
                     },
                     dob: 1,

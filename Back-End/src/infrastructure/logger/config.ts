@@ -14,26 +14,26 @@ if (!fs.existsSync(logDir)) {
 
 const combinedTransport = new DailyRotateFile({
     filename: path.join(logDir, "combined-%DATE%.log"),
-    datePattern: "YYYY-MM-DD",          //  creates a new log file every day at midnight
-    zippedArchive: true,                // compress previous log files into .gz when rotated
-    maxSize: "20m",                    // if a log file exceeds 20 MB during the day, it will rotate early
-    maxFiles: "14d",                   // keep logs (raw + compressed) for 14 days, then delete
-    level: "info"
+    datePattern: process.env.LOG_DATE_PATTERN,                  //  creates a new log file every day at midnight (default frequency is set to 24hrs thats y every day new file is created to make more then one day chage it explicitly to any hours like 48h )
+    zippedArchive: process.env.LOG_ZIPPED === "true",           // compress previous log files into .gz when rotated
+    maxSize: process.env.LOG_MAX_SIZE,                                             // if a log file exceeds 20 MB during the day, it will rotate early
+    maxFiles: process.env.LOG_COMBINED_MAX_FILES,                                           // keep logs (raw + compressed) for 14 days, then delete
+    level: process.env.LOG_LEVEL
 });
 
 const errorTransport = new DailyRotateFile({
     filename: path.join(logDir, "error-%DATE%.log"),
-    datePattern: "YYYY-MM-DD",
-    zippedArchive: true,
-    maxSize: "20m",
-    maxFiles: "30d",
-    level: "error",
-    handleExceptions: true          //This makes the transport catch uncaught exceptions and log them
+    datePattern: process.env.LOG_DATE_PATTERN,
+    zippedArchive: process.env.LOG_ZIPPED === "true",
+    maxSize: process.env.LOG_MAX_SIZE,
+    maxFiles: process.env.LOG_ERROR_MAX_FILES,
+    level: process.env.LOG_ERROR_LEVEL,
+    handleExceptions: process.env.LOG_HANDLE_EXCEPTIONS === "true"    //This makes the transport catch uncaught exceptions and log them
 });
 
 
 export const loggerInstance = winston.createLogger({
-    level: "info",
+    level: process.env.LOG_LEVEL,
     format: winston.format.combine(
         winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
         winston.format.json()

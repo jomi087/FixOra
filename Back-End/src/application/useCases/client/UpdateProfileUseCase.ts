@@ -10,7 +10,7 @@ const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
 
 export class UpdateProfileUseCase implements IUpdateProfileUseCase{
     constructor(
-        private readonly userRepository : IUserRepository
+        private readonly _userRepository : IUserRepository
         
     ) { }
     
@@ -35,18 +35,18 @@ export class UpdateProfileUseCase implements IUpdateProfileUseCase{
                 },
             }
 
-            const updatedUser = await this.userRepository.updateProfie(userId, data)
+            const updatedUser = await this._userRepository.updateProfie(userId, data)
 
-            if (!updatedUser) {
+            if (!updatedUser ) {
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             }
 
-            const { geo, ...restLocation } = updatedUser.location;
+            const { geo, ...restLocation } = updatedUser.location!;
 
             const mappedData: ProfileDTO = {
                 fname: updatedUser.fname,
-                lname: updatedUser.lname,
-                mobileNo: updatedUser.mobileNo,
+                lname: updatedUser.lname!,
+                mobileNo: updatedUser.mobileNo!,
                 location: restLocation
             };
 

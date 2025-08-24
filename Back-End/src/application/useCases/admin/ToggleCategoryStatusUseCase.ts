@@ -8,12 +8,12 @@ const { INTERNAL_ERROR } = Messages
 
 export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase{
     constructor(
-        private readonly categoryRepository: ICategoryRepository
+        private readonly _categoryRepository: ICategoryRepository
     ) { }
 
     async execute(categoryId: string): Promise<void> {
         try {
-            const category = await this.categoryRepository.findById(categoryId);
+            const category = await this._categoryRepository.findById(categoryId);
             console.log("mainCategory", category)
 
             const newStatus = !category.isActive;
@@ -26,7 +26,7 @@ export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase
             }));
 
             //save
-            await this.categoryRepository.save(category);
+            await this._categoryRepository.save(category);
     
         } catch (error:any) {
             if (error.status && error.message) {

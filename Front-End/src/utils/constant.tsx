@@ -18,6 +18,7 @@ export const SingInThemeImage: string = "/signIn.png"
 
 /********************************************* Rules  *******************************************************/
 
+export const searchInputMaxLength : number = 80
 export const categoryImageSize: number = 1                                         //default set  to 2 mb
 export const providerImageSize: number = 1                                        //default set  to 2 mb
 export const KYCImageSize : number = 5                                           //default set  to 5 mb

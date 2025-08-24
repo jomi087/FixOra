@@ -7,19 +7,20 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
 import { Messages } from "../../../shared/Messages.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase.js";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
 const { INTERNAL_ERROR, EMAIL_NOT_FOUND  } = Messages
 
-export class ForgotPasswordUseCase {
+export class ForgotPasswordUseCase implements IForgotPasswordUseCase{
     constructor(
-        private readonly userRepository: IUserRepository,
-        private readonly emailService: IEmailService
+        private readonly _userRepository: IUserRepository,
+        private readonly _emailService: IEmailService
     ) { }
     
-    async execute(email: string) :Promise<void>{
+    async execute(email: string): Promise<void>{
         try {
-            if (!(await this.userRepository.findByEmail(email, ['password', 'refreshToken',]))) {
+            if (!(await this._userRepository.findByEmail(email, ['password', 'refreshToken',]))) {
                 throw { status : NOT_FOUND , message : EMAIL_NOT_FOUND }
             }
 
@@ -29,7 +30,6 @@ export class ForgotPasswordUseCase {
             const url = process.env.FRONTEND_URL || 'http://localhost:5001'
             
             const resetUrl = `${url}/reset-password?token=${resetToken}`;
-
 
             const html = `
                 <h1>FixOra Password Reset Request</h1>
@@ -41,7 +41,7 @@ export class ForgotPasswordUseCase {
                 <p><strong>Note:</strong> This link is valid for a limited time. Please complete the reset process before it expires.</p>
             `;
             
-            await this.emailService.sendEmail(email, "FixOra Reset Password", html);
+            await this._emailService.sendEmail(email, "FixOra Reset Password", html);
 
         } catch (error :any) {
             if (error.status && error.message) {

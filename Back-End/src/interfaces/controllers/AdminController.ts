@@ -11,7 +11,6 @@ import { ICreateServiceCategoryUseCase } from "../../application/Interface/useCa
 import { IToggleCategoryStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleCategoryStatusUseCase.js";
 import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleUserStatusUseCase.js";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
-import { CategoryInputDTO } from "../../application/DTO's/CategoryInputDTO.js";
 import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase.js";
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
@@ -21,16 +20,16 @@ const {  UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSIN
 
 export class AdminController {
     constructor(
-        private loggerService: ILoggerService,
-        private getCustomersUseCase: IGetCustomersUseCase,
-        private toggleUserStatusUseCase: IToggleUserStatusUseCase,
-        private getProvidersUseCase: IGetProvidersUseCase,
-        private providerApplicationUseCase: IProviderApplicationUseCase,
-        private updateKYCStatusUseCase : IUpdateKYCStatusUseCase,
-        private getServiceUseCase: IGetServiceUseCase,
-        private createServiceCategoryUseCase: ICreateServiceCategoryUseCase,
-        private imageUploaderService: IImageUploaderService,
-        private toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
+        private _loggerService: ILoggerService,
+        private _getCustomersUseCase: IGetCustomersUseCase,
+        private _toggleUserStatusUseCase: IToggleUserStatusUseCase,
+        private _getProvidersUseCase: IGetProvidersUseCase,
+        private _providerApplicationUseCase: IProviderApplicationUseCase,
+        private _updateKYCStatusUseCase : IUpdateKYCStatusUseCase,
+        private _getServiceUseCase: IGetServiceUseCase,
+        private _createServiceCategoryUseCase: ICreateServiceCategoryUseCase,
+        private _imageUploaderService: IImageUploaderService,
+        private _toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
     ) { }
 
     async getCustomers(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -41,7 +40,7 @@ export class AdminController {
             const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
-            const result = await this.getCustomersUseCase.execute({ searchQuery, filter, currentPage, limit });
+            const result = await this._getCustomersUseCase.execute({ searchQuery, filter, currentPage, limit });
 
             res.status(OK).json({
                 success: true,
@@ -50,7 +49,7 @@ export class AdminController {
             });
             
         } catch (error:any) {
-            this.loggerService.error(`getCustomers error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getCustomers error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -58,11 +57,11 @@ export class AdminController {
     async toggleUserStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { userId } = req.params
-            await this.toggleUserStatusUseCase.execute(userId);
+            await this._toggleUserStatusUseCase.execute(userId);
 
             res.status(OK).json({ success: true });
         } catch (error:any) {
-            this.loggerService.error(`toggleUserStatus error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`toggleUserStatus error:, ${error.message}`,{stack : error.stack});
             next(error)
         }
     }
@@ -75,7 +74,7 @@ export class AdminController {
             const currentPage = parseInt(req.query.currentPage as string) || 1
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
-            const result = await this.getProvidersUseCase.execute({ searchQuery, filter, currentPage, limit });
+            const result = await this._getProvidersUseCase.execute({ searchQuery, filter, currentPage, limit });
 
             res.status(OK).json({
                 success: true,
@@ -84,7 +83,7 @@ export class AdminController {
             });
             
         } catch (error:any) {
-            this.loggerService.error(`getProviders error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getProviders error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -96,7 +95,7 @@ export class AdminController {
             const currentPage = parseInt(req.query.currentPage as string) || 1
             const limit = parseInt(req.query.itemsPerPage as string) || 8
             
-            const result = await this.providerApplicationUseCase.execute({ searchQuery, filter, currentPage, limit });
+            const result = await this._providerApplicationUseCase.execute({ searchQuery, filter, currentPage, limit });
 
             res.status(OK).json({
                 success: true,
@@ -105,7 +104,7 @@ export class AdminController {
             });
 
         } catch (error:any) {
-            this.loggerService.error(`getProviderApplications error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getProviderApplications error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -120,7 +119,7 @@ export class AdminController {
             }
 
             const adminId = req.user.userId
-            const result = await this.updateKYCStatusUseCase.execute({ id,action,reason,adminId});
+            const result = await this._updateKYCStatusUseCase.execute({ id,action,reason,adminId});
 
             res.status(OK).json({
                 success: true,
@@ -129,7 +128,7 @@ export class AdminController {
             });
 
         } catch (error:any) {
-            this.loggerService.error(`updateKYCStatus error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`updateKYCStatus error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -141,7 +140,7 @@ export class AdminController {
             const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 8; 
 
-            const result = await this.getServiceUseCase.execute({ searchQuery, filter, currentPage, limit });
+            const result = await this._getServiceUseCase.execute({ searchQuery, filter, currentPage, limit });
 
             res.status(OK).json({
                 success: true,               
@@ -150,7 +149,7 @@ export class AdminController {
             });
 
         } catch (error:any) {
-            this.loggerService.error(`getService error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getService error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -165,13 +164,13 @@ export class AdminController {
 
             if (!mainImageFile) throw { status: BAD_REQUEST, message: MAIN_CATEGORY_IMAGE_MISSING  };
             
-            const mainImageUrl = await this.imageUploaderService.uploadImage(mainImageFile.buffer, "FixOra/Services");
+            const mainImageUrl = await this._imageUploaderService.uploadImage(mainImageFile.buffer, "FixOra/Services");
 
             const subcategoriesWithUrls = await Promise.all(
                 subcategories.map(async (sub: any, index: number) => {
                     const subImageFile = files.find(file => file.fieldname === `subcategoryImages[${index}]`);
                     if (!subImageFile) throw { status: BAD_REQUEST, message: SUBCATEGORY_IMAGE_MISSING };
-                    const imageUrl = await this.imageUploaderService.uploadImage(subImageFile.buffer, "FixOra/Services");
+                    const imageUrl = await this._imageUploaderService.uploadImage(subImageFile.buffer, "FixOra/Services");
 
                     return {
                     name: sub.name,
@@ -181,14 +180,14 @@ export class AdminController {
                 })
             );
 
-            const categoryInputDTO = {
-            name,
-            description,
-            subcategories: subcategoriesWithUrls ,
-            image: mainImageUrl,
-            } as CategoryInputDTO
+            const input = {
+                name,
+                description,
+                subcategories: subcategoriesWithUrls ,
+                image: mainImageUrl,
+            }
 
-            await this.createServiceCategoryUseCase.execute(categoryInputDTO);
+            await this._createServiceCategoryUseCase.execute(input);
 
             res.status(OK).json({
                 success: true,
@@ -196,7 +195,7 @@ export class AdminController {
             });
 
         } catch (error: any) {
-            this.loggerService.error(`activeServices error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`activeServices error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }
@@ -204,11 +203,11 @@ export class AdminController {
     async toggleCategoryStatus(req: Request, res: Response, next: NextFunction): Promise<void>{
         try {
             const { categoryId } = req.params
-            await this.toggleCategoryStatusUseCase.execute(categoryId);
+            await this._toggleCategoryStatusUseCase.execute(categoryId);
 
             res.status(OK).json({ success: true });
         } catch (error:any) {
-            this.loggerService.error(`toggleCategoryStatus Error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`toggleCategoryStatus Error:, ${error.message}`,{stack : error.stack});
             next(error)
         }
     }

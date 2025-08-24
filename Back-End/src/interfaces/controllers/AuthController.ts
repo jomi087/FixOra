@@ -1,20 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 
 //api logic
-import { SignupDTO } from "../../application/DTO's/SignupDTO.js";
-import { SignupUseCase } from "../../application/useCases/auth/SignupUseCase.js";
-import { VerifySignupOtpUseCase } from "../../application/useCases/auth/VerifySignupOtpUseCase.js";
-import { ResendOtpUseCase } from "../../application/useCases/auth/ResendOtpUseCase.js";
-import { SigninUseCase } from "../../application/useCases/auth/SigninUseCase.js";
-import { SigninDTO } from "../../application/DTO's/SigninDTO.js";
-import { RefreshTokenUseCase } from "../../application/useCases/auth/RefreshTokenUseCase.js";
-import { SignoutUseCase } from "../../application/useCases/auth/SignoutUseCase.js";
-import { ForgotPasswordUseCase } from "../../application/useCases/auth/ForgotPasswordUseCase.js";
-import { ResetPasswordUseCase } from "../../application/useCases/auth/ResetPasswordUseCase.js";
-import { GoogleSigninUseCase } from "../../application/useCases/auth/GoogleSigninUseCase.js";
+import { SignupDTO } from "../../application/DTO's/AuthDTO/SignupDTO.js";
+import { SigninInputDTO } from "../../application/DTO's/AuthDTO/SigninDTO.js";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../shared/Messages.js";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
+import { IVerifySignupOtpUseCase } from "../../application/Interface/useCases/Auth/IVerifySignupOtpUseCase.js";
+import { IResendOtpUseCase } from "../../application/Interface/useCases/Auth/IResendOtpUseCase{.js";
+import { ISigninUseCase } from "../../application/Interface/useCases/Auth/ISigninUseCase.js";
+import { IGoogleSigninUseCase } from "../../application/Interface/useCases/Auth/IGoogleSigninUseCase.js";
+import { IForgotPasswordUseCase } from "../../application/Interface/useCases/Auth/IForgotPasswordUseCase.js";
+import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase.js";
+import { IRefreshTokenUseCase } from "../../application/Interface/useCases/Auth/IRefreshTokenUseCase.js";
+import { ISignoutUseCase } from "../../application/Interface/useCases/Auth/ISignoutUseCase.js";
+import { ISignupUseCase } from "../../application/Interface/useCases/Auth/ISignupUseCase.js";
 
 const { OK, BAD_REQUEST,UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,USER_NOT_FOUND,
@@ -24,22 +24,22 @@ const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SU
 
 export class AuthController {
   constructor(
-    private loggerService: ILoggerService,
-    private signupUseCase: SignupUseCase, //"the value comming from constructor will be an instance of the class SignupUseCase."
-    private verifySignupOtpUseCase: VerifySignupOtpUseCase,
-    private resendOtpUseCase: ResendOtpUseCase,
-    private signinUseCase: SigninUseCase,
-    private googleSigninUseCase : GoogleSigninUseCase,
-    private forgotPasswordUseCase: ForgotPasswordUseCase,
-    private resetPasswordUseCase : ResetPasswordUseCase,
-    private refreshTokenUseCase: RefreshTokenUseCase,
-    private signoutUseCase : SignoutUseCase
+    private _loggerService: ILoggerService,
+    private _signupUseCase: ISignupUseCase, //"the value comming from constructor will be an instance of the class SignupUseCase."
+    private _verifySignupOtpUseCase: IVerifySignupOtpUseCase,
+    private _resendOtpUseCase: IResendOtpUseCase,
+    private _signinUseCase: ISigninUseCase,
+    private _googleSigninUseCase : IGoogleSigninUseCase,
+    private _forgotPasswordUseCase: IForgotPasswordUseCase,
+    private _resetPasswordUseCase : IResetPasswordUseCase,
+    private _refreshTokenUseCase: IRefreshTokenUseCase,
+    private _signoutUseCase : ISignoutUseCase
   ) { }
 
   async signup(req: Request, res: Response, next : NextFunction ): Promise<void> {
     try {
       const userData: SignupDTO = req.body;
-      const tempToken = await this.signupUseCase.execute(userData);
+      const tempToken = await this._signupUseCase.execute(userData);
 
       res.cookie('tempToken', tempToken, {
         httpOnly: true,
@@ -54,7 +54,7 @@ export class AuthController {
       });
 
     } catch (error: any) {
-      this.loggerService.error(`Signup error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`Signup error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -64,7 +64,7 @@ export class AuthController {
       const {otpData} = req.body;
       
       const tempToken = req.cookies.tempToken 
-      await this.verifySignupOtpUseCase.execute(otpData,tempToken)
+      await this._verifySignupOtpUseCase.execute(otpData,tempToken)
       
       res.clearCookie("tempToken")
 
@@ -74,7 +74,7 @@ export class AuthController {
       });
 
     } catch (error: any) {
-      this.loggerService.error(`Signup verification error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`Signup verification error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -82,7 +82,7 @@ export class AuthController {
   async resendOtp(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
       const tempToken = req.cookies.tempToken
-      await this.resendOtpUseCase.execute(tempToken)
+      await this._resendOtpUseCase.execute(tempToken)
 
       res.status(OK).json({
         success: true,
@@ -90,7 +90,7 @@ export class AuthController {
       });
 
     } catch (error:any) {
-      this.loggerService.error(`resendOtp error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`resendOtp error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -101,7 +101,7 @@ export class AuthController {
       const { code, role } = req.body;
       if (!code || !role) throw { status: BAD_REQUEST, message: MISSING_TOKEN  };
       
-      const result = await this.googleSigninUseCase.execute(code,role)
+      const result = await this._googleSigninUseCase.execute(code,role)
 
       res
         .status(OK)
@@ -123,7 +123,7 @@ export class AuthController {
           userData: result.userData,
         });
     } catch (error:any) {
-      this.loggerService.error(`googleSignin error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`googleSignin error:, ${error.message}`,{stack : error.stack});
       next(error)
     }
     
@@ -131,8 +131,8 @@ export class AuthController {
 
   async signin(req: Request, res: Response, next: NextFunction): Promise<void>{
     try {
-      const credentials: SigninDTO = req.body
-      const result = await this.signinUseCase.execute(credentials)
+      const credentials: SigninInputDTO = req.body
+      const result = await this._signinUseCase.execute(credentials)
 
       res
         .status(OK)
@@ -154,7 +154,7 @@ export class AuthController {
           userData: result.userData,
         });
     } catch(error:any) {
-      this.loggerService.error(`signin error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`signin error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -162,7 +162,7 @@ export class AuthController {
   async forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { email } = req.body
-      await this.forgotPasswordUseCase.execute(email)  // this use case is  were i am checking  do the given email exist in the usredb  if yes then send otp
+      await this._forgotPasswordUseCase.execute(email)  // this use case is  were i am checking  do the given email exist in the usredb  if yes then send otp
 
       res.status(OK).json({
         sucess: true,
@@ -170,7 +170,7 @@ export class AuthController {
       })
 
     } catch (error:any) {
-      this.loggerService.error(`ForgotPassword error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`ForgotPassword error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -180,7 +180,7 @@ export class AuthController {
 
       const { token, password } = req.body
       
-      await this.resetPasswordUseCase.execute(token, password)
+      await this._resetPasswordUseCase.execute(token, password)
 
       res.status(OK).json({
         success: true,
@@ -188,7 +188,7 @@ export class AuthController {
       });
 
     } catch (error: any) {
-      this.loggerService.error(`verifyOtp error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`verifyOtp error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
     
@@ -215,7 +215,7 @@ export class AuthController {
         }
       });
     } catch (error: any) {
-      this.loggerService.error(`checkAuth error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`checkAuth error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }
@@ -223,7 +223,7 @@ export class AuthController {
   async refreshToken(req: Request , res: Response, next: NextFunction): Promise<void>{
     try {
       const oldRefreshToken = req.cookies.refreshToken 
-      const { accessToken, refreshToken } = await this.refreshTokenUseCase.execute(oldRefreshToken)
+      const { accessToken, refreshToken } = await this._refreshTokenUseCase.execute(oldRefreshToken)
 
       const cookieOptions = {
         httpOnly: true,
@@ -247,7 +247,7 @@ export class AuthController {
       });
 
     } catch (error:any) {
-      this.loggerService.error(`Refresh token error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`Refresh token error:, ${error.message}`,{stack : error.stack});
 
       // Clear tokens on error
       const cookieOptions = {
@@ -271,7 +271,7 @@ export class AuthController {
         throw { status : BAD_REQUEST, message : USER_NOT_FOUND }
       }
 
-      await this.signoutUseCase.execute( userId )
+      await this._signoutUseCase.execute( userId )
 
       const options  = {
         httpOnly: true,
@@ -285,7 +285,7 @@ export class AuthController {
         .json({ message : LOGGED_OUT })
       
     } catch (error:any) {
-      this.loggerService.error(`signout error:, ${error.message}`,{stack : error.stack});
+      this._loggerService.error(`signout error:, ${error.message}`,{stack : error.stack});
       next(error);
     }
   }

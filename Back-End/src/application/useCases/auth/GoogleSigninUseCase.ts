@@ -5,31 +5,34 @@ import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuth
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
+import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase.js";
+import { SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO.js";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND,FORBIDDEN } = HttpStatusCode
 const { INTERNAL_ERROR, USER_NOT_FOUND, ACCOUNT_BLOCKED } = Messages
 
-export class GoogleSigninUseCase {
+export class GoogleSigninUseCase implements IGoogleSigninUseCase {
     constructor(
-        private readonly googleOAuthService: GoogleOAuthService,
-        private readonly userRepository : IUserRepository,
-        private readonly tokenService: ITokenService,
+        private readonly _googleOAuthService: GoogleOAuthService,
+        private readonly _userRepository : IUserRepository,
+        private readonly _tokenService: ITokenService,
     ) { }
 
-    async execute(code : string , role : RoleEnum) {
+    async execute(code : string , role : RoleEnum):Promise<SignInOutputDTO> {
         try {
-            const tokenResponse = await this.googleOAuthService.exchangeCodeForToken(code)
-            const googleUser = await this.googleOAuthService.getUserInfo(tokenResponse.access_token)
+            const tokenResponse = await this._googleOAuthService.exchangeCodeForToken(code)
+            const googleUser = await this._googleOAuthService.getUserInfo(tokenResponse.access_token)
             
-            let user = await this.userRepository.findByUserGoogleId(googleUser.sub)
+            let user = await this._userRepository.findByUserGoogleId(googleUser.sub)
 
             if (!user) {
-                user = await this.userRepository.create({
+                user = await this._userRepository.create({
                     userId: uuidv4(),
                     fname: googleUser.given_name,
                     lname: googleUser.family_name,
                     email: googleUser.email,
                     googleId: googleUser.sub,
+                    isBlocked: false,
                     role,
                 })
             }
@@ -41,27 +44,28 @@ export class GoogleSigninUseCase {
                 role: role
             }
 
-            const acsToken = this.tokenService.generateAccessToken(payload)
-            const refToken = this.tokenService.generateRefreshToken(payload)
+            const acsToken = this._tokenService.generateAccessToken(payload)
+            const refToken = this._tokenService.generateRefreshToken(payload)
 
-            const updatedUserData = await this.userRepository.update({ userId: user.userId }, { refreshToken: refToken }, ["password", "refreshToken"])
+            const updatedUserData = await this._userRepository.updateRefreshTokenAndGetUser(user.userId, refToken)
             if (!updatedUserData) {
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             } 
 
-            return {
+            let mappedupdatedUserData = {
                 userData: {
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,
                     email: updatedUserData.email,
                     mobileNo: updatedUserData.mobileNo,
                     role: updatedUserData.role,
-                    location : updatedUserData.location
-
+                    location: updatedUserData.location,
                 },
                 accessToken: acsToken,
                 refreshToken: refToken,
-            };
+            }
+            
+            return mappedupdatedUserData
         } catch (error:any) {
             if (error.status && error.message) {
                throw error;

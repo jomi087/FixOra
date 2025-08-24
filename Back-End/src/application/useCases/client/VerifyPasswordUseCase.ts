@@ -6,21 +6,22 @@ import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmail
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
+import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase.js";
 
 const { FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages
 
-export class VerifyPasswordUseCase {
+export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
     constructor(
-        private readonly userRepository : IUserRepository,
-        private readonly hashService : IHashService,
-        private readonly emailService: IEmailService
+        private readonly _userRepository : IUserRepository,
+        private readonly _hashService : IHashService,
+        private readonly _emailService: IEmailService
     ) { }
     
     async execute(password: string, userId : string): Promise<void> {
         try {
-            const user = await this.userRepository.findByUserId(userId,["refreshToken"]) as User; 
-            const isMatch = await this.hashService.compare(password, user.password as string)
+            const user = await this._userRepository.findByUserId(userId,["refreshToken"]) as User; 
+            const isMatch = await this._hashService.compare(password, user.password as string)
             if (!isMatch) throw { status: FORBIDDEN, message: INVALID_PASSWORD }
             
             const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions['expiresIn']
@@ -32,7 +33,7 @@ export class VerifyPasswordUseCase {
 
             const html = `
                 <h1>FixOra Password Reset Request</h1>
-                <p>You have requested to reset your password. If you did not make this request, please ignore this email — no action will be taken.</p>
+                <p>You have requested to reset your password. If you did not make this._request, please ignore this._email — no action will be taken.</p>
                 <br />
                 <p>To reset your password, please click the link below:</p>
                 <p>${resetUrl}</p>
@@ -40,7 +41,7 @@ export class VerifyPasswordUseCase {
                 <p><strong>Note:</strong> This link is valid for a limited time. Please complete the reset process before it expires.</p>
             `;
             
-            await this.emailService.sendEmail(user.email, "FixOra Reset Password", html); 
+            await this._emailService.sendEmail(user.email, "FixOra Reset Password", html); 
 
         } catch (error :any) {
             if (error.status && error.message) {

@@ -11,12 +11,12 @@ const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED, INTERNAL_ERROR } = Messages
 
 export class KYCRequestUseCase implements IKYCRequestUseCase {
     constructor(
-        private readonly kycRequestRepository : IKYCRequestRepository
+        private readonly _kycRequestRepository : IKYCRequestRepository
     ) { }
     
     async execute(input: KYCInputDTO): Promise<"submitted" | "resubmitted"> {
         try {
-            const existing = await this.kycRequestRepository.findByUserId(input.userId)
+            const existing = await this._kycRequestRepository.findByUserId(input.userId)
             
             const newRequest: KYCRequest = {
                 userId: input.userId,
@@ -39,12 +39,12 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
                     throw { status: BAD_REQUEST, message: KYC_ALREADY_APPROVED };
                 }
                 if (existing.status === KYCStatus.Rejected) {
-                    await this.kycRequestRepository.updateByUserId(input.userId, newRequest) as KYCRequest;
+                    await this._kycRequestRepository.updateByUserId(input.userId, newRequest) as KYCRequest;
                     return "resubmitted"
                 }
             }
             
-            await this.kycRequestRepository.create(newRequest)
+            await this._kycRequestRepository.create(newRequest)
             
             return "submitted"
             

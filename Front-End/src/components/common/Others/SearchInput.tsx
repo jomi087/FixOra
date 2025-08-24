@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { searchInputMaxLength } from "@/utils/constant";
 import React from "react";
 
 interface SearchInputProps {
@@ -13,6 +14,7 @@ const SearchInput: React.FC<SearchInputProps> = React.memo(({ value, onChange, p
     <div className="w-full">
       <Label className="sr-only">Search</Label>
       <Input
+        maxLength={searchInputMaxLength} 
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

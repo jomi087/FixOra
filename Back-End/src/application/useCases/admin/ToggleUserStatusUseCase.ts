@@ -8,17 +8,17 @@ const { INTERNAL_ERROR, USER_NOT_FOUND } = Messages
 
 export class ToggleUserStatusUseCase implements IToggleUserStatusUseCase {
     constructor(
-        private readonly userRepository : IUserRepository
+        private readonly _userRepository : IUserRepository
     ) { }
 
     async execute(userId: string): Promise<void> {
         try {
-            const userData = await this.userRepository.findByUserId(userId, ["password", "refreshToken", "googleId", "role"])
-
-            if (!await this.userRepository.update({ userId: userId }, { isBlocked: !userData?.isBlocked })){
+            
+            const userData = await this._userRepository.findByUserId(userId, ["password", "refreshToken", "googleId", "role"])
+            if (!await this._userRepository.toogleUserStatusById(userId, !userData?.isBlocked)){
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND  }
             }
-    
+
         } catch (error:any) {
             if (error.status && error.message) {
                throw error;

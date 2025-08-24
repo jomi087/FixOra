@@ -1,19 +1,20 @@
 import jwt from "jsonwebtoken";
-import { UserInputDTO } from "../../DTO's/UserInputDTO.js";
+import { DecodedUserDTO  } from "../../DTO's/AuthDTO/DecodedUserDTO.js";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
+import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase{.js";
 
 const {FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const {UNAUTHORIZED_MSG,INTERNAL_ERROR} = Messages
 
-export class ResendOtpUseCase{
+export class ResendOtpUseCase implements IResendOtpUseCase{
     constructor(
-        private readonly otpRepository: IOtpRepository,
-        private readonly otpGenratorService: IOtpGenratorService,
-        private readonly emailService: IEmailService,
+        private readonly _otpRepository: IOtpRepository,
+        private readonly _otpGenratorService: IOtpGenratorService,
+        private readonly _emailService: IEmailService,
         
     ) { }
     
@@ -22,19 +23,19 @@ export class ResendOtpUseCase{
             if (!token) {
                 throw { status: FORBIDDEN , message: UNAUTHORIZED_MSG }
             }
-            const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as UserInputDTO            
+            const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as DecodedUserDTO             
             
-            const otp = this.otpGenratorService.generateOtp()
-            console.log("this is resend otp", otp)
+            const otp = this._otpGenratorService.generateOtp()
+            console.log("this._is resend otp", otp)
             
-            await this.otpRepository.storeOtp({
+            await this._otpRepository.storeOtp({
                 email: decodeUserData.email,
                 otp,
                 createdAt: new Date()
             })
 
             const html = `<h1>Welcome to FixOra</h1><p>Your OTP code is: <strong>${otp}</strong></p>`
-            await this.emailService.sendEmail(decodeUserData.email, "Your FixOra OTP", html);
+            await this._emailService.sendEmail(decodeUserData.email, "Your FixOra OTP", html);
 
         } catch (error:any) {
            if (error.status && error.message) {

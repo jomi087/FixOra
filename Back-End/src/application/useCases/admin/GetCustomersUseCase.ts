@@ -10,22 +10,18 @@ const { INTERNAL_ERROR} = Messages
 
 export class GetCustomersUseCase implements IGetCustomersUseCase {
     constructor(
-        private readonly userRepository : IUserRepository,
+        private readonly _userRepository : IUserRepository,
     ) {}
     
     async execute(input : GetCustomersInputDTO ):Promise<GetCustomersOutputDTO>{    
         try {            
             const { searchQuery, filter, currentPage, limit } = input;
 
-            const users = await this.userRepository.findUsersWithFilters(
+            const users = await this._userRepository.findUsersWithFilters(
                 { searchQuery, filter },
                 currentPage, limit,
-                ['password', 'refreshToken', 'googleId', 'updatedAt']
             )
-
-
-            // remove omit and useMapper dto customerListalredy created
-
+            
             return {
                 data: users.data,
                 total : users.total

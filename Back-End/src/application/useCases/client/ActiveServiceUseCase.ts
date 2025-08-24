@@ -1,19 +1,21 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../../shared/Messages.js";
+import { ActiveCategoryOutputDTO } from "../../DTO's/CategoryDTO.js";
+import { IActiveServiceUseCase } from "../../Interface/useCases/Client/IActiveServiceUseCase.js";
 
 const { INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { INTERNAL_ERROR } = Messages
 
 
-export class ActiveServiceUseCase {
+export class ActiveServiceUseCase implements IActiveServiceUseCase {
     constructor(
-        private readonly categoryRepository : ICategoryRepository
+        private readonly _categoryRepository : ICategoryRepository
     ) { }
     
-    async execute() {
+    async execute():Promise<ActiveCategoryOutputDTO[]> {
         try {
-            const categories = await this.categoryRepository.findActiveCategoriesWithActiveSubcategories()
+            const categories = await this._categoryRepository.findActiveCategoriesWithActiveSubcategories()
                         
                 const mappedData = categories.map((cat) => ({
                     categoryId: cat.categoryId,
@@ -29,8 +31,6 @@ export class ActiveServiceUseCase {
                         isActive: sub.isActive,
                     })),
                 }));
-
-
             return mappedData
 
         } catch (error:any) {

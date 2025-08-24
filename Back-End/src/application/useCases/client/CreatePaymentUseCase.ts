@@ -10,13 +10,13 @@ const { INTERNAL_ERROR } = Messages
 
 export class CreatePaymentUseCase implements ICreatePaymentUseCase {
     constructor(
-        private readonly paymentService : IPaymentService
+        private readonly _paymentService : IPaymentService
     ) { }
     
     async execute(bookingId: string): Promise<string> {
         
         try {
-            return await this.paymentService.createPaymentIntent(bookingId)
+            return await this._paymentService.createPaymentIntent(bookingId)
             
         } catch (error:any) {
             if (error.status && error.message) throw error;

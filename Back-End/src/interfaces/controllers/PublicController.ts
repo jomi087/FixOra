@@ -7,20 +7,20 @@ const { OK} = HttpStatusCode
 
 export class PublicController {
     constructor(
-        private loggerService: ILoggerService,
-        private getLandingDataUseCase : IGetLandingDataUseCase
+        private _loggerService: ILoggerService,
+        private _getLandingDataUseCase : IGetLandingDataUseCase
     ){}
     
     async getLandingData(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const landingData = await this.getLandingDataUseCase.execute()
+            const landingData = await this._getLandingDataUseCase.execute()
             res.status(OK).json({
                 success: true,
                 landingData
             })
             
         } catch (error:any) {
-            this.loggerService.error(`getLandingData error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getLandingData error:, ${error.message}`,{stack : error.stack});
             next(error);
         }
     }

@@ -10,7 +10,7 @@ const { INTERNAL_ERROR } = Messages
 
 export class GetServiceUseCase implements IGetServiceUseCase {
     constructor(
-        private readonly categoryRepository : ICategoryRepository,
+        private readonly _categoryRepository : ICategoryRepository,
 
     ) {}
     
@@ -19,11 +19,26 @@ export class GetServiceUseCase implements IGetServiceUseCase {
 
             const { searchQuery, filter, currentPage, limit } = input;
 
-            const catogories = await this.categoryRepository.findServicesWithFilters({ searchQuery, filter },currentPage, limit)
+            const categories = await this._categoryRepository.findServicesWithFilters({ searchQuery, filter },currentPage, limit)
             
+            const mappedData = categories.data.map((cat) => ({
+                categoryId: cat.categoryId,
+                name: cat.name,
+                description: cat.description,
+                image: cat.image,
+                isActive: cat.isActive,
+                subcategories: cat.subcategories?.map((subCat) => ({
+                    subCategoryId: subCat.subCategoryId,
+                    name: subCat.name,
+                    description: subCat.description,
+                    image: subCat.image,
+                    isActive: subCat.isActive,
+                })) ?? []
+            }))
+
             return {
-                data: catogories.data,
-                total : catogories.total
+                data: mappedData,
+                total : categories.total
             };
 
         } catch (error:any) {
