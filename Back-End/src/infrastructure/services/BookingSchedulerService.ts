@@ -4,7 +4,7 @@ import { IBookingSchedulerService } from "../../domain/interface/ServiceInterfac
 export class BookingSchedulerService implements IBookingSchedulerService {
     private jobs = new Map<string, Job>();
 
-    scheduleAutoReject(jobKey: string, bookingId: string, timeoutMs: number, onExpire: () => Promise<void>): void {
+    scheduleTimeoutJob(jobKey: string, bookingId: string, timeoutMs: number, onExpire: () => Promise<void>): void {
         const expiryTime = new Date(Date.now() + timeoutMs);
 
         const job: Job = schedule.scheduleJob(expiryTime, async () => {

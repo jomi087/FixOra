@@ -1,6 +1,6 @@
 
 export interface IBookingSchedulerService {
-    scheduleAutoReject(
+    scheduleTimeoutJob(
         jobKey: string,
         bookingId: string,
         timeoutMs: number,
@@ -9,3 +9,6 @@ export interface IBookingSchedulerService {
 
     cancel(jobKey: string): void;
 }
+
+
+

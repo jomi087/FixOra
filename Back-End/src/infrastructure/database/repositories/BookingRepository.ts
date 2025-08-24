@@ -3,6 +3,7 @@ import { Subcategory } from "../../../domain/entities/CategoryEntity.js";
 import { User } from "../../../domain/entities/UserEntity.js";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository.js";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+import { PaymentStatus } from "../../../shared/Enums/Payment.js";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 import BookingModel from "../models/BookingModel.js";
 
@@ -31,7 +32,7 @@ export class BookingRepository implements IBookingRepository {
         bookingId: string,
         status: BookingStatus,
         response: ProviderResponseStatus,
-        reason: string,
+        reason?: string,
     ): Promise<Booking | null> {
         
         const booking = await BookingModel.findOneAndUpdate(
@@ -42,15 +43,34 @@ export class BookingRepository implements IBookingRepository {
         return booking
     }
 
-    async updateResponse(bookingId: string,response: ProviderResponseStatus,): Promise<Booking|null> {
+    async updatePaymentResponseAndStatus(
+        bookingId: string,
+        status: BookingStatus,
+        paymentStatus : PaymentStatus,
+        reason?: string,
+    ): Promise<Booking | null> {
+        
         const booking = await BookingModel.findOneAndUpdate(
             { bookingId },
-            { $set: { "provider.response": response } },
+            { $set: { "paymentInfo.status": paymentStatus, "paymentInfo.reason": reason, status } },
             { new: true }
         ).lean<Booking>()
         return booking
     }
 
+
+    async updateResponseAndPaymentStatus (
+        bookingId: string,
+        response: ProviderResponseStatus,
+        paymentStatus: PaymentStatus
+    ) : Promise<Booking | null> {
+        const booking = await BookingModel.findOneAndUpdate(
+            { bookingId },
+            { $set: { "provider.response": response, "paymentInfo.status": paymentStatus } },
+            { new: true }
+        ).lean<Booking>()
+        return booking
+    }
 
     async findCurrentBookingDetails(bookingId: string): Promise<{
         userInfo: Pick<User, "userId" | "fname" | "lname">

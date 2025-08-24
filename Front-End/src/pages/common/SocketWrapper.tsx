@@ -80,7 +80,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     <>
       {children}
       {firstBooking && (
-        <BookingApplicationDialouge
+        <BookingApplicationDialouge  
           key={firstBooking.bookingId}
           data={firstBooking}
           onClose={() =>

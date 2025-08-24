@@ -2,8 +2,10 @@ import { Booking } from "../../../domain/entities/BookingEntity.js";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository.js";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService.js";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService.js";
+import { PAYMENT_TIMEOUT_MS } from "../../../shared/constants.js";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
+import { PaymentStatus } from "../../../shared/Enums/Payment.js";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 import { Messages } from "../../../shared/Messages.js";
 import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../DTO's/BookingDTO/UpdateBookingStatusDTO.js";
@@ -11,15 +13,39 @@ import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/I
 
 
 const { INTERNAL_SERVER_ERROR,NOT_FOUND,CONFLICT} = HttpStatusCode
-const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED,} = Messages
+const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED,PAYMENT_TIMEOUT} = Messages
 
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
     constructor(
         private readonly _bookingRepository: IBookingRepository,
         private readonly _notificationService: INotificationService,
-        private readonly _bookingSchedulerService: IBookingSchedulerService
-        
+        private readonly _bookingSchedulerService: IBookingSchedulerService,
     ) { }
+
+    private schedulePaymentTimeout(bookingId:string): void{
+        const paymentKey = `paymentBooking-${bookingId}`
+
+        this._bookingSchedulerService.scheduleTimeoutJob(paymentKey, bookingId, PAYMENT_TIMEOUT_MS, async () => {
+            const latestBooking = await this._bookingRepository.findByBookingId(bookingId);
+            console.log(latestBooking?.paymentInfo?.status)
+
+            if (!latestBooking || latestBooking.paymentInfo?.status !== PaymentStatus.PENDING) return
+
+            let cancelledBookingData  =  await this._bookingRepository.updatePaymentResponseAndStatus(
+                bookingId,
+                BookingStatus.CANCELLED,
+                PaymentStatus.FAILED,
+                PAYMENT_TIMEOUT,
+            )
+
+            if (!cancelledBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+            
+            this._notificationService.notifyPaymentFailed(cancelledBookingData.userId, {
+                bookingId: cancelledBookingData.bookingId,
+                reason: cancelledBookingData.paymentInfo?.reason as string
+            });
+        })
+    }
     
     async execute(input:UpdateBookingStatusInputDTO ): Promise<UpdateBookingStatusOutputDTO|null > {
         try {
@@ -39,7 +65,7 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
             if (action === ProviderResponseStatus.REJECTED) {
                 updatedBookingData = await this._bookingRepository.updateResponseAndStatus(bookingId, BookingStatus.CANCELLED, action, reason)
             } else {
-                updatedBookingData = await this._bookingRepository.updateResponse(bookingId, action)
+                updatedBookingData = await this._bookingRepository.updateResponseAndPaymentStatus(bookingId, action,PaymentStatus.PENDING)
             }
 
             if (!updatedBookingData) {
@@ -53,7 +79,12 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
                 ...(action === ProviderResponseStatus.REJECTED && { reason: updatedBookingData.provider.reason })
             });
 
-            const jobKey = `booking-${updatedBookingData.bookingId}`;
+            if (action === ProviderResponseStatus.ACCEPTED) {
+                console.log("enter here")
+                this.schedulePaymentTimeout(updatedBookingData.bookingId)
+            }
+
+            const jobKey = `providerResponse-${updatedBookingData.bookingId}`;
             this._bookingSchedulerService.cancel(jobKey)
 
             let mappedData = (action !== ProviderResponseStatus.REJECTED) ? {
@@ -61,7 +92,7 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
                 userId: updatedBookingData.userId,
                 scheduledAt: updatedBookingData.scheduledAt,
                 status: updatedBookingData.status,
-            } : null 
+            } : null
 
             return mappedData;
 

@@ -1,6 +1,6 @@
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 
-interface ProviderBookingNotification {
+export interface ProviderBookingNotification {
     bookingId: string;
     userName: string;
     issueType: string;
@@ -8,7 +8,7 @@ interface ProviderBookingNotification {
     issue: string;
 }
 
-interface UserResponsNotificaton{
+export interface UserResponsNotificaton{
     bookingId: string;
     response: ProviderResponseStatus;
     scheduledAt: Date
@@ -21,9 +21,16 @@ export interface AutoRejectNotification {
     reason: string
 }
 
+export interface PaymentFailedNotification {
+    bookingId: string
+    reason: string
+}
+
 
 export interface INotificationService {
     notifyBookingRequestToProvider(providerUserId: string , payload : ProviderBookingNotification): void
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
+    notifyPaymentFailed(userId: string, payload: PaymentFailedNotification): void 
+
 }   

@@ -25,32 +25,16 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
     const [errorMsg, setErrorMsg] = useState("")
     const { date, time } = splitDateTime(data.scheduledAt);
  
-    //const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // useEffect(() => { //due to multiple request multiple notification sound came so that y i move this logic to socket wreapper
-
-    //     const sound = new Audio(notificationMp3);
-    //     sound.loop = true
-    //     sound.play()
-    //     audioRef.current = sound
-    //     return () => {
-    //         audioRef.current?.pause();
-    //         audioRef.current = null;
-    //     }
-
-    // }, []);
 
     const askConfirmation = (type: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>) => {
         setActionType(type);
         setConfirmOpen(true);
-        // audioRef.current?.pause();
-        // audioRef.current = null;
+
     };
     
     const handleConfirm =async () => {
 
-        // audioRef.current?.pause();
-        // audioRef.current = null;
 
         if (!actionType) return;
         if (actionType === ProviderResponseStatus.REJECTED && !reason.trim()) {

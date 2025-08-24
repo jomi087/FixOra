@@ -93,34 +93,6 @@ export type ProviderBookingsInfo = {
   distanceFee: number;
 }
 
-//provider nneed to payment details
-// export type BookingsInfo = {
-//     user: {
-//       userId: string,
-//       fname: string;
-//       lname: string; 
-//       address: AddressWithCoordinates;
-//     };
-//     gender: Gender;
-//     service: {
-//         categoryId: string
-//         name: string;
-//         subcategories: {
-//             subCategoryId: string;
-//             name: string
-//         }[];
-//     };
-//     bookings: {
-//       bookingId: string;
-//       fullDate: string;
-//       time: string;
-//       status: BookingStatus;
-//     }[],
-//     profileImage: string;
-//     serviceCharge: number;
-//     isOnline: boolean;
-//     distanceFee: number;
-// }
 
 
 //Admin 

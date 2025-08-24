@@ -49,7 +49,8 @@ export const Messages = {
     ALREDY_BOOKED: "Slot is already booked",
     PENDING_BOOKING: "Another booking is pending for this slot",
 
-    PROVIDER_NO_RESPONSE : "No response from provider",
+    PROVIDER_NO_RESPONSE: "No response from provider",
+    PAYMENT_TIMEOUT : "Payment TimeOut",
 
     INVALID_CREDENTIALS: "Invalid credentials",
     INVALID_ROLE: "Invalid role",
