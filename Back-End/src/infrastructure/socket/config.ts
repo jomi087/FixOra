@@ -14,6 +14,7 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
       credentials: true,
     },
   });
+  
   ioInstance.use(socketAuthMiddleware(logger));
 
   //socket Event listners

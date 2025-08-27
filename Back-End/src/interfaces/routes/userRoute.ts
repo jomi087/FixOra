@@ -1,5 +1,5 @@
 import express from 'express'
-import { AuthMiddleware, userController,providerController } from '../../main/dependencyInjector.js'
+import { AuthMiddleware, userController } from '../../main/dependencyInjector.js'
 import { validateRequest } from '../middleware/validateRequest.js'
 import { bookingIdSchema, bookingRequestSchema } from '../validations/bookingSchema.js'
 import { resetPasswordSchema, verifyPasswordSchema } from '../validations/authSchema.js'

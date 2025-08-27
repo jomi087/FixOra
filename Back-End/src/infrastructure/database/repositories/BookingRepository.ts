@@ -28,7 +28,7 @@ export class BookingRepository implements IBookingRepository {
         }) 
     }
 
-    async updateResponseAndStatus(
+    async updateProviderResponseAndStatus(
         bookingId: string,
         status: BookingStatus,
         response: ProviderResponseStatus,
@@ -43,23 +43,30 @@ export class BookingRepository implements IBookingRepository {
         return booking
     }
 
-    async updatePaymentResponseAndStatus(
-        bookingId: string,
-        status: BookingStatus,
-        paymentStatus : PaymentStatus,
-        reason?: string,
-    ): Promise<Booking | null> {
-        
-        const booking = await BookingModel.findOneAndUpdate(
-            { bookingId },
-            { $set: { "paymentInfo.status": paymentStatus, "paymentInfo.reason": reason, status } },
-            { new: true }
-        ).lean<Booking>()
-        return booking
+    async updateBooking(bookingId: string, updatedBooking: Booking): Promise<Booking|null> {
+        return BookingModel.findOneAndUpdate(
+            { bookingId },     
+            { $set: updatedBooking },   
+            { new: true }       
+        ).lean();
     }
 
+    // async updatePaymentResponseAndStatus(
+    //     bookingId: string,
+    //     status: BookingStatus,
+    //     paymentStatus : PaymentStatus,
+    //     reason?: string,
+    // ): Promise<Booking | null> {
+        
+    //     const booking = await BookingModel.findOneAndUpdate(
+    //         { bookingId },
+    //         { $set: { "paymentInfo.status": paymentStatus, "paymentInfo.reason": reason, status } },
+    //         { new: true }
+    //     ).lean<Booking>()
+    //     return booking
+    // }
 
-    async updateResponseAndPaymentStatus (
+    async updateProviderResponseAndPaymentStatus (
         bookingId: string,
         response: ProviderResponseStatus,
         paymentStatus: PaymentStatus

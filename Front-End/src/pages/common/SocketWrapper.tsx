@@ -1,18 +1,20 @@
 import socket from '@/services/soket';
 import type { BookingAutoRejectPayload, BookingRequestPayload } from '@/shared/Types/booking';
-import { useAppSelector } from '@/store/hooks';
-import React, { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import React, { useEffect, useRef } from 'react';
 import BookingApplicationDialouge from '../../components/provider/BookingApplicationDialouge';
 import { toast } from 'react-toastify';
 import notificationMp3 from '@/assets/bookingnotification.mp3'
-
-
+import { addBookingRequest, autoRejectBooking, removeBookingRequest } from '@/store/provider/bookingSlice';
 
 const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAppSelector((state) => state.auth);
+  const { requests } = useAppSelector((state) => state.booking);
+  const dispatch = useAppDispatch();
 
-  const [bookingDialog, setBookingDialog] = useState<BookingRequestPayload[]>([]); //why arrey is because  to story multer booking request or else it will overide the privous request
-  const firstBooking = bookingDialog[0];
+  // const [bookingDialog, setBookingDialog] = useState<BookingRequestPayload[]>([]); //why arrey is because  to story multer booking request or else it will overide the privous request
+  // const firstBooking = bookingDialog[0];
+
   const isConnected = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
@@ -38,18 +40,19 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     };
 
     const handleBookingRequested = (payload: BookingRequestPayload) => {
-      console.log('New booking request', payload);
-      setBookingDialog((prev) =>[...prev,payload]);
+      //setBookingDialog((prev) => [...prev, payload]);
+      dispatch(addBookingRequest(payload));
+
     };
 
     const handleBookingAutoReject = (payload: BookingAutoRejectPayload) => {
-      setBookingDialog((prev) => prev.filter((b)=> b.bookingId !== payload.bookingId ) ); 
+      //setBookingDialog((prev) => prev.filter((b)=> b.bookingId !== payload.bookingId ) ); 
+      dispatch(autoRejectBooking(payload));
       toast.warn(`Booking request of ${payload.bookingId} was a auto Rejected`)
       toast.info(`Reason: ${payload.reason}`)
     }
 
     const handleConnectError = (err: any) => {
-      console.error('Socket connect error:', err.message, err);
       toast.error(err.message);
     };
 
@@ -64,17 +67,20 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       socket.off('booking:autoReject', handleBookingAutoReject);
       socket.off('connect_error', handleConnectError);
     };
-  }, [user]);
+  }, [user,dispatch]);
+
 
   useEffect(() => {
     if (!audioRef.current) return;
-    if (bookingDialog.length > 0) {
+    if (requests.length > 0) {
       audioRef.current.play().catch(() => {}); // play when we have bookings
     } else {
       audioRef.current.pause();
       audioRef.current.currentTime = 0; // reset when no bookings
     }
-  }, [bookingDialog]);
+  }, [requests]);
+
+  const firstBooking = requests[0];
 
   return (
     <>
@@ -83,11 +89,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         <BookingApplicationDialouge  
           key={firstBooking.bookingId}
           data={firstBooking}
-          onClose={() =>
-            setBookingDialog((prev) =>
-              prev.filter((_, i) => i !== 0) 
-            )
-          }
+          onClose={() => dispatch(removeBookingRequest(firstBooking.bookingId))}
         />
       )}
       

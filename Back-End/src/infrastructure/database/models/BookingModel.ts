@@ -73,17 +73,15 @@ const BookingSchema = new Schema<IBookingModel>({
         paidAt: {
             type: Date,
         },
+        transactionId: {
+          type : String,  
+        },
         reason: {
             type: String
         },
     },
-    esCrowInfo: {
-        toProvider: {
-            type: Number,
-        },
-        toAdmin: { 
-            type: Number,
-        },
+    esCrowAmout :  {
+        type: Number,
     },
     diagnosed: {
         description: {

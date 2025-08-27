@@ -11,21 +11,27 @@ export interface IBookingRepository {
   
   findExistingBooking(providerId :string ,scheduledAt:Date ):Promise<Booking|null>
 
-  updateResponseAndStatus(
+  updateProviderResponseAndStatus(
     bookingId: string,
     status: BookingStatus,
     response: ProviderResponseStatus,
     reason?: string
   ): Promise<Booking | null>;
 
-  updatePaymentResponseAndStatus(
-    bookingId: string,
-    status: BookingStatus,
-    paymentStatus : PaymentStatus,
-    reason?: string
-  ): Promise<Booking | null>;
+  updateBooking(bookingId: string, updatedBooking: Booking): Promise<Booking|null> 
 
-  updateResponseAndPaymentStatus(bookingId: string,response: ProviderResponseStatus,paymentStatus : PaymentStatus ): Promise<Booking | null>;
+  // updatePaymentResponseAndStatus(
+  //   bookingId: string,
+  //   status: BookingStatus,
+  //   paymentStatus : PaymentStatus,
+  //   reason?: string
+  // ): Promise<Booking | null>;
+
+  updateProviderResponseAndPaymentStatus(
+    bookingId: string,
+    response: ProviderResponseStatus,
+    paymentStatus: PaymentStatus
+  ): Promise<Booking | null>;
   
   findCurrentBookingDetails(bookingId: string): Promise<{
     userInfo: Pick<User, "userId" | "fname" | "lname">

@@ -24,13 +24,13 @@ export interface Booking {
     paymentInfo ?: {
         mop: PaymentMode; //wallet , online (defualt wallet)
         status: PaymentStatus; //pending,failed,success,refunded (default pending)
-        paidAt?: Date;
+        paidAt: Date;
+        transactionId?: string
         reason?: string; //refund reason 
     }
-    esCrowInfo ?: {
-        toProvider: number; //default 0
-        toAdmin: number; // default 0
-    }
+
+    esCrowAmout?: number
+    
     diagnosed?: {
         description: string;
         replaceParts?: {
@@ -38,6 +38,7 @@ export interface Booking {
             cost: number; //
         }[]
     }
+
     acknowledgment?: {
         isWorkCompletedByProvider: boolean;
         imageUrl: string;

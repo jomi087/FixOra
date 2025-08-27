@@ -7,7 +7,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode"
 import { addBooking, removeBooking } from "@/store/user/providerBookingSlice"
 import { useEffect, useState } from "react"
 import { BookingStatus } from "@/shared/enums/BookingStatus"
-import type { BookingResponsePayload, PaymentFailedNotification } from "@/shared/Types/booking"
+import type { BookingResponsePayload } from "@/shared/Types/booking"
 import socket from "@/services/soket"
 import { PaymentMode } from "@/shared/enums/PaymentMode"
 import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus"
@@ -100,20 +100,10 @@ export const useBookingRequest = () => {
             }
         }
 
-        const handlePaymentFailed = (payload: PaymentFailedNotification) => {
-            setIsWaiting(false);
-            setShowModePayment(false);
-            setBookingId("")
-            dispatch(removeBooking(payload.bookingId))
-            toast.error(`Payment failed: ${payload.reason}`)
-        }
-
         socket.on('booking:response', handleBookingResponse)
-        socket.on("payment:failed", handlePaymentFailed)
 
         return () => {
             socket.off("booking:response", handleBookingResponse);
-            socket.off("payment:failed", handlePaymentFailed)
         };
 
     }, []);

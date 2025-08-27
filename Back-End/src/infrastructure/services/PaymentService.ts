@@ -3,6 +3,9 @@ import { IPaymentService } from "../../domain/interface/ServiceInterface/IPaymen
 import { IBookingRepository } from "../../domain/interface/RepositoryInterface/IBookingRepository.js";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
 import { Messages } from "../../shared/Messages.js";
+import { BookingStatus } from "../../shared/Enums/BookingStatus.js";
+import { PaymentMode, PaymentStatus } from "../../shared/Enums/Payment.js";
+import { Booking } from "../../domain/entities/BookingEntity.js";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
 const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND } = Messages
@@ -38,8 +41,15 @@ export class PaymentService implements IPaymentService {
           },
         ],
         mode: 'payment',
-        success_url: `${process.env.FRONTEND_URL}/user/provider/booking/${booking.provider.id}`,
-        cancel_url: `${process.env.FRONTEND_URL}/user/provider/booking/${booking.provider.id}`,
+        success_url: `${process.env.FRONTEND_URL}/user/payment/${booking.bookingId}`,
+        cancel_url: `${process.env.FRONTEND_URL}/user/payment/${booking.bookingId}`,
+     
+        metadata : {
+          bookingId: booking.bookingId,
+        },
+      },
+      {
+        idempotencyKey: `booking_${bookingId}`,// Handles accidental retries, refreshes, or user double clicks. -> Prevents duplicate Stripe sessions
       })
 
       return session.id;
@@ -49,6 +59,100 @@ export class PaymentService implements IPaymentService {
       if (error.status && error.message) throw error;
       throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
     }
+  }
+
+  async verifyPayment(rawBody: Buffer, signature: string): Promise<{ booking: Booking; eventType: string } | null > {
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+    let event: Stripe.Event;
+    try {
+      event = this.stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
+
+      
+
+      switch (event.type) {
+        case "checkout.session.completed": {
+          const session = event.data.object as Stripe.Checkout.Session;
+          const bookingId = session.metadata?.bookingId;
+          
+          if (!bookingId) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+
+          const booking = await this._bookingRepository.findByBookingId(bookingId);
+          if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+
+          const TotalAmount = booking.pricing.baseCost + booking.pricing.distanceFee
+
+          booking.paymentInfo = booking.paymentInfo ?? {
+            mop: PaymentMode.ONLINE,
+            status: PaymentStatus.SUCCESS,
+            paidAt: new Date(),
+            transactionId :  session.payment_intent as string
+          };
+
+          booking.status = BookingStatus.CONFIRMED;
+          booking.esCrowAmout = TotalAmount
+
+          const updatedBooking = await this._bookingRepository.updateBooking(bookingId, booking)
+          if(!updatedBooking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+      
+          return { booking: updatedBooking, eventType: "success" };
+        }
+
+        case "checkout.session.expired": {
+          const session = event.data.object as Stripe.Checkout.Session;
+          const bookingId = session.metadata?.bookingId;
+
+          if (!bookingId) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+
+          const booking = await this._bookingRepository.findByBookingId(bookingId);
+          if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+
+          booking.paymentInfo = booking.paymentInfo ?? {
+            mop: PaymentMode.ONLINE,
+            status: PaymentStatus.FAILED,
+            paidAt: new Date(),
+            transactionId :  session.payment_intent as string,
+            reason : "Checkout session expired"
+          };
+          booking.status = BookingStatus.CANCELLED;
+
+          const updatedBooking = await this._bookingRepository.updateBooking(bookingId, booking)
+          if(!updatedBooking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+          
+          return { booking: updatedBooking, eventType: "failure" };
+        }
+          
+        case "payment_intent.payment_failed": {
+          const paymentIntent = event.data.object as Stripe.PaymentIntent;
+          const bookingId = paymentIntent.metadata?.bookingId;
+
+          if (!bookingId) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+
+          const booking = await this._bookingRepository.findByBookingId(bookingId);
+          if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+
+          booking.paymentInfo = booking.paymentInfo ?? {
+            mop: PaymentMode.ONLINE,
+            status: PaymentStatus.FAILED,
+            paidAt: new Date(),
+            transactionId :  paymentIntent.id,
+            reason: paymentIntent.last_payment_error?.message || "Payment failed",
+          };
+          booking.status = BookingStatus.CANCELLED;
+         
+          const updatedBooking = await this._bookingRepository.updateBooking(bookingId, booking)
+          if(!updatedBooking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+          
+          return { booking: updatedBooking, eventType: "failure" };
+        } 
+          
+        default:
+          return null;
+      }
+    } catch (error: any) {
+      if (error.status && error.message) throw error;
+      throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+    }
+    
   }
 }
 
