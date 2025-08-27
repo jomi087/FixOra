@@ -4,7 +4,7 @@ import authReducer from './user/userSlice';
 import categoryReducer from './user/categorySlice';
 import filterReducer from './user/filterSlice';
 import providerBookingReducer from './user/providerBookingSlice';
-
+import bookingReducer from './provider/bookingSlice';
 
 
 const appStore = configureStore ({
@@ -13,6 +13,7 @@ const appStore = configureStore ({
         category: categoryReducer,
         filter: filterReducer,
         providerBooking: providerBookingReducer,
+        booking: bookingReducer,
     }
 })
 

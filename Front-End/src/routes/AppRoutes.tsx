@@ -24,10 +24,11 @@ import VerifictionFormPage from '@/pages/client/VerifictionPage.tsx'
 import ProviderApplicationPage from '@/pages/admin/ProviderApplicationPage.tsx'
 import ProviderBookingPage from '@/pages/client/ProviderBookingPage.tsx'
 import ProviderProfilePage  from '@/pages/provider/ProfilePage.tsx'
-import SocketWrapper from '@/pages/common/SocketWrapper.tsx'
 import ProviderLayout from '@/components/common/layout/ProviderLayout.tsx'
 import UserLayout from '@/components/common/layout/UserLayout.tsx'
 import AdminLayout from '@/components/common/layout/AdminLayout.tsx'
+import BookingHistoryPage from '@/pages/client/BookingHistoryPage.tsx'
+import PaymentPage from '@/pages/common/PaymentPage.tsx'
 
 
 const router = createBrowserRouter([
@@ -59,9 +60,7 @@ const router = createBrowserRouter([
         element: (
             <ErrorBoundary>
                 <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
-                    <SocketWrapper>
-                        <UserLayout />
-                    </SocketWrapper>    
+                    <UserLayout />
                 </ProtectedRoute>
             </ErrorBoundary>
         ),
@@ -72,6 +71,8 @@ const router = createBrowserRouter([
             { path: 'provider/booking/:providerId', element:  <ProviderBookingPage/> },
             { path: 'account/profile', element:  <ClientProfilePage/> },
             { path: 'account/change-password', element:  <ChangePasswordPage/> },
+            { path: 'payment/:bookingId', element: <PaymentPage /> },
+            { path: 'bookings', element: <BookingHistoryPage/> },
         ],
     },
     //Provider Routes
@@ -80,9 +81,7 @@ const router = createBrowserRouter([
         element: (
             <ErrorBoundary>
             <ProtectedRoute allowedRoles={[RoleEnum.PROVIDER]}>
-                <SocketWrapper>
-                    <ProviderLayout />
-                </SocketWrapper>
+                <ProviderLayout />
             </ProtectedRoute>
             </ErrorBoundary>
         ),
@@ -107,7 +106,6 @@ const router = createBrowserRouter([
             { path: 'providers', element: <ProviderManagement /> },
             { path: 'provider-request', element: <ProviderApplicationPage /> },
             { path: 'services', element: <ServiceManagement /> },
-
         ]
     },
     {

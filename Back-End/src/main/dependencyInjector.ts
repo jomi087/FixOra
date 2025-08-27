@@ -95,6 +95,9 @@ const bookingUseCase = new BookingUseCase(bookingRepository,notificationService,
 import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase.js";
 const createPaymentUseCase = new CreatePaymentUseCase(paymentService)
 
+import { VerifyPaymentUseCase } from "../application/useCases/client/VerifyPaymentUseCase.js";
+const verifyPaymentUseCase = new VerifyPaymentUseCase(paymentService,notificationService)
+
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase.js";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository)
 
@@ -144,7 +147,7 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 
 const publicController = new PublicController(loggerService, getLandingDataUseCase)
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 
-const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerBookingsInfoUseCase,bookingUseCase,createPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
+const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerBookingsInfoUseCase,bookingUseCase,createPaymentUseCase,verifyPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase)
 const providerController = new ProviderController(loggerService, updateBookingStatusUseCase)
 const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,)
 

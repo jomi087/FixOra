@@ -90,8 +90,11 @@ class AuthService {
     }
 
     paymentApi(bookingId: string) {
-        console.log(bookingId,"jdfafjldjajfa;lkjf")
         return axiosInstance.post(`/api/user/create-checkout-session`, {bookingId}, this.getJsonConfig())
+    }
+
+    checkBookingPaymentStatus(bookingId: string) {
+        return axiosInstance.get(`/api/user/booking/notify-paymentStatus/${bookingId}`)
     }
 
     editProfileApi(form: ProfileEdit) {

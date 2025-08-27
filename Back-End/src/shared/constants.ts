@@ -6,8 +6,8 @@ export const BodyParserLimits = {
 export const BOOKING_REQUEST_TIMEOUT_MS = 
     process.env.NODE_ENV === "production" ? 5 * 60 * 1000  :  15 * 1000;     
 
-export const PAYMENT_TIMEOUT_MS =
-    process.env.NODE_ENV === "production" ? 15 * 60 * 1000 :  30 * 1000;
+// export const PAYMENT_TIMEOUT_MS =
+//     process.env.NODE_ENV === "production" ? 15 * 60 * 1000 :  40 * 1000;
 
 
 

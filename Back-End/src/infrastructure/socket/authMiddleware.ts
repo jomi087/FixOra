@@ -25,6 +25,7 @@ export const socketAuthMiddleware = (logger: ILoggerService) => {
 
       next();
     } catch (error: any) {
+      
       logger.error("Socket auth error:", error);
       next(error); 
     }

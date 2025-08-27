@@ -12,11 +12,12 @@ dotenv.config();
 //From Local files
 import { BodyParserLimits } from '../shared/constants.js';
 
-import publicRouter from '../interfaces/routes/publicRouter.js'
-import authRouter from '../interfaces/routes/authRoute.js';
-import userRouter from '../interfaces/routes/userRoute.js'
-import providerRouter from '../interfaces/routes/providerRoute.js'
-import adminRouter from '../interfaces/routes/adminRoute.js'
+import publicRoutes from '../interfaces/routes/publicRoute.js'
+import authRoutes from '../interfaces/routes/authRoute.js';
+import userRoutes from '../interfaces/routes/userRoute.js'
+import providerRoutes from '../interfaces/routes/providerRoute.js'
+import adminRoutes from '../interfaces/routes/adminRoute.js'
+import rawRoutes from '../interfaces/routes/rawRoute.js'
 
 import mongoConnect from '../infrastructure/database/connection.js';
 import { initializeSocket } from '../infrastructure/socket/config.js';
@@ -44,10 +45,10 @@ const corsOptions = {
 const __filename = fileURLToPath(import.meta.url) // why this way cz esmodule dosent directly support __dirname 
 const __dirname = path.dirname(__filename)
 
-
-
 // Connect to MongoDB
 mongoConnect(logger)
+
+app.use("/api", rawRoutes); //instead of parsing buffer to json we are passing as buffer it self
 
 //Middleware
 app.use(cookieParser())
@@ -57,11 +58,11 @@ app.use(express.json({ limit: BodyParserLimits.JSON_LIMIT }))//Your server will 
 app.use(express.urlencoded({ extended: true, limit: BodyParserLimits.URLENCODED_LIMIT }))
 app.use(express.static(path.join(__dirname, '../public')));  
 
-app.use('/api/public',publicRouter)
-app.use('/api/auth', authRouter)
-app.use('/api/user', userRouter)
-app.use('/api/provider',providerRouter)
-app.use('/api/admin', adminRouter)
+app.use('/api/public',publicRoutes)
+app.use('/api/auth', authRoutes)
+app.use('/api/user', userRoutes)
+app.use('/api/provider',providerRoutes)
+app.use('/api/admin', adminRoutes)
 
 app.use(errorHandler)
 

@@ -14,6 +14,7 @@ import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerS
 import { ICreatePaymentUseCase } from "../../application/Interface/useCases/Client/ICreatePaymentUseCase.js";
 import { IActiveServiceUseCase } from "../../application/Interface/useCases/Client/IActiveServiceUseCase.js";
 import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase.js";
+import { IVerifyPaymentUseCase } from "../../application/Interface/useCases/Client/IVerifyPaymentUseCase.js";
 
 const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED,UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -29,7 +30,8 @@ export class UserController {
         private _imageUploaderService: IImageUploaderService, 
         private _providerBookingsInfoUseCase: IProviderBookingsInfoUseCase,
         private _bookingUseCase: IBookingUseCase,
-        private _createPaymentUseCase : ICreatePaymentUseCase,
+        private _createPaymentUseCase: ICreatePaymentUseCase,
+        private _verifyPaymentUseCase: IVerifyPaymentUseCase,
         private _updateProfileUseCase: IUpdateProfileUseCase,
         private _verifyPasswordUseCase: IVerifyPasswordUseCase,
         private _resetPasswordUseCase: IResetPasswordUseCase,
@@ -209,13 +211,30 @@ export class UserController {
     async initiatePayment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { bookingId } = req.body
-            const result = await this._createPaymentUseCase.execute(bookingId)
+            const sessionId = await this._createPaymentUseCase.execute(bookingId)
+            
             res.status(OK).json(
-               result
+               sessionId
             )
 
         } catch (error : any) {
             this._loggerService.error(`initiatePayment error:, ${error.message}`,{stack : error.stack}); 
+            next(error);
+        }
+    }
+
+    async verifyPaymentViaWebHook(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            console.log("i was called by strip")
+            const sig = req.headers["stripe-signature"] as string;
+            const rawBody = (req as any).body;
+
+            await this._verifyPaymentUseCase.execute(rawBody,sig)
+                  
+            res.status(200).send('Webhook received'); //to notify stripe
+
+        } catch (error : any) {
+            this._loggerService.error(`payment verification error:,${error.message}`,{stack : error.stack}); 
             next(error);
         }
     }

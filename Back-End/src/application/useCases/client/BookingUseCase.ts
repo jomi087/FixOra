@@ -31,7 +31,7 @@ export class BookingUseCase implements IBookingUseCase {
             
             if (!currentBooking || currentBooking.provider.response !== ProviderResponseStatus.PENDING) return
 
-            let updatedBookingData = await this._bookingRepository.updateResponseAndStatus(
+            let updatedBookingData = await this._bookingRepository.updateProviderResponseAndStatus(
                 bookingId,
                 BookingStatus.CANCELLED,
                 ProviderResponseStatus.REJECTED,

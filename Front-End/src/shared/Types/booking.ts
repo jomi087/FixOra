@@ -1,3 +1,4 @@
+import type { BookingStatus } from "../enums/BookingStatus";
 import type { ProviderResponseStatus } from "../enums/ProviderResponseStatus";
 
 export type BookingRequestPayload = {
@@ -22,7 +23,14 @@ export type BookingAutoRejectPayload = {
   reason: string
 }
 
-export interface PaymentFailedNotification {
+export interface PaymentSuccessNotification {
+  bookingId: string
+  status: BookingStatus
+}
+
+export interface PaymentFailureNotification {
   bookingId: string
   reason: string
+  status: BookingStatus
+
 }

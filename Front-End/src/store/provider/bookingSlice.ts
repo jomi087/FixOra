@@ -1,19 +1,39 @@
-// import type { BookingsInfo } from "@/shared/Types/user"
-// import { createAsyncThunk } from "@reduxjs/toolkit"
+// src/store/slices/bookingSlice.ts
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { BookingRequestPayload, BookingAutoRejectPayload } from "@/shared/Types/booking";
 
-// interface BookingSlice{
-//     data: Bookings[]
-//     isLoading: boolean
-//     error:string | null 
-// }
+interface BookingState {
+  requests: BookingRequestPayload[];
+  notifications: string[]; // simple notification messages, you can expand later
+}
 
-// const intialState: BookingSlice = {
-//     data: [],
-//     isLoading: false,
-//     error: null,
-// }
+const initialState: BookingState = {
+  requests: [],
+  notifications: [],
+};
 
-// export const fetchBookingsInfo = createAsyncThunk <BookingsInfo> = {
-    
-// }
+const bookingSlice = createSlice({
+  name: "booking",
+  initialState,
+  reducers: {
+    addBookingRequest: (state, action: PayloadAction<BookingRequestPayload>) => {
+      state.requests.push(action.payload);
+      state.notifications.push(`New booking request from ${action.payload.userName}`);
+    },
+    removeBookingRequest: (state, action: PayloadAction<string>) => {
+      state.requests = state.requests.filter((b) => b.bookingId !== action.payload);
+    },
+    autoRejectBooking: (state, action: PayloadAction<BookingAutoRejectPayload>) => {
+      state.requests = state.requests.filter((b) => b.bookingId !== action.payload.bookingId);
+      state.notifications.push(`Booking ${action.payload.bookingId} auto-rejected: ${action.payload.reason}`);
+    },
+    clearNotifications: (state) => {
+      state.notifications = [];
+    },
+  },
+});
 
+export const { addBookingRequest, removeBookingRequest, autoRejectBooking, clearNotifications } =
+  bookingSlice.actions;
+export default bookingSlice.reducer;

@@ -1,3 +1,4 @@
+import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
 
 export interface ProviderBookingNotification {
@@ -21,9 +22,17 @@ export interface AutoRejectNotification {
     reason: string
 }
 
-export interface PaymentFailedNotification {
+export interface PaymentSuccessNotification {
+    bookingId: string
+    status: BookingStatus //is it required
+    
+}
+
+export interface PaymentFailureNotification {
     bookingId: string
     reason: string
+    status : BookingStatus //is it required
+
 }
 
 
@@ -31,6 +40,8 @@ export interface INotificationService {
     notifyBookingRequestToProvider(providerUserId: string , payload : ProviderBookingNotification): void
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
-    notifyPaymentFailed(userId: string, payload: PaymentFailedNotification): void 
+    
+    notifyPaymentSuccessToUser(userId: string, payload: PaymentSuccessNotification): void 
+    notifyPaymentFailureToUser(userId: string, payload: PaymentFailureNotification): void 
 
 }   
