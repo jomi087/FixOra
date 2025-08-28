@@ -1,8 +1,8 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IRefreshTokenUseCase } from "../../Interface/useCases/Auth/IRefreshTokenUseCase.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IRefreshTokenUseCase } from "../../Interface/useCases/Auth/IRefreshTokenUseCase";
 
 
 const { FORBIDDEN,NOT_FOUND } = HttpStatusCode

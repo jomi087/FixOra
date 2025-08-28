@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { cityField,  stateField, districtField, firstNameField, lastNameField, latitudeField, localityField, longitudeField, mobileField, postalCodeField, houseInfoField, streetField } from "./fields.js";
+import { cityField,  stateField, districtField, firstNameField, lastNameField, latitudeField, localityField, longitudeField, mobileField, postalCodeField, houseInfoField, streetField } from "./fields";
 
 export const editProfileSchema = z.object({
   fname: firstNameField,

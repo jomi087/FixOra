@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { DecodedUserDTO  } from "../../DTO's/AuthDTO/DecodedUserDTO.js";
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IVerifySignupOtpUseCase } from "../../Interface/useCases/Auth/IVerifySignupOtpUseCase.js";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { DecodedUserDTO  } from "../../DTO's/AuthDTO/DecodedUserDTO";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IVerifySignupOtpUseCase } from "../../Interface/useCases/Auth/IVerifySignupOtpUseCase";
 
 const { FORBIDDEN,BAD_REQUEST, INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { UNAUTHORIZED_MSG, INVALID_OTP, OTP_EXPIRED, INTERNAL_ERROR } = Messages

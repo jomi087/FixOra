@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 import { SignOptions } from "jsonwebtoken";
-import { User } from "../../../domain/entities/UserEntity.js";
-import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase.js";
+import { User } from "../../../domain/entities/UserEntity";
+import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
+import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase";
 
 const { FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages

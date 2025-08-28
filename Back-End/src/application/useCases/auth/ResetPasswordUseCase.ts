@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IResetPasswordUseCase } from "../../Interface/useCases/Auth/IResetPasswordUseCase.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IResetPasswordUseCase } from "../../Interface/useCases/Auth/IResetPasswordUseCase";
 
 const {NOT_FOUND,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages

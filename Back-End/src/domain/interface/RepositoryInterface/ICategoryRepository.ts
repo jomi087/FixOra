@@ -1,4 +1,4 @@
-import { Category } from "../../entities/CategoryEntity.js";
+import { Category } from "../../entities/CategoryEntity";
 
 export interface ICategoryRepository{
     create(category: Category): Promise<Category>;

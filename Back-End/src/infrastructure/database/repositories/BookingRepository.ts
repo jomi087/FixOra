@@ -1,11 +1,11 @@
-import { Booking } from "../../../domain/entities/BookingEntity.js";
-import { Subcategory } from "../../../domain/entities/CategoryEntity.js";
-import { User } from "../../../domain/entities/UserEntity.js";
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository.js";
-import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
-import { PaymentStatus } from "../../../shared/Enums/Payment.js";
-import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
-import BookingModel from "../models/BookingModel.js";
+import { Booking } from "../../../domain/entities/BookingEntity";
+import { Subcategory } from "../../../domain/entities/CategoryEntity";
+import { User } from "../../../domain/entities/UserEntity";
+import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
+import { BookingStatus } from "../../../shared/Enums/BookingStatus";
+import { PaymentStatus } from "../../../shared/Enums/Payment";
+import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
+import BookingModel from "../models/BookingModel";
 
 export class BookingRepository implements IBookingRepository {
 

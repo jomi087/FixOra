@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import type { SignOptions } from 'jsonwebtoken';
-import { ITokenService } from '../../domain/interface/ServiceInterface/ITokenService.js';
+import { ITokenService } from '../../domain/interface/ServiceInterface/ITokenService';
 
 export class TokenService implements ITokenService {
 

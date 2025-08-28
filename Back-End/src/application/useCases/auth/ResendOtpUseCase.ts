@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { DecodedUserDTO  } from "../../DTO's/AuthDTO/DecodedUserDTO.js";
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
-import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase{.js";
+import { DecodedUserDTO  } from "../../DTO's/AuthDTO/DecodedUserDTO";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
+import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
+import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase";
 
 const {FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const {UNAUTHORIZED_MSG,INTERNAL_ERROR} = Messages

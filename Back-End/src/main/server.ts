@@ -2,7 +2,6 @@
 import express, { Express } from 'express'
 import http from "http"
 import path from 'path'
-import { fileURLToPath } from 'url'; 
 import morgan from 'morgan'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -10,20 +9,20 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 //From Local files
-import { BodyParserLimits } from '../shared/constants.js';
+import { BodyParserLimits } from '../shared/constants';
 
-import publicRoutes from '../interfaces/routes/publicRoute.js'
-import authRoutes from '../interfaces/routes/authRoute.js';
-import userRoutes from '../interfaces/routes/userRoute.js'
-import providerRoutes from '../interfaces/routes/providerRoute.js'
-import adminRoutes from '../interfaces/routes/adminRoute.js'
-import rawRoutes from '../interfaces/routes/rawRoute.js'
+import publicRoutes from '../interfaces/routes/publicRoute'
+import authRoutes from '../interfaces/routes/authRoute';
+import userRoutes from '../interfaces/routes/userRoute'
+import providerRoutes from '../interfaces/routes/providerRoute'
+import adminRoutes from '../interfaces/routes/adminRoute'
+import rawRoutes from '../interfaces/routes/rawRoute'
 
-import mongoConnect from '../infrastructure/database/connection.js';
-import { initializeSocket } from '../infrastructure/socket/config.js';
+import mongoConnect from '../infrastructure/database/connection';
+import { initializeSocket } from '../infrastructure/socket/config';
 
-import { errorHandler } from './dependencyInjector.js';
-import { WinstonLogger } from '../infrastructure/services/WinstonLoggerService.js';
+import { errorHandler } from './dependencyInjector';
+import { WinstonLogger } from '../infrastructure/services/WinstonLoggerService';
 const logger = new WinstonLogger();
 
 const app: Express = express()
@@ -41,9 +40,6 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization','X-Requested-With','Accept','Origin']
 }
-
-const __filename = fileURLToPath(import.meta.url) // why this way cz esmodule dosent directly support __dirname 
-const __dirname = path.dirname(__filename)
 
 // Connect to MongoDB
 mongoConnect(logger)

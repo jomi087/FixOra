@@ -1,8 +1,8 @@
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { Booking } from "../../entities/BookingEntity.js";
-import { Category } from "../../entities/CategoryEntity.js";
-import { Provider } from "../../entities/ProviderEntity.js";
-import { User } from "../../entities/UserEntity.js";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import { Booking } from "../../entities/BookingEntity";
+import { Category } from "../../entities/CategoryEntity";
+import { Provider } from "../../entities/ProviderEntity";
+import { User } from "../../entities/UserEntity";
 
 //!Bad Practice in this repository (update)(i am violating srp rule need to re-work)
 

@@ -1,8 +1,8 @@
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../DTO's/GetProviderDTO.js";
-import { IGetProvidersUseCase } from "../../Interface/useCases/Admin/IGetProvidersUseCase.js";
+import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../DTO's/GetProviderDTO";
+import { IGetProvidersUseCase } from "../../Interface/useCases/Admin/IGetProvidersUseCase";
 
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode

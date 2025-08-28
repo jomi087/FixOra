@@ -1,13 +1,13 @@
 import express from 'express'
-import { AuthMiddleware, userController } from '../../main/dependencyInjector.js'
-import { validateRequest } from '../middleware/validateRequest.js'
-import { bookingIdSchema, bookingRequestSchema } from '../validations/bookingSchema.js'
-import { resetPasswordSchema, verifyPasswordSchema } from '../validations/authSchema.js'
-import { validateKYCRequest } from '../validations/kycSchema.js'
-import { editProfileSchema } from '../validations/profileSchema.js'
+import { AuthMiddleware, userController } from '../../main/dependencyInjector';
+import { validateRequest } from '../middleware/validateRequest';
+import { bookingIdSchema, bookingRequestSchema } from '../validations/bookingSchema';
+import { resetPasswordSchema, verifyPasswordSchema } from '../validations/authSchema';
+import { validateKYCRequest } from '../validations/kycSchema';
+import { editProfileSchema } from '../validations/profileSchema'
 
-import upload from '../middleware/upload.js'
-import { RoleEnum } from '../../shared/Enums/Roles.js'
+import upload from '../middleware/upload';
+import { RoleEnum } from '../../shared/Enums/Roles';
 
 const router = express.Router()
 

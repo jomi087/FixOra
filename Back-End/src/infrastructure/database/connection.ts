@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ILoggerService } from '../../domain/interface/ServiceInterface/ILoggerService.js';
+import { ILoggerService } from '../../domain/interface/ServiceInterface/ILoggerService';
 
 const max_retries = 5;
 let retries = 0;

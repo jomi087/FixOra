@@ -1,6 +1,6 @@
-import { Category } from "../../../domain/entities/CategoryEntity.js";
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
-import CategoryModel from "../models/CategoryModel.js";
+import { Category } from "../../../domain/entities/CategoryEntity";
+import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
+import CategoryModel from "../models/CategoryModel";
 import { FilterQuery } from "mongoose";
 
 export class CategoryRepository implements ICategoryRepository {

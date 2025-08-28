@@ -1,7 +1,7 @@
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/Admin/IToggleCategoryStatusUseCase.js";
+import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/Admin/IToggleCategoryStatusUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode
 const { INTERNAL_ERROR } = Messages

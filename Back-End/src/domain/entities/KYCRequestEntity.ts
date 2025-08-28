@@ -1,5 +1,5 @@
-import { Gender } from "../../shared/Enums/Gender.js";
-import { KYCStatus } from "../../shared/Enums/KYCstatus.js";
+import { Gender } from "../../shared/Enums/Gender
+import { KYCStatus } from "../../shared/Enums/KYCstatus
 
 export interface KYCRequest {
     userId: string;

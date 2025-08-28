@@ -1,7 +1,6 @@
 /*  You can see another version Using class  */
 
-import { RoleEnum } from "../../shared/Enums/Roles.js";
-
+import { RoleEnum } from "../../shared/Enums/Roles";
 export interface Address {
   houseinfo?: string;
   street?: string;

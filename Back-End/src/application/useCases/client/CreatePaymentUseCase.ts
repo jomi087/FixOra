@@ -1,7 +1,7 @@
-import { ICreatePaymentUseCase } from "../../Interface/useCases/Client/ICreatePaymentUseCase.js";
-import { Messages } from "../../../shared/Messages.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService.js";
+import { ICreatePaymentUseCase } from "../../Interface/useCases/Client/ICreatePaymentUseCase";
+import { Messages } from "../../../shared/Messages";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
 
 
 const { INTERNAL_SERVER_ERROR} = HttpStatusCode

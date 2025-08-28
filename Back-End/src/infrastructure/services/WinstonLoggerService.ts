@@ -1,5 +1,5 @@
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
-import { loggerInstance } from "../logger/config.js";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
+import { loggerInstance } from "../logger/config";
 
 export class WinstonLogger implements ILoggerService {
     info(message: string, meta?: any): void {

@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService.js";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { User } from "../../domain/entities/UserEntity.js";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
-import { RoleEnum } from "../../shared/Enums/Roles.js";
+import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService";
+import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
+import { User } from "../../domain/entities/UserEntity";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../shared/Messages";
+import { RoleEnum } from "../../shared/Enums/Roles";
 
 const { UNAUTHORIZED,FORBIDDEN } = HttpStatusCode
 const { TOKEN_EXPIRED,INVALID_TOKEN,USER_NOT_FOUND,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED,FORBIDDEN_MSG } = Messages

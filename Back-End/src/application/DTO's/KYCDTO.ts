@@ -1,4 +1,4 @@
-import { Gender } from "../../shared/Enums/Gender.js";
+import { Gender } from "../../shared/Enums/Gender";
 
 export interface KYCDTO  {
     userId: string;

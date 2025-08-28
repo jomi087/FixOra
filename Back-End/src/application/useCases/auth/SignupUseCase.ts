@@ -3,15 +3,15 @@ import { v4 as uuidv4 } from "uuid";
 import jwt from 'jsonwebtoken'
 import type { SignOptions } from 'jsonwebtoken';
 
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
-import { SignupDTO } from "../../DTO's/AuthDTO/SignupDTO.js";
-import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService.js";
-import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { ISignupUseCase } from "../../Interface/useCases/Auth/ISignupUseCase.js";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
+import { SignupDTO } from "../../DTO's/AuthDTO/SignupDTO";
+import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
+import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { ISignupUseCase } from "../../Interface/useCases/Auth/ISignupUseCase";
 
 const { CONFLICT, INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { EMAIL_ALREADY_EXISTS, INTERNAL_ERROR } = Messages

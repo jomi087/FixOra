@@ -1,5 +1,5 @@
-import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
-import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse.js";
+import { BookingStatus } from "../../../shared/Enums/BookingStatus";
+import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
 
 export interface ProviderBookingNotification {
     bookingId: string;

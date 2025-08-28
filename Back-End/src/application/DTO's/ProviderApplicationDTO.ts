@@ -1,4 +1,4 @@
-import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO.js";
+import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO";
 
 export interface ProviderApplicationInputDTO extends PaginationInputDTO {}
 

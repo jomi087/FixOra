@@ -1,20 +1,20 @@
 import { NextFunction, Request, Response } from "express";
-import { IVerifyPasswordUseCase } from "../../application/Interface/useCases/Client/IVerifyPasswordUseCase.js";
-import validateFile from "../validations/fileValidation.js";
-import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
-import { KYCInputDTO } from "../../application/DTO's/KYCDTO.js";
-import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase.js";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
-import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/Client/IGetActiveProvidersUseCase.js";
-import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase.js";
-import { IProviderBookingsInfoUseCase } from "../../application/Interface/useCases/Client/IProviderBookingsInfoUseCase.js";
-import { IBookingUseCase } from "../../application/Interface/useCases/Client/IBookingUseCase.js";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
-import { ICreatePaymentUseCase } from "../../application/Interface/useCases/Client/ICreatePaymentUseCase.js";
-import { IActiveServiceUseCase } from "../../application/Interface/useCases/Client/IActiveServiceUseCase.js";
-import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase.js";
-import { IVerifyPaymentUseCase } from "../../application/Interface/useCases/Client/IVerifyPaymentUseCase.js";
+import { IVerifyPasswordUseCase } from "../../application/Interface/useCases/Client/IVerifyPasswordUseCase";
+import validateFile from "../validations/fileValidation";
+import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
+import { KYCInputDTO } from "../../application/DTO's/KYCDTO";
+import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../shared/Messages";
+import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/Client/IGetActiveProvidersUseCase";
+import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase";
+import { IProviderBookingsInfoUseCase } from "../../application/Interface/useCases/Client/IProviderBookingsInfoUseCase";
+import { IBookingUseCase } from "../../application/Interface/useCases/Client/IBookingUseCase";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
+import { ICreatePaymentUseCase } from "../../application/Interface/useCases/Client/ICreatePaymentUseCase";
+import { IActiveServiceUseCase } from "../../application/Interface/useCases/Client/IActiveServiceUseCase";
+import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase";
+import { IVerifyPaymentUseCase } from "../../application/Interface/useCases/Client/IVerifyPaymentUseCase";
 
 const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED,UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,

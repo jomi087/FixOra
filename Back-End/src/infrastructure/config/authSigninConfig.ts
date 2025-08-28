@@ -1,10 +1,10 @@
-import { RoleEnum } from "../../shared/Enums/Roles.js";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IHashService } from "../../domain/interface/ServiceInterface/IHashService.js";
-import { AuthStrategyFactory } from "../../application/strategies/auth/AuthStrategyFactory.js";
-import { CustomerAuthStrategy } from "../../application/strategies/auth/CustomerAuthStrategy.js";
-import { AdminAuthStrategy } from "../../application/strategies/auth/AdminAuthStrategy.js";
-import { ProviderAuthStrategy } from "../../application/strategies/auth/ProviderAuthStrategy.js";
+import { RoleEnum } from "../../shared/Enums/Roles";
+import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
+import { IHashService } from "../../domain/interface/ServiceInterface/IHashService";
+import { AuthStrategyFactory } from "../../application/strategies/auth/AuthStrategyFactory";
+import { CustomerAuthStrategy } from "../../application/strategies/auth/CustomerAuthStrategy";
+import { AdminAuthStrategy } from "../../application/strategies/auth/AdminAuthStrategy";
+import { ProviderAuthStrategy } from "../../application/strategies/auth/ProviderAuthStrategy";
 
 
 export function configureAuthStrategies( userRepository: IUserRepository, hashService: IHashService): AuthStrategyFactory {  

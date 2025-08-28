@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IGoogleOAuthService } from '../../domain/interface/ServiceInterface/IGoogleOAuthService.js';
+import { IGoogleOAuthService } from '../../domain/interface/ServiceInterface/IGoogleOAuthService';
 
 interface GoogleTokenResponse {
   access_token: string;

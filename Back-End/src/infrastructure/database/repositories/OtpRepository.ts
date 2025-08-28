@@ -1,6 +1,6 @@
-import { Otp } from "../../../domain/entities/OtpEntity.js";
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository.js";
-import OtpModel from "../models/OtpModel.js";
+import { Otp } from "../../../domain/entities/OtpEntity";
+import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
+import OtpModel from "../models/OtpModel";
 
 export class OtpRepository implements IOtpRepository {
     async storeOtp(otp:Otp) : Promise<void>{

@@ -1,11 +1,8 @@
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
 import path from "path";
-import { fileURLToPath } from 'url'; 
 import fs from "fs";
 
-const __filename = fileURLToPath(import.meta.url) // why this way cz esmodule dosent directly support __dirname 
-const __dirname = path.dirname(__filename)
 const logDir = path.join(__dirname, "../../../logs");
 
 if (!fs.existsSync(logDir)) {

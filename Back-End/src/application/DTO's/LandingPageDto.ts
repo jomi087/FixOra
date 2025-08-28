@@ -1,4 +1,4 @@
-import { Category } from "../../domain/entities/CategoryEntity.js";
+import { Category } from "../../domain/entities/CategoryEntity";
 
 export interface GetLandingDataOutputDTO {
   categories: Partial<Category>[]

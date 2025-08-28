@@ -1,7 +1,7 @@
 import { Schema ,Document,model } from "mongoose";
-import { KYCRequest } from "../../../domain/entities/KYCRequestEntity.js";
-import { KYCStatus } from "../../../shared/Enums/KYCstatus.js";
-import { Gender } from "../../../shared/Enums/Gender.js";
+import { KYCRequest } from "../../../domain/entities/KYCRequestEntity";
+import { KYCStatus } from "../../../shared/Enums/KYCstatus";
+import { Gender } from "../../../shared/Enums/Gender";
 
 export interface IKYCRequestModel extends Document,KYCRequest{}
 

@@ -1,11 +1,11 @@
 import Stripe from "stripe";
-import { IPaymentService } from "../../domain/interface/ServiceInterface/IPaymentService.js";
-import { IBookingRepository } from "../../domain/interface/RepositoryInterface/IBookingRepository.js";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
-import { BookingStatus } from "../../shared/Enums/BookingStatus.js";
-import { PaymentMode, PaymentStatus } from "../../shared/Enums/Payment.js";
-import { Booking } from "../../domain/entities/BookingEntity.js";
+import { IPaymentService } from "../../domain/interface/ServiceInterface/IPaymentService";
+import { IBookingRepository } from "../../domain/interface/RepositoryInterface/IBookingRepository";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../shared/Messages";
+import { BookingStatus } from "../../shared/Enums/BookingStatus";
+import { PaymentMode, PaymentStatus } from "../../shared/Enums/Payment";
+import { Booking } from "../../domain/entities/BookingEntity";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
 const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND } = Messages

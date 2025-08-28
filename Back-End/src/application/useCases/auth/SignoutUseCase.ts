@@ -1,7 +1,7 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { ISignoutUseCase } from "../../Interface/useCases/Auth/ISignoutUseCase.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { ISignoutUseCase } from "../../Interface/useCases/Auth/ISignoutUseCase";
 
 const { BAD_REQUEST,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages

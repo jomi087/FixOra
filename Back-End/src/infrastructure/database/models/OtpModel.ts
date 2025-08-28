@@ -1,5 +1,5 @@
 import mongoose, { Document } from 'mongoose'
-import { Otp } from '../../../domain/entities/OtpEntity.js'
+import { Otp } from '../../../domain/entities/OtpEntity';
 
 export interface IOtpModel extends Document, Otp {}
 

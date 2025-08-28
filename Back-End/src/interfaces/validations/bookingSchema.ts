@@ -1,6 +1,10 @@
 import { z } from "zod";
-import { optionalStringField, dateTimeField, issueField, issueTypeIdField, providerIdField, providerUserIdField, providerResponseStatusField,bookingIdField } from "./fields.js";
-import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse.js";
+import {
+  optionalStringField, dateTimeField, issueField,
+  issueTypeIdField, providerIdField, providerUserIdField,
+  providerResponseStatusField, bookingIdField
+} from "./fields";
+import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 
 export const bookingIdSchema = z.object({
   bookingId: bookingIdField,

@@ -1,4 +1,4 @@
-import { Booking } from "../../entities/BookingEntity.js";
+import { Booking } from "../../entities/BookingEntity";
 
 export interface IPaymentService {
   createPaymentIntent(bookingId: string): Promise<string>;

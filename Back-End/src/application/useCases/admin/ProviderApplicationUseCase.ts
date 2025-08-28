@@ -1,9 +1,9 @@
-import { KYCRequestWithDetails } from "../../../domain/entities/KYCRequestEntity.js";
-import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { ProviderApplicationDTO, ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../DTO's/ProviderApplicationDTO.js";
-import { IProviderApplicationUseCase } from "../../Interface/useCases/Admin/IProviderApplicationUseCase.js";
+import { KYCRequestWithDetails } from "../../../domain/entities/KYCRequestEntity";
+import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { ProviderApplicationDTO, ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../DTO's/ProviderApplicationDTO";
+import { IProviderApplicationUseCase } from "../../Interface/useCases/Admin/IProviderApplicationUseCase";
 
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode
