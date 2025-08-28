@@ -1,5 +1,5 @@
 import mongoose, { Document } from 'mongoose'
-import { Category,Subcategory } from "../../../domain/entities/CategoryEntity.js";
+import { Category,Subcategory } from "../../../domain/entities/CategoryEntity";
 
 export interface ICategoryModel extends Document, Category{ }
 

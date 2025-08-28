@@ -1,4 +1,4 @@
-import { KYCRequest, KYCRequestWithDetails } from "../../entities/KYCRequestEntity.js";
+import { KYCRequest, KYCRequestWithDetails } from "../../entities/KYCRequestEntity";
 
 export interface IKYCRequestRepository {
     findByUserId(userId: string): Promise<KYCRequest | null>;

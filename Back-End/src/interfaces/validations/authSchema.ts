@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Messages } from "../../shared/Messages.js"
+import { Messages } from "../../shared/Messages"
 import {
     firstNameField,
     lastNameField,
@@ -7,7 +7,7 @@ import {
     emailField,
     roleField,
     passwordField
-} from "./fields.js";
+} from "./fields";
 
 export const signupSchema = z.object({
     fname: firstNameField,

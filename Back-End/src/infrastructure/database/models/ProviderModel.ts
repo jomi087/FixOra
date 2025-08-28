@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { Provider } from '../../../domain/entities/ProviderEntity.js';
-import { KYCStatus } from '../../../shared/Enums/KYCstatus.js';
-import { Gender } from '../../../shared/Enums/Gender.js';
+import { Provider } from '../../../domain/entities/ProviderEntity';
+import { KYCStatus } from '../../../shared/Enums/KYCstatus';
+import { Gender } from '../../../shared/Enums/Gender';
 
 // Extend Document with Provider
 export interface IProviderModel extends Document, Provider {}

@@ -1,10 +1,10 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { SigninInputDTO, SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO.js";
-import { ISigninUseCase } from "../../Interface/useCases/Auth/ISigninUseCase.js";
-import { AuthStrategyFactory } from "../../strategies/auth/AuthStrategyFactory.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { SigninInputDTO, SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO";
+import { ISigninUseCase } from "../../Interface/useCases/Auth/ISigninUseCase";
+import { AuthStrategyFactory } from "../../strategies/auth/AuthStrategyFactory";
 
 const {NOT_FOUND,INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages

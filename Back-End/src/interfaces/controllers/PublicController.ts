@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Public/IGetLandingDataUseCase.js";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
+import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Public/IGetLandingDataUseCase";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 
 const { OK} = HttpStatusCode
 

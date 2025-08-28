@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService.js";
-import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase.js";
-import { SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO.js";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService";
+import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase";
+import { SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND,FORBIDDEN } = HttpStatusCode
 const { INTERNAL_ERROR, USER_NOT_FOUND, ACCOUNT_BLOCKED } = Messages

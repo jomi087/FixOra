@@ -1,9 +1,9 @@
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
+import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
 import { v4 as uuidv4 } from "uuid";
-// import { CategoryInputDTO } from "../../DTO's/CategoryInputDTO.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { ICreateServiceCategoryUseCase } from "../../Interface/useCases/Admin/ICreateServiceCategoryUseCase.js";
+// import { CategoryInputDTO } from "../../DTO's/CategoryInputDTO";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { ICreateServiceCategoryUseCase } from "../../Interface/useCases/Admin/ICreateServiceCategoryUseCase";
 
 export interface SubcategoryInputDTO {
   name: string;

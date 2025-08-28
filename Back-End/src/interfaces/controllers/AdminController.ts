@@ -1,19 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { RoleEnum } from "../../shared/Enums/Roles.js";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
+import { RoleEnum } from "../../shared/Enums/Roles";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../shared/Messages";
 
 
-import { IGetCustomersUseCase } from "../../application/Interface/useCases/Admin/IGetCustomersUseCase.js";
-import { IGetProvidersUseCase } from "../../application/Interface/useCases/Admin/IGetProvidersUseCase.js";
-import { IGetServiceUseCase } from "../../application/Interface/useCases/Admin/IGetServiceUseCase.js";
-import { ICreateServiceCategoryUseCase } from "../../application/Interface/useCases/Admin/ICreateServiceCategoryUseCase.js";
-import { IToggleCategoryStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleCategoryStatusUseCase.js";
-import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleUserStatusUseCase.js";
-import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService.js";
-import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase.js";
-import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
+import { IGetCustomersUseCase } from "../../application/Interface/useCases/Admin/IGetCustomersUseCase";
+import { IGetProvidersUseCase } from "../../application/Interface/useCases/Admin/IGetProvidersUseCase";
+import { IGetServiceUseCase } from "../../application/Interface/useCases/Admin/IGetServiceUseCase";
+import { ICreateServiceCategoryUseCase } from "../../application/Interface/useCases/Admin/ICreateServiceCategoryUseCase";
+import { IToggleCategoryStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleCategoryStatusUseCase";
+import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/Admin/IToggleUserStatusUseCase";
+import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
+import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase";
+import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const {  UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;

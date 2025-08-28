@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../shared/Messages";
 
 export const createErrorHandler = (logger: ILoggerService) => {
   return (err: any, req: Request, res: Response, next: NextFunction) => {

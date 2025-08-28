@@ -2,11 +2,11 @@
   "name": "back-end",
   "version": "1.0.0",
   "main": "dist/server.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "start": "tsc && node dist/infrastructure/webServer/server.js",
-    "dev": "nodemon ",
-    "test": "node --loader ts-node/esm src/infrastructure/webServer/server.ts"
+    "start": "tsc && node dist/main/server.js",
+    "dev": "nodemon --watch src --exec \"ts-node src/main/server.ts\""
+    
   },
   "keywords": [],
   "author": "",

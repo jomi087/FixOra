@@ -1,5 +1,5 @@
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { AddressDTO } from "../Common/AddressDTO.js";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import { AddressDTO } from "../Common/AddressDTO";
 
 export type SigninInputDTO = {
     email: string;

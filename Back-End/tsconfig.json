@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
     "target": "ES2020",                                 /* Modern Node.js features */
+    "module": "CommonJS",                               /* Use Node.js module resolution */
+    "moduleResolution": "node",                     /* Modern module resolution */
 
-    "module": "NodeNext",                               /* Use Node.js module resolution */
-    "moduleResolution": "NodeNext",                     /* Modern module resolution */
-
-    "rootDir": "./src",                                 /* Source files location */
-    "outDir": "./dist",                                 /* Compiled output location */
+    "rootDir": "src",                                 /* Source files location */
+    "outDir": "dist",                                 /* Compiled output location */
 
     "resolveJsonModule": true,                          /* Allow importing JSON files */
     "sourceMap": true,                                  /* Generate source maps for debugging */
-    "declaration": true,                                /* Generate .d.ts files */
-    "removeComments": false,                            /* Keep comments in output */
     "esModuleInterop": true,                            /* Enable interop between CommonJS and ES Modules */
     "forceConsistentCasingInFileNames": true,           /* Ensure consistent casing in imports */
+    
     "strict": true,                                     /* Enable all strict type checking options */
     "noImplicitAny": true,                              /* Raise error on expressions and declarations with an implied 'any' type */
     "strictNullChecks": true,                           /* Enable strict null checks */
@@ -23,6 +21,6 @@
     "noFallthroughCasesInSwitch": true,                 /* Report errors for fallthrough cases in switch statement */
     "skipLibCheck": true,                               /* Skip type checking of declaration files */
   },
-  // "include": ["src/**/*"], // Includes all TypeScript files in the src folder and its subfolders.
-  // "exclude": ["node_modules"] // Excludes the node_modules folder from compilation.
+  "include": ["src/**/*"], // Includes all TypeScript files in the src folder and its subfolders.
+  "exclude": ["node_modules"] // Excludes the node_modules folder from compilation.
 }

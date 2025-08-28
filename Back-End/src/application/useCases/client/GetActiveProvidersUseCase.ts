@@ -1,10 +1,10 @@
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { Gender } from "../../../shared/Enums/Gender.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { ActiveProviderDTO, GetActiveProvidersInputDTO, GetActiveProvidersOutputDTO } from "../../DTO's/GetActiveProvidersDTO.js";
-import { IGetActiveProvidersUseCase } from "../../Interface/useCases/Client/IGetActiveProvidersUseCase.js";
+import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { Gender } from "../../../shared/Enums/Gender";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { ActiveProviderDTO, GetActiveProvidersInputDTO, GetActiveProvidersOutputDTO } from "../../DTO's/GetActiveProvidersDTO";
+import { IGetActiveProvidersUseCase } from "../../Interface/useCases/Client/IGetActiveProvidersUseCase";
 
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode

@@ -1,12 +1,12 @@
 // Infrastructure talking to MongoDB using the IUserRepository interface.
 // Parameters like email/userId come from the use case layer.
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { User } from "../../../domain/entities/UserEntity.js";
-import { Provider } from "../../../domain/entities/ProviderEntity.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import UserModel from "../models/UserModel.js";
-import { Category } from "../../../domain/entities/CategoryEntity.js";
-import { Booking } from "../../../domain/entities/BookingEntity.js";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import { User } from "../../../domain/entities/UserEntity";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import UserModel from "../models/UserModel";
+import { Category } from "../../../domain/entities/CategoryEntity";
+import { Booking } from "../../../domain/entities/BookingEntity";
+import { Provider } from "../../../domain/entities/ProviderEntity";
 
 //!mistake in this repository (i have am violatin srp rule need to re-work) 
 //split the logic into indivijual

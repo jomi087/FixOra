@@ -1,8 +1,8 @@
-import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService.js";
-import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase.js";
+import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
+import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";
 
 const { INTERNAL_SERVER_ERROR} = HttpStatusCode
 const { INTERNAL_ERROR } = Messages

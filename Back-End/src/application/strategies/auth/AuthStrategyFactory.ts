@@ -1,7 +1,7 @@
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import { IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy";
 
 
 const { INVALID_ROLE } = Messages

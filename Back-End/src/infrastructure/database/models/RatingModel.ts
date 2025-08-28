@@ -1,5 +1,5 @@
 import { Schema, model, Document } from "mongoose";
-import { Rating } from "../../../domain/entities/RatingEntity.js";
+import { Rating } from "../../../domain/entities/RatingEntity";
 
 export interface IRatingModel extends Rating, Document {}
 

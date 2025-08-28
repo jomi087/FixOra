@@ -1,4 +1,4 @@
-import { BookingStatus } from "../../../shared/Enums/BookingStatus.js";
+import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 
 export interface CreateBookingApplicationDTO {
     userId: string;

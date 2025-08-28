@@ -3,11 +3,11 @@
 import jwt from "jsonwebtoken";
 import type { SignOptions } from 'jsonwebtoken';
 
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService.js";
-import { Messages } from "../../../shared/Messages.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase.js";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
+import { Messages } from "../../../shared/Messages";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
 const { INTERNAL_ERROR, EMAIL_NOT_FOUND  } = Messages

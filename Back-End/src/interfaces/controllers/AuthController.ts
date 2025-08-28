@@ -1,20 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 
 //api logic
-import { SignupDTO } from "../../application/DTO's/AuthDTO/SignupDTO.js";
-import { SigninInputDTO } from "../../application/DTO's/AuthDTO/SigninDTO.js";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
-import { IVerifySignupOtpUseCase } from "../../application/Interface/useCases/Auth/IVerifySignupOtpUseCase.js";
-import { IResendOtpUseCase } from "../../application/Interface/useCases/Auth/IResendOtpUseCase{.js";
-import { ISigninUseCase } from "../../application/Interface/useCases/Auth/ISigninUseCase.js";
-import { IGoogleSigninUseCase } from "../../application/Interface/useCases/Auth/IGoogleSigninUseCase.js";
-import { IForgotPasswordUseCase } from "../../application/Interface/useCases/Auth/IForgotPasswordUseCase.js";
-import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase.js";
-import { IRefreshTokenUseCase } from "../../application/Interface/useCases/Auth/IRefreshTokenUseCase.js";
-import { ISignoutUseCase } from "../../application/Interface/useCases/Auth/ISignoutUseCase.js";
-import { ISignupUseCase } from "../../application/Interface/useCases/Auth/ISignupUseCase.js";
+import { SignupDTO } from "../../application/DTO's/AuthDTO/SignupDTO";
+import { SigninInputDTO } from "../../application/DTO's/AuthDTO/SigninDTO";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../shared/Messages";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
+import { IVerifySignupOtpUseCase } from "../../application/Interface/useCases/Auth/IVerifySignupOtpUseCase";
+import { IResendOtpUseCase } from "../../application/Interface/useCases/Auth/IResendOtpUseCase";
+import { ISigninUseCase } from "../../application/Interface/useCases/Auth/ISigninUseCase";
+import { IGoogleSigninUseCase } from "../../application/Interface/useCases/Auth/IGoogleSigninUseCase";
+import { IForgotPasswordUseCase } from "../../application/Interface/useCases/Auth/IForgotPasswordUseCase";
+import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase";
+import { IRefreshTokenUseCase } from "../../application/Interface/useCases/Auth/IRefreshTokenUseCase";
+import { ISignoutUseCase } from "../../application/Interface/useCases/Auth/ISignoutUseCase";
+import { ISignupUseCase } from "../../application/Interface/useCases/Auth/ISignupUseCase";
 
 const { OK, BAD_REQUEST,UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,USER_NOT_FOUND,

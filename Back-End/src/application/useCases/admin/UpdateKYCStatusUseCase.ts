@@ -1,13 +1,13 @@
-import { KYCRequest } from "../../../domain/entities/KYCRequestEntity.js";
-import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository.js";
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { KYCStatus } from "../../../shared/Enums/KYCstatus.js";
-import { Messages } from "../../../shared/Messages.js";
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../DTO's/UpdateKYCStatusDTO.js";
-import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/Admin/IUpdateKYCStatusUseCase.js";
+import { KYCRequest } from "../../../domain/entities/KYCRequestEntity";
+import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
+import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode"
+import { KYCStatus } from "../../../shared/Enums/KYCstatus"
+import { Messages } from "../../../shared/Messages"
+import { RoleEnum } from "../../../shared/Enums/Roles"
+import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../DTO's/UpdateKYCStatusDTO";
+import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/Admin/IUpdateKYCStatusUseCase";
 import { v4 as uuidv4 } from "uuid";
 
 

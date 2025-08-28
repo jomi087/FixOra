@@ -1,10 +1,10 @@
 import express from 'express'
-import { AuthMiddleware, adminController } from '../../main/dependencyInjector.js'
-import upload from '../middleware/upload.js';
-import { validateCategory } from '../validations/categorySchema.js';
-import { validateRequest } from '../middleware/validateRequest.js';
-import { kycStatus } from '../validations/kycSchema.js';
-import { RoleEnum } from '../../shared/Enums/Roles.js';
+import { AuthMiddleware, adminController } from '../../main/dependencyInjector';
+import upload from '../middleware/upload';
+import { validateCategory } from '../validations/categorySchema';
+import { validateRequest } from '../middleware/validateRequest';
+import { kycStatus } from '../validations/kycSchema';
+import { RoleEnum } from '../../shared/Enums/Roles';
 
 const router = express.Router()
 router.get('/customer-management', AuthMiddleware([RoleEnum.Admin]), adminController.getCustomers.bind(adminController));

@@ -1,20 +1,20 @@
-import { UserRepository } from "../infrastructure/database/repositories/UserRepository.js";
-import { OtpRepository } from "../infrastructure/database/repositories/OtpRepository.js";
-import { CategoryRepository } from "../infrastructure/database/repositories/CategoryRepository.js";
-import { KYCRequestRepository } from "../infrastructure/database/repositories/KYCRequestRepository.js";
-import { ProviderRepository } from "../infrastructure/database/repositories/ProviderRepository.js";
-import { BookingRepository } from "../infrastructure/database/repositories/BookingRepository.js";
+import { UserRepository } from "../infrastructure/database/repositories/UserRepository";
+import { OtpRepository } from "../infrastructure/database/repositories/OtpRepository";
+import { CategoryRepository } from "../infrastructure/database/repositories/CategoryRepository";
+import { KYCRequestRepository } from "../infrastructure/database/repositories/KYCRequestRepository";
+import { ProviderRepository } from "../infrastructure/database/repositories/ProviderRepository";
+import { BookingRepository } from "../infrastructure/database/repositories/BookingRepository";
 
-import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService.js";
-import { EmailService } from "../infrastructure/services/EmailService.js";
-import { OtpGenratorservice } from "../infrastructure/services/OtpGeneratorService.js";
-import { HashService } from "../infrastructure/services/HashService.js";
-import { TokenService } from "../infrastructure/services/TokenService.js";
-import { GoogleOAuthService } from "../infrastructure/services/GoogleOAuthService.js";
-import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService.js";
-import { NotificationService } from "../infrastructure/services/NotificationService.js";
-import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService.js";
-import { PaymentService } from "../infrastructure/services/PaymentService.js";
+import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
+import { EmailService } from "../infrastructure/services/EmailService";
+import { OtpGenratorservice } from "../infrastructure/services/OtpGeneratorService";
+import { HashService } from "../infrastructure/services/HashService";
+import { TokenService } from "../infrastructure/services/TokenService";
+import { GoogleOAuthService } from "../infrastructure/services/GoogleOAuthService";
+import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService";
+import { NotificationService } from "../infrastructure/services/NotificationService";
+import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService";
+import { PaymentService } from "../infrastructure/services/PaymentService";
 
 const userRepository = new UserRepository();
 const otpRepository = new OtpRepository();
@@ -35,115 +35,115 @@ const bookingSchedulerService = new BookingSchedulerService()
 const paymentService = new PaymentService(bookingRepository)
 
 /******************************************************************************************************************************************************/
-import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware.js";
+import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware";
 const AuthMiddleware = createAuthMiddleware(tokenService, userRepository)
 
-import { createErrorHandler } from "../interfaces/middleware/errorHandler.js";
+import { createErrorHandler } from "../interfaces/middleware/errorHandler";
 export const errorHandler = createErrorHandler(loggerService);
 
 /******************************************************************************************************************************************************/
-import { SignupUseCase } from "../application/useCases/auth/SignupUseCase.js";
+import { SignupUseCase } from "../application/useCases/auth/SignupUseCase";
 const signupUseCase = new SignupUseCase(userRepository, otpRepository, emailService, otpGenratorservice, hashService ) 
 
-import { VerifySignupOtpUseCase } from "../application/useCases/auth/VerifySignupOtpUseCase.js";
+import { VerifySignupOtpUseCase } from "../application/useCases/auth/VerifySignupOtpUseCase";
 const verifySignupOtpUseCase = new VerifySignupOtpUseCase(otpRepository, userRepository)
 
-import { ResendOtpUseCase } from "../application/useCases/auth/ResendOtpUseCase.js";
+import { ResendOtpUseCase } from "../application/useCases/auth/ResendOtpUseCase";
 const resendOtpUseCase = new ResendOtpUseCase(otpRepository, otpGenratorservice, emailService)
 
-import { configureAuthStrategies } from "../infrastructure/config/authSigninConfig.js";
+import { configureAuthStrategies } from "../infrastructure/config/authSigninConfig";
 const authFactory = configureAuthStrategies(userRepository, hashService)
-import { SigninUseCase } from "../application/useCases/auth/SigninUseCase.js";
+import { SigninUseCase } from "../application/useCases/auth/SigninUseCase";
 const signinUseCase = new SigninUseCase(authFactory, tokenService, userRepository)
 
-import { GoogleSigninUseCase } from "../application/useCases/auth/GoogleSigninUseCase.js";
+import { GoogleSigninUseCase } from "../application/useCases/auth/GoogleSigninUseCase";
 const googleSigninUseCase = new GoogleSigninUseCase(googleOAuthService,userRepository,tokenService)
 
-import { ForgotPasswordUseCase } from "../application/useCases/auth/ForgotPasswordUseCase.js";
+import { ForgotPasswordUseCase } from "../application/useCases/auth/ForgotPasswordUseCase";
 const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository,emailService )
 
-import { ResetPasswordUseCase } from "../application/useCases/auth/ResetPasswordUseCase.js";
+import { ResetPasswordUseCase } from "../application/useCases/auth/ResetPasswordUseCase";
 const resetPasswordUseCase = new ResetPasswordUseCase(hashService,userRepository)
 
-import { RefreshTokenUseCase } from "../application/useCases/auth/RefreshTokenUseCase.js";
+import { RefreshTokenUseCase } from "../application/useCases/auth/RefreshTokenUseCase";
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService, userRepository)
 
-import { GetLandingDataUseCase } from "../application/useCases/public/GetLandingDataUseCase.js";
+import { GetLandingDataUseCase } from "../application/useCases/public/GetLandingDataUseCase";
 const getLandingDataUseCase = new GetLandingDataUseCase(categoryRepository)
 
-import { SignoutUseCase } from "../application/useCases/auth/SignoutUseCase.js";
+import { SignoutUseCase } from "../application/useCases/auth/SignoutUseCase";
 const signoutUseCase = new SignoutUseCase(userRepository)
 
 /******************************************************************************************************************************************************
                                                         Customer Specific
 ******************************************************************************************************************************************************/
-import { ActiveServiceUseCase } from "../application/useCases/client/ActiveServiceUseCase.js";
+import { ActiveServiceUseCase } from "../application/useCases/client/ActiveServiceUseCase";
 const activeServiceUseCase = new ActiveServiceUseCase(categoryRepository)
 
-import { GetActiveProvidersUseCase } from "../application/useCases/client/GetActiveProvidersUseCase.js";
+import { GetActiveProvidersUseCase } from "../application/useCases/client/GetActiveProvidersUseCase";
 const getActiveProvidersUseCase = new GetActiveProvidersUseCase(userRepository)
 
-import { KYCRequestUseCase } from "../application/useCases/client/kYCRequestUseCase.js";
+import { KYCRequestUseCase } from "../application/useCases/client/kYCRequestUseCase";
 const kycRequestUseCase = new KYCRequestUseCase(kycRequestRepository)
 
-import { ProviderBookingsInfoUseCase } from "../application/useCases/client/ProviderBookingsInfoUseCase.js";
+import { ProviderBookingsInfoUseCase } from "../application/useCases/client/ProviderBookingsInfoUseCase";
 const providerBookingsInfoUseCase = new ProviderBookingsInfoUseCase(userRepository)
 
-import { BookingUseCase } from "../application/useCases/client/BookingUseCase.js";
+import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
 const bookingUseCase = new BookingUseCase(bookingRepository,notificationService,bookingSchedulerService,userRepository)
 
-import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase.js";
+import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase";
 const createPaymentUseCase = new CreatePaymentUseCase(paymentService)
 
-import { VerifyPaymentUseCase } from "../application/useCases/client/VerifyPaymentUseCase.js";
+import { VerifyPaymentUseCase } from "../application/useCases/client/VerifyPaymentUseCase";
 const verifyPaymentUseCase = new VerifyPaymentUseCase(paymentService,notificationService)
 
-import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase.js";
+import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository)
 
-import { VerifyPasswordUseCase } from "../application/useCases/client/VerifyPasswordUseCase.js";
+import { VerifyPasswordUseCase } from "../application/useCases/client/VerifyPasswordUseCase";
 const verifyPasswordUseCase = new VerifyPasswordUseCase(userRepository, hashService, emailService)
 /******************************************************************************************************************************************************
                                                         Provider Specific
 ******************************************************************************************************************************************************/
-import { UpdateBookingStatusUseCase } from "../application/useCases/providers/UpdateBookingStatusUseCase.js";
+import { UpdateBookingStatusUseCase } from "../application/useCases/providers/UpdateBookingStatusUseCase";
 const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository,notificationService,bookingSchedulerService)
 
 
 /******************************************************************************************************************************************************
                                                         Admin Specific
 ******************************************************************************************************************************************************/
-import { GetCustomersUseCase } from "../application/useCases/admin/GetCustomersUseCase.js";
+import { GetCustomersUseCase } from "../application/useCases/admin/GetCustomersUseCase";
 const getCustomersUseCase = new GetCustomersUseCase(userRepository)
 
-import { ToggleUserStatusUseCase } from "../application/useCases/admin/ToggleUserStatusUseCase.js";
+import { ToggleUserStatusUseCase } from "../application/useCases/admin/ToggleUserStatusUseCase";
 const toggleUserStatusUseCase = new ToggleUserStatusUseCase(userRepository)
 
-import { GetProvidersUseCase } from "../application/useCases/admin/GetProvidersUseCase.js";
+import { GetProvidersUseCase } from "../application/useCases/admin/GetProvidersUseCase";
 const getProvidersUseCase = new GetProvidersUseCase(providerRepository)
 
-import { ProviderApplicationUseCase } from "../application/useCases/admin/ProviderApplicationUseCase.js";
+import { ProviderApplicationUseCase } from "../application/useCases/admin/ProviderApplicationUseCase";
 const providerApplicationUseCase = new ProviderApplicationUseCase(kycRequestRepository)
 
-import { UpdateKYCStatusUseCase } from "../application/useCases/admin/UpdateKYCStatusUseCase.js";
+import { UpdateKYCStatusUseCase } from "../application/useCases/admin/UpdateKYCStatusUseCase";
 const updateKYCStatusUseCase = new UpdateKYCStatusUseCase(kycRequestRepository,providerRepository,userRepository)
 
-import { GetServiceUseCase } from "../application/useCases/admin/GetServiceUseCase.js";
+import { GetServiceUseCase } from "../application/useCases/admin/GetServiceUseCase";
 const getServiceUseCase = new GetServiceUseCase(categoryRepository)
 
-import { CreateServiceCategoryUseCase } from "../application/useCases/admin/CreateServiceCategoryUseCase.js";
+import { CreateServiceCategoryUseCase } from "../application/useCases/admin/CreateServiceCategoryUseCase";
 const createServiceCategoryUseCase = new CreateServiceCategoryUseCase(categoryRepository)
 
-import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase.js";
+import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase";
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository)
 
 
 /******************************************************************************************************************************************************/
-import { PublicController } from "../interfaces/controllers/PublicController.js";
-import { AuthController } from "../interfaces/controllers/AuthController.js";
-import { UserController } from "../interfaces/controllers/UserContoller.js";
-import { AdminController } from "../interfaces/controllers/AdminController.js";
-import { ProviderController } from "../interfaces/controllers/ProviderController.js";
+import { PublicController } from "../interfaces/controllers/PublicController";
+import { AuthController } from "../interfaces/controllers/AuthController";
+import { UserController } from "../interfaces/controllers/UserContoller";
+import { AdminController } from "../interfaces/controllers/AdminController";
+import { ProviderController } from "../interfaces/controllers/ProviderController";
 
 const publicController = new PublicController(loggerService, getLandingDataUseCase)
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase) 

@@ -1,9 +1,9 @@
-import { Category } from "../../../domain/entities/CategoryEntity.js";
-import { Provider, ProviderWithDetails } from "../../../domain/entities/ProviderEntity.js";
-import { User } from "../../../domain/entities/UserEntity.js";
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import ProviderModel from "../models/ProviderModel.js";
+import { Category } from "../../../domain/entities/CategoryEntity";
+import { Provider, ProviderWithDetails } from "../../../domain/entities/ProviderEntity";
+import { User } from "../../../domain/entities/UserEntity";
+import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import ProviderModel from "../models/ProviderModel";
 
 
 export class ProviderRepository implements IProviderRepository{

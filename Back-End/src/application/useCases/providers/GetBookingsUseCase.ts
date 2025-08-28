@@ -1,6 +1,6 @@
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { IGetBookingsUseCase } from "../../Interface/useCases/Provider/IGetBookingsUseCase.js";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { IGetBookingsUseCase } from "../../Interface/useCases/Provider/IGetBookingsUseCase";
 
 
 const { INTERNAL_SERVER_ERROR,} = HttpStatusCode

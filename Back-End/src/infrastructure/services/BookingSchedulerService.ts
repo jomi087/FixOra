@@ -1,5 +1,5 @@
 import schedule, { Job } from "node-schedule";
-import { IBookingSchedulerService } from "../../domain/interface/ServiceInterface/IBookingSchedulerService.js";
+import { IBookingSchedulerService } from "../../domain/interface/ServiceInterface/IBookingSchedulerService";
 
 export class BookingSchedulerService implements IBookingSchedulerService {
     private jobs = new Map<string, Job>();

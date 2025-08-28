@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodType  } from "zod";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../shared/Messages.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../shared/Messages";
 
 type Location = "body" | "query" | "params";
 

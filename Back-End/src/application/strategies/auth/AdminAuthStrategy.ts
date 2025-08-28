@@ -1,11 +1,11 @@
-import { User } from "../../../domain/entities/UserEntity.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { RoleEnum } from "../../../shared/Enums/Roles.js";
-import { SigninInputDTO } from "../../DTO's/AuthDTO/SigninDTO.js";
-import { AuthData, IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy.js";
+import { User } from "../../../domain/entities/UserEntity";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { RoleEnum } from "../../../shared/Enums/Roles";
+import { SigninInputDTO } from "../../DTO's/AuthDTO/SigninDTO";
+import { AuthData, IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy";
 
 const { FORBIDDEN, INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { INVALID_CREDENTIALS, INTERNAL_ERROR } = Messages;

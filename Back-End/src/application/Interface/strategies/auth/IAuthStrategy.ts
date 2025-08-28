@@ -1,5 +1,5 @@
-import { RoleEnum } from "../../../../shared/Enums/Roles.js";
-import { SigninInputDTO } from "../../../DTO's/AuthDTO/SigninDTO.js";
+import { RoleEnum } from "../../../../shared/Enums/Roles";
+import { SigninInputDTO } from "../../../DTO's/AuthDTO/SigninDTO";
 
 
 

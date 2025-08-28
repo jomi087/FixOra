@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse.js";
-import { RoleEnum } from "../../shared/Enums/Roles.js";
-import { KYCStatus } from "../../shared/Enums/KYCstatus.js";
-import { BookingStatus } from "../../shared/Enums/BookingStatus.js";
+import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
+import { RoleEnum } from "../../shared/Enums/Roles";
+import { KYCStatus } from "../../shared/Enums/KYCstatus";
+import { BookingStatus } from "../../shared/Enums/BookingStatus";
 
 export const optionalStringField = z.string().optional();
 

@@ -1,8 +1,8 @@
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { GetServicesInputDTO, GetServicesOutputDTO } from "../../DTO's/GetServiceDTO.js";
-import { IGetServiceUseCase } from "../../Interface/useCases/Admin/IGetServiceUseCase.js";
+import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { GetServicesInputDTO, GetServicesOutputDTO } from "../../DTO's/GetServiceDTO";
+import { IGetServiceUseCase } from "../../Interface/useCases/Admin/IGetServiceUseCase";
 
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode

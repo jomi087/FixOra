@@ -1,5 +1,8 @@
-import { AutoRejectNotification, INotificationService, PaymentFailureNotification, PaymentSuccessNotification, ProviderBookingNotification, UserResponsNotificaton } from "../../domain/interface/ServiceInterface/INotificationService.js";
-import { getIO } from "../socket/config.js";
+import {
+    AutoRejectNotification, INotificationService, PaymentFailureNotification,
+    PaymentSuccessNotification, ProviderBookingNotification, UserResponsNotificaton
+} from "../../domain/interface/ServiceInterface/INotificationService";
+import { getIO } from "../socket/config";
 
 export class NotificationService implements INotificationService {
     //booking request (user to provider)

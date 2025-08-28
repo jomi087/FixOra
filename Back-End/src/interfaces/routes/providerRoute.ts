@@ -1,8 +1,8 @@
 import express from 'express'
-import { validateRequest } from '../middleware/validateRequest.js';
-import { bookingStatusSchema } from '../validations/bookingSchema.js';
-import { providerController, AuthMiddleware } from '../../main/dependencyInjector.js';
-import { RoleEnum } from '../../shared/Enums/Roles.js';
+import { validateRequest } from '../middleware/validateRequest';
+import { bookingStatusSchema } from '../validations/bookingSchema';
+import { providerController, AuthMiddleware } from '../../main/dependencyInjector';
+import { RoleEnum } from '../../shared/Enums/Roles';
 
 const router = express.Router();
 

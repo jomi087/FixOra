@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode.js";
-import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCases/Provider/IUpdateBookingStatusUseCase.js";
-// import { IGetBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetBookingsUseCase.js";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService.js";
-import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse.js";
+import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCases/Provider/IUpdateBookingStatusUseCase";
+// import { IGetBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetBookingsUseCase";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
+import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 
 const { OK } = HttpStatusCode;
 

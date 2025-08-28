@@ -1,10 +1,10 @@
 import express from 'express'
 const router = express.Router();
 
-import { validateRequest } from '../middleware/validateRequest.js';
-import { forgotPasswordSchema, resetPasswordSchema, signinSchema, signupSchema } from '../validations/authSchema.js';
+import { validateRequest } from '../middleware/validateRequest';
+import { forgotPasswordSchema, resetPasswordSchema, signinSchema, signupSchema } from '../validations/authSchema';
 
-import { authController, AuthMiddleware } from '../../main/dependencyInjector.js'; 
+import { authController, AuthMiddleware } from '../../main/dependencyInjector';
 
 
 router.post('/signup', validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next))
@@ -43,25 +43,25 @@ export default router
 
 /*----------------------------------------------------------------------------
 This is how router was, but the issue ower here was, inteface was depending to the outer layer( infrastructure layer ) 
-eg  -> "import { UserRepository } from '../../infrastructure/database/repositories/UserRepository.js'"
+eg  -> "import { UserRepository } from '../../infrastructure/database/repositories/UserRepository
 thats my Di (dipendency injector) file was creatd in the outter area and all DI code we move from here to di file
 
 
 import express from 'express'
 const router = express.Router();
 
-import { validateRequest } from '../middleware/validateRequest.js';
-import { signupSchema } from '../validations/signupSchema.js';
-import { signinSchema } from '../validations/signinSchema.js';
+import { validateRequest } from '../middleware/validateRequest
+import { signupSchema } from '../validations/signupSchema
+import { signinSchema } from '../validations/signinSchema
 
 
-import { UserRepository } from '../../infrastructure/database/repositories/UserRepository.js';
-import { OtpRepository } from '../../infrastructure/database/repositories/OtpRepository.js';
-import { EmailService } from '../../infrastructure/services/EmailService.js';
-import { OtpGenratorservice } from '../../infrastructure/services/OtpGeneratorService.js';
-import { HashService } from '../../infrastructure/services/HashService.js';
-import { TokenService } from '../../infrastructure/services/TokenService.js';
-import { RefreshTokenUseCase } from '../../application/useCases/RefreshTokenUseCase.js';
+import { UserRepository } from '../../infrastructure/database/repositories/UserRepository
+import { OtpRepository } from '../../infrastructure/database/repositories/OtpRepository
+import { EmailService } from '../../infrastructure/services/EmailService
+import { OtpGenratorservice } from '../../infrastructure/services/OtpGeneratorService
+import { HashService } from '../../infrastructure/services/HashService
+import { TokenService } from '../../infrastructure/services/TokenService
+import { RefreshTokenUseCase } from '../../application/useCases/RefreshTokenUseCase
 
 
 // Instantiate all dependencies
@@ -73,25 +73,25 @@ const hashService = new HashService();
 const tokenService = new TokenService()
 
 
-import { SignupUseCase } from '../../application/useCases/SignupUseCase.js';
+import { SignupUseCase } from '../../application/useCases/SignupUseCase
 const signupUseCase = new SignupUseCase(userRepository, otpRepository, emailService, otpGenratorservice, hashService ) 
 
-import { VerifySignupOtpUseCase } from '../../application/useCases/VerifySignupOtpUseCase.js';
+import { VerifySignupOtpUseCase } from '../../application/useCases/VerifySignupOtpUseCase
 const verifySignupOtpUseCase = new VerifySignupOtpUseCase(otpRepository, userRepository)
 
-import { ResendOtpUseCase } from '../../application/useCases/ResendOtpUseCase.js';
+import { ResendOtpUseCase } from '../../application/useCases/ResendOtpUseCase
 const resendOtpUseCase = new ResendOtpUseCase(otpRepository, otpGenratorservice, emailService)
 
 // Used a Role Strategy Map for signin (single singin for all roles)
-import { configureAuthStrategies } from '../../infrastructure/config/authConfig.js';
+import { configureAuthStrategies } from '../../infrastructure/config/authConfig
 const authFactory = configureAuthStrategies(userRepository, hashService)
-import { SigninUseCase } from '../../application/useCases/SigninUseCase.js';
+import { SigninUseCase } from '../../application/useCases/SigninUseCase
 const signinUseCase = new SigninUseCase(authFactory, tokenService, userRepository)
 
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService)
 
-import { AuthController } from '../controllers/AuthController.js';
-import { userAuth } from '../middleware/AuthMiddleware.js';
+import { AuthController } from '../controllers/AuthController
+import { userAuth } from '../middleware/AuthMiddleware
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase,resendOtpUseCase,signinUseCase,refreshTokenUseCase) 
 

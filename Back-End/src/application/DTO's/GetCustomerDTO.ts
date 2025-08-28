@@ -1,5 +1,5 @@
-import { User } from "../../domain/entities/UserEntity.js";
-import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO.js";
+import { User } from "../../domain/entities/UserEntity";
+import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO";
 
 export interface GetCustomersInputDTO extends PaginationInputDTO { }
 

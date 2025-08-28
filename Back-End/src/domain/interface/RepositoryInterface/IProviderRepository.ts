@@ -1,4 +1,4 @@
-import { Provider, ProviderWithDetails } from "../../entities/ProviderEntity.js";
+import { Provider, ProviderWithDetails } from "../../entities/ProviderEntity";
 
 export interface IProviderRepository {
     create(data: Provider): Promise<void> 

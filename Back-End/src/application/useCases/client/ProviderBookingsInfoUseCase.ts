@@ -1,10 +1,10 @@
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository.js";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository.js";
-import { Gender } from "../../../shared/Enums/Gender.js";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode.js";
-import { Messages } from "../../../shared/Messages.js";
-import { ProviderBookingsInfoDTO, ProviderBookingsInfoInputDTO, ProviderBookingsInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderBookingsInfoDTO.js";
-import { IProviderBookingsInfoUseCase } from "../../Interface/useCases/Client/IProviderBookingsInfoUseCase.js";
+import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { Gender } from "../../../shared/Enums/Gender";
+import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { Messages } from "../../../shared/Messages";
+import { ProviderBookingsInfoDTO, ProviderBookingsInfoInputDTO, ProviderBookingsInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderBookingsInfoDTO";
+import { IProviderBookingsInfoUseCase } from "../../Interface/useCases/Client/IProviderBookingsInfoUseCase";
 
 const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode
 const { INTERNAL_ERROR ,PROVIDER_NOT_FOUND} = Messages

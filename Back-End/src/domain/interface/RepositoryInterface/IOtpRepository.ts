@@ -1,4 +1,4 @@
-import { Otp } from "../../entities/OtpEntity.js";
+import { Otp } from "../../entities/OtpEntity";
 
 
 export interface IOtpRepository{

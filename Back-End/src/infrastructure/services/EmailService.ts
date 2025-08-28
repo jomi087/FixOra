@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService.js";
+import { IEmailService } from "../../domain/interface/ServiceInterface/IEmailService";
 
 export class EmailService implements IEmailService {
   
