@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { Readable } from "stream";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 
@@ -16,15 +16,15 @@ export class ImageUploaderService implements IImageUploaderService {
     
     async uploadImage(buffer: Buffer, folder : string = "FixOra/All"): Promise<string> {
         return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-            { folder},  
-            ( error, result) => {
-                if (error) return reject(error);
-                resolve(result?.secure_url || "");
-            }
-        );
+            const stream = cloudinary.uploader.upload_stream(
+                { folder },  
+                ( error, result) => {
+                    if (error) return reject(error);
+                    resolve(result?.secure_url || "");
+                }
+            );
 
-        const readable = new Readable();
+            const readable = new Readable();
             readable.push(buffer);
             readable.push(null);
             readable.pipe(stream);

@@ -4,11 +4,11 @@ import { usePaginatedProviderApi } from "./usePaginatedProviderApi";
 import { PCPP } from "@/utils/constant";
 
 export const useProviderManagement = () =>
-    usePaginatedProviderApi<ProviderData>(
-        AuthService.getAllProviderApi,
-        {
-            defaultFilter: "all",
-            defaultItemsPerPage: PCPP || 12,
-            debounceDelay: 500,
-        }
-    );
+  usePaginatedProviderApi<ProviderData>(
+    AuthService.getAllProviderApi,
+    {
+      defaultFilter: "all",
+      defaultItemsPerPage: PCPP || 12,
+      debounceDelay: 500,
+    }
+  );

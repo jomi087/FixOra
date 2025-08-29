@@ -11,114 +11,114 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const useSignInLogic = () => {
-    const [ loading, setLoading ] = useState(false); 
-    const navigate = useNavigate()
-    const { role } = useParams() 
-    const dispatch = useAppDispatch()
+  const [ loading, setLoading ] = useState(false); 
+  const navigate = useNavigate();
+  const { role } = useParams(); 
+  const dispatch = useAppDispatch();
 
-    const isValidRole = Object.values(RoleEnum).includes(role as RoleEnum);
-    const userRole: RoleEnum = isValidRole ? (role as RoleEnum) : RoleEnum.CUSTOMER;
+  const isValidRole = Object.values(RoleEnum).includes(role as RoleEnum);
+  const userRole: RoleEnum = isValidRole ? (role as RoleEnum) : RoleEnum.CUSTOMER;
 
-    const navigateByRole = (userRole: RoleEnum) => {
-        switch (userRole) {
-        case RoleEnum.CUSTOMER:
-            navigate("/");
-            break;
-        case RoleEnum.PROVIDER:
-            navigate("/provider/dashboard");
-            break;
-        case RoleEnum.ADMIN:
-            navigate("/admin/dashboard");
-            break;
-        }
-    };
+  const navigateByRole = (userRole: RoleEnum) => {
+    switch (userRole) {
+    case RoleEnum.CUSTOMER:
+      navigate("/");
+      break;
+    case RoleEnum.PROVIDER:
+      navigate("/provider/dashboard");
+      break;
+    case RoleEnum.ADMIN:
+      navigate("/admin/dashboard");
+      break;
+    }
+  };
 
-    const handleLogin = async (email: string, password: string) => {
+  const handleLogin = async (email: string, password: string) => {
 
-        const emailError = validateEmail(email);
-        const passwordError = validatePassword(password);
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
 
-        if (emailError || passwordError) {
-            toast.error(emailError || passwordError);
-            return;
-        }
+    if (emailError || passwordError) {
+      toast.error(emailError || passwordError);
+      return;
+    }
         
-        const data = {
-            email,
-            password,
-            role: userRole // this i need to do cz param return string and role is enum
-        };
-        setLoading(true);
+    const data = {
+      email,
+      password,
+      role: userRole // this i need to do cz param return string and role is enum
+    };
+    setLoading(true);
 
+    try {
+      const res = await AuthService.signinApi(data); // 
+
+      if (res.status === HttpStatusCode.OK) {
+        const { userData } = res.data;
+        dispatch(Userinfo({ user: userData }));
+        toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
+
+        navigateByRole(userData.role);
+      }
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
+      toast.error(errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (email: string) => { 
+    setLoading(true);
+    try {
+      const res = await AuthService.forgotPasswordApi(email);
+      if (res.status === HttpStatusCode.OK) {
+        toast.success(res.data.message || Messages.MAIL_SENT_MSG);
+      }
+    } catch (error : any) {
+      const errorMsg = error?.response?.data?.message || Messages.FORGOT_PASSWORD_FAILED;
+      toast.error(errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  }; 
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (authResult: { code?: string }) => {
+      if (authResult.code) {
+        const data = { code: authResult.code, role: userRole  };
         try {
-            const res = await AuthService.signinApi(data) // 
+          const res =await AuthService.googleSigninApi(data);
 
-        if (res.status === HttpStatusCode.OK) {
+          if (res.status === HttpStatusCode.OK) {
             const { userData } = res.data;
             dispatch(Userinfo({ user: userData }));
             toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
 
             navigateByRole(userData.role);
-        }
-        } catch (error: any) {
-            const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
-            toast.error(errorMsg);
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const handleForgotPassword = async (email: string) => { 
-        setLoading(true);
-        try {
-            const res = await AuthService.forgotPasswordApi(email)
-        if (res.status === HttpStatusCode.OK) {
-            toast.success(res.data.message || Messages.MAIL_SENT_MSG);
-        }
-        } catch (error : any) {
-            const errorMsg = error?.response?.data?.message || Messages.FORGOT_PASSWORD_FAILED
-        toast.error(errorMsg);
-        } finally {
-            setLoading(false)
-        }
-    } 
-
-    const loginWithGoogle = useGoogleLogin({
-        onSuccess: async (authResult: { code?: string }) => {
-            if (authResult.code) {
-                const data = { code: authResult.code, role: userRole  };
-                try {
-                    const res =await AuthService.googleSigninApi(data)
-
-                    if (res.status === HttpStatusCode.OK) {
-                        const { userData } = res.data;
-                        dispatch(Userinfo({ user: userData }));
-                        toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
-
-                        navigateByRole(userData.role);
-                    }
+          }
                         
-                } catch (error: any) {
-                    console.log(error.response)
-                    const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
-                    toast.error(errorMsg);
-                }
-            }
-        },
-        onError: (error) => {
-            console.log("Google login error", error);
-            toast.error("Google login failed");
-        },
-        flow: 'auth-code',  // this enables PKCE under the hood
-    });
+        } catch (error: any) {
+          console.log(error.response);
+          const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
+          toast.error(errorMsg);
+        }
+      }
+    },
+    onError: (error) => {
+      console.log("Google login error", error);
+      toast.error("Google login failed");
+    },
+    flow: "auth-code",  // this enables PKCE under the hood
+  });
     
-    return {
-        handleLogin,
-        handleForgotPassword,
-        loginWithGoogle,
-        loading,
-        userRole,
-    }
+  return {
+    handleLogin,
+    handleForgotPassword,
+    loginWithGoogle,
+    loading,
+    userRole,
+  };
 
-}
+};
 

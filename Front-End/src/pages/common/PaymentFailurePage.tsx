@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { BGImage_404 } from "@/utils/constant";
-import PaymentFailed from '@/assets/animations/crossFailed.json'
+import PaymentFailed from "@/assets/animations/crossFailed.json";
 import Lottie from "lottie-react";
 
 
 const PaymentFailurePage: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div
       style={{ backgroundImage: BGImage_404 }}
@@ -41,7 +41,7 @@ const PaymentFailurePage: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PaymentFailurePage
+export default PaymentFailurePage;

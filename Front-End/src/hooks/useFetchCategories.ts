@@ -4,17 +4,17 @@ import { useEffect } from "react";
 
 
 const useFetchCategories   = () => {
-    const dispatch = useAppDispatch()
-    const { categories, loading } = useAppSelector((state) => state.category)
+  const dispatch = useAppDispatch();
+  const { categories, loading } = useAppSelector((state) => state.category);
 
-    useEffect(() => { //for handling refersh scenario
-        if (categories.length === 0) {
-            dispatch(fetchCategories());
-        }
+  useEffect(() => { //for handling refersh scenario
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
 
-    }, [dispatch, categories.length])
+  }, [dispatch, categories.length]);
 
-    return { categories , loading }
-}
+  return { categories , loading };
+};
 
-export default useFetchCategories
+export default useFetchCategories;

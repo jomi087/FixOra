@@ -1,12 +1,13 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "dist/server.js",
-  "type": "commonjs",
+  "main": "dist/main/server.js",
   "scripts": {
-    "start": "tsc && node dist/main/server.js",
-    "dev": "nodemon --watch src --exec \"ts-node src/main/server.ts\""
-    
+    "build": "tsc",
+    "start": "node dist/main/server.js",
+    "dev": "nodemon --watch src --exec \"ts-node src/main/server.ts\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,9 @@
     "@types/nodemailer": "^6.4.17",
     "@types/socket.io": "^3.0.1",
     "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^9.34.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },

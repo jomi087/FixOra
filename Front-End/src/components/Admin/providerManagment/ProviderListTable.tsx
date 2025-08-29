@@ -8,7 +8,7 @@ interface ProviderListTableProps {
   setData: (data:ProviderList[])=>void
 }
 
-const ProviderListTable: React.FC<ProviderListTableProps> = ({ data ,setData}) => {
+const ProviderListTable: React.FC<ProviderListTableProps> = ({ data ,setData }) => {
   const [selectedProvider, setSelectedProvider] = useState<ProviderList | null>(null);
 
   const handleRowClick = (provider: ProviderList) => {
@@ -16,9 +16,9 @@ const ProviderListTable: React.FC<ProviderListTableProps> = ({ data ,setData}) =
   };
 
   const statusUpdatedData = (id: string) => {
-    const newData = data.filter((d) => d.id !== id)
-    setData(newData)
-  }
+    const newData = data.filter((d) => d.id !== id);
+    setData(newData);
+  };
 
   return (
     <div className="w-full">

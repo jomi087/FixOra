@@ -6,16 +6,16 @@ import { Messages } from "../../shared/Messages";
 type Location = "body" | "query" | "params";
 
 export const validateRequest = (schema: ZodType <any>, location: Location = "body") => (req: Request, res: Response, next: NextFunction): void => {
-  const target = req[location];
+    const target = req[location];
 
-  const result = schema.safeParse(target);
-  if (!result.success) {
-    const errorMessages = result.error.issues.map((err) => err.message);
-    throw { status: HttpStatusCode.BAD_REQUEST, message: errorMessages[0] || errorMessages || Messages.VALIDATION_FAILED };
-  };
+    const result = schema.safeParse(target);
+    if (!result.success) {
+        const errorMessages = result.error.issues.map((err) => err.message);
+        throw { status: HttpStatusCode.BAD_REQUEST, message: errorMessages[0] || errorMessages || Messages.VALIDATION_FAILED };
+    };
 
-  Object.assign(req[location], result.data);
-  next();
+    Object.assign(req[location], result.data);
+    next();
 };
 
 //  The below code  was my zod validtion for data which is comming from body  now i chaged it and made it for  3 types 

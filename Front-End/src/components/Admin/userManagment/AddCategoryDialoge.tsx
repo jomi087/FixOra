@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {Dialog,DialogClose,DialogContent,DialogDescription,DialogFooter,DialogHeader,DialogTitle,DialogTrigger,} from "@/components/ui/dialog";
+import { Dialog,DialogClose,DialogContent,DialogDescription,DialogFooter,DialogHeader,DialogTitle,DialogTrigger, } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,7 @@ import { useCategoryForm } from "@/hooks/useCategoryForm";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import { Messages } from "@/utils/constant";
+import { shortInputLength,longInputLength, Messages } from "@/utils/constant";
 
 interface AddCategoryProps {
   open: boolean;
@@ -16,8 +16,8 @@ interface AddCategoryProps {
   triggerRefresh: () => void; 
 }
 
-const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRefresh}) => {
-  const {name,setName,description,setDescription,setImage,subcategories,errors,loading,setLoading,handleAddSubcategory,handleSubcategoryChange,handleRemoveSubcategory,validate,createFormData,} = useCategoryForm();
+const AddCategoryDialoge: React.FC<AddCategoryProps> = ({ open,setOpen,triggerRefresh }) => {
+  const { name,setName,description,setDescription,setImage,subcategories,errors,loading,setLoading,handleAddSubcategory,handleSubcategoryChange,handleRemoveSubcategory,validate,createFormData, } = useCategoryForm();
   
 
   const handleSubmit =async (e: React.FormEvent) => {
@@ -28,12 +28,12 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
     setLoading(true);
     const formData = createFormData();
     try {
-      const res = await AuthService.addCategoryApi(formData)
+      const res = await AuthService.addCategoryApi(formData);
 
       if (res.status == HttpStatusCode.OK) {
-        toast.success(res.data.message)
-        triggerRefresh()
-        setOpen(false)
+        toast.success(res.data.message);
+        triggerRefresh();
+        setOpen(false);
       }
     } catch (error:any) {
       const errorMsg = error?.response?.data?.message || Messages.FAILED_CATEGORY_RESPONSE_MSG;
@@ -68,6 +68,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className={errors.name ? "border-red-500" : ""}
+                maxLength={shortInputLength}
               />
               {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
             </div>
@@ -79,6 +80,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className={errors.description ? "border-red-500" : ""}
+                maxLength={longInputLength}
               />
               {errors.description && (
                 <p className="text-sm text-red-500">{errors.description}</p>
@@ -93,6 +95,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
                 accept="image/*"
                 onChange={(e) => setImage(e.target.files?.[0] || null)}
                 className={errors.image ? "border-red-500" : ""}
+                maxLength={10}
               />
               {errors.image && <p className="text-sm text-red-500">{errors.image}</p>}
             </div>
@@ -110,6 +113,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
                     className={
                       errors.subcategories[index] ? "border-red-500" : ""
                     }
+                    maxLength={shortInputLength} 
                   />
                   <Textarea
                     placeholder="Description"
@@ -120,6 +124,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({open,setOpen,triggerRef
                     className={
                       errors.subcategories[index] ? "border-red-500" : ""
                     }
+                    maxLength={longInputLength} 
                   />
                   <Input
                     type="file"

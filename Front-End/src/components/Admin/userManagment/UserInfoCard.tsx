@@ -8,7 +8,7 @@ interface InfoCardProps {
   onToggleStatus : ( id : string ) => void
 }
 
-const UserInfoCard:React.FC<InfoCardProps> = ({ datas, onToggleStatus}) => {
+const UserInfoCard:React.FC<InfoCardProps> = ({ datas, onToggleStatus }) => {
 
   return (
     <div className="flex flex-wrap justify-center gap-6 px-4 py-6 max-w-7xl mx-auto">
@@ -21,20 +21,20 @@ const UserInfoCard:React.FC<InfoCardProps> = ({ datas, onToggleStatus}) => {
             <div className="flex justify-center rounded-t-3xl">
               <button
                 className={`text-xs md:text-sm cursor-pointer dark:text-black ${
-                  data.isBlocked ? 'bg-green-600' : 'bg-red-600'
+                  data.isBlocked ? "bg-green-600" : "bg-red-600"
                 } font-semibold px-4 py-1 md:px-10 border-b border-l border-r rounded-b-2xl`}
-                  onClick={ (e) => {
-                    e.stopPropagation()
-                    onToggleStatus?.(data.userId)
-                  }}
+                onClick={ (e) => {
+                  e.stopPropagation();
+                  onToggleStatus?.(data.userId);
+                }}
               >
-                {data.isBlocked ? 'Unblock' : 'Block'}
+                {data.isBlocked ? "Unblock" : "Block"}
               </button>
 
             </div>
 
             <div className="relative flex justify-center mt-4 max-h-44 overflow-hidden">
-                <IoPersonCircleOutline size={128} className="text-userIcon-text" />
+              <IoPersonCircleOutline size={128} className="text-userIcon-text" />
             </div>
 
             <h6 className="text-sm font-mono text-center m-2 pb-2 overflow-x-auto">

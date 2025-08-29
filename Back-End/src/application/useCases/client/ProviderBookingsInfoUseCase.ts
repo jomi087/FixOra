@@ -1,4 +1,3 @@
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { Gender } from "../../../shared/Enums/Gender";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
@@ -6,8 +5,8 @@ import { Messages } from "../../../shared/Messages";
 import { ProviderBookingsInfoDTO, ProviderBookingsInfoInputDTO, ProviderBookingsInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderBookingsInfoDTO";
 import { IProviderBookingsInfoUseCase } from "../../Interface/useCases/Client/IProviderBookingsInfoUseCase";
 
-const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode
-const { INTERNAL_ERROR ,PROVIDER_NOT_FOUND} = Messages
+const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode;
+const { INTERNAL_ERROR ,PROVIDER_NOT_FOUND } = Messages;
 
 
 export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase{
@@ -17,10 +16,10 @@ export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase
     
     async execute(input: ProviderBookingsInfoInputDTO ): Promise<ProviderBookingsInfoOutputDTO>{
         try { 
-            const providerData = await this._userRepository.findProviderBookingsById(input.id,input.coordinates)
+            const providerData = await this._userRepository.findProviderBookingsById(input.id,input.coordinates);
             
             if (!providerData) {
-                throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND}; 
+                throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND }; 
             }
 
             const { user, provider, category, booking, distanceFee } = providerData;
@@ -50,10 +49,10 @@ export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase
                 serviceCharge: provider.serviceCharge,
                 isOnline: provider.isOnline, 
                 distanceFee : distanceFee,
-            }
-            return mappedData
+            };
+            return mappedData;
         } catch (error: any) {
-            console.log(error)
+            console.log(error);
             if (error.status && error.message) {
                 throw error;
             }

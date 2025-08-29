@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,9 +12,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { PaymentMode } from "@/shared/enums/PaymentMode"
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { PaymentMode } from "@/shared/enums/PaymentMode";
 
 const FormSchema = z.object({
   type: z.enum(PaymentMode)
@@ -23,16 +23,17 @@ const FormSchema = z.object({
 
 interface ModeOfPaymentProps {
   handlePayment: (paymentType: PaymentMode) => void
+  isSubmitting : boolean
 }
 
-export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment }) => {
+export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment,isSubmitting }) => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    handlePayment(data.type)
+    handlePayment(data.type);
   }
 
   return (
@@ -77,9 +78,11 @@ export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment }) =
         <Button
           type="submit"
           variant={"success"}
-        >Submit
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Processing..." : "Submit"}
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};

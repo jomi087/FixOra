@@ -1,4 +1,3 @@
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { Gender } from "../../../shared/Enums/Gender";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
@@ -7,8 +6,8 @@ import { ActiveProviderDTO, GetActiveProvidersInputDTO, GetActiveProvidersOutput
 import { IGetActiveProvidersUseCase } from "../../Interface/useCases/Client/IGetActiveProvidersUseCase";
 
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 export class GetActiveProvidersUseCase implements IGetActiveProvidersUseCase{
     constructor(
@@ -18,13 +17,13 @@ export class GetActiveProvidersUseCase implements IGetActiveProvidersUseCase{
     
     async execute(input: GetActiveProvidersInputDTO): Promise<GetActiveProvidersOutputDTO>{ //GetActiveProvidersOutputDTO
         try {
-            const { searchQuery, filter, currentPage, limit, extraFilter,coordinates } = input
+            const { searchQuery, filter, currentPage, limit, extraFilter,coordinates } = input;
 
-            const { data, total } = await this._userRepository.findActiveProvidersWithFilters({ searchQuery, filter, extraFilter, coordinates }, currentPage, limit)
+            const { data, total } = await this._userRepository.findActiveProvidersWithFilters({ searchQuery, filter, extraFilter, coordinates }, currentPage, limit);
             
             // console.log("data data",data)
             
-            const mappedData: ActiveProviderDTO[] = data.map(({provider, user, category,averageRating,totalRatings }) => ({
+            const mappedData: ActiveProviderDTO[] = data.map(({ provider, user, category,averageRating,totalRatings }) => ({
                 providerId: provider.providerId,
                 user: {
                     userId: user.userId ,
@@ -53,7 +52,7 @@ export class GetActiveProvidersUseCase implements IGetActiveProvidersUseCase{
             };
             
         } catch (error: any) {
-            console.log(error)
+            console.log(error);
             if (error.status && error.message) {
                 throw error;
             }

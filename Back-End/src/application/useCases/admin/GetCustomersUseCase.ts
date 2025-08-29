@@ -5,8 +5,8 @@ import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../DTO's/GetCust
 import { IGetCustomersUseCase } from "../../Interface/useCases/Admin/IGetCustomersUseCase";
 
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode
-const { INTERNAL_ERROR} = Messages
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 export class GetCustomersUseCase implements IGetCustomersUseCase {
     constructor(
@@ -20,7 +20,7 @@ export class GetCustomersUseCase implements IGetCustomersUseCase {
             const users = await this._userRepository.findUsersWithFilters(
                 { searchQuery, filter },
                 currentPage, limit,
-            )
+            );
             
             return {
                 data: users.data,
@@ -29,7 +29,7 @@ export class GetCustomersUseCase implements IGetCustomersUseCase {
             
         } catch (error:any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

@@ -10,11 +10,11 @@ export const useUserManagement = ()=>{
   const [custData, setCustData] = useState<CustomersData []>([]);
   const [isLoading, setLoading] = useState(false);
   const [totalCustomers, setTotalCustomers] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("")
-  const [filter, setFilter] = useState("all")
-  const [debouncedQuery] = useDebounce(searchQuery,500)
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = CCPP || 16
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [debouncedQuery] = useDebounce(searchQuery,500);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = CCPP || 16;
   
   const totalPages = useMemo(() =>
     Math.ceil(totalCustomers / itemsPerPage)
@@ -39,20 +39,20 @@ export const useUserManagement = ()=>{
   }, [debouncedQuery,filter,currentPage]);
 
   useEffect(() => {  //this is to reset to page 1 on  search or filter change
-    setCurrentPage(1) 
-  }, [debouncedQuery, filter])
+    setCurrentPage(1); 
+  }, [debouncedQuery, filter]);
     
-    return {
-        custData,
-        isLoading,
-        totalPages,
-        searchQuery,
-        setSearchQuery,
-        filter,
-        setFilter,
-        currentPage,
-        setCurrentPage,
-        itemsPerPage,
-        setCustData,
-    }
-}
+  return {
+    custData,
+    isLoading,
+    totalPages,
+    searchQuery,
+    setSearchQuery,
+    filter,
+    setFilter,
+    currentPage,
+    setCurrentPage,
+    itemsPerPage,
+    setCustData,
+  };
+};

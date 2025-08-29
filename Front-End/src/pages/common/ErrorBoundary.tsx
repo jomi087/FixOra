@@ -36,7 +36,7 @@ class ErrorBoundary extends React.Component<Props, State> {
           <Header className="md:text-start"/>
           <ErrorPage msg={this.state.error?.message} />
         </>
-      )
+      );
     }
 
     return this.props.children;

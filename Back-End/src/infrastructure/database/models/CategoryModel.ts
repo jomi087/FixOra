@@ -1,19 +1,19 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose, { Document } from "mongoose";
 import { Category,Subcategory } from "../../../domain/entities/CategoryEntity";
 
 export interface ICategoryModel extends Document, Category{ }
 
 const SubcategorySchema = new mongoose.Schema<Subcategory>({
-    subCategoryId :{ type: String,required: true,unique: true,trim: true},
+    subCategoryId :{ type: String,required: true,unique: true,trim: true },
     name: { type: String, required: true },
     description: { type: String },
-    image: {type: String,required : true },
+    image: { type: String,required : true },
     isActive: { type: Boolean, default: false, required: true },
 },
-    {
-        timestamps: true,
-        _id: false
-    }
+{
+    timestamps: true,
+    _id: false
+}
 );
 
 const CategorySchema = new mongoose.Schema<ICategoryModel>({
@@ -45,13 +45,13 @@ const CategorySchema = new mongoose.Schema<ICategoryModel>({
         default : false,
     }
 },
-    {
-        timestamps: true,
-    }
-)
+{
+    timestamps: true,
+}
+);
 
 
 
 const CategoryModel  = mongoose.model<ICategoryModel>("Category", CategorySchema);
 
-export default CategoryModel
+export default CategoryModel;

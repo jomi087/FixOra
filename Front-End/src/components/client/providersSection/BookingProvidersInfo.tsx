@@ -1,17 +1,17 @@
-import { useAppSelector } from '@/store/hooks';
-import { toPascalCase } from '@/utils/helper/utils';
-import { GiPathDistance } from 'react-icons/gi';
-import { IoPeopleSharp } from 'react-icons/io5';
+import { useAppSelector } from "@/store/hooks";
+import { toPascalCase } from "@/utils/helper/utils";
+import { GiPathDistance } from "react-icons/gi";
+import { IoPeopleSharp } from "react-icons/io5";
 import { PiMathOperationsLight } from "react-icons/pi";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BookingProvidersInfo: React.FC = () => {
-  const { data } = useAppSelector((state) => state.providerBooking)
+  const { data } = useAppSelector((state) => state.providerBooking);
 
   return (
     <>
       {!data ? (
-        // shimmer ui
+      // shimmer ui
         <div className="mt-5 flex flex-col lg:flex-row gap-10">
           <div className="flex flex-col lg:flex-row gap-6 border p-6 rounded-xl w-full shadow-sm">
             <div className="flex flex-col items-center gap-3 ">
@@ -119,8 +119,8 @@ const BookingProvidersInfo: React.FC = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default BookingProvidersInfo
+export default BookingProvidersInfo;
 

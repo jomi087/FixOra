@@ -7,8 +7,8 @@ import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../../shared/Messages";
 import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase";
 
-const {FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
-const {UNAUTHORIZED_MSG,INTERNAL_ERROR} = Messages
+const { FORBIDDEN,INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { UNAUTHORIZED_MSG,INTERNAL_ERROR } = Messages;
 
 export class ResendOtpUseCase implements IResendOtpUseCase{
     constructor(
@@ -21,25 +21,25 @@ export class ResendOtpUseCase implements IResendOtpUseCase{
     async execute(token : string):Promise<void> {
         try {
             if (!token) {
-                throw { status: FORBIDDEN , message: UNAUTHORIZED_MSG }
+                throw { status: FORBIDDEN , message: UNAUTHORIZED_MSG };
             }
-            const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as DecodedUserDTO             
+            const decodeUserData  = jwt.verify( token, process.env.JWT_TEMP_ACCESS_SECRET as string ) as DecodedUserDTO;             
             
-            const otp = this._otpGenratorService.generateOtp()
-            console.log("this._is resend otp", otp)
+            const otp = this._otpGenratorService.generateOtp();
+            console.log("this._is resend otp", otp);
             
             await this._otpRepository.storeOtp({
                 email: decodeUserData.email,
                 otp,
                 createdAt: new Date()
-            })
+            });
 
-            const html = `<h1>Welcome to FixOra</h1><p>Your OTP code is: <strong>${otp}</strong></p>`
+            const html = `<h1>Welcome to FixOra</h1><p>Your OTP code is: <strong>${otp}</strong></p>`;
             await this._emailService.sendEmail(decodeUserData.email, "Your FixOra OTP", html);
 
         } catch (error:any) {
-           if (error.status && error.message) {
-               throw error;
+            if (error.status && error.message) {
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };  
         }

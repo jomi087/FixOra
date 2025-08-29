@@ -1,5 +1,5 @@
-import mongoose, { Document } from 'mongoose'
-import { Otp } from '../../../domain/entities/OtpEntity';
+import mongoose, { Document } from "mongoose";
+import { Otp } from "../../../domain/entities/OtpEntity";
 
 export interface IOtpModel extends Document, Otp {}
 
@@ -23,10 +23,10 @@ const  otpSchema= new mongoose.Schema<IOtpModel>({
         default : Date.now ,
         expires: 300   // 60s * 5 = 300 sec ie = 5 minute 
     },
-})
+});
 
-const OtpModel = mongoose.model<IOtpModel>('Otp',otpSchema)
+const OtpModel = mongoose.model<IOtpModel>("Otp",otpSchema);
 
-export default OtpModel
+export default OtpModel;
 
 

@@ -6,25 +6,25 @@ import { FilterQuery } from "mongoose";
 export class CategoryRepository implements ICategoryRepository {
 
     async create(category: Category): Promise < Category > {
-        const newCategory = new CategoryModel(category)
+        const newCategory = new CategoryModel(category);
         await newCategory.save();
         return newCategory.toObject() as Category;
     }
 
     async findByName(name: string): Promise<Category | null> {
         return await CategoryModel.findOne({
-            name: { $regex: `^${name.trim()}$`, $options: 'i' }
-        }).lean<Category>()
+            name: { $regex: `^${name.trim()}$`, $options: "i" }
+        }).lean<Category>();
     }
 
     async findById(id: string): Promise<Category>{  
-        const category = await CategoryModel.findOne({categoryId : id }).lean<Category>()
+        const category = await CategoryModel.findOne({ categoryId : id }).lean<Category>();
         if (!category) throw new Error("Category not found");
-        return category
+        return category;
     }
 
     async save(category: Category): Promise<Category> {
-        const categoryDoc = await CategoryModel.findOne({categoryId : category.categoryId });
+        const categoryDoc = await CategoryModel.findOne({ categoryId : category.categoryId });
         if (!categoryDoc) throw new Error("Category not found");
 
         categoryDoc.set(category); // overwrite fields
@@ -34,8 +34,8 @@ export class CategoryRepository implements ICategoryRepository {
     
 
     async findActiveCategories(omitFields: Array<keyof Category>=[]): Promise<Partial<Category>[]>{
-        const omitSelect = omitFields?.map(field => `-${field}`).join(' ')
-        return await CategoryModel.find({isActive : true}, { _id: 0, __v: 0 } ).select(omitSelect).lean<Partial<Category>[]>()
+        const omitSelect = omitFields?.map(field => `-${field}`).join(" ");
+        return await CategoryModel.find({ isActive : true }, { _id: 0, __v: 0 } ).select(omitSelect).lean<Partial<Category>[]>();
     }
 
 
@@ -67,7 +67,7 @@ export class CategoryRepository implements ICategoryRepository {
         currentPage: number,limit: number,
         omitFields: Array<keyof Category> = []
     ): Promise<{ data: Partial<Category>[]; total: number }> {
-        const { searchQuery, filter } = options
+        const { searchQuery, filter } = options;
         const query: FilterQuery<Category> = {};
         //if (searchQuery) { query.fname = { $regex: searchQuery, $options: "i" }; }
 
@@ -79,20 +79,20 @@ export class CategoryRepository implements ICategoryRepository {
         }
 
         if (filter === "Active") {
-            query.isActive = true
+            query.isActive = true;
         } else if (filter === "Un-Active") {
-            query.isActive = false
+            query.isActive = false;
         }
-        const omitSelect = omitFields.map(field => `-${field}`).join(' ');
+        const omitSelect = omitFields.map(field => `-${field}`).join(" ");
 
         const total = await CategoryModel.countDocuments(query);
-        const cartegories = await CategoryModel.find(query,{_id:0,__v:0})
+        const cartegories = await CategoryModel.find(query,{ _id:0,__v:0 })
             .select(omitSelect)
             .skip((currentPage - 1) * limit)
             .limit(limit)
             .lean<Partial<Category>[]>();
     
-        return { data : cartegories, total}
+        return { data : cartegories, total };
     }
     
 }

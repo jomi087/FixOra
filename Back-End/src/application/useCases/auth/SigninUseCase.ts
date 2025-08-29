@@ -6,8 +6,8 @@ import { SigninInputDTO, SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO";
 import { ISigninUseCase } from "../../Interface/useCases/Auth/ISigninUseCase";
 import { AuthStrategyFactory } from "../../strategies/auth/AuthStrategyFactory";
 
-const {NOT_FOUND,INTERNAL_SERVER_ERROR} = HttpStatusCode
-const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages
+const { NOT_FOUND,INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages;
 
 export class SigninUseCase implements ISigninUseCase {
     constructor(
@@ -25,18 +25,18 @@ export class SigninUseCase implements ISigninUseCase {
             const strategy = this._authFactory.getStrategy(credentials.role);
             const authenticatedUser = await strategy.authenticate(credentials);
             //till here 
-            const { userData, role } = authenticatedUser 
+            const { userData, role } = authenticatedUser; 
 
             const payload = {
                 id: userData.userId,
                 email : userData.email,
                 role: role
-            }
+            };
 
-            const acsToken  = this._tokenService.generateAccessToken(payload)
-            const refToken = this._tokenService.generateRefreshToken(payload)
+            const acsToken  = this._tokenService.generateAccessToken(payload);
+            const refToken = this._tokenService.generateRefreshToken(payload);
             
-            const updatedUserData = await this._userRepository.updateRefreshTokenAndGetUser( userData.userId, refToken )
+            const updatedUserData = await this._userRepository.updateRefreshTokenAndGetUser( userData.userId, refToken );
             if (!updatedUserData) {
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             }
@@ -52,13 +52,13 @@ export class SigninUseCase implements ISigninUseCase {
                 },
                 accessToken: acsToken,
                 refreshToken: refToken,
-            }
+            };
             
-            return mappedupdatedUserData
+            return mappedupdatedUserData;
 
         } catch (error:any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

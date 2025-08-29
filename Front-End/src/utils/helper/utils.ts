@@ -9,4 +9,4 @@ export const formatDOB = (dob: string): string =>
     year: "numeric",
     month: "long",
     day: "numeric",
-});
+  });

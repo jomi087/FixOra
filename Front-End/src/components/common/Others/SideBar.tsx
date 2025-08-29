@@ -9,14 +9,14 @@ interface SideBarProps {
 
 
 const SideBar: React.FC<SideBarProps> = ({ SideBar, className }) => {
-    const location = useLocation();
+  const location = useLocation();
 
   return (
     <div className={`overflow-hidden transition-transform min-w-1/5 shrink-0 ${className}`}>
       <ul className="space-y-2 pt-12 text-center">
         {SideBar.map((item, index) => {
           const Icon = item.icon;
-          const isActive = location.pathname ===item.to 
+          const isActive = location.pathname ===item.to; 
 
           return (
             <li
@@ -28,9 +28,9 @@ const SideBar: React.FC<SideBarProps> = ({ SideBar, className }) => {
                 className="text-xl font-bold font-mono flex justify-center gap-2 items-center relative"
                 aria-label={item.section}
               >
-                <Icon className={`mb-1`} size={24} />
+                <Icon className={"mb-1"} size={24} />
                 {/* Visible on medium screens and above */}
-                <span className={`hidden md:block ${isActive ? 'text-cyan-300':''}`}>{item.section}</span>
+                <span className={`hidden md:block ${isActive ? "text-cyan-300":""}`}>{item.section}</span>
 
                 {/* Hover label for small screens */}
                 <span className="absolute whitespace-nowrap top-4 pt-1 pb-1 text-sm font-extralight hidden group-hover:block md:group-hover:hidden z-10">

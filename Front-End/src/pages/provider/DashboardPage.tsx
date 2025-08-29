@@ -1,7 +1,7 @@
-import Nav from "@/components/common/layout/Nav"
-import SideBar from "@/components/common/Others/SideBar"
-import BookingInfo from "@/components/provider/dashboard/BookingInfo"
-import { providerSideBarOptions } from "@/utils/constant"
+import Nav from "@/components/common/layout/Nav";
+import SideBar from "@/components/common/Others/SideBar";
+import BookingInfo from "@/components/provider/dashboard/BookingInfo";
+import { providerSideBarOptions } from "@/utils/constant";
 
 const DashboardPage = () => {
   return (
@@ -12,7 +12,7 @@ const DashboardPage = () => {
         <BookingInfo/>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default DashboardPage
+export default DashboardPage;

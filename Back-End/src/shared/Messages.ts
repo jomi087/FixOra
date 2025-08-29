@@ -82,4 +82,4 @@ export const Messages = {
 
     LOGGED_OUT: "Logged Out",
 
-} as const
+} as const;

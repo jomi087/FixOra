@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog,DialogClose, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
+import { longInputLength } from "@/utils/constant";
 
 interface ReasonDialogProps {
   handleRejectOnConfirm: (reason: string) => void;
@@ -13,7 +14,7 @@ interface ReasonDialogProps {
   triggerStyle?: string;    
 }
 
-const ReasonDialog: React.FC<ReasonDialogProps> = ({handleRejectOnConfirm, loading, open, setOpen, triggerLabel = "Reject",variantStyle = "destructive",triggerStyle}) => {
+const ReasonDialog: React.FC<ReasonDialogProps> = ({ handleRejectOnConfirm, loading, open, setOpen, triggerLabel = "Reject",variantStyle = "destructive",triggerStyle }) => {
   const [reason, setReason] = useState("");
 
 
@@ -37,38 +38,39 @@ const ReasonDialog: React.FC<ReasonDialogProps> = ({handleRejectOnConfirm, loadi
 
       {/* Reason Dialog */}
       <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="">Reason</DialogTitle>
-            <DialogDescription className="">Please provide good and understandable reason.</DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center gap-2">
-            <div className="grid flex-1 gap-2">
-              <Label htmlFor="reason-textArea" className="sr-only">reason-textArea</Label>
+        <DialogHeader>
+          <DialogTitle className="">Reason</DialogTitle>
+          <DialogDescription className="">Please provide good and understandable reason.</DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center gap-2">
+          <div className="grid flex-1 gap-2">
+            <Label htmlFor="reason-textArea" className="sr-only">reason-textArea</Label>
             <textarea
-                autoFocus
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder="Enter reason..."
-                className="p-2 border rounded-md text-sm"
-                rows={2}
-              />
-            </div>
+              autoFocus
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Enter reason..."
+              className="p-2 border rounded-md text-sm"
+              rows={2}
+              maxLength={longInputLength}
+            />
           </div>
+        </div>
 
-          <DialogFooter className="mt-4 flex justify-end gap-2">
+        <DialogFooter className="mt-4 flex justify-end gap-2">
           <DialogClose asChild>
             <Button type="button" variant="secondary" disabled={loading}>
               Close
             </Button>
           </DialogClose>
           <Button
-              variant='destructive'
-              disabled={!reason.trim() || loading}  
-              onClick={handleConfirm}
+            variant='destructive'
+            disabled={!reason.trim() || loading}  
+            onClick={handleConfirm}
           >
             { loading ? "Processing" : "Confirm" } 
           </Button>
-          </DialogFooter>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

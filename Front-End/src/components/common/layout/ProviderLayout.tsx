@@ -6,4 +6,4 @@ const ProviderLayout = () => {
   );
 };
 
-export default ProviderLayout
+export default ProviderLayout;

@@ -1,48 +1,48 @@
 //? Configuring axios  ( Axios gives some method to config so it might be hard to understand but i have mentioned a with fetch that is understandble same logic is shown ower here ) 
 
-import axios from 'axios';
-import appStore from '../store/appStore';
-import { logout } from '../store/user/userSlice';
-import { HttpStatusCode } from '@/shared/enums/HttpStatusCode';
+import axios from "axios";
+import appStore from "../store/appStore";
+import { logout } from "../store/user/userSlice";
+import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 
 
 // Create axios instance
 const axiosInstance = axios.create(
-    { // defined repeted option 
-        baseURL: import.meta.env.VITE_API_URL,
-        withCredentials: true,
-    }
+  { // defined repeted option 
+    baseURL: import.meta.env.VITE_API_URL,
+    withCredentials: true,
+  }
 );
 
 
 // Response interceptor
 axiosInstance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
-        const status = error.response?.status;
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    const status = error.response?.status;
 
-        if (status === HttpStatusCode.UNAUTHORIZED && !originalRequest._retry) {
-            originalRequest._retry = true;
-            // console.log("enteredd here here here")
-            try {
-                // Call refresh token endpoint
-                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/refresh-token`, {}, {
-                    withCredentials : true
-                });
+    if (status === HttpStatusCode.UNAUTHORIZED && !originalRequest._retry) {
+      originalRequest._retry = true;
+      // console.log("enteredd here here here")
+      try {
+        // Call refresh token endpoint
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/refresh-token`, {}, {
+          withCredentials : true
+        });
 
-                if (response.status === HttpStatusCode.OK) {
-                    return axiosInstance(originalRequest);
-                }
-            } catch (refreshError) {
-                console.error("Refresh token failed", refreshError);
-                appStore.dispatch(logout());
-                return Promise.reject(refreshError);
-            }
+        if (response.status === HttpStatusCode.OK) {
+          return axiosInstance(originalRequest);
         }
-        // For any other error, just reject
-        return Promise.reject(error);
+      } catch (refreshError) {
+        console.error("Refresh token failed", refreshError);
+        appStore.dispatch(logout());
+        return Promise.reject(refreshError);
+      }
     }
+    // For any other error, just reject
+    return Promise.reject(error);
+  }
 );
 
 export default axiosInstance; 

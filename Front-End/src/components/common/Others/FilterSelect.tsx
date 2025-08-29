@@ -1,4 +1,4 @@
-import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue,} from "@/components/ui/select";
+import { Select,SelectContent,SelectItem,SelectTrigger,SelectValue, } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
 interface FilterOption {
@@ -14,7 +14,7 @@ interface FilterSelectProps {
   className?: string
 }
 
-const FilterSelect: React.FC<FilterSelectProps> = ({filter,onChange,options,placeholder="Sort",className}) => {
+const FilterSelect: React.FC<FilterSelectProps> = ({ filter,onChange,options,placeholder="Sort",className }) => {
   return (
     <div className={`${className}`}>
       <Label className="sr-only">Filter</Label>

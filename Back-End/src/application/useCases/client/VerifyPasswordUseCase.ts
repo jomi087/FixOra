@@ -8,8 +8,8 @@ import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../../shared/Messages";
 import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase";
 
-const { FORBIDDEN,INTERNAL_SERVER_ERROR} = HttpStatusCode
-const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages
+const { FORBIDDEN,INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages;
 
 export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
     constructor(
@@ -21,13 +21,13 @@ export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
     async execute(password: string, userId : string): Promise<void> {
         try {
             const user = await this._userRepository.findByUserId(userId,["refreshToken"]) as User; 
-            const isMatch = await this._hashService.compare(password, user.password as string)
-            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_PASSWORD }
+            const isMatch = await this._hashService.compare(password, user.password as string);
+            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_PASSWORD };
             
-            const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions['expiresIn']
-            const resetToken = jwt.sign({ email: user.email }, process.env.JWT_RESET_PASSWORD_SECRET as string, { expiresIn: expiryTime })
+            const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
+            const resetToken = jwt.sign({ email: user.email }, process.env.JWT_RESET_PASSWORD_SECRET as string, { expiresIn: expiryTime });
 
-            const url = process.env.FRONTEND_URL || 'http://localhost:5001'
+            const url = process.env.FRONTEND_URL || "http://localhost:5001";
             
             const resetUrl = `${url}/user/account/change-password?token=${resetToken}`;
 
@@ -45,7 +45,7 @@ export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
 
         } catch (error :any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

@@ -6,7 +6,7 @@ import { useSignUpLogic } from "@/hooks/useSignUpLogic";
 
 const SignUpPage : React.FC = () => {
 
-  const {loading, handleSubmit} = useSignUpLogic()
+  const { loading, handleSubmit } = useSignUpLogic();
 
   return (
     <div className="min-h-screen flex flex-col bg-cover " style={{ backgroundImage: BGImage_404 }} >

@@ -7,16 +7,16 @@ export class OtpRepository implements IOtpRepository {
         await OtpModel.findOneAndUpdate(
             { email: otp.email },
             { otp: otp.otp , createdAt: new Date() },
-            {upsert  : true }
-        )
+            { upsert  : true }
+        );
     }
 
     async findOtpByEmail(email : string):Promise<Otp|null> {
-        return await OtpModel.findOne({email})
+        return await OtpModel.findOne({ email });
     }
 
     async deleteOtpByEmail(email:string):Promise<void> {
-        await OtpModel.deleteOne({ email })
+        await OtpModel.deleteOne({ email });
     }
 
     

@@ -36,10 +36,10 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
               date === selectedDate &&
               time === slot.value &&
               (b.status === BookingStatus.CONFIRMED ||b.status === BookingStatus.PENDING)
-            )
-          })
+            );
+          });
 
-          const bookingDateTime = dateTime (selectedDate,slot.value)
+          const bookingDateTime = dateTime (selectedDate,slot.value);
           const isTimePassed = bookingDateTime.getTime() <= Date.now();
 
           // Base styles

@@ -3,8 +3,8 @@ import { Messages } from "../../../shared/Messages";
 import { IGetBookingsUseCase } from "../../Interface/useCases/Provider/IGetBookingsUseCase";
 
 
-const { INTERNAL_SERVER_ERROR,} = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR, } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 export class GetBookingsUseCase implements IGetBookingsUseCase {
     constructor(
@@ -17,7 +17,7 @@ export class GetBookingsUseCase implements IGetBookingsUseCase {
             
         } catch (error:any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

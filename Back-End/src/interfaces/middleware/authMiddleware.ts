@@ -6,8 +6,8 @@ import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../shared/Messages";
 import { RoleEnum } from "../../shared/Enums/Roles";
 
-const { UNAUTHORIZED,FORBIDDEN } = HttpStatusCode
-const { TOKEN_EXPIRED,INVALID_TOKEN,USER_NOT_FOUND,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED,FORBIDDEN_MSG } = Messages
+const { UNAUTHORIZED } = HttpStatusCode;
+const { TOKEN_EXPIRED,INVALID_TOKEN,USER_NOT_FOUND,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED,FORBIDDEN_MSG } = Messages;
 
 // Extend Express Request type  
 declare global {
@@ -35,7 +35,7 @@ export class AuthMiddleware {  //verify Jwt
                     return;
                 }
 
-                const decode = this._tokenService.verifyAccessToken(token) as { id: string, email: string, role: RoleEnum }
+                const decode = this._tokenService.verifyAccessToken(token) as { id: string, email: string, role: RoleEnum };
             
                 const user = await this._userRepository.findByUserId(decode.id, ["password", "refreshToken"]);
                 
@@ -48,11 +48,11 @@ export class AuthMiddleware {  //verify Jwt
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
                     sameSite: "lax" as const
-                }
+                };
 
                 if (user.isBlocked) {
-                    res.clearCookie('accessToken', options)
-                    res.clearCookie('refreshToken', options)
+                    res.clearCookie("accessToken", options);
+                    res.clearCookie("refreshToken", options);
                     await this._userRepository.resetRefreshTokenById(user.userId);
                     res.status(UNAUTHORIZED).json({ message: ACCOUNT_BLOCKED });
                     return;
@@ -61,11 +61,11 @@ export class AuthMiddleware {  //verify Jwt
                 //No common page so for easy handling 401 than 403
                 if (requiredRoles && requiredRoles.length > 0) {
                     if (!user.role || !requiredRoles.includes(user.role)) {
-                        res.clearCookie('accessToken', options)
-                        res.clearCookie('refreshToken', options)
+                        res.clearCookie("accessToken", options);
+                        res.clearCookie("refreshToken", options);
                         await this._userRepository.resetRefreshTokenById(user.userId);
                         res.status(UNAUTHORIZED).json({ message: FORBIDDEN_MSG });
-                        return
+                        return;
                     }
                 }
                 
@@ -83,7 +83,7 @@ export class AuthMiddleware {  //verify Jwt
                 }
                 next(error);
             }
-        }
+        };
     }
 }
 

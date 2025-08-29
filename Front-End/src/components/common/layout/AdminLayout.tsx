@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
   return (
     <Outlet/>
-  )
-}
+  );
+};
 
-export default AdminLayout
+export default AdminLayout;

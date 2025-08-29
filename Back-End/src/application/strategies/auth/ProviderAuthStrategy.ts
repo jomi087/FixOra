@@ -26,7 +26,7 @@ export class ProviderAuthStrategy  implements IAuthStrategy  {
             if (user.isBlocked) throw  { status: FORBIDDEN, message: ACCOUNT_BLOCKED  };
 
             const isMatch = await this._hashService.compare(credentials.password, user.password as string );
-            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS }
+            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };
             
             return { userData: user, role: RoleEnum.Provider };
             

@@ -1,7 +1,7 @@
-import FilterSideBar from "@/components/client/providersSection/FilterSideBar"
-import ProviderList from "@/components/client/providersSection/ProviderList"
-import Nav from "@/components/common/layout/Nav"
-import useFetchCategories from "@/hooks/useFetchCategories"
+import FilterSideBar from "@/components/client/providersSection/FilterSideBar";
+import ProviderList from "@/components/client/providersSection/ProviderList";
+import Nav from "@/components/common/layout/Nav";
+import useFetchCategories from "@/hooks/useFetchCategories";
 
 const ProvidersPage = () => {
   const { categories, loading } = useFetchCategories();

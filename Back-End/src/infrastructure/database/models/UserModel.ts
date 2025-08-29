@@ -1,6 +1,6 @@
-import mongoose, { Document } from 'mongoose'
-import { User } from '../../../domain/entities/UserEntity';
-import { RoleEnum } from '../../../shared/Enums/Roles';
+import mongoose, { Document } from "mongoose";
+import { User } from "../../../domain/entities/UserEntity";
+import { RoleEnum } from "../../../shared/Enums/Roles";
 
 export interface IUserModel extends Document, User {}
 
@@ -13,7 +13,7 @@ const addressSchema = new mongoose.Schema({
     state: { type: String,  trim: true },
     postalCode: { type: String,  trim: true },
     coordinates: {
-        latitude: { type: Number},
+        latitude: { type: Number },
         longitude: { type: Number },
     },
     geo: {  // this was implimented to impliment the near by filter logic
@@ -84,11 +84,11 @@ const userSchema = new mongoose.Schema<IUserModel>({
         default: undefined
     },
 },
-    {
-        timestamps: true,
-    },
-)
+{
+    timestamps: true,
+},
+);
 userSchema.index({ "location.geo": "2dsphere" });
-const UserModel = mongoose.model<IUserModel>('User', userSchema)
+const UserModel = mongoose.model<IUserModel>("User", userSchema);
 
-export default UserModel
+export default UserModel;

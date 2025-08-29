@@ -12,8 +12,8 @@ import { IBookingSchedulerService } from "../../../domain/interface/ServiceInter
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 
-const { INTERNAL_SERVER_ERROR,CONFLICT,NOT_FOUND} = HttpStatusCode
-const { INTERNAL_ERROR,ALREDY_BOOKED,PENDING_BOOKING,NOT_FOUND_MSG,BOOKING_ID_NOT_FOUND,PROVIDER_NO_RESPONSE } = Messages
+const { INTERNAL_SERVER_ERROR,CONFLICT,NOT_FOUND } = HttpStatusCode;
+const { INTERNAL_ERROR,ALREDY_BOOKED,PENDING_BOOKING,NOT_FOUND_MSG,BOOKING_ID_NOT_FOUND,PROVIDER_NO_RESPONSE } = Messages;
 
 export class BookingUseCase implements IBookingUseCase {
     constructor(
@@ -29,16 +29,16 @@ export class BookingUseCase implements IBookingUseCase {
         this._bookingSchedulerService.scheduleTimeoutJob(jobKey, bookingId, BOOKING_REQUEST_TIMEOUT_MS, async () => {
             const currentBooking = await this._bookingRepository.findByBookingId(bookingId);
             
-            if (!currentBooking || currentBooking.provider.response !== ProviderResponseStatus.PENDING) return
+            if (!currentBooking || currentBooking.provider.response !== ProviderResponseStatus.PENDING) return;
 
             let updatedBookingData = await this._bookingRepository.updateProviderResponseAndStatus(
                 bookingId,
                 BookingStatus.CANCELLED,
                 ProviderResponseStatus.REJECTED,
                 PROVIDER_NO_RESPONSE,
-            )
+            );
 
-            if (!updatedBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
+            if (!updatedBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
 
             this._notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
                 bookingId: updatedBookingData.bookingId,
@@ -52,22 +52,22 @@ export class BookingUseCase implements IBookingUseCase {
                 response: updatedBookingData.provider.response,
                 reason: updatedBookingData.provider.reason as string
             });
-        })
+        });
     }
     
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
 
-            let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(input.providerId, input.scheduledAt)
+            let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(input.providerId, input.scheduledAt);
 
             // console.log(CheckExistingNoRejectedBooking)
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response  === ProviderResponseStatus.ACCEPTED)) {
-                throw { status: CONFLICT, message: ALREDY_BOOKED }
+                throw { status: CONFLICT, message: ALREDY_BOOKED };
             } else if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response  === ProviderResponseStatus.PENDING)) {
-                throw { status: CONFLICT, message: PENDING_BOOKING }
+                throw { status: CONFLICT, message: PENDING_BOOKING };
             }
             
-            let result = await this._userRepository.getServiceChargeWithDistanceFee(input.providerId,input.coordinates)
+            let result = await this._userRepository.getServiceChargeWithDistanceFee(input.providerId,input.coordinates);
             if (!result) {
                 throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
             }
@@ -94,19 +94,19 @@ export class BookingUseCase implements IBookingUseCase {
                     baseCost: serviceCharge,
                     distanceFee : distanceFee,
                 },
-            }
+            };
 
-            let bookingId = await this._bookingRepository.create(newBooking)
+            let bookingId = await this._bookingRepository.create(newBooking);
             
-            const bookingDataInDetails = await this._bookingRepository.findCurrentBookingDetails(bookingId)
+            const bookingDataInDetails = await this._bookingRepository.findCurrentBookingDetails(bookingId);
 
             if (!bookingDataInDetails) {
                 throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
             }
 
-            const { userInfo, providerInfo, bookingInfo, subCategoryInfo } = bookingDataInDetails
+            const { userInfo, providerInfo, bookingInfo, subCategoryInfo } = bookingDataInDetails;
 
-            let id = providerInfo.userId
+            let id = providerInfo.userId;
 
             this._notificationService.notifyBookingRequestToProvider(id, {
                 bookingId: bookingInfo.bookingId,
@@ -114,18 +114,18 @@ export class BookingUseCase implements IBookingUseCase {
                 issueType: `${subCategoryInfo.name}`,
                 scheduledAt : bookingInfo.scheduledAt,
                 issue: bookingInfo.issue
-            })
-            this.scheduleProviderResponseTimeout(bookingInfo.bookingId)
+            });
+            this.scheduleProviderResponseTimeout(bookingInfo.bookingId);
 
             const mappedData: CreateBookingApplicationOutputDTO = {
                 bookingId: bookingInfo.bookingId,
                 scheduledAt: bookingInfo.scheduledAt,
                 status: bookingInfo.status
-            }
-            return mappedData
+            };
+            return mappedData;
             
         } catch (error: any) {
-            console.log(error)
+            console.log(error);
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

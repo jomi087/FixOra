@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { BGImage_404 } from "@/utils/constant";
-import PaymentSuccess from '@/assets/animations/CardSwipeSuccess.json'
+import PaymentSuccess from "@/assets/animations/CardSwipeSuccess.json";
 import Lottie from "lottie-react";
 
 
@@ -41,7 +41,7 @@ const PaymentSuccessPage: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PaymentSuccessPage
+export default PaymentSuccessPage;

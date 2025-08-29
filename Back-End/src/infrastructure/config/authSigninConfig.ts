@@ -20,7 +20,7 @@ export function configureAuthStrategies( userRepository: IUserRepository, hashSe
     authFactory.register(RoleEnum.Provider, providerStrategy); 
 
     // Register admin authentication strategy
-    const adminStrategy = new AdminAuthStrategy(userRepository, hashService)
+    const adminStrategy = new AdminAuthStrategy(userRepository, hashService);
     authFactory.register(RoleEnum.Admin, adminStrategy); 
 
     return authFactory;
