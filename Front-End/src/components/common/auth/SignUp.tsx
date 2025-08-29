@@ -1,9 +1,9 @@
-import Spline from "@splinetool/react-spline"
+import Spline from "@splinetool/react-spline";
 import { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import type { Signup } from "@/shared/Types/user";
 import { RoleEnum } from "@/shared/enums/roles";
-import { App_Name } from "@/utils/constant";
+import { App_Name, shortInputLength, } from "@/utils/constant";
 
 
 interface signUpProps{
@@ -15,14 +15,14 @@ interface signUpProps{
 
 const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUpSubmit }) => {
 
-    const [formData, setFormData] = useState<Signup>({
-      fname: "",
-      lname: "",
-      email: "",
-      mobileNo: "",
-      password: "",
-      cPassword: ""
-    });
+  const [formData, setFormData] = useState<Signup>({
+    fname: "",
+    lname: "",
+    email: "",
+    mobileNo: "",
+    password: "",
+    cPassword: ""
+  });
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     
@@ -46,15 +46,15 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
     */
     
     //Advance js version 
-    const { name, value } = e.target
-    setFormData({...formData, [name]:value})
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]:value });
+  };
 
   const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>)=> {
-    e.preventDefault()
+    e.preventDefault();
     if (loading) return;
-    signUpSubmit(formData)
-  }
+    signUpSubmit(formData);
+  };
 
   return (
     <div className="flex flex-1 flex-col md:flex-row  pt-10 overflow-hidden ">
@@ -62,11 +62,11 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
       <section className="hidden md:flex md:w-1/2  relative top-45  p-4 ">
         { alternativeSideContent ? (
           <img src={ alternativeSideContent } alt="" />
-          ) : (
-            <div className="w-full h-[400px] max-h-[80vh] rounded-2xl overflow-hidden">
-              <Spline scene="https://prod.spline.design/hNfClYEFxdGOsdZG/scene.splinecode" />
-            </div>
-          )
+        ) : (
+          <div className="w-full h-[400px] max-h-[80vh] rounded-2xl overflow-hidden">
+            <Spline scene="https://prod.spline.design/hNfClYEFxdGOsdZG/scene.splinecode" />
+          </div>
+        )
         }
       </section>
 
@@ -97,6 +97,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
                 disabled={loading}
                 aria-required="true"
                 aria-disabled={loading}
+                maxLength={shortInputLength}
                 value={formData.fname}
                 onChange={handleChange}
               />
@@ -114,6 +115,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
                 disabled={loading}
                 aria-required="true"
                 aria-disabled={loading}
+                maxLength={shortInputLength}
                 value={formData.lname}
                 onChange={handleChange}
               />
@@ -134,6 +136,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
               autoComplete="email"
               aria-required="true"
               aria-disabled={loading}
+              maxLength={shortInputLength}
               value={formData.email}
               onChange={handleChange}
             />
@@ -170,6 +173,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
               disabled={loading}
               aria-required="true"
               aria-disabled={loading}
+              maxLength={shortInputLength}
               value={formData.password}
               onChange={handleChange}
             />
@@ -188,6 +192,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
               disabled={loading}
               aria-required="true"
               aria-disabled={loading}
+              maxLength={shortInputLength}
               value={formData.cPassword}
               onChange={handleChange}
             />
@@ -217,7 +222,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

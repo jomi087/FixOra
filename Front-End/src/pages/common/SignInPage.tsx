@@ -6,7 +6,7 @@ import { useSignInLogic } from "@/hooks/useSignInLogic";
 
 const SignInPage: React.FC = () => {
   
-  const { handleLogin,handleForgotPassword,loginWithGoogle,loading,userRole } =  useSignInLogic() 
+  const { handleLogin,handleForgotPassword,loginWithGoogle,loading,userRole } =  useSignInLogic(); 
 
   return (
     <main className="min-h-screen flex flex-col" style={{ backgroundImage: BGImage_404 }} >

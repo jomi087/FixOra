@@ -15,5 +15,5 @@ const renderStars = (rating: number):React.ReactNode[] => {
   return stars;
 };
 
-export default renderStars
+export default renderStars;
 

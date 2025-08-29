@@ -3,7 +3,7 @@ import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Pub
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 
-const { OK} = HttpStatusCode
+const { OK } = HttpStatusCode;
 
 export class PublicController {
     constructor(
@@ -13,14 +13,14 @@ export class PublicController {
     
     async getLandingData(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const landingData = await this._getLandingDataUseCase.execute()
+            const landingData = await this._getLandingDataUseCase.execute();
             res.status(OK).json({
                 success: true,
                 landingData
-            })
+            });
             
         } catch (error:any) {
-            this._loggerService.error(`getLandingData error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getLandingData error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }

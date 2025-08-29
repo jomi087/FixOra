@@ -49,20 +49,20 @@ export class AdminController {
             });
             
         } catch (error:any) {
-            this._loggerService.error(`getCustomers error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getCustomers error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
 
     async toggleUserStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { userId } = req.params
+            const { userId } = req.params;
             await this._toggleUserStatusUseCase.execute(userId);
 
             res.status(OK).json({ success: true });
         } catch (error:any) {
-            this._loggerService.error(`toggleUserStatus error:, ${error.message}`,{stack : error.stack});
-            next(error)
+            this._loggerService.error(`toggleUserStatus error:, ${error.message}`,{ stack : error.stack });
+            next(error);
         }
     }
     
@@ -71,7 +71,7 @@ export class AdminController {
 
             const searchQuery = req.query.searchQuery as string || "";
             const filter = req.query.filter as string || "all";
-            const currentPage = parseInt(req.query.currentPage as string) || 1
+            const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
             const result = await this._getProvidersUseCase.execute({ searchQuery, filter, currentPage, limit });
@@ -83,17 +83,17 @@ export class AdminController {
             });
             
         } catch (error:any) {
-            this._loggerService.error(`getProviders error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getProviders error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
 
     async getProviderApplications(req: Request, res: Response, next: NextFunction): Promise<void>{
         try {
-            const searchQuery = req.query.searchQuery as string || ""
-            const filter = req.query.filter as string|| "Pending"
-            const currentPage = parseInt(req.query.currentPage as string) || 1
-            const limit = parseInt(req.query.itemsPerPage as string) || 8
+            const searchQuery = req.query.searchQuery as string || "";
+            const filter = req.query.filter as string|| "Pending";
+            const currentPage = parseInt(req.query.currentPage as string) || 1;
+            const limit = parseInt(req.query.itemsPerPage as string) || 8;
             
             const result = await this._providerApplicationUseCase.execute({ searchQuery, filter, currentPage, limit });
 
@@ -104,7 +104,7 @@ export class AdminController {
             });
 
         } catch (error:any) {
-            this._loggerService.error(`getProviderApplications error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getProviderApplications error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
@@ -118,8 +118,8 @@ export class AdminController {
                 throw { status: FORBIDDEN , message: UNAUTHORIZED_MSG };
             }
 
-            const adminId = req.user.userId
-            const result = await this._updateKYCStatusUseCase.execute({ id,action,reason,adminId});
+            const adminId = req.user.userId;
+            const result = await this._updateKYCStatusUseCase.execute({ id,action,reason,adminId });
 
             res.status(OK).json({
                 success: true,
@@ -128,7 +128,7 @@ export class AdminController {
             });
 
         } catch (error:any) {
-            this._loggerService.error(`updateKYCStatus error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`updateKYCStatus error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
@@ -149,7 +149,7 @@ export class AdminController {
             });
 
         } catch (error:any) {
-            this._loggerService.error(`getService error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`getService error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
@@ -173,9 +173,9 @@ export class AdminController {
                     const imageUrl = await this._imageUploaderService.uploadImage(subImageFile.buffer, "FixOra/Services");
 
                     return {
-                    name: sub.name,
-                    description: sub.description,
-                    image: imageUrl,
+                        name: sub.name,
+                        description: sub.description,
+                        image: imageUrl,
                     };
                 })
             );
@@ -185,7 +185,7 @@ export class AdminController {
                 description,
                 subcategories: subcategoriesWithUrls ,
                 image: mainImageUrl,
-            }
+            };
 
             await this._createServiceCategoryUseCase.execute(input);
 
@@ -195,20 +195,20 @@ export class AdminController {
             });
 
         } catch (error: any) {
-            this._loggerService.error(`activeServices error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`activeServices error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
 
     async toggleCategoryStatus(req: Request, res: Response, next: NextFunction): Promise<void>{
         try {
-            const { categoryId } = req.params
+            const { categoryId } = req.params;
             await this._toggleCategoryStatusUseCase.execute(categoryId);
 
             res.status(OK).json({ success: true });
         } catch (error:any) {
-            this._loggerService.error(`toggleCategoryStatus Error:, ${error.message}`,{stack : error.stack});
-            next(error)
+            this._loggerService.error(`toggleCategoryStatus Error:, ${error.message}`,{ stack : error.stack });
+            next(error);
         }
     }
 

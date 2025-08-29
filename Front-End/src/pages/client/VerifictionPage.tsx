@@ -1,12 +1,12 @@
-import Header from '@/components/common/layout/Header'
-import VerifictionForm from '@/components/client/providersSection/VerifictionForm'
-import VerifyProfile from '@/components/client/profileSection/VerifyProfile'
-import { BGImage_404 } from '@/utils/constant'
-import { useState } from 'react'
+import Header from "@/components/common/layout/Header";
+import VerifictionForm from "@/components/client/providersSection/VerifictionForm";
+import VerifyProfile from "@/components/client/profileSection/VerifyProfile";
+import { BGImage_404 } from "@/utils/constant";
+import { useState } from "react";
 
 
 const VerifictionPage = () => {
-  const [next,setNext] = useState(false)
+  const [next,setNext] = useState(false);
   return (
     <>
       <div className = 'flex flex-col items-center min-h-screen sm:px-4  bg-cover bg-center overflow-auto' style = {{ backgroundImage: BGImage_404 }}>
@@ -24,7 +24,7 @@ const VerifictionPage = () => {
       </div>
     </>
 
-  )
-}
+  );
+};
 
-export default VerifictionPage
+export default VerifictionPage;

@@ -4,8 +4,8 @@ import { Messages } from "../../../shared/Messages";
 import { GetLandingDataOutputDTO } from "../../DTO's/LandingPageDto";
 import { IGetLandingDataUseCase } from "../../Interface/useCases/Public/IGetLandingDataUseCase";
 
-const { INTERNAL_SERVER_ERROR} = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 export class GetLandingDataUseCase implements IGetLandingDataUseCase{
     constructor(
@@ -14,7 +14,7 @@ export class GetLandingDataUseCase implements IGetLandingDataUseCase{
     
     async execute():Promise<GetLandingDataOutputDTO> {
         try {
-            const categories = await this._categoryRepository.findActiveCategories(["subcategories"])
+            const categories = await this._categoryRepository.findActiveCategories(["subcategories"]);
             // top 5 providers image data  will add later
             //top 6 blogs  data
             //mapp all 3 data
@@ -22,10 +22,10 @@ export class GetLandingDataUseCase implements IGetLandingDataUseCase{
                 categories 
                 //providers
                 //blogs
-            }
+            };
         } catch (error:any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

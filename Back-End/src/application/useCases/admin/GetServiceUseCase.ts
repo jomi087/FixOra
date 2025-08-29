@@ -5,8 +5,8 @@ import { GetServicesInputDTO, GetServicesOutputDTO } from "../../DTO's/GetServic
 import { IGetServiceUseCase } from "../../Interface/useCases/Admin/IGetServiceUseCase";
 
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 export class GetServiceUseCase implements IGetServiceUseCase {
     constructor(
@@ -19,7 +19,7 @@ export class GetServiceUseCase implements IGetServiceUseCase {
 
             const { searchQuery, filter, currentPage, limit } = input;
 
-            const categories = await this._categoryRepository.findServicesWithFilters({ searchQuery, filter },currentPage, limit)
+            const categories = await this._categoryRepository.findServicesWithFilters({ searchQuery, filter },currentPage, limit);
             
             const mappedData = categories.data.map((cat) => ({
                 categoryId: cat.categoryId,
@@ -34,7 +34,7 @@ export class GetServiceUseCase implements IGetServiceUseCase {
                     image: subCat.image,
                     isActive: subCat.isActive,
                 })) ?? []
-            }))
+            }));
 
             return {
                 data: mappedData,
@@ -43,7 +43,7 @@ export class GetServiceUseCase implements IGetServiceUseCase {
 
         } catch (error:any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

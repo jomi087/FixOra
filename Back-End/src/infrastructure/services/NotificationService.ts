@@ -11,7 +11,7 @@ export class NotificationService implements INotificationService {
     }
     //provider response ( provider to user)
     notifyBookingResponseToUser(userId: string, payload:UserResponsNotificaton): void {
-        getIO().to(userId).emit("booking:response", payload)
+        getIO().to(userId).emit("booking:response", payload);
     }
     //auto reject 
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void {

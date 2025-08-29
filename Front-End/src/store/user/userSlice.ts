@@ -18,24 +18,24 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-    user: null,
-    isAuthenticated: false
+  user: null,
+  isAuthenticated: false
 };
 
 const userSlice = createSlice({
-    name: "users",
-    initialState,
-    reducers: { 
-        Userinfo: (state, action: PayloadAction<{ user: info  }>) => { //Userinfo is for active login (user just signed in)
-            state.user = action.payload.user;
-            state.isAuthenticated = true;
-        },
-        logout: (state) => {
-            state.user = null;
-            state.isAuthenticated = false;
-        },
-    }
-})
+  name: "users",
+  initialState,
+  reducers: { 
+    Userinfo: (state, action: PayloadAction<{ user: info  }>) => { //Userinfo is for active login (user just signed in)
+      state.user = action.payload.user;
+      state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+    },
+  }
+});
 
 export const { Userinfo, logout } = userSlice.actions;
 export default userSlice.reducer;

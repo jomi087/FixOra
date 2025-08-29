@@ -39,14 +39,14 @@ export class UserController {
 
     async activeServices(req: Request, res: Response, next: NextFunction): Promise<void> { 
         try {
-            const servicesData = await this._activeServiceUseCase.execute()
+            const servicesData = await this._activeServiceUseCase.execute();
 
             res.status(OK).json({
                 success: true,
                 servicesData
-            })
+            });
         } catch (error:any) {
-            this._loggerService.error(`activeServices error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`activeServices error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
@@ -60,9 +60,9 @@ export class UserController {
                 ratingFilter, availabilityFilter
             } = req.query;
 
-            const user = req.user
-            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND }
-            if(!user.location || !user.location.coordinates) throw { status : UNPROCESSABLE_ENTITY , message : ADD_ADDRESS }
+            const user = req.user;
+            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
+            if(!user.location || !user.location.coordinates) throw { status : UNPROCESSABLE_ENTITY , message : ADD_ADDRESS };
             
             const result = await this._getActiveProvidersUseCase.execute({
                 searchQuery: String(searchQuery),
@@ -76,7 +76,7 @@ export class UserController {
                     availabilityFilter: availabilityFilter ? String(availabilityFilter) : undefined,
                 },
                 coordinates : user.location.coordinates
-            })
+            });
 
             res.status(OK).json({
                 success: true,
@@ -85,7 +85,7 @@ export class UserController {
             });
 
         } catch (error : any) {
-            this._loggerService.error(`activeProviders error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`activeProviders error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
@@ -93,39 +93,39 @@ export class UserController {
     async kycApplication(req: Request, res: Response, next: NextFunction): Promise<void> { 
         try {
             const userId = req.user?.userId;
-            if (!userId) throw { status : NOT_FOUND, message : USER_NOT_FOUND }
+            if (!userId) throw { status : NOT_FOUND, message : USER_NOT_FOUND };
 
-            const files = req.files as { [fieldname: string]: Express.Multer.File[] }
+            const files = req.files as { [fieldname: string]: Express.Multer.File[] };
             
-            const requiredFields = ["profileImage", "idCard", "educationCertificate"]
+            const requiredFields = ["profileImage", "idCard", "educationCertificate"];
             for (const field of requiredFields) {
                 if (!files?.[field] || files[field].length === 0) {
-                    throw { status : BAD_REQUEST, message : FIELD_REQUIRED }
+                    throw { status : BAD_REQUEST, message : FIELD_REQUIRED };
                 }
             }
 
-            const allowedTypes = ["image/jpeg", "image/png", "image/jpg"]
-            const maxSizeMB = 5
+            const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+            const maxSizeMB = 5;
 
             for (const field in files) {
                 for (const file of files[field]) {
                     const validationError = validateFile(file, allowedTypes, maxSizeMB);
                     if (validationError) {
-                        throw { status : BAD_REQUEST, message : IMAGE_VALIDATION_ERROR }
+                        throw { status : BAD_REQUEST, message : IMAGE_VALIDATION_ERROR };
                     }
                 }
             }
 
-            const name = `${req.user?.fname}_${req.user?.lname}_Date.now()`
+            const name = `${req.user?.fname}_${req.user?.lname}_Date.now()`;
 
             const profileImageUrl = await this._imageUploaderService.uploadImage(files.profileImage[0].buffer,`FixOra/Provider/${name}`);
             const idCardUrl =  await this._imageUploaderService.uploadImage(files.idCard[0].buffer,`FixOra/Provider/${name}`);
             const educationCertificateUrl = await this._imageUploaderService.uploadImage(files.educationCertificate[0].buffer, `FixOra/Provider/${name}`);
 
             const experienceCertificateUrl = files?.experienceCertificate?.[0] ?
-            await this._imageUploaderService.uploadImage(files.experienceCertificate[0].buffer,`FixOra/Provider/${name}`) : undefined;
+                await this._imageUploaderService.uploadImage(files.experienceCertificate[0].buffer,`FixOra/Provider/${name}`) : undefined;
 
-              const { dob, gender, service, specialization, serviceCharge } = req.body;
+            const { dob, gender, service, specialization, serviceCharge } = req.body;
 
             const kycData: KYCInputDTO = {
                 userId,
@@ -144,31 +144,31 @@ export class UserController {
                 },
             };
 
-            const result = await this._kycRequestUseCase.execute(kycData)
+            const result = await this._kycRequestUseCase.execute(kycData);
 
             res.status(OK).json({
                 success: true,
                 message: KYC_REQUEST_STATUS(result)
-            })
+            });
             
         } catch (error : any) {
-            this._loggerService.error(`kycApplication error:, ${error.message}`,{stack : error.stack});
+            this._loggerService.error(`kycApplication error:, ${error.message}`,{ stack : error.stack });
             next(error);
         }
     }
 
     async providerBookings(req: Request, res: Response, next: NextFunction): Promise<void>{
         try {
-            const { id } = req.params
+            const { id } = req.params;
 
-            const user = req.user
-            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND }
-            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS }
+            const user = req.user;
+            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
+            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
             
             const result = await this._providerBookingsInfoUseCase.execute({
                 id,
                 coordinates: user.location.coordinates
-            })
+            });
 
             res.status(OK).json({
                 success: true,
@@ -176,26 +176,26 @@ export class UserController {
             });
 
         } catch (error : any) {
-            this._loggerService.error(`providerBookings error:, ${error.message}`,{stack : error.stack});   
+            this._loggerService.error(`providerBookings error:, ${error.message}`,{ stack : error.stack });   
             next(error);
         }
     }
 
     async createBooking(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { providerId,providerUserId,scheduledAt,issueTypeId,issue } = req.body
+            const { providerId,providerUserId,scheduledAt,issueTypeId,issue } = req.body;
             
-            const user = req.user
-            if (!user?.userId) throw { status: BAD_REQUEST, message: USER_NOT_FOUND }
-            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS }
+            const user = req.user;
+            if (!user?.userId) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
+            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
 
-            const userId = user.userId
+            const userId = user.userId;
 
             const booking = await this._bookingUseCase.execute({
                 userId, providerUserId, providerId,
                 scheduledAt, issueTypeId, issue,
                 coordinates: user.location.coordinates
-            })
+            });
             
             res.status(200).json({
                 message: SUBMITTED_BOOKING_REQUEST,
@@ -203,38 +203,38 @@ export class UserController {
             });
 
         } catch (error : any) {
-            this._loggerService.error(`createBooking error:, ${error.message}`,{stack : error.stack}); 
+            this._loggerService.error(`createBooking error:, ${error.message}`,{ stack : error.stack }); 
             next(error);
         }
     }
 
     async initiatePayment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { bookingId } = req.body
-            const sessionId = await this._createPaymentUseCase.execute(bookingId)
+            const { bookingId } = req.body;
+            const sessionId = await this._createPaymentUseCase.execute(bookingId);
             
             res.status(OK).json(
-               sessionId
-            )
+                sessionId
+            );
 
         } catch (error : any) {
-            this._loggerService.error(`initiatePayment error:, ${error.message}`,{stack : error.stack}); 
+            this._loggerService.error(`initiatePayment error:, ${error.message}`,{ stack : error.stack }); 
             next(error);
         }
     }
 
     async verifyPaymentViaWebHook(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log("i was called by strip")
+            console.log("i was called by strip");
             const sig = req.headers["stripe-signature"] as string;
             const rawBody = (req as any).body;
 
-            await this._verifyPaymentUseCase.execute(rawBody,sig)
+            await this._verifyPaymentUseCase.execute(rawBody,sig);
                   
-            res.status(200).send('Webhook received'); //to notify stripe
+            res.status(200).send("Webhook received"); //to notify stripe
 
         } catch (error : any) {
-            this._loggerService.error(`payment verification error:,${error.message}`,{stack : error.stack}); 
+            this._loggerService.error(`payment verification error:,${error.message}`,{ stack : error.stack }); 
             next(error);
         }
     }
@@ -246,16 +246,16 @@ export class UserController {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
             }
 
-            const userId = req.user.userId
-            const profileData = req.body
+            const userId = req.user.userId;
+            const profileData = req.body;
 
-            const updatedUser = await this._updateProfileUseCase.execute({ userId,profileData })
+            const updatedUser = await this._updateProfileUseCase.execute({ userId,profileData });
 
             res.status(OK).json({
                 success: true,
                 message: PROFILE_UPDATED_SUCCESS ,
                 user : updatedUser
-            })
+            });
     
         } catch (error : any) {
             this._loggerService.error(`editProfile error:, ${error.message}`, { stack: error.stack }); 
@@ -265,29 +265,29 @@ export class UserController {
 
     async verifyPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { password } = req.body
+            const { password } = req.body;
 
             if (!req.user?.userId) {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
             }
-            const userId = req.user.userId
-            await this._verifyPasswordUseCase.execute(password,userId)  
+            const userId = req.user.userId;
+            await this._verifyPasswordUseCase.execute(password,userId);  
 
             res.status(OK).json({
                 success: true,
                 message: VERIFICATION_MAIL_SENT ,
-            })
+            });
         } catch (error : any) {
-            this._loggerService.error(`verifyPassword error:, ${error.message}`,{stack : error.stack}); 
+            this._loggerService.error(`verifyPassword error:, ${error.message}`,{ stack : error.stack }); 
             next(error);
         }
     }
 
     async changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { token, password } = req.body
+            const { token, password } = req.body;
         
-            await this._resetPasswordUseCase.execute(token, password)
+            await this._resetPasswordUseCase.execute(token, password);
             
             res.status(OK).json({
                 success: true,
@@ -295,7 +295,7 @@ export class UserController {
             });
 
         } catch (error : any) {
-            this._loggerService.error(`changePassword error:, ${error.message}`,{stack : error.stack}); 
+            this._loggerService.error(`changePassword error:, ${error.message}`,{ stack : error.stack }); 
             next(error);
         }
     }

@@ -4,14 +4,14 @@ import { RoleEnum } from "../../../shared/Enums/Roles";
 import { IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy";
 
 
-const { INVALID_ROLE } = Messages
-const {BAD_REQUEST } = HttpStatusCode
+const { INVALID_ROLE } = Messages;
+const { BAD_REQUEST } = HttpStatusCode;
 
 export class AuthStrategyFactory {
     private strategies = new Map<RoleEnum, IAuthStrategy>();
 
     register(role: RoleEnum, strategy: IAuthStrategy) {  
-        this.strategies.set(role,strategy)
+        this.strategies.set(role,strategy);
     }
     
     getStrategy(role: RoleEnum): IAuthStrategy {

@@ -57,7 +57,7 @@ const KYCRequestSchema = new Schema<IKYCRequestModel>({
         type: String,
         enum: Object.values(KYCStatus),
         default: KYCStatus.Pending,
-      },
+    },
     reason: {
         type: String,
     },
@@ -71,8 +71,8 @@ const KYCRequestSchema = new Schema<IKYCRequestModel>({
     reviewedBy: {
         type : String
     }
-}, { timestamps: true })
+}, { timestamps: true });
 
-const KYCRequestModel = model<IKYCRequestModel>('KYCRequest', KYCRequestSchema)
+const KYCRequestModel = model<IKYCRequestModel>("KYCRequest", KYCRequestSchema);
 
-export default KYCRequestModel
+export default KYCRequestModel;

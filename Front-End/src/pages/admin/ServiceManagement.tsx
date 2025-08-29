@@ -17,7 +17,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 const ServiceManagement: React.FC = () => {
 
   const [refreshFlag, setRefreshFlag] = useState(false);
-  const { categories, loading, setSearchQuery, setFilter, totalPages, searchQuery, filter, currentPage, setCurrentPage, setCategories } = useServiceManagement(refreshFlag)
+  const { categories, loading, setSearchQuery, setFilter, totalPages, searchQuery, filter, currentPage, setCurrentPage, setCategories } = useServiceManagement(refreshFlag);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selectedCategory = categories[selectedIndex];
@@ -25,7 +25,7 @@ const ServiceManagement: React.FC = () => {
 
   const handleToggleStatus = async (categoryId: string) => {
     try {
-      const res = await AuthService.toggleCategoryStatusApi(categoryId)
+      const res = await AuthService.toggleCategoryStatusApi(categoryId);
       if (res.status === HttpStatusCode.OK) {
         setCategories(prev =>
           prev.map((cat) => cat.categoryId === categoryId ? {
@@ -39,17 +39,17 @@ const ServiceManagement: React.FC = () => {
         );
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
       toast.error(errorMsg);
     }
-  }
+  };
 
   const filterOptions = [
     { label: "All", value: "all" },
     { label: "Active", value: "Active" },
     { label: "Un-Active", value: "Un-Active" },
-  ]
+  ];
 
   return (
     <>
@@ -136,7 +136,7 @@ const ServiceManagement: React.FC = () => {
                     categories={selectedCategory?.subcategories ?? []}
                     showActions={false}
                     emptyMessage="No subcategories available."
-                  //onToggleStatus={handleToggleStatus}
+                    //onToggleStatus={handleToggleStatus}
                   />
                 </div>
               </ResizablePanel>
@@ -144,7 +144,7 @@ const ServiceManagement: React.FC = () => {
           </div>
         </div>
       </div>
-       </>
+    </>
   );
 };
 

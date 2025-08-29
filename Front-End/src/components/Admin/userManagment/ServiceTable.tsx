@@ -1,4 +1,4 @@
-import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table";
+import { Table,TableBody,TableCell,TableHead,TableHeader,TableRow, } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import type { Category, Subcategory } from "@/shared/Types/category";
 import EditCategoryDialoge from "./EditCategoryDialoge";
@@ -29,7 +29,7 @@ const ServiceTable: React.FC<ServiceTableProps> = ({
 }) => {
   const isCategory = (item: Category | Subcategory): item is Category => {
     return (item as Category).categoryId !== undefined;
-  }
+  };
   return (
     <Table>
       <TableHeader>
@@ -67,9 +67,9 @@ const ServiceTable: React.FC<ServiceTableProps> = ({
                     (category.isActive ? "destructive" : "default") : (category.isActive ? "success" : "destructive" )
                   }
                   onClick={ (e) => {
-                    e.stopPropagation()
-                    const id = isCategory(category) ? category.categoryId : category.subCategoryId
-                    onToggleStatus?.(id) 
+                    e.stopPropagation();
+                    const id = isCategory(category) ? category.categoryId : category.subCategoryId;
+                    onToggleStatus?.(id); 
                   }}
                 >
                   { isCategory(category) ?

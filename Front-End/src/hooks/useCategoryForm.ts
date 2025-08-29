@@ -59,68 +59,68 @@ export const useCategoryForm = () => {
     setSubcategories((prev) => prev.filter((_, i) => i !== index));
   };
 
-    const validate = () => {
-        const nameError = validateCategoryName(name);
-        const descriptionError = validateDescription(description);
-        const imageError = validateImage(image, categoryImageSize);
+  const validate = () => {
+    const nameError = validateCategoryName(name);
+    const descriptionError = validateDescription(description);
+    const imageError = validateImage(image, categoryImageSize);
 
-        const subErrors = subcategories.map((sub) => {
-        const subNameError = validateCategoryName(sub.name);
-        const subDescError = validateDescription(sub.description);
-        const subImageError = validateImage(sub.image , categoryImageSize );
-        return subNameError || subDescError || subImageError || null;
-        });
+    const subErrors = subcategories.map((sub) => {
+      const subNameError = validateCategoryName(sub.name);
+      const subDescError = validateDescription(sub.description);
+      const subImageError = validateImage(sub.image , categoryImageSize );
+      return subNameError || subDescError || subImageError || null;
+    });
 
-        const hasError = nameError || descriptionError || imageError || subErrors.some(Boolean);
-        if (hasError) {
-        setErrors({
-            name: nameError || "",
-            description: descriptionError || "",
-            image: imageError || "",
-            subcategories: subErrors.map((err) => err || ""),
-        });
-        return false;
-        }
+    const hasError = nameError || descriptionError || imageError || subErrors.some(Boolean);
+    if (hasError) {
+      setErrors({
+        name: nameError || "",
+        description: descriptionError || "",
+        image: imageError || "",
+        subcategories: subErrors.map((err) => err || ""),
+      });
+      return false;
+    }
 
-        setErrors({ name: "", description: "", image: "", subcategories: [] });
-        return true;
-    };
+    setErrors({ name: "", description: "", image: "", subcategories: [] });
+    return true;
+  };
 
-    const createFormData = () => {
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("description", description);
-        if (image) formData.append("image", image);
+  const createFormData = () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    if (image) formData.append("image", image);
               
-        const subcategoriesJson = subcategories.map(sub => ({
-          name: sub.name,
-          description: sub.description,
-        }));
-        formData.append("subcategories", JSON.stringify(subcategoriesJson));
+    const subcategoriesJson = subcategories.map(sub => ({
+      name: sub.name,
+      description: sub.description,
+    }));
+    formData.append("subcategories", JSON.stringify(subcategoriesJson));
 
-        subcategories.forEach((sub, index) => {
-          if (sub.image) {
-            formData.append(`subcategoryImages[${index}]`, sub.image);
-          }
-        });
-        return formData;
-    };
+    subcategories.forEach((sub, index) => {
+      if (sub.image) {
+        formData.append(`subcategoryImages[${index}]`, sub.image);
+      }
+    });
+    return formData;
+  };
 
-    return {
-        name,
-        setName,
-        description,
-        setDescription,
-        image,
-        setImage,
-        subcategories,
-        errors,
-        loading,
-        setLoading,
-        handleAddSubcategory,
-        handleSubcategoryChange,
-        handleRemoveSubcategory,
-        validate,
-        createFormData,
-    };
+  return {
+    name,
+    setName,
+    description,
+    setDescription,
+    image,
+    setImage,
+    subcategories,
+    errors,
+    loading,
+    setLoading,
+    handleAddSubcategory,
+    handleSubcategoryChange,
+    handleRemoveSubcategory,
+    validate,
+    createFormData,
+  };
 };

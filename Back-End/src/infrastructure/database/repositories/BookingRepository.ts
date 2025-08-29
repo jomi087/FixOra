@@ -10,12 +10,12 @@ import BookingModel from "../models/BookingModel";
 export class BookingRepository implements IBookingRepository {
 
     async create(booking: Booking): Promise<string> {
-        let bookingData = await new BookingModel(booking).save() as Booking
-        return bookingData.bookingId
+        let bookingData = await new BookingModel(booking).save() as Booking;
+        return bookingData.bookingId;
     }
 
     async findByBookingId(bookingId: string): Promise<Booking | null> {
-        return await BookingModel.findOne({ bookingId }).lean()
+        return await BookingModel.findOne({ bookingId }).lean();
     }
 
     async findExistingBooking(providerId: string, scheduledAt:Date ): Promise<Booking|null>{
@@ -25,7 +25,7 @@ export class BookingRepository implements IBookingRepository {
             status: {
                 $nin: [ProviderResponseStatus.REJECTED] 
             }
-        }) 
+        }); 
     }
 
     async updateProviderResponseAndStatus(
@@ -39,8 +39,8 @@ export class BookingRepository implements IBookingRepository {
             { bookingId },
             { $set: { "provider.response": response, "provider.reason": reason, status } },
             { new: true }
-        ).lean<Booking>()
-        return booking
+        ).lean<Booking>();
+        return booking;
     }
 
     async updateBooking(bookingId: string, updatedBooking: Booking): Promise<Booking|null> {
@@ -75,8 +75,8 @@ export class BookingRepository implements IBookingRepository {
             { bookingId },
             { $set: { "provider.response": response, "paymentInfo.status": paymentStatus } },
             { new: true }
-        ).lean<Booking>()
-        return booking
+        ).lean<Booking>();
+        return booking;
     }
 
     async findCurrentBookingDetails(bookingId: string): Promise<{
@@ -92,7 +92,7 @@ export class BookingRepository implements IBookingRepository {
                     from: "users",
                     localField: "userId",
                     foreignField: "userId",
-                    as: 'userDetails'
+                    as: "userDetails"
                 },
             },
             { $unwind: "$userDetails" },
@@ -101,7 +101,7 @@ export class BookingRepository implements IBookingRepository {
                     from: "users",
                     localField: "providerUserId",
                     foreignField: "userId",
-                    as: 'providerDetails'
+                    as: "providerDetails"
                 },
             },
             { $unwind: "$providerDetails" },
@@ -110,7 +110,7 @@ export class BookingRepository implements IBookingRepository {
                     from: "categories",
                     localField: "issueTypeId",
                     foreignField: "subcategories.subCategoryId",
-                    as: 'serviceDetails'
+                    as: "serviceDetails"
                 }
             }, { $unwind: "$serviceDetails" },
             {
@@ -147,7 +147,7 @@ export class BookingRepository implements IBookingRepository {
 
                 }
             }
-        ]
+        ];
 
         interface AggregatedResult {
             userInfo: Pick<User, "userId" | "fname" | "lname">
@@ -156,13 +156,13 @@ export class BookingRepository implements IBookingRepository {
             subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
         }
 
-        const result = await BookingModel.aggregate<AggregatedResult>(pipeline)
-        return result[0]
+        const result = await BookingModel.aggregate<AggregatedResult>(pipeline);
+        return result[0];
     }
 
     async findPendingOlderThan(minutes: number): Promise<Booking[]>{
         const cutoff = new Date(Date.now() - minutes * 60 * 1000);
-        return await BookingModel.find({status: "pending",createdAt: { $lt: cutoff }});
+        return await BookingModel.find({ status: "pending",createdAt: { $lt: cutoff } });
     }
     
     

@@ -30,7 +30,7 @@ interface PaginatedHookOptions {
 
 // generic hook
 //For an easy way i de-strcuture the code  ( Hard coded way show  at the last )
-export const usePaginatedProviderApi = <T>( apiFn: PaginatedApiFn<T>,{ defaultFilter = "all",defaultItemsPerPage = 12,debounceDelay = 500,}: PaginatedHookOptions  ) => {
+export const usePaginatedProviderApi = <T>( apiFn: PaginatedApiFn<T>,{ defaultFilter = "all",defaultItemsPerPage = 12,debounceDelay = 500, }: PaginatedHookOptions  ) => {
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -39,39 +39,39 @@ export const usePaginatedProviderApi = <T>( apiFn: PaginatedApiFn<T>,{ defaultFi
   const [currentPage, setCurrentPage] = useState(1);
   const [debouncedQuery] = useDebounce(searchQuery, debounceDelay);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const res = await apiFn(
-                    debouncedQuery,
-                    filter,
-                    currentPage,
-                    defaultItemsPerPage
-                );
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const res = await apiFn(
+          debouncedQuery,
+          filter,
+          currentPage,
+          defaultItemsPerPage
+        );
 
-                if (res.status === HttpStatusCode.OK) {
-                    setData(res.data.providerData ?? []);
-                    setTotal(res.data.total ?? 0);
-                } 
-            } catch (err) {
-                console.error(err);
-                toast.error("Failed to fetch providers");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [debouncedQuery, filter, currentPage]);
+        if (res.status === HttpStatusCode.OK) {
+          setData(res.data.providerData ?? []);
+          setTotal(res.data.total ?? 0);
+        } 
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to fetch providers");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [debouncedQuery, filter, currentPage]);
 
-    useEffect(() => {
-        if (currentPage !== 1) setCurrentPage(1);
-    }, [debouncedQuery, filter]);
+  useEffect(() => {
+    if (currentPage !== 1) setCurrentPage(1);
+  }, [debouncedQuery, filter]);
 
-    const totalPages = useMemo(
-        () => Math.ceil(total / defaultItemsPerPage),
-        [total, defaultItemsPerPage]
-    );
+  const totalPages = useMemo(
+    () => Math.ceil(total / defaultItemsPerPage),
+    [total, defaultItemsPerPage]
+  );
 
   return {
     data,

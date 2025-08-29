@@ -18,37 +18,37 @@ export interface CategoryInputDTO {
   subcategories: SubcategoryInputDTO[];
 }
 
-const { BAD_REQUEST } = HttpStatusCode
-const { CATEGORY_ALREADY_EXISTS} = Messages
+const { BAD_REQUEST } = HttpStatusCode;
+const { CATEGORY_ALREADY_EXISTS } = Messages;
 
 export class CreateServiceCategoryUseCase implements ICreateServiceCategoryUseCase {
-  constructor(
+    constructor(
     private readonly _categoryRepository: ICategoryRepository
-  ) {}
+    ) {}
 
-  async execute(input: CategoryInputDTO): Promise<void> {
-    const { name, description, subcategories, image } = input;
+    async execute(input: CategoryInputDTO): Promise<void> {
+        const { name, description, subcategories, image } = input;
 
-    const normalizedCategoryName = name.trim().toLowerCase();
-    const exists = await this._categoryRepository.findByName(normalizedCategoryName);
-    if (exists) {
-      throw { status: BAD_REQUEST, message: CATEGORY_ALREADY_EXISTS  };
+        const normalizedCategoryName = name.trim().toLowerCase();
+        const exists = await this._categoryRepository.findByName(normalizedCategoryName);
+        if (exists) {
+            throw { status: BAD_REQUEST, message: CATEGORY_ALREADY_EXISTS  };
+        }
+
+        const category = {
+            categoryId: uuidv4(),
+            name: normalizedCategoryName,
+            description,
+            image,
+            isActive:false,
+            subcategories: subcategories.map(sub => ({
+                subCategoryId: uuidv4(),
+                isActive:false,
+                ...sub,
+            })),
+        };
+
+        // Save category
+        await this._categoryRepository.create(category);
     }
-
-    const category = {
-      categoryId: uuidv4(),
-      name: normalizedCategoryName,
-      description,
-      image,
-      isActive:false,
-      subcategories: subcategories.map(sub => ({
-        subCategoryId: uuidv4(),
-        isActive:false,
-        ...sub,
-      })),
-    };
-
-    // Save category
-    await this._categoryRepository.create(category);
-  }
 }

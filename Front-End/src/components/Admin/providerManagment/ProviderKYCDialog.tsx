@@ -1,4 +1,4 @@
-import {Dialog,DialogContent, DialogDescription, DialogTitle,} from "@/components/ui/dialog";
+import { Dialog,DialogContent, DialogDescription, DialogTitle, } from "@/components/ui/dialog";
 import AuthService from "@/services/AuthService";
 import type { ProviderList } from "@/shared/Types/user";
 import { formatDOB, toPascalCase } from "@/utils/helper/utils";
@@ -18,50 +18,50 @@ interface ProviderKYCDialogProps {
 }
 
 const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider, setSelectedProvider,updateData }) => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
   if (!selectedProvider) return null;
   
   const handleApprove = async() => {
-    setLoading(true)
+    setLoading(true);
     try {      
-      const res = await AuthService.updateProviderKYC(selectedProvider.id,{action:KYCStatus.Approved})
+      const res = await AuthService.updateProviderKYC(selectedProvider.id,{ action:KYCStatus.Approved });
       if (res.status === HttpStatusCode.OK) {
-        console.log(res.data)
+        console.log(res.data);
         toast.success("KYC Approved");
-        updateData(res.data.id)
+        updateData(res.data.id);
         setSelectedProvider(null);
       }
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || "Failed to Approve application";
       toast.error(errorMsg);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleReject = async(reason:string) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await AuthService.updateProviderKYC(selectedProvider.id,{ action: KYCStatus.Rejected, reason })
+      const res = await AuthService.updateProviderKYC(selectedProvider.id,{ action: KYCStatus.Rejected, reason });
       if (res.status === HttpStatusCode.OK) {
         toast.success("KYC Rejected");
-        updateData(res.data.id)
+        updateData(res.data.id);
         setRejectDialogOpen(false); 
         setSelectedProvider(null);
         
       }
 
-    } catch (error: any) {
+    } catch (error:any) {
       
       const errorMsg = error?.response?.data?.message || "Failed to  Reject application";
       toast.error(errorMsg);
 
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
   
 
   return (
@@ -72,7 +72,7 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
       <DialogContent className="!max-w-2xl w-full rounded-none  shadow-xl h-full overflow-auto p-0  gap-0">
         <div className="flex flex-col md:flex-row gap-6 bg-hero-background font-serif ">
           <DialogTitle className="sr-only">Provider KYC Details</DialogTitle>
-            <DialogDescription className="sr-only">Detailed information about the provider’s KYC application</DialogDescription>
+          <DialogDescription className="sr-only">Detailed information about the provider’s KYC application</DialogDescription>
           {/* Profile Image */}
           <div className="flex-shrink-0 flex justify-center md:justify-start">
             <div className="w-52 h-52 shadow-lg overflow-hidden">
@@ -94,7 +94,7 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
                 className={`sm:inline-block md:hidden px-3 py-1 text-sm font-medium md:mr-10 rounded-2xl  ${
                   selectedProvider.status === KYCStatus.Pending
                     ? "bg-yellow-200 text-yellow-900": selectedProvider.status === KYCStatus.Approved
-                    ? "bg-green-200 text-green-900" : "bg-red-200 text-red-900"
+                      ? "bg-green-200 text-green-900" : "bg-red-200 text-red-900"
                 }`}
               >
                 {selectedProvider.status}
@@ -118,8 +118,8 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
               >
                 { selectedProvider.status == KYCStatus.Pending
                   ? KYCStatus.Pending : selectedProvider.status == KYCStatus.Approved
-                  ? <img src="/Approved.png" alt={selectedProvider.status} className="w-20" />  
-                  : <img src="/Rejected.png" alt={selectedProvider.status} className="w-20" />
+                    ? <img src="/Approved.png" alt={selectedProvider.status} className="w-20" />  
+                    : <img src="/Rejected.png" alt={selectedProvider.status} className="w-20" />
                 }
               </span>
             </div>

@@ -4,8 +4,8 @@ import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
 
 
-const { INTERNAL_SERVER_ERROR} = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 
 export class CreatePaymentUseCase implements ICreatePaymentUseCase {
@@ -15,7 +15,7 @@ export class CreatePaymentUseCase implements ICreatePaymentUseCase {
     
     async execute(bookingId: string): Promise<string> {
         try {
-            return await this._paymentService.createPaymentIntent(bookingId)
+            return await this._paymentService.createPaymentIntent(bookingId);
         } catch (error:any) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };

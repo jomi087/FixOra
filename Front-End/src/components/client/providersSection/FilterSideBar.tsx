@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Category } from "@/shared/Types/category";
 import { Button } from "../../ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -13,8 +13,8 @@ interface FilterSideBarProps {
 }
 
 const FilterSideBar: React.FC<FilterSideBarProps> = ({ className, categories, loading }) => {
-    const dispatch = useAppDispatch();
-    const { selectedService, nearByFilter, availabilityFilter, ratingFilter } = useAppSelector((state) => state.filter );
+  const dispatch = useAppDispatch();
+  const { selectedService, nearByFilter, availabilityFilter, ratingFilter } = useAppSelector((state) => state.filter );
   return (
     <div className={`relative flex flex-col justify-between h-full ${className}`}>
       <div className="space-y-3 overflow-y-auto p-4 ">
@@ -101,12 +101,12 @@ const FilterSideBar: React.FC<FilterSideBarProps> = ({ className, categories, lo
         {/* Availability  */}
         <div className="ml-4">
           <h4 className="underline mb-2">Availability</h4>
-        <RadioGroup
+          <RadioGroup
             disabled = {true}
             value={availabilityFilter}
-          onValueChange={(value: string) => dispatch(setAvailabilityFilter(value)) }
-        >
-          <div className="flex items-center gap-3">
+            onValueChange={(value: string) => dispatch(setAvailabilityFilter(value)) }
+          >
+            <div className="flex items-center gap-3">
               <RadioGroupItem value="today" id="a1" className='cursor-pointer'/>
               <Label htmlFor="a1">Today</Label>
             </div>

@@ -14,13 +14,13 @@ import { toast } from "react-toastify";
 import ProviderInfoCard from "@/components/admin/providerManagment/ProviderInfoCard";
 
 
-  const filterOptions= [
-    { label: "All", value: "all" },
-    { label: "Blocked", value: "blocked" },
-    { label: "Unblocked", value: "unblocked" },
-    { label: "Online", value: "online" },
-    { label: "Offline", value: "offline" },
-  ]
+const filterOptions= [
+  { label: "All", value: "all" },
+  { label: "Blocked", value: "blocked" },
+  { label: "Unblocked", value: "unblocked" },
+  { label: "Online", value: "online" },
+  { label: "Offline", value: "offline" },
+];
 
 const ProviderManagement: React.FC = () => {
   
@@ -41,7 +41,7 @@ const ProviderManagement: React.FC = () => {
   const handleToggleStatus = async (userId: string) => {
     try {
       
-      const res = await AuthService.toggleUserStatusApi(userId)
+      const res = await AuthService.toggleUserStatusApi(userId);
       if (res.status === HttpStatusCode.OK) {
         setProvData(prev =>
           prev.map((data) => data.user.userId === userId ? {
@@ -51,16 +51,16 @@ const ProviderManagement: React.FC = () => {
               isBlocked: !data.user.isBlocked
             }
           } : data )
-        )
+        );
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS ;
       toast.error(errorMsg);
     }
-  }
+  };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   
   
   return (
@@ -73,19 +73,19 @@ const ProviderManagement: React.FC = () => {
 
         <div className="flex-1  bg-footer-background text-body-text w-full px-4 md:px-6 py-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
-              <div className="flex flex-col gap-3 md:flex-row md:items-center w-full md:w-[480px]">
-                <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
-                <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} /> 
-              </div>
-              <div className="w-full md:w-auto">
-                <Button
-                  variant="default"
-                  className="bg-yellow-600"
-                  onClick={()=>{navigate('/admin/provider-request')}}
-                >
+            <div className="flex flex-col gap-3 md:flex-row md:items-center w-full md:w-[480px]">
+              <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
+              <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} /> 
+            </div>
+            <div className="w-full md:w-auto">
+              <Button
+                variant="default"
+                className="bg-yellow-600"
+                onClick={()=>{navigate("/admin/provider-request");}}
+              >
                   Verify Providers
-                </Button>
-              </div>
+              </Button>
+            </div>
           </div>
           
           {isLoading ? (
@@ -93,14 +93,14 @@ const ProviderManagement: React.FC = () => {
               <SkeletonInfoCard count={8} />
             </div> 
           ) : provData.length === 0 ? (
-              <div className="flex justify-center items-center h-[84vh] w-full text-2xl font-semibold ">
+            <div className="flex justify-center items-center h-[84vh] w-full text-2xl font-semibold ">
                 No providers have been registered yet
-              </div>
+            </div>
           ) : (
             <>
               <ProviderInfoCard
-                  datas={provData}
-                  onToggleStatus={handleToggleStatus}
+                datas={provData}
+                onToggleStatus={handleToggleStatus}
               />
               {totalPages > 1 && (
                 <Pagination
@@ -118,4 +118,4 @@ const ProviderManagement: React.FC = () => {
   );
 };
 
-export default ProviderManagement
+export default ProviderManagement;

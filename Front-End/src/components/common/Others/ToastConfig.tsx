@@ -11,7 +11,7 @@ const ToastConfig = () => {
       hideProgressBar={true}
       draggable={true}
     />
-  )
-}
+  );
+};
 
-export default ToastConfig
+export default ToastConfig;

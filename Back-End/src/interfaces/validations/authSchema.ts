@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Messages } from "../../shared/Messages"
+import { Messages } from "../../shared/Messages";
 import {
     firstNameField,
     lastNameField,
@@ -18,9 +18,9 @@ export const signupSchema = z.object({
 });
 
 export const signinSchema = z.object({
-  email: emailField,
-  password: passwordField,
-  role: roleField
+    email: emailField,
+    password: passwordField,
+    role: roleField
 });
 
 export const forgotPasswordSchema = z.object({
@@ -36,7 +36,7 @@ export const resetPasswordSchema = z.object({
         message: Messages.PASSWORDS_DO_NOT_MATCH,
         path : ["cPassword"]
     }
-)
+    );
 
 export const verifyPasswordSchema = z.object({
     password:passwordField

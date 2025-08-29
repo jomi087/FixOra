@@ -13,31 +13,31 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 
 
 const UserManagement: React.FC = () => {
-  const { custData,isLoading,totalPages,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage,setCustData}=useUserManagement()
+  const { custData,isLoading,totalPages,setSearchQuery,filter,setFilter,currentPage,searchQuery,setCurrentPage,itemsPerPage,setCustData }=useUserManagement();
   
   const filterOptions = [
     { label: "Filter", value: "all" },
     { label: "Blocked", value: "blocked" },
     { label: "Unblocked", value: "unblocked" },
-  ]
+  ];
 
   const handleToggleStatus = async (userId: string) => {
     try {      
-      const res = await AuthService.toggleUserStatusApi(userId)
+      const res = await AuthService.toggleUserStatusApi(userId);
       if (res.status === HttpStatusCode.OK) {
         setCustData(prev =>
           prev.map((data) => data.userId === userId ? {
             ...data,
             isBlocked: !data.isBlocked
           }: data )
-        )
+        );
       }
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS ;
       toast.error(errorMsg);
     }
-  }
+  };
 
   return (
     <>

@@ -1,9 +1,9 @@
-import SideBar from "../../components/common/Others/SideBar"
-import Nav from "../../components/common/layout/Nav"
-import { userSideBarOptions } from "../../utils/constant"
-import Profile from "@/components/client/profileSection/Profile"
-import EditProfile from "@/components/client/profileSection/EditProfile"
-import { useState } from "react"
+import SideBar from "../../components/common/Others/SideBar";
+import Nav from "../../components/common/layout/Nav";
+import { userSideBarOptions } from "../../utils/constant";
+import Profile from "@/components/client/profileSection/Profile";
+import EditProfile from "@/components/client/profileSection/EditProfile";
+import { useState } from "react";
 
 
 const ProfilePage = () => {
@@ -21,7 +21,7 @@ const ProfilePage = () => {
         }
       </main>
     </>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;

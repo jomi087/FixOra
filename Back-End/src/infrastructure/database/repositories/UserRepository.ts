@@ -13,27 +13,27 @@ import { Provider } from "../../../domain/entities/ProviderEntity";
 
 export class UserRepository implements IUserRepository {
     async findByEmail(email: string, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
-        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
-        return await UserModel.findOne({ email }).select(omitSelect).lean<Partial<User>>()  //mongo db methods 
+        const omitSelect = omitFields.map(field => `-${field}`).join(" ");
+        return await UserModel.findOne({ email }).select(omitSelect).lean<Partial<User>>();  //mongo db methods 
     }
 
     async create(user: User): Promise<User> {
-        const newUser = new UserModel(user)
+        const newUser = new UserModel(user);
         await newUser.save();
         return newUser.toObject() as User;
     }
 
     async findByUserId(userId: string, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
-        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
-        return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>()
+        const omitSelect = omitFields.map(field => `-${field}`).join(" ");
+        return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>();
     }
 
     async findByUserGoogleId(googleId: string): Promise< User | null> {
-        return await UserModel.findOne({ googleId }).lean<User>()
+        return await UserModel.findOne({ googleId }).lean<User>();
     }
 
     async updateRole(userId: string, role: RoleEnum, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
-        const omitSelect = omitFields.map(field => `-${field}`).join(' ')
+        const omitSelect = omitFields.map(field => `-${field}`).join(" ");
         return await UserModel.findOneAndUpdate(
             { userId },
             { $set: { role } },
@@ -72,16 +72,16 @@ export class UserRepository implements IUserRepository {
             { userId },
             { $set: { isBlocked } }
         );
-        return result.modifiedCount > 0 
+        return result.modifiedCount > 0; 
     }
 
     async updateRefreshTokenAndGetUser (userId: string, refreshToken: string): Promise<Omit<User, "password"> | null> {
         const result = await UserModel.findOneAndUpdate(
             { userId },
-            { $set: { refreshToken }},
-            { new : true},
-        ).select("-password")
-        return result 
+            { $set: { refreshToken } },
+            { new : true },
+        ).select("-password");
+        return result; 
     }
 
     async resetRefreshTokenById(userId: string, refreshToken:string = ""): Promise<boolean> {
@@ -89,7 +89,7 @@ export class UserRepository implements IUserRepository {
             { userId },
             { $set: { refreshToken } }
         );
-        return result.matchedCount  > 0 
+        return result.matchedCount  > 0; 
     }
 
     async resetPasswordByEmail(email: string, password: string): Promise<boolean>{
@@ -97,7 +97,7 @@ export class UserRepository implements IUserRepository {
             { email },
             { $set: { password } }
         );
-        return result.matchedCount  > 0 
+        return result.matchedCount  > 0; 
     }
 
     async findUsersWithFilters(
@@ -195,27 +195,27 @@ export class UserRepository implements IUserRepository {
         const { searchQuery, filter, extraFilter, coordinates } = option;
         const skip = (currentPage - 1) * limit;
 
-        const pipeline: any[] = []
+        const pipeline: any[] = [];
         const hasNearbyFilter = extraFilter?.nearByFilter && coordinates?.latitude && coordinates?.longitude;
 
         if (hasNearbyFilter) {
-            let minDistance = 0
-            let maxDistance = Infinity
+            let minDistance = 0;
+            let maxDistance = Infinity;
 
             switch (extraFilter.nearByFilter) {
-                case "0to5km":
-                    maxDistance = 5000;
-                    break;
-                case "0to10km":
-                    minDistance = 0;
-                    maxDistance = 10000;
-                    break;
-                case "0to15km":
-                    minDistance = 0;
-                    maxDistance = 15000;
-                    break;
-                default:
-                    break
+            case "0to5km":
+                maxDistance = 5000;
+                break;
+            case "0to10km":
+                minDistance = 0;
+                maxDistance = 10000;
+                break;
+            case "0to15km":
+                minDistance = 0;
+                maxDistance = 15000;
+                break;
+            default:
+                break;
             }
 
             pipeline.push(
@@ -237,21 +237,21 @@ export class UserRepository implements IUserRepository {
                         distance: { $gte: minDistance * 0.001, $lt: maxDistance * 0.001 }
                     }
                 },
-            )
+            );
 
         }
 
-        const sortCondition: any = {}
+        const sortCondition: any = {};
         switch (filter) {
-            case 'ascending':
-                sortCondition["fname"] = 1;
-                break;
-            case 'descending':
-                sortCondition["fname"] = -1;
-                break;
-            default:
-                sortCondition["averageRating"] = -1;
-                break;
+        case "ascending":
+            sortCondition["fname"] = 1;
+            break;
+        case "descending":
+            sortCondition["fname"] = -1;
+            break;
+        default:
+            sortCondition["averageRating"] = -1;
+            break;
         }
 
         const matchUserConditions: any = {
@@ -263,20 +263,20 @@ export class UserRepository implements IUserRepository {
             matchUserConditions.$or = [
                 { "fname": { $regex: searchQuery, $options: "i" } },
                 { "lname": { $regex: searchQuery, $options: "i" } },
-            ]
+            ];
         }
 
         //filter via service(category)
         const matchServiceCondition: any = {};
-        matchServiceCondition["serviceDetails.isActive"] = true
+        matchServiceCondition["serviceDetails.isActive"] = true;
         if (extraFilter?.selectedService) {
-            matchServiceCondition["serviceDetails.categoryId"] = extraFilter.selectedService
+            matchServiceCondition["serviceDetails.categoryId"] = extraFilter.selectedService;
         }
 
         // filter via rating
-        const matchRatingCondition: any = {}
+        const matchRatingCondition: any = {};
         if (extraFilter?.ratingFilter) {
-            matchRatingCondition["averageRating"] = { $eq: extraFilter.ratingFilter }
+            matchRatingCondition["averageRating"] = { $eq: extraFilter.ratingFilter };
         }
 
         //logic for availabilty filter to be added (will add later on the basis of booking)
@@ -375,7 +375,7 @@ export class UserRepository implements IUserRepository {
                     ]
                 }
             }
-        )
+        );
 
 
         interface AggregatedFacetResult {
@@ -388,14 +388,14 @@ export class UserRepository implements IUserRepository {
             totalCount: { total: number }[];
         }
 
-        const result = await UserModel.aggregate<AggregatedFacetResult>(pipeline).exec()
+        const result = await UserModel.aggregate<AggregatedFacetResult>(pipeline).exec();
         // console.log(result[0].data)
 
 
         return {
             data: result[0].data || [],
             total: result[0].totalCount[0]?.total || 0
-        }
+        };
     }
 
     async findProviderBookingsById(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{
@@ -429,7 +429,7 @@ export class UserRepository implements IUserRepository {
                     from: "providers",
                     localField: "userId",
                     foreignField: "userId",
-                    as: 'providerDetails'
+                    as: "providerDetails"
                 },
             },
             { $unwind: "$providerDetails" },
@@ -448,7 +448,7 @@ export class UserRepository implements IUserRepository {
                     from: "bookings",
                     localField: "providerDetails.providerId",
                     foreignField: "provider.id",
-                    as: 'bookingDetails'
+                    as: "bookingDetails"
                 }
             },
             // { $match: { "bookingDetails.scheduledAt": gtreaterthan ot equal to currentdate } },
@@ -535,7 +535,7 @@ export class UserRepository implements IUserRepository {
                     distanceFee: 1,
                 }
             }
-        ]
+        ];
 
         interface AggregatedResult {
             user: Pick<User, "userId" | "fname" | "lname">,
@@ -545,10 +545,10 @@ export class UserRepository implements IUserRepository {
             distanceFee: number
         }
 
-        const result = await UserModel.aggregate<AggregatedResult>(pipeline)
+        const result = await UserModel.aggregate<AggregatedResult>(pipeline);
         //console.log("come on",result[0])
 
-        return result[0]
+        return result[0];
     }
 
     async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; } | null> {
@@ -575,7 +575,7 @@ export class UserRepository implements IUserRepository {
                     from: "providers",
                     localField: "userId",
                     foreignField: "userId",
-                    as: 'providerDetails'
+                    as: "providerDetails"
                 },
             },
             { $unwind: "$providerDetails" },
@@ -611,14 +611,14 @@ export class UserRepository implements IUserRepository {
                 }
             }
 
-        ]
+        ];
         interface AggregatedResult {
             serviceCharge: number;
             distanceFee: number;
         }
 
-        const result = await UserModel.aggregate<AggregatedResult>(pipeline)
-        return result[0]
+        const result = await UserModel.aggregate<AggregatedResult>(pipeline);
+        return result[0];
     }
 }
 

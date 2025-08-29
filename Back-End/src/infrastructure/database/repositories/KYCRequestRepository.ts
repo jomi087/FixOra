@@ -1,7 +1,5 @@
 import { KYCRequest, KYCRequestWithDetails } from "../../../domain/entities/KYCRequestEntity";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
-import { Gender } from "../../../shared/Enums/Gender";
-import { KYCStatus } from "../../../shared/Enums/KYCstatus";
 import KYCRequestModel from "../models/KYCRequestModel";
 import { ObjectId } from "mongodb";
 
@@ -16,7 +14,7 @@ export class KYCRequestRepository implements IKYCRequestRepository {
     }
     
     async create(data: KYCRequest): Promise<void> {
-        await new KYCRequestModel(data).save()
+        await new KYCRequestModel(data).save();
     }
 
     async updateById(id: string, updateData: Partial<KYCRequest>): Promise<KYCRequest | null>{
@@ -24,15 +22,15 @@ export class KYCRequestRepository implements IKYCRequestRepository {
             id,
             { $set: updateData },
             { new: true }
-        ).lean<KYCRequest>()
+        ).lean<KYCRequest>();
     }
 
     async updateByUserId(userId: string, updateData: Partial<KYCRequest>): Promise<KYCRequest | null> {
         const updated = await KYCRequestModel.findOneAndUpdate(
-        { userId },
-        { $set: updateData, reviewedAt: undefined, reviewedBy: undefined, reason: undefined }, 
-        { new: true }
-        ).lean<KYCRequest>()
+            { userId },
+            { $set: updateData, reviewedAt: undefined, reviewedBy: undefined, reason: undefined }, 
+            { new: true }
+        ).lean<KYCRequest>();
         return updated;
     }
 
@@ -66,7 +64,7 @@ export class KYCRequestRepository implements IKYCRequestRepository {
                     pipeline: [
                         { $project: { 
                             userId: 1, fname: 1, lname: 1, email: 1, mobileNo: 1, location: 1 
-                        }}
+                        } }
                     ],
                     as: "userDetails",
                 }, //so  lookup  will return the data in a array
@@ -92,7 +90,7 @@ export class KYCRequestRepository implements IKYCRequestRepository {
                     pipeline: [{
                         $project: { 
                             fname: 1, lname: 1
-                        }}
+                        } }
                     ],
                     as: "adminDetails",
                 }
@@ -177,18 +175,18 @@ export class KYCRequestRepository implements IKYCRequestRepository {
             totalCount: { total: number }[];
         }
 
-        const result = await KYCRequestModel.aggregate<AggregatedFacetResult>(pipeline) 
-        console.log("result without id ",result[0].data[2])
+        const result = await KYCRequestModel.aggregate<AggregatedFacetResult>(pipeline); 
+        console.log("result without id ",result[0].data[2]);
 
-        const rawData  = result[0].data || []
-        const total = result[0].totalCount[0]?.total || 0
+        const rawData  = result[0].data || [];
+        const total = result[0].totalCount[0]?.total || 0;
         
         const mappedData: KYCRequestWithDetails[] = rawData.map((doc) => ({
             ...doc,
             id: doc.id.toString(), // convert ObjectId → string
-        })) 
+        })); 
 
-        console.log("mappedData with id",mappedData[2])
+        console.log("mappedData with id",mappedData[2]);
         return { data:mappedData, total };
     }
 

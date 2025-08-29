@@ -1,32 +1,32 @@
-import mongoose from 'mongoose';
-import { ILoggerService } from '../../domain/interface/ServiceInterface/ILoggerService';
+import mongoose from "mongoose";
+import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 
 const max_retries = 5;
 let retries = 0;
 
 const mongoConnect = async (logger:ILoggerService):Promise<void> => {
-    const url = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/fixora'
+    const url = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/fixora";
     try {
-        await mongoose.connect(url)
-        logger.info('MongoDB connected successfully.');
+        await mongoose.connect(url);
+        logger.info("MongoDB connected successfully.");
     } catch (error: unknown) {
-        retries++
+        retries++;
         logger.error(`MongoDB connection failed. Attempt ${retries} of ${max_retries}.`, {
             error: error instanceof Error ? error.message : error,
             stack: error instanceof Error ? error.stack : undefined,
         });
 
         if (retries < max_retries) {
-            logger.info('Retrying MongoDB connection in 5 seconds...');
+            logger.info("Retrying MongoDB connection in 5 seconds...");
             setTimeout(mongoConnect, 5000); // Retry after 5 seconds
         }else{
-            logger.error('Max retries reached. Exiting process.');
+            logger.error("Max retries reached. Exiting process.");
             process.exit(1); //stop the app
         }
     }
-}
+};
 
-export default mongoConnect
+export default mongoConnect;
 
 
 //Notes 

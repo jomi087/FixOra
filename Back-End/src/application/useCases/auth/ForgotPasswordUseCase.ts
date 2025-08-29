@@ -1,7 +1,7 @@
 
 
 import jwt from "jsonwebtoken";
-import type { SignOptions } from 'jsonwebtoken';
+import type { SignOptions } from "jsonwebtoken";
 
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
@@ -9,8 +9,8 @@ import { Messages } from "../../../shared/Messages";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode
-const { INTERNAL_ERROR, EMAIL_NOT_FOUND  } = Messages
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
+const { INTERNAL_ERROR, EMAIL_NOT_FOUND  } = Messages;
 
 export class ForgotPasswordUseCase implements IForgotPasswordUseCase{
     constructor(
@@ -20,14 +20,14 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase{
     
     async execute(email: string): Promise<void>{
         try {
-            if (!(await this._userRepository.findByEmail(email, ['password', 'refreshToken',]))) {
-                throw { status : NOT_FOUND , message : EMAIL_NOT_FOUND }
+            if (!(await this._userRepository.findByEmail(email, ["password", "refreshToken",]))) {
+                throw { status : NOT_FOUND , message : EMAIL_NOT_FOUND };
             }
 
-            const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions['expiresIn']
-            const resetToken = jwt.sign({email : email}, process.env.JWT_RESET_PASSWORD_SECRET  as string, { expiresIn: expiryTime })
+            const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
+            const resetToken = jwt.sign({ email : email }, process.env.JWT_RESET_PASSWORD_SECRET  as string, { expiresIn: expiryTime });
 
-            const url = process.env.FRONTEND_URL || 'http://localhost:5001'
+            const url = process.env.FRONTEND_URL || "http://localhost:5001";
             
             const resetUrl = `${url}/reset-password?token=${resetToken}`;
 
@@ -45,7 +45,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase{
 
         } catch (error :any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

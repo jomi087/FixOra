@@ -3,15 +3,15 @@ import { IOtpGenratorService } from "../../domain/interface/ServiceInterface/IOt
 export class OtpGenratorservice implements IOtpGenratorService{
     
     generateOtp(length: number = 6): string {
-    let otp = '';
-    const digits = '0123456789';
+        let otp = "";
+        const digits = "0123456789";
 
-    for (let i = 0; i < length; i++) {
-      otp += digits[Math.floor(Math.random() * 10)];
+        for (let i = 0; i < length; i++) {
+            otp += digits[Math.floor(Math.random() * 10)];
+        }
+
+        return otp;
     }
-
-    return otp;
-  }
 }
 
 

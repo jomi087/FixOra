@@ -1,11 +1,11 @@
-import socket from '@/services/soket';
-import type { BookingAutoRejectPayload, BookingRequestPayload } from '@/shared/Types/booking';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import React, { useEffect, useRef } from 'react';
-import BookingApplicationDialouge from '../../components/provider/BookingApplicationDialouge';
-import { toast } from 'react-toastify';
-import notificationMp3 from '@/assets/bookingnotification.mp3'
-import { addBookingRequest, autoRejectBooking, removeBookingRequest } from '@/store/provider/bookingSlice';
+import socket from "@/services/soket";
+import type { BookingAutoRejectPayload, BookingRequestPayload } from "@/shared/Types/booking";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import React, { useEffect, useRef } from "react";
+import BookingApplicationDialouge from "../../components/provider/BookingApplicationDialouge";
+import { toast } from "react-toastify";
+import notificationMp3 from "@/assets/bookingnotification.mp3";
+import { addBookingRequest, autoRejectBooking, removeBookingRequest } from "@/store/provider/bookingSlice";
 
 const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAppSelector((state) => state.auth);
@@ -20,11 +20,11 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   
   useEffect(() => {
     audioRef.current = new Audio(notificationMp3);
-    audioRef.current.loop = true
+    audioRef.current.loop = true;
     return () => {
-        audioRef.current?.pause();
-        audioRef.current = null;
-    }
+      audioRef.current?.pause();
+      audioRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     }
 
     const handleConnect = () => {
-      console.log('Socket connected:', socket.id);
+      console.log("Socket connected:", socket.id);
     };
 
     const handleBookingRequested = (payload: BookingRequestPayload) => {
@@ -48,24 +48,24 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const handleBookingAutoReject = (payload: BookingAutoRejectPayload) => {
       //setBookingDialog((prev) => prev.filter((b)=> b.bookingId !== payload.bookingId ) ); 
       dispatch(autoRejectBooking(payload));
-      toast.warn(`Booking request of ${payload.bookingId} was a auto Rejected`)
-      toast.info(`Reason: ${payload.reason}`)
-    }
+      toast.warn(`Booking request of ${payload.bookingId} was a auto Rejected`);
+      toast.info(`Reason: ${payload.reason}`);
+    };
 
     const handleConnectError = (err: any) => {
       toast.error(err.message);
     };
 
-    socket.on('connect', handleConnect);
-    socket.on('booking:requested', handleBookingRequested );
-    socket.on('booking:autoReject', handleBookingAutoReject );
-    socket.on('connect_error', handleConnectError );
+    socket.on("connect", handleConnect);
+    socket.on("booking:requested", handleBookingRequested );
+    socket.on("booking:autoReject", handleBookingAutoReject );
+    socket.on("connect_error", handleConnectError );
 
     return () => {
-      socket.off('connect', handleConnect);
-      socket.off('booking:requested', handleBookingRequested);
-      socket.off('booking:autoReject', handleBookingAutoReject);
-      socket.off('connect_error', handleConnectError);
+      socket.off("connect", handleConnect);
+      socket.off("booking:requested", handleBookingRequested);
+      socket.off("booking:autoReject", handleBookingAutoReject);
+      socket.off("connect_error", handleConnectError);
     };
   }, [user,dispatch]);
 

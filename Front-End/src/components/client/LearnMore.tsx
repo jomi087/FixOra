@@ -1,16 +1,16 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Autoplay } from 'swiper/modules';
-import type { MainCategory } from '@/shared/Types/category';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import type { MainCategory } from "@/shared/Types/category";
 // import type { ProviderImage } from '@/shared/Types/providers';
 
 
 //temp data
-import { App_Name, providers } from '../../utils/constant';
-import { useNavigate } from 'react-router-dom';
-import { slugify } from '@/utils/helper/utils';
-import { useAppSelector } from '@/store/hooks';
-import { RoleEnum } from '@/shared/enums/roles';
-import { toast } from 'react-toastify';
+import { App_Name, providers } from "../../utils/constant";
+import { useNavigate } from "react-router-dom";
+import { slugify } from "@/utils/helper/utils";
+import { useAppSelector } from "@/store/hooks";
+import { RoleEnum } from "@/shared/enums/roles";
+import { toast } from "react-toastify";
  
 
 interface learMoreProps{
@@ -21,18 +21,18 @@ interface learMoreProps{
 
 
 const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
-  const { isAuthenticated } = useAppSelector((state) => state.auth)
-  const navigate = useNavigate()
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
   const handleServices = (section:string) => {
     if (!isAuthenticated) {
-      toast.info("Sign-In Required")
-      navigate(`/signIn/${RoleEnum.CUSTOMER}`)
+      toast.info("Sign-In Required");
+      navigate(`/signIn/${RoleEnum.CUSTOMER}`);
     } else {
-      navigate(`/user/services#${slugify(section)}`) 
+      navigate(`/user/services#${slugify(section)}`); 
     }
-  }
+  };
   return (
-    <section id="learnMore" className={'py-10'} aria-label={`Information about ${App_Name} services and providers`} >
+    <section id="learnMore" className={"py-10"} aria-label={`Information about ${App_Name} services and providers`} >
       <div className="container mx-auto px-4">
 
         {/*  About */}
@@ -85,7 +85,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
                     <button
      
                       className="border rounded-full px-2 py-1 mt-4 mb-8 shadow-md shadow-black text-right cursor-pointer"
-                      onClick={() => { handleServices(category.name) }}
+                      onClick={() => { handleServices(category.name); }}
                     >
                       View More
                     </button>
@@ -104,7 +104,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
           </p>
           <div className ='grid grid-cols-1 md:grid-cols-2 mt-20   to-blue-500 from-amber-500  p-10'>
             <div className=''>
-                <div className="rounded-2xl text-center cursor-pointer shadow-2xl shadow-black">
+              <div className="rounded-2xl text-center cursor-pointer shadow-2xl shadow-black">
                 <Swiper
                   modules={ [Pagination, Navigation, Autoplay] } // Add Pagination module
                   pagination={{ clickable: true }} // Enable clickable pagination
@@ -122,8 +122,8 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
                       </div>
                     </SwiperSlide>
                   ))}
-                 </Swiper>
-                </div>
+                </Swiper>
+              </div>
             </div>
             <div>
               <h3 className="text-xl font-medium text-center mt-4">Certified Providers</h3>

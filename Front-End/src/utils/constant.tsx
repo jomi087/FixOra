@@ -5,37 +5,38 @@ import {
 } from "lucide-react";
 
 /******************************************************************************************************* */
-export const App_Name:string = "FixOra"
-export const Support_Mail: string = `support@${App_Name.toLocaleLowerCase()}.com`
-export const Support_Contact_No: string = "+91 7907728132"
+export const App_Name:string = "FixOra";
+export const Support_Mail: string = `support@${App_Name.toLocaleLowerCase()}.com`;
+export const Support_Contact_No: string = "+91 7907728132";
 export const CURRENT_YEAR = 2025;
 export const COPYRIGHT_NOTICE = `© ${CURRENT_YEAR} ${App_Name}. All rights reserved.`;
 
 /********************************************* Image Sections *******************************************************/
-export const BGImage_404: string = "url('/404_Bg_Image.jpg')"  //used in sign-in, sign-up, pagenot-found,
-export const HeroSectionImage:string = "/Hero-removebg-preview.png"
-export const SingInThemeImage: string = "/signIn.png"
+export const BGImage_404: string = "url('/404_Bg_Image.jpg')";  //used in sign-in, sign-up, pagenot-found,
+export const HeroSectionImage:string = "/Hero-removebg-preview.png";
+export const SingInThemeImage: string = "/signIn.png";
 
 /********************************************* Rules  *******************************************************/
 
-export const searchInputMaxLength : number = 80
-export const categoryImageSize: number = 1                                         //default set  to 2 mb
-export const providerImageSize: number = 1                                        //default set  to 2 mb
-export const KYCImageSize : number = 5                                           //default set  to 5 mb
-export const minYear = `${new Date().getFullYear() - 150}-01-01` 
-export const maxYear = `${new Date().getFullYear() - 19}-01-01`
-export const CCPP = 8                                                    //CCPP => Customer Cards Per page -> default set to 16
-export const PCPP = 8                                                   //PCPP => Provider Cards Per page  -> default set to 16
-export const PALPP = 10                                                 //PALPP => Provider Application List Per Page  -> default set to 15
-export const SLPP = 7                                                  //SLPP => Service list Per page -> default set to 10
-export const DATE_RANGE_DAYS = 7; 
+export const searchInputLength: number = 20; //50
+export const shortInputLength: number = 20; //50
+export const longInputLength: number = 40;  //200
+
+export const categoryImageSize: number = 1;                                 //default set  to 2 mb
+export const providerImageSize: number = 1;                                 //default set  to 2 mb
+export const KYCImageSize : number = 5;                                     //default set  to 5 mb
+export const minYear = `${new Date().getFullYear() - 150}-01-01`; 
+export const maxYear = `${new Date().getFullYear() - 19}-01-01`;
+export const CCPP = 8;                                                    //CCPP => Customer Cards Per page -> default set to 16
+export const PCPP = 8;                                                   //PCPP => Provider Cards Per page  -> default set to 16
+export const PALPP = 10;                                                 //PALPP => Provider Application List Per Page  -> default set to 15
+export const SLPP = 7;                                                  //SLPP => Service list Per page -> default set to 10
+export const DATE_RANGE_DAYS = 7;
 export const TIME_SLOTS = {
   STARTHOURS: 8,
   ENDHOURS: 18,
   INTERVAL : 60,
-}
-// export const PROVIDER_RESPONSE_TIMEOUT_MS = BOOKING_REQUEST_TIMEOUT_MS 
-//   import.meta.env.MODE === "production" ? 5 * 60 * 1000 : 10 * 1000 ;     
+};
 
 
 /******************************************* Messages *******************************************************/
@@ -81,33 +82,32 @@ export const Messages = {
   EXPERIENCE_CERT_INVALID: "Experience certificate must be a valid JPG/PNG <= 5MB",
   GENDER_REQUIRED: "Select a gender",
   IMAGE_TYPE_INVALID: "Only JPEG, PNG, or JPG images are allowed.",
-}
+};
 
 export const validationMsg = {
   ISSUE_TYPE_REQUIRED : "Issue Type is required.",
   ISSUE_DESCRIPTION_REQUIRED: "Please describe the issue.",
   REASON_INVALID: "Please enter a valid Reason"
-}
+};
 
 export const placeHolder = {
   ISSUE_TYPE : "Select issue type", 
   ISSUE_DESCRIPTION: "Briefly describe the problem you're facing"
-
-}
+};
 /******************************************* Reset Password Constraints Sections *******************************************************/
 export const constraints = [
-    { label: "At least 10 characters", test: (pw: string) => pw.length >= 10 },
-    // { label: "At least one capital letter", test: (pw: string) => /[A-Z]/.test(pw) },
-    // { label: "At least one number", test: (pw: string) => /\d/.test(pw) },
-    // { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
+  { label: "At least 10 characters", test: (pw: string) => pw.length >= 10 },
+  // { label: "At least one capital letter", test: (pw: string) => /[A-Z]/.test(pw) },
+  // { label: "At least one number", test: (pw: string) => /\d/.test(pw) },
+  // { label: "At least one symbol", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
 ];
 /******************************Navigation Items for the User navigation bar ********************************/
 export const navItems = [
-  { name: 'Home', to: '/', icon: <Home size={18} />} ,
-  { name: 'Services', to: '/user/services', icon: <Briefcase size={18} /> },
-  { name: 'Providers', to: '/user/providers', icon: <Users size={18} />},
-  { name: 'Blog', to: '/user/blog', icon: <FileText size={18} /> },
-  { name : 'Account' , to: '/user/account/profile', icon: <User  size={18} />}
+  { name: "Home", to: "/", icon: <Home size={18} /> } ,
+  { name: "Services", to: "/user/services", icon: <Briefcase size={18} /> },
+  { name: "Providers", to: "/user/providers", icon: <Users size={18} /> },
+  { name: "Blog", to: "/user/blog", icon: <FileText size={18} /> },
+  { name : "Account" , to: "/user/account/profile", icon: <User  size={18} /> }
 ];
 /********************************************* Side-Bar Sections *******************************************************/
 export interface SideBarOption {
@@ -146,7 +146,7 @@ export const adminSideBarOptions: SideBarOption[] = [
 ];
 
 /*********************************************************************************************************************************************************/
-export const providers: Array<string> = ['/provider1.jpg', '/provider1.jpg', '/provider1.jpg'];
+export const providers: Array<string> = ["/provider1.jpg", "/provider1.jpg", "/provider1.jpg"];
 
 interface BlogPost {
   title: string;

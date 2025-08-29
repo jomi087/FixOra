@@ -5,8 +5,8 @@ import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../DTO's/GetProv
 import { IGetProvidersUseCase } from "../../Interface/useCases/Admin/IGetProvidersUseCase";
 
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode
-const { INTERNAL_ERROR} = Messages
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 export class GetProvidersUseCase implements IGetProvidersUseCase {
     constructor(
@@ -17,9 +17,9 @@ export class GetProvidersUseCase implements IGetProvidersUseCase {
     async execute(input: GetProvidersInputDTO ):Promise<GetProvidersOutputDTO> {
         
         try {
-            const { searchQuery, filter, currentPage, limit } = input
+            const { searchQuery, filter, currentPage, limit } = input;
 
-            const { data, total } = await this._providerRepository.findProvidersWithFilters({ searchQuery, filter }, currentPage, limit )
+            const { data, total } = await this._providerRepository.findProvidersWithFilters({ searchQuery, filter }, currentPage, limit );
             
             return { data ,total };
             

@@ -4,8 +4,8 @@ import { Messages } from "../../../shared/Messages";
 import { ActiveCategoryOutputDTO } from "../../DTO's/CategoryDTO";
 import { IActiveServiceUseCase } from "../../Interface/useCases/Client/IActiveServiceUseCase";
 
-const { INTERNAL_SERVER_ERROR} = HttpStatusCode
-const { INTERNAL_ERROR } = Messages
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 
 export class ActiveServiceUseCase implements IActiveServiceUseCase {
@@ -15,23 +15,23 @@ export class ActiveServiceUseCase implements IActiveServiceUseCase {
     
     async execute():Promise<ActiveCategoryOutputDTO[]> {
         try {
-            const categories = await this._categoryRepository.findActiveCategoriesWithActiveSubcategories()
+            const categories = await this._categoryRepository.findActiveCategoriesWithActiveSubcategories();
                         
-                const mappedData = categories.map((cat) => ({
-                    categoryId: cat.categoryId,
-                    name: cat.name,
-                    description: cat.description,
-                    image: cat.image,
-                    isActive: cat.isActive,
-                    subcategories: cat.subcategories.map((sub) => ({
-                        subCategoryId: sub.subCategoryId,
-                        name: sub.name,
-                        description: sub.description,
-                        image: sub.image,
-                        isActive: sub.isActive,
-                    })),
-                }));
-            return mappedData
+            const mappedData = categories.map((cat) => ({
+                categoryId: cat.categoryId,
+                name: cat.name,
+                description: cat.description,
+                image: cat.image,
+                isActive: cat.isActive,
+                subcategories: cat.subcategories.map((sub) => ({
+                    subCategoryId: sub.subCategoryId,
+                    name: sub.name,
+                    description: sub.description,
+                    image: sub.image,
+                    isActive: sub.isActive,
+                })),
+            }));
+            return mappedData;
 
         } catch (error:any) {
             if (error.status && error.message) {

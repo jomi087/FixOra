@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react";
 
 const PageLoader = () => {
   return (
@@ -10,7 +10,7 @@ const PageLoader = () => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PageLoader
+export default PageLoader;

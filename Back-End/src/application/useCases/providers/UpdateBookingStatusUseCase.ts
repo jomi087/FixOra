@@ -11,8 +11,8 @@ import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../..
 import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/IUpdateBookingStatusUseCase";
 
 
-const { INTERNAL_SERVER_ERROR,NOT_FOUND,CONFLICT} = HttpStatusCode
-const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED,PAYMENT_TIMEOUT} = Messages
+const { INTERNAL_SERVER_ERROR,NOT_FOUND,CONFLICT } = HttpStatusCode;
+const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED } = Messages;
 
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
     constructor(
@@ -52,23 +52,23 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
 
             const booking = await this._bookingRepository.findByBookingId(bookingId);
             if (!booking) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  }
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  };
             }
 
             if (booking.provider.response !== ProviderResponseStatus.PENDING) {
-                throw { status: CONFLICT, message: ALREADY_UPDATED }
+                throw { status: CONFLICT, message: ALREADY_UPDATED };
             }
 
-            let updatedBookingData: Booking | null
+            let updatedBookingData: Booking | null;
             
             if (action === ProviderResponseStatus.REJECTED) {
-                updatedBookingData = await this._bookingRepository.updateProviderResponseAndStatus(bookingId, BookingStatus.CANCELLED, action, reason)
+                updatedBookingData = await this._bookingRepository.updateProviderResponseAndStatus(bookingId, BookingStatus.CANCELLED, action, reason);
             } else {
-                updatedBookingData = await this._bookingRepository.updateProviderResponseAndPaymentStatus(bookingId, action,PaymentStatus.PENDING)
+                updatedBookingData = await this._bookingRepository.updateProviderResponseAndPaymentStatus(bookingId, action,PaymentStatus.PENDING);
             }
 
             if (!updatedBookingData) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  }
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND  };
             }
 
             this._notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
@@ -83,20 +83,20 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
             // }
 
             const jobKey = `providerResponse-${updatedBookingData.bookingId}`;
-            this._bookingSchedulerService.cancel(jobKey)
+            this._bookingSchedulerService.cancel(jobKey);
 
             let mappedData = (action !== ProviderResponseStatus.REJECTED) ? {
                 bookingId: updatedBookingData.bookingId,
                 userId: updatedBookingData.userId,
                 scheduledAt: updatedBookingData.scheduledAt,
                 status: updatedBookingData.status,
-            } : null
+            } : null;
 
             return mappedData;
 
         } catch (error :any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

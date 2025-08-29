@@ -5,10 +5,10 @@ import { Messages } from "../../shared/Messages";
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
 
-const { BAD_REQUEST} = HttpStatusCode
+const { BAD_REQUEST } = HttpStatusCode;
 const { SERVICE_REQUIRED, INVALID_SPECIALIZATION, SERVICE_CHARGE_RANGE,AT_LEAST_ONE_SUBCATEGORY_REQUIRED,
     DOB_REQUIRED,INVALID_DOB,AGE_RESTRICTED,INVALID_GENDER,INVALID_SUBCATEGORIES_JSON
-} = Messages
+} = Messages;
 
 function isLegal(birthDate: Date):boolean {
     const today = new Date();
@@ -20,7 +20,7 @@ function isLegal(birthDate: Date):boolean {
 
     if (!hasHadBirthdayThisYear) age--;
 
-    return (age >= 18)
+    return (age >= 18);
 }
 
 export function validateKYCRequest(req: Request, res: Response, next: NextFunction) {
@@ -29,7 +29,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
 
         //service
         if (!service?.trim()) {
-        throw { status: BAD_REQUEST, message: SERVICE_REQUIRED };
+            throw { status: BAD_REQUEST, message: SERVICE_REQUIRED };
         }
 
         //specialization
@@ -38,21 +38,21 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
             try {
                 parsedSpecialization = JSON.parse(specialization);
             } catch {
-                throw { status : BAD_REQUEST, message : INVALID_SUBCATEGORIES_JSON }
+                throw { status : BAD_REQUEST, message : INVALID_SUBCATEGORIES_JSON };
             }
         } else {
-        parsedSpecialization = specialization;
+            parsedSpecialization = specialization;
         }
         
         if (!Array.isArray(parsedSpecialization) || parsedSpecialization.length === 0) {
-        throw { status: BAD_REQUEST, message: AT_LEAST_ONE_SUBCATEGORY_REQUIRED };
+            throw { status: BAD_REQUEST, message: AT_LEAST_ONE_SUBCATEGORY_REQUIRED };
         }
         
         parsedSpecialization.forEach((sub) => {
             if (typeof sub !== "string") {
                 throw { status: BAD_REQUEST, message: INVALID_SPECIALIZATION };
             }   
-        })
+        });
         
         //ServiceCharge
         const chargeNum = Number(serviceCharge);
@@ -62,7 +62,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
 
         //D.O.B
         if (!dob?.trim()) {
-        throw { status: BAD_REQUEST, message: DOB_REQUIRED };
+            throw { status: BAD_REQUEST, message: DOB_REQUIRED };
         }
         
         const birthDate = new Date(dob);
@@ -77,7 +77,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
 
         //Gender
         if (!gender || !["Male", "Female", "Other"].includes(gender)) {
-        throw { status: BAD_REQUEST, message: INVALID_GENDER };
+            throw { status: BAD_REQUEST, message: INVALID_GENDER };
         }
         
         req.body.specialization = parsedSpecialization; 
@@ -89,15 +89,15 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
 }
 
 export const kycStatus = z.object({
-  action: z.enum(["Pending", "Approved", "Rejected"], {
-    message: Messages.INVALID_ACTION
-  }),
-  reason: z.string().optional()
+    action: z.enum(["Pending", "Approved", "Rejected"], {
+        message: Messages.INVALID_ACTION
+    }),
+    reason: z.string().optional()
 }).refine(
-  (data) => data.action !== "Rejected" || (data.reason && data.reason.trim().length > 0),
-  {
-    message: Messages.REASON_REQUIRED_ON_REJECTION,
-    path: ["reason"],
-  }
+    (data) => data.action !== "Rejected" || (data.reason && data.reason.trim().length > 0),
+    {
+        message: Messages.REASON_REQUIRED_ON_REJECTION,
+        path: ["reason"],
+    }
 );
 

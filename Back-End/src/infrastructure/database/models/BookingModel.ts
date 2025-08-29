@@ -35,8 +35,8 @@ const BookingSchema = new Schema<IBookingModel>({
         },
     },
     scheduledAt: {
-      type: Date,
-      required: true,
+        type: Date,
+        required: true,
     },
     issueTypeId: {
         type: String,
@@ -74,7 +74,7 @@ const BookingSchema = new Schema<IBookingModel>({
             type: Date,
         },
         transactionId: {
-          type : String,  
+            type : String,  
         },
         reason: {
             type: String
@@ -107,8 +107,8 @@ const BookingSchema = new Schema<IBookingModel>({
             default: false
         },
     },
-}, { timestamps: true })
+}, { timestamps: true });
 
-const BookingModel = model<IBookingModel>('Booking', BookingSchema);
+const BookingModel = model<IBookingModel>("Booking", BookingSchema);
 
-export default BookingModel
+export default BookingModel;

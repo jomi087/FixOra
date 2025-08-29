@@ -1,7 +1,7 @@
-import Profile from "@/components/client/profileSection/Profile"
-import Nav from "@/components/common/layout/Nav"
-import SideBar from "@/components/common/Others/SideBar"
-import { providerSideBarOptions } from "@/utils/constant"
+import Profile from "@/components/client/profileSection/Profile";
+import Nav from "@/components/common/layout/Nav";
+import SideBar from "@/components/common/Others/SideBar";
+import { providerSideBarOptions } from "@/utils/constant";
 
 const ProfilePage = () => {
   return (
@@ -12,7 +12,7 @@ const ProfilePage = () => {
         <Profile/>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage; 

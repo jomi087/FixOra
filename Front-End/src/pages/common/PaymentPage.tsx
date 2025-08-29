@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { BGImage_404 } from "@/utils/constant";
 import Lottie from "lottie-react";
-import PaymentFailed from '@/assets/animations/crossFailed.json'
-import PaymentSuccess from '@/assets/animations/CardSwipeSuccess.json'
-import loading from '@/assets/animations/loadingWrist.json'
+import PaymentFailed from "@/assets/animations/crossFailed.json";
+import PaymentSuccess from "@/assets/animations/CardSwipeSuccess.json";
+import loading from "@/assets/animations/loadingWrist.json";
 
 import { useEffect, useState } from "react";
 import socket from "@/services/soket";
@@ -39,7 +39,7 @@ const PaymentPage = () => {
       socket.off("payment:success", handlePaymentSuccess);
       socket.off("payment:failure", handlePaymentFailed);
     };
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <div

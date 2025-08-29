@@ -1,7 +1,7 @@
-import renderStars from "@/components/common/StarRating"
-import type { ActiveProvider} from "@/shared/Types/user"
-import { toPascalCase } from "@/utils/helper/utils"
-import { IoPersonCircleOutline } from "react-icons/io5"
+import renderStars from "@/components/common/StarRating";
+import type { ActiveProvider } from "@/shared/Types/user";
+import { toPascalCase } from "@/utils/helper/utils";
+import { IoPersonCircleOutline } from "react-icons/io5";
 import { GrContactInfo } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ interface ProvderCardProps {
 }
 
 const ProviderCard: React.FC<ProvderCardProps> = ({ datas }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="flex flex-wrap justify-center gap-6 px-4 py-6 max-w-7xl mx-auto">
       {datas.map((data) => (
@@ -23,46 +23,46 @@ const ProviderCard: React.FC<ProvderCardProps> = ({ datas }) => {
             <div className="flex justify-around  rounded-t-3xl">
               <div className=" inline-block group pl-2 pt-3">  
                 <GrContactInfo size={18} />
-                    <div className="absolute left-3 top-9 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out  min-w-[150px] rounded-md border border-gray-300 bg-foreground text-primary-foreground p-2 shadow-md z-50">
-                    <ul>
-                      {data.service.subcategories.map((sub) => (
-                        <li key={sub.subCategoryId} className="text-[12px]">{toPascalCase(sub.name)}</li>
-                      ))}
-                    </ul>
-                  </div>
+                <div className="absolute left-3 top-9 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out  min-w-[150px] rounded-md border border-gray-300 bg-foreground text-primary-foreground p-2 shadow-md z-50">
+                  <ul>
+                    {data.service.subcategories.map((sub) => (
+                      <li key={sub.subCategoryId} className="text-[12px]">{toPascalCase(sub.name)}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               <button
-                className={`text-xs md:text-sm font-semibold px-4 pt-2  `}
+                className={"text-xs md:text-sm font-semibold px-4 pt-2  "}
               >
                 {`${toPascalCase(data.service.name)}`}
               </button>
 
               <div className="pr-2 pt-3">
-                  <div
-                      title={data.isOnline ? "Online" : "Offline"}
-                      className="relative flex items-center justify-center"
-                  >
-                      { data.isOnline  && (
-                      <span className="absolute inline-flex h-5 w-5 rounded-full bg-green-400 opacity-75 animate-ping"/>
-                      )}
-                      <span
-                          className={`relative inline-block h-4 w-4 rounded-full border-2 border-white ${
-                          data.isOnline ? "bg-green-500" : "bg-gray-400"}`}
-                      />
-                  </div>
+                <div
+                  title={data.isOnline ? "Online" : "Offline"}
+                  className="relative flex items-center justify-center"
+                >
+                  { data.isOnline  && (
+                    <span className="absolute inline-flex h-5 w-5 rounded-full bg-green-400 opacity-75 animate-ping"/>
+                  )}
+                  <span
+                    className={`relative inline-block h-4 w-4 rounded-full border-2 border-white ${
+                      data.isOnline ? "bg-green-500" : "bg-gray-400"}`}
+                  />
+                </div>
               </div>
             </div>
 
             <div className="relative flex justify-center mt-4 max-h-44 overflow-hidden">
               {data.profileImage ? (
-                  <img
-                    src={data.profileImage as string}
-                    alt="Provider profile image"
-                    className="w-28 h-28 object-cover rounded-full"
-                  />
+                <img
+                  src={data.profileImage as string}
+                  alt="Provider profile image"
+                  className="w-28 h-28 object-cover rounded-full"
+                />
               ) : (
-                  <IoPersonCircleOutline size={128} className="text-userIcon-text" />
+                <IoPersonCircleOutline size={128} className="text-userIcon-text" />
               )}
             </div>
                       
@@ -104,7 +104,7 @@ const ProviderCard: React.FC<ProvderCardProps> = ({ datas }) => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default ProviderCard
+export default ProviderCard;

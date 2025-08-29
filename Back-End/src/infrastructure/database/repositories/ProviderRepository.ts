@@ -1,6 +1,4 @@
-import { Category } from "../../../domain/entities/CategoryEntity";
 import { Provider, ProviderWithDetails } from "../../../domain/entities/ProviderEntity";
-import { User } from "../../../domain/entities/UserEntity";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { RoleEnum } from "../../../shared/Enums/Roles";
 import ProviderModel from "../models/ProviderModel";
@@ -8,11 +6,11 @@ import ProviderModel from "../models/ProviderModel";
 
 export class ProviderRepository implements IProviderRepository{
     async create(data: Provider): Promise<void> {
-        await new ProviderModel(data).save()
+        await new ProviderModel(data).save();
     }
 
     async findByUserId(userId: string): Promise<Provider | null>{
-        return await ProviderModel.findOne({userId}).lean()
+        return await ProviderModel.findOne({ userId }).lean();
     }
     
 
@@ -20,7 +18,7 @@ export class ProviderRepository implements IProviderRepository{
         const { searchQuery, filter } = option;
         const skip = (currentPage - 1) * limit;
 
-        const matchConditions: any = {"userDetails.role" : RoleEnum.Provider};
+        const matchConditions: any = { "userDetails.role" : RoleEnum.Provider };
 
         // Filter by status
         if (filter === "blocked") matchConditions["userDetails.isBlocked"] = true;
@@ -127,20 +125,20 @@ export class ProviderRepository implements IProviderRepository{
                     ]
                 }
             }
-        ]
+        ];
 
         interface AggregatedFacetResult {
             data: ProviderWithDetails[];
             totalCount: { total: number }[];
         }
 
-        const result = await ProviderModel.aggregate<AggregatedFacetResult>(pipeline)
-        console.log("result look specializaton id",result[0].data)
+        const result = await ProviderModel.aggregate<AggregatedFacetResult>(pipeline);
+        console.log("result look specializaton id",result[0].data);
         
         return {
             data: result[0].data || [],
             total: result[0].totalCount[0]?.total || 0
-        }
+        };
     }
     
 }

@@ -11,13 +11,13 @@ interface FilterState {
 }
 
 const initialState: FilterState = {
-    selectedService: "",
-    nearByFilter: "",
-    availabilityFilter: "",
-    ratingFilter: "",
+  selectedService: "",
+  nearByFilter: "",
+  availabilityFilter: "",
+  ratingFilter: "",
 
-    applyFilter: false,
-    reset: false,
+  applyFilter: false,
+  reset: false,
 };
 
 const filterSlice = createSlice({
@@ -42,10 +42,10 @@ const filterSlice = createSlice({
     },
     
     setReset(_, action: PayloadAction<boolean>) {
-        return {
-            ...initialState,
-            reset: action.payload,
-        }; 
+      return {
+        ...initialState,
+        reset: action.payload,
+      }; 
     },
   },
 });

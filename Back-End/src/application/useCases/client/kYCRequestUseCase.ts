@@ -6,8 +6,8 @@ import { Messages } from "../../../shared/Messages";
 import { KYCInputDTO } from "../../DTO's/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/Client/IKYCRequestUseCase";
 
-const { BAD_REQUEST,INTERNAL_SERVER_ERROR} = HttpStatusCode
-const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED, INTERNAL_ERROR } = Messages
+const { BAD_REQUEST,INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED, INTERNAL_ERROR } = Messages;
 
 export class KYCRequestUseCase implements IKYCRequestUseCase {
     constructor(
@@ -16,7 +16,7 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
     
     async execute(input: KYCInputDTO): Promise<"submitted" | "resubmitted"> {
         try {
-            const existing = await this._kycRequestRepository.findByUserId(input.userId)
+            const existing = await this._kycRequestRepository.findByUserId(input.userId);
             
             const newRequest: KYCRequest = {
                 userId: input.userId,
@@ -40,17 +40,17 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
                 }
                 if (existing.status === KYCStatus.Rejected) {
                     await this._kycRequestRepository.updateByUserId(input.userId, newRequest) as KYCRequest;
-                    return "resubmitted"
+                    return "resubmitted";
                 }
             }
             
-            await this._kycRequestRepository.create(newRequest)
+            await this._kycRequestRepository.create(newRequest);
             
-            return "submitted"
+            return "submitted";
             
         } catch (error :any) {
             if (error.status && error.message) {
-               throw error;
+                throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
