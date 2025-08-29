@@ -1,5 +1,5 @@
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import { dateTime, splitDateTime } from "@/utils/helper/date&time";
+import { dateTime, splitDateTime } from "@/utils/helper/date&Time";
 
 interface TimeSlotSelectorProps {
   timeSlots: {

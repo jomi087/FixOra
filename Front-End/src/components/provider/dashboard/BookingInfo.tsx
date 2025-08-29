@@ -1,5 +1,5 @@
 import { DATE_RANGE_DAYS, TIME_SLOTS } from "@/utils/constant";
-import { generateDateList, generateTimeSlots } from "@/utils/helper/date&time";
+import { generateDateList, generateTimeSlots } from "@/utils/helper/date&Time";
 import React, { useEffect } from "react";
 
 const dates = generateDateList(DATE_RANGE_DAYS);
