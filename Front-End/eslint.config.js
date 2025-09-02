@@ -37,7 +37,6 @@ export default [
       quotes: ["error", "double"],
       indent: ["error", 2],
       "object-curly-spacing": ["error", "always"],
-
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },

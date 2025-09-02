@@ -81,7 +81,7 @@ class AuthService {
     return axiosInstance.post("/api/user/provider-kyc", data, this.getMultiPartConfig());
   }
 
-  providerBookingsInfoApi(id: string) {
+  providerInfoApi(id: string) {
     return axiosInstance.get(`/api/user/provider/bookings/${id}`);
   }
 
@@ -118,9 +118,10 @@ class AuthService {
     });
   }
 
-  BookingInfoApi() {
-    return axiosInstance.get("/api/provider/bookings");
+  providerBookingsInfoApi() {
+    return axiosInstance.get("/api/provider/confirm-bookings");
   }
+
 
   /*********************************************************************************************************************** */
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {

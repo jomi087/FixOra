@@ -24,7 +24,7 @@ interface BookingDialogProps {
 
 const BookingDialog:React.FC<BookingDialogProps > = ({ isDialogOpen,setIsDialogOpen,selectedServiceId,setSelectedServiceId ,description,setDescription,submitBooking }) => {
     
-  const { subCategories } = useAppSelector((state) => state.providerBooking);
+  const { subCategories } = useAppSelector((state) => state.providerInfo);
   const [error, setError] = useState({
     serviceError: "",
     descriptionError :""

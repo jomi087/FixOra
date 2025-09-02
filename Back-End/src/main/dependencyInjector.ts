@@ -32,7 +32,7 @@ const googleOAuthService = new GoogleOAuthService();
 const imageUploaderService = new ImageUploaderService();
 const notificationService = new NotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
-const paymentService = new PaymentService(bookingRepository);
+const paymentService = new PaymentService();
 
 /******************************************************************************************************************************************************/
 import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware";
@@ -86,17 +86,17 @@ const getActiveProvidersUseCase = new GetActiveProvidersUseCase(userRepository);
 import { KYCRequestUseCase } from "../application/useCases/client/kYCRequestUseCase";
 const kycRequestUseCase = new KYCRequestUseCase(kycRequestRepository);
 
-import { ProviderBookingsInfoUseCase } from "../application/useCases/client/ProviderBookingsInfoUseCase";
-const providerBookingsInfoUseCase = new ProviderBookingsInfoUseCase(userRepository);
+import { ProviderInfoUseCase } from "../application/useCases/client/ProviderInfoUseCase";
+const providerInfoUseCase = new ProviderInfoUseCase(userRepository);
 
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
 const bookingUseCase = new BookingUseCase(bookingRepository,notificationService,bookingSchedulerService,userRepository);
 
 import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase";
-const createPaymentUseCase = new CreatePaymentUseCase(paymentService);
+const createPaymentUseCase = new CreatePaymentUseCase(paymentService,bookingRepository);
 
 import { VerifyPaymentUseCase } from "../application/useCases/client/VerifyPaymentUseCase";
-const verifyPaymentUseCase = new VerifyPaymentUseCase(paymentService,notificationService);
+const verifyPaymentUseCase = new VerifyPaymentUseCase(paymentService,notificationService,bookingRepository);
 
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository);
@@ -109,7 +109,8 @@ const verifyPasswordUseCase = new VerifyPasswordUseCase(userRepository, hashServ
 import { UpdateBookingStatusUseCase } from "../application/useCases/providers/UpdateBookingStatusUseCase";
 const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository,notificationService,bookingSchedulerService);
 
-
+import { GetConfirmBookingsUseCase } from "../application/useCases/providers/GetConfirmBookingsUseCase";
+const getConfirmBookingsUseCase = new GetConfirmBookingsUseCase(bookingRepository);
 /******************************************************************************************************************************************************
                                                         Admin Specific
 ******************************************************************************************************************************************************/
@@ -147,8 +148,8 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 
 const publicController = new PublicController(loggerService, getLandingDataUseCase);
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase); 
-const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerBookingsInfoUseCase,bookingUseCase,createPaymentUseCase,verifyPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase);
-const providerController = new ProviderController(loggerService, updateBookingStatusUseCase);
+const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerInfoUseCase,bookingUseCase,createPaymentUseCase,verifyPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase);
+const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase);
 const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 
 export {

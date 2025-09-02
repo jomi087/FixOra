@@ -52,7 +52,7 @@ export interface IUserRepository {
         total: number
     }>
 
-    findProviderBookingsById(providerId: string , coordinates: { latitude: number;longitude: number }): Promise<{
+    findProviderInfoById(providerId: string , coordinates: { latitude: number;longitude: number }): Promise<{
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">

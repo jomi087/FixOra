@@ -1,5 +1,5 @@
 import { Booking } from "../../../domain/entities/BookingEntity";
-import { Subcategory } from "../../../domain/entities/CategoryEntity";
+import { Category, Subcategory } from "../../../domain/entities/CategoryEntity";
 import { User } from "../../../domain/entities/UserEntity";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
@@ -18,14 +18,14 @@ export class BookingRepository implements IBookingRepository {
         return await BookingModel.findOne({ bookingId }).lean();
     }
 
-    async findExistingBooking(providerId: string, scheduledAt:Date ): Promise<Booking|null>{
+    async findExistingBooking(providerId: string, scheduledAt: Date): Promise<Booking | null> {
         return await BookingModel.findOne({
             providerId,
-            scheduledAt, 
+            scheduledAt,
             status: {
-                $nin: [ProviderResponseStatus.REJECTED] 
+                $nin: [ProviderResponseStatus.REJECTED]
             }
-        }); 
+        });
     }
 
     async updateProviderResponseAndStatus(
@@ -34,7 +34,7 @@ export class BookingRepository implements IBookingRepository {
         response: ProviderResponseStatus,
         reason?: string,
     ): Promise<Booking | null> {
-        
+
         const booking = await BookingModel.findOneAndUpdate(
             { bookingId },
             { $set: { "provider.response": response, "provider.reason": reason, status } },
@@ -43,34 +43,19 @@ export class BookingRepository implements IBookingRepository {
         return booking;
     }
 
-    async updateBooking(bookingId: string, updatedBooking: Booking): Promise<Booking|null> {
+    async updateBooking(bookingId: string, updatedBooking: Booking): Promise<Booking | null> {
         return BookingModel.findOneAndUpdate(
-            { bookingId },     
-            { $set: updatedBooking },   
-            { new: true }       
+            { bookingId },
+            { $set: updatedBooking },
+            { new: true }
         ).lean();
     }
 
-    // async updatePaymentResponseAndStatus(
-    //     bookingId: string,
-    //     status: BookingStatus,
-    //     paymentStatus : PaymentStatus,
-    //     reason?: string,
-    // ): Promise<Booking | null> {
-        
-    //     const booking = await BookingModel.findOneAndUpdate(
-    //         { bookingId },
-    //         { $set: { "paymentInfo.status": paymentStatus, "paymentInfo.reason": reason, status } },
-    //         { new: true }
-    //     ).lean<Booking>()
-    //     return booking
-    // }
-
-    async updateProviderResponseAndPaymentStatus (
+    async updateProviderResponseAndPaymentStatus(
         bookingId: string,
         response: ProviderResponseStatus,
         paymentStatus: PaymentStatus
-    ) : Promise<Booking | null> {
+    ): Promise<Booking | null> {
         const booking = await BookingModel.findOneAndUpdate(
             { bookingId },
             { $set: { "provider.response": response, "paymentInfo.status": paymentStatus } },
@@ -83,7 +68,7 @@ export class BookingRepository implements IBookingRepository {
         userInfo: Pick<User, "userId" | "fname" | "lname">
         providerInfo: Pick<User, "userId" | "fname" | "lname">
         bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "provider">
-        subCategoryInfo : Pick<Subcategory, "subCategoryId" | "name">
+        subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
     }> {
         const pipeline: any[] = [
             { $match: { bookingId: bookingId } },
@@ -125,13 +110,13 @@ export class BookingRepository implements IBookingRepository {
                         userId: "$providerDetails.userId",
                         fname: "$providerDetails.fname",
                         lname: "$providerDetails.lname",
-                        response : "$provider.response",
+                        response: "$provider.response",
                     },
                     bookingInfo: {
                         bookingId: "$bookingId",
                         scheduledAt: "$scheduledAt",
                         issue: "$issue",
-                        status : "$status"
+                        status: "$status"
                     },
                     subCategoryInfo: {
                         $arrayElemAt: [
@@ -141,7 +126,7 @@ export class BookingRepository implements IBookingRepository {
                                     as: "sub",
                                     cond: { $eq: ["$$sub.subCategoryId", "$issueTypeId"] }
                                 }
-                            },0
+                            }, 0
                         ]
                     }
 
@@ -160,10 +145,109 @@ export class BookingRepository implements IBookingRepository {
         return result[0];
     }
 
-    async findPendingOlderThan(minutes: number): Promise<Booking[]>{
-        const cutoff = new Date(Date.now() - minutes * 60 * 1000);
-        return await BookingModel.find({ status: "pending",createdAt: { $lt: cutoff } });
+    async findProviderConfirmBookingsById(ProviderUserId: string): Promise<Booking[]> {
+        const pipeline: any[] = [
+            {
+                $match: {
+                    providerUserId: ProviderUserId,
+                    status: BookingStatus.CONFIRMED,
+                    scheduledAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }
+                }
+            },
+        ];
+
+        const result = await BookingModel.aggregate<Booking>(pipeline);
+        return result;
     }
-    
-    
+
+    async ConfirmBookingsDetailsById(bookingId: string): Promise<{
+        user: Pick<User, "userId" | "fname" | "lname" | "location">,
+        category: Pick<Category, "categoryId" | "name">,
+        subCategory: Pick<Subcategory, "subCategoryId" | "name">,
+        booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+    }|null> {
+        const pipeline: any[] = [
+            {
+                $match: {
+                    bookingId: bookingId,
+                    status: BookingStatus.CONFIRMED,
+                    scheduledAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "userId",
+                    as: "userDetails"
+                }
+            },
+            { $unwind: "$userDetails" },
+            {
+                $lookup: {
+                    from: "categories",
+                    let: { issueTypeId: "$issueTypeId" },
+                    pipeline: [
+                        { $unwind: "$subcategories" },
+                        { $match: { $expr: { $eq: ["$subcategories.subCategoryId", "$$issueTypeId"] } } },
+                    ],
+                    as: "serviceDetails"
+                }
+            },
+            { $unwind: "$serviceDetails" },
+            {
+                $project: {
+                    _id: 0,
+                    user: {
+                        userId: "$userDetails.userId",
+                        fname: "$userDetails.fname",
+                        lname: "$userDetails.lname",
+                        location: {
+                            houseinfo: "$userDetails.location.houseinfo",
+                            street: "$userDetails.location.street",
+                            district: "$userDetails.location.district",
+                            city: "$userDetails.location.city",
+                            locality: "$userDetails.location.locality",
+                            state: "$userDetails.location.state",
+                            postalCode: "$userDetails.location.postalCode",
+                            coordinates: "$userDetails.location.coordinates"
+                        },
+                    },
+                    category: {
+                        categoryId: "$serviceDetails.categoryId",
+                        name: "$serviceDetails.name",
+                    },
+                    subCategory: {
+                        subCategoryId: "$serviceDetails.subcategories.subCategoryId",
+                        name: "$serviceDetails.subcategories.name",
+                    },
+                    booking: {
+                        bookingId: "$bookingId",
+                        scheduledAt: "$scheduledAt",
+                        issue: "$issue",
+                        status: "$status",
+                        pricing: {
+                            baseCost: "$pricing.baseCost",
+                            distanceFee: "$pricing.distanceFee",
+                        },
+                        acknowledgment: {
+                            isWorkCompletedByProvider: "$acknowledgment.isWorkCompletedByProvider",
+                            imageUrl: "$acknowledgment.imageUrl",
+                            isWorkConfirmedByUser: "$acknowledgment.isWorkConfirmedByUser",
+                        }
+                    }
+                }
+            }
+        ];
+
+        interface AggregatedResult {
+            user: Pick<User, "userId" | "fname" | "lname" | "location">,
+            category: Pick<Category, "categoryId" | "name">,
+            subCategory: Pick<Subcategory, "subCategoryId" | "name">,
+            booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+        }
+
+        const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
+        return result ?? null ;
+    }
 }

@@ -8,7 +8,7 @@ import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../shared/Messages";
 import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/Client/IGetActiveProvidersUseCase";
 import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase";
-import { IProviderBookingsInfoUseCase } from "../../application/Interface/useCases/Client/IProviderBookingsInfoUseCase";
+import { IProviderInfoUseCase } from "../../application/Interface/useCases/Client/IProviderInfoUseCase";
 import { IBookingUseCase } from "../../application/Interface/useCases/Client/IBookingUseCase";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { ICreatePaymentUseCase } from "../../application/Interface/useCases/Client/ICreatePaymentUseCase";
@@ -28,7 +28,7 @@ export class UserController {
         private _getActiveProvidersUseCase : IGetActiveProvidersUseCase,
         private _kycRequestUseCase: IKYCRequestUseCase,
         private _imageUploaderService: IImageUploaderService, 
-        private _providerBookingsInfoUseCase: IProviderBookingsInfoUseCase,
+        private _providerInfoUseCase: IProviderInfoUseCase,
         private _bookingUseCase: IBookingUseCase,
         private _createPaymentUseCase: ICreatePaymentUseCase,
         private _verifyPaymentUseCase: IVerifyPaymentUseCase,
@@ -157,7 +157,7 @@ export class UserController {
         }
     }
 
-    async providerBookings(req: Request, res: Response, next: NextFunction): Promise<void>{
+    async providerInfo (req: Request, res: Response, next: NextFunction): Promise<void>{
         try {
             const { id } = req.params;
 
@@ -165,14 +165,14 @@ export class UserController {
             if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
             if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
             
-            const result = await this._providerBookingsInfoUseCase.execute({
+            const result = await this._providerInfoUseCase.execute({
                 id,
                 coordinates: user.location.coordinates
             });
 
             res.status(OK).json({
                 success: true,
-                providerBookingsInfoData : result
+                providerInfoData : result
             });
 
         } catch (error : any) {

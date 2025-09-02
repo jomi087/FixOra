@@ -1,34 +1,34 @@
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { ProviderBookingsInfo } from "@/shared/Types/user";
+import type { ProviderInfo } from "@/shared/Types/user";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-interface ProviderBookingState {
-    data?: ProviderBookingsInfo;
-    subCategories: {
-        subCategoryId: string;
-        name: string;
-    }[]
-    isLoading: boolean;
-    error: string | null;
+interface ProviderInfoState {
+  data?: ProviderInfo;
+  subCategories: {
+      subCategoryId: string;
+      name: string;
+  }[]
+  isLoading: boolean;
+  error: string | null;
 }
 
-const initialState:ProviderBookingState = {
+const initialState:ProviderInfoState = {
   data: undefined,
   subCategories: [],
   isLoading: false,
   error : null,
 };
 
-export const fetchProviderBookingInfo  = createAsyncThunk<ProviderBookingsInfo,string>(
-  "providerBooking/fetchData",
+export const fetchProviderInfo  = createAsyncThunk<ProviderInfo,string>(
+  "providerInfo/fetchData",
   async (providerId: string, { rejectWithValue }) => {
     try {
-      const res = await AuthService.providerBookingsInfoApi(providerId);
+      const res = await AuthService.providerInfoApi(providerId);
       if (res.status === HttpStatusCode.OK) {
-        return res.data.providerBookingsInfoData;
+        return res.data.providerInfoData;
       }
     } catch (error:any) {
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
@@ -38,8 +38,8 @@ export const fetchProviderBookingInfo  = createAsyncThunk<ProviderBookingsInfo,s
   }
 );
 
-const providerBookingSlice = createSlice({
-  name: "providerBooking",
+const providerInfoSlice  = createSlice({
+  name: "providerInfo",
   initialState,
   reducers: {
     addBooking: (state, action) => {
@@ -60,7 +60,7 @@ const providerBookingSlice = createSlice({
         state.data.bookings = state.data.bookings.filter((b)=>b.bookingId != action.payload);
       }
     },
-    clearProviderBooking: (state) => {
+    clearProviderInfo: (state) => {
       state.data = undefined;
       state.subCategories = [];
       state.isLoading = false;
@@ -68,22 +68,21 @@ const providerBookingSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProviderBookingInfo .pending, (state) => {
+      .addCase(fetchProviderInfo.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchProviderBookingInfo .fulfilled, (state, action) => {
+      .addCase(fetchProviderInfo.fulfilled, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
         state.subCategories = action.payload.service.subcategories;
-        state.isLoading = false;
       })
-      .addCase(fetchProviderBookingInfo.rejected, (state, action) => {
+      .addCase(fetchProviderInfo.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
   }
 });
 
-export const { addBooking,updateBookingStatus,removeBooking, clearProviderBooking } = providerBookingSlice.actions;
-export default providerBookingSlice.reducer;
+export const { addBooking,updateBookingStatus,removeBooking, clearProviderInfo } = providerInfoSlice .actions;
+export default providerInfoSlice .reducer;

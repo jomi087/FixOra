@@ -7,7 +7,7 @@ import { RoleEnum } from "../../shared/Enums/Roles";
 const router = express.Router();
 
 router.patch("/booking/:bookingId/status", validateRequest(bookingStatusSchema), AuthMiddleware([RoleEnum.Provider]), providerController.respondToBookingRequest.bind(providerController));
-router.get("/bookings", AuthMiddleware([RoleEnum.Provider]), providerController.bookings.bind(providerController));
+router.get("/confirm-bookings", AuthMiddleware([RoleEnum.Provider]), providerController.confirmBookings.bind(providerController));
 export default router;
 
 

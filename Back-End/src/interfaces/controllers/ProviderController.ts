@@ -3,13 +3,19 @@ import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
 import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCases/Provider/IUpdateBookingStatusUseCase";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
+import { IGetConfirmBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetConfirmBookingsUseCase";
+import { Messages } from "../../shared/Messages";
 
-const { OK } = HttpStatusCode;
+const { OK,UNAUTHORIZED, } = HttpStatusCode;
+const { UNAUTHORIZED_MSG } = Messages;
+
+
 
 export class ProviderController {
     constructor(
         private _loggerService: ILoggerService,
         private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
+        private _getConfirmBookingsUseCase: IGetConfirmBookingsUseCase,
     ) { }
 
     async respondToBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -34,16 +40,18 @@ export class ProviderController {
         }
     }
 
-    async bookings(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async confirmBookings (req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log("hi");
-            // const userId = req.user?.userId
-            // console.log("aaaaaaaaaaaaaaauserId",userId);
-            // throw { status: 404 , message : "blabla bla" }
-            // await this.getBookingsUseCase.execute()
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+
+            const providerUserId = req.user.userId;
+            const data = await this._getConfirmBookingsUseCase.execute(providerUserId);
 
             res.status(OK).json({
                 success: true,
+                providerBookingsInfoData : data
             });
 
         } catch (error: any) {

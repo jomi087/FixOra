@@ -11,8 +11,6 @@ export interface Booking {
         response: ProviderResponseStatus //pending/Accept/reject (default pending)
         reason?: string;
     },
-    // fullDate: string;
-    // time: string;
     scheduledAt: Date;
     issueTypeId: string;
     issue: string;
@@ -35,15 +33,16 @@ export interface Booking {
         description: string;
         replaceParts?: {
             name: string;
-            cost: number; //
+            cost: number;
         }[]
     }
 
     acknowledgment?: {
         isWorkCompletedByProvider: boolean;
-        imageUrl: string;
+        imageUrl?: string;
         isWorkConfirmedByUser: boolean;
     }
     createdAt?: Date;
     updatedAt?: Date;
+
 }

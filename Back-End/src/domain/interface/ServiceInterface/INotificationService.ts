@@ -32,16 +32,29 @@ export interface PaymentFailureNotification {
     bookingId: string
     reason: string
     status : BookingStatus //is it required
-
 }
+
+export interface ConfirmBookingNotification {
+    bookingId: string;
+    scheduledAt: Date;
+    status: BookingStatus;
+    acknowledgment: {
+        isWorkCompletedByProvider: boolean;
+        isWorkConfirmedByUser: boolean;
+    } 
+}
+
 
 
 export interface INotificationService {
     notifyBookingRequestToProvider(providerUserId: string , payload : ProviderBookingNotification): void
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
+    
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
     
     notifyPaymentSuccessToUser(userId: string, payload: PaymentSuccessNotification): void 
     notifyPaymentFailureToUser(userId: string, payload: PaymentFailureNotification): void 
+
+    notifyBookingConfirmation(providerUserId: string, payload : ConfirmBookingNotification):void
 
 }   

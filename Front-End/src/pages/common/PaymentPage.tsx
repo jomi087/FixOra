@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import socket from "@/services/soket";
 import { useAppDispatch } from "@/store/hooks";
 import type { PaymentFailureNotification, PaymentSuccessNotification } from "@/shared/Types/booking";
-import { removeBooking, updateBookingStatus } from "@/store/user/providerBookingSlice";
+import { removeBooking, updateBookingStatus } from "@/store/user/providerInfoSlice";
 
 type PaymentState = "loading" | "success" | "failure";
 

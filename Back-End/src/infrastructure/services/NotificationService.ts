@@ -1,5 +1,5 @@
 import {
-    AutoRejectNotification, INotificationService, PaymentFailureNotification,
+    AutoRejectNotification, ConfirmBookingNotification, INotificationService, PaymentFailureNotification,
     PaymentSuccessNotification, ProviderBookingNotification, UserResponsNotificaton
 } from "../../domain/interface/ServiceInterface/INotificationService";
 import { getIO } from "../socket/config";
@@ -26,4 +26,7 @@ export class NotificationService implements INotificationService {
         getIO().to(userId).emit("payment:failure", payload);
     }
 
+    notifyBookingConfirmation(providerUserId: string, payload: ConfirmBookingNotification): void {
+        getIO().to(providerUserId).emit("booking:confirmed", payload);
+    }
 }

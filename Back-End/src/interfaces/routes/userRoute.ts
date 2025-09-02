@@ -28,7 +28,7 @@ router.post(
     validateKYCRequest,
     (req, res, next) => userController.kycApplication(req, res, next)
 );
-router.get("/provider/bookings/:id",AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.providerBookings(req, res, next) );
+router.get("/provider/bookings/:id",AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.providerInfo(req, res, next) );
 router.post("/provider/booking",validateRequest(bookingRequestSchema),AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.createBooking(req, res, next) );
 router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]),(req,res,next)=>userController.initiatePayment(req, res, next));
 
