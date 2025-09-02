@@ -24,7 +24,10 @@ const BookingInfo: React.FC = () => {
     handlePayment,isSubmitting
   } = useBookingRequest();
 
+  console.log(data, "data");
+    
   return (
+
     <>
       { isWaiting &&
                 <div className="fixed inset-0 bg-black/60 z-[9999] flex flex-col items-center justify-center">
@@ -35,7 +38,7 @@ const BookingInfo: React.FC = () => {
                   ) : (
                     <>
                       <Lottie animationData={LodingAnimation} loop={true} className="w-40 h-40" />
-                      <p className="m-4 text-primary text-lg font-mono">Waiting for provider response...</p>
+                      <p className=" m-4 text-primary text-lg font-mono">Waiting for provider response...</p>
                     </>       
                   )}
                 </div>

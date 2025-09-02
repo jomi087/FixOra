@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import { addBooking, removeBooking } from "@/store/user/providerBookingSlice";
+import { addBooking, removeBooking } from "@/store/user/providerInfoSlice";
 import { useEffect, useState } from "react";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import type { BookingResponsePayload } from "@/shared/Types/booking";
@@ -34,11 +34,9 @@ export const useBookingRequest = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [showModePayment, setShowModePayment] = useState(false);
   const [bookingId, setBookingId] = useState("");
-  
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-  const { data } = useAppSelector((state) => state.providerBooking);
+  const { data } = useAppSelector((state) => state.providerInfo);
   const dispatch = useAppDispatch();
 
   const handleDateChange = (date: string) => {
@@ -70,7 +68,7 @@ export const useBookingRequest = () => {
 
     try {
       const res = await AuthService.BookingApplicationApi(payload);
-      console.log(res);
+      //console.log(res);
       if (res.status === HttpStatusCode.OK) {
         if ( res.data.booking.status == BookingStatus.PENDING ){
           dispatch(addBooking(res.data.booking));

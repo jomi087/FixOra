@@ -1,23 +1,23 @@
 import { Link, useParams } from "react-router-dom";
 import Nav from "@/components/common/layout/Nav";
-import { useEffect  } from "react"; 
+import { useEffect } from "react";
 import BookingProvidersInfo from "@/components/client/providersSection/BookingProvidersInfo";
 import PageLoader from "@/components/common/Others/PageLoader";
 import BookingInfo from "../../components/client/providersSection/BookingInfo";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchProviderBookingInfo } from "@/store/user/providerBookingSlice";
+import { fetchProviderInfo } from "@/store/user/providerInfoSlice";
 
-const ProviderBookingPage:React.FC = () => {
+const ProviderBookingPage: React.FC = () => {
   const { providerId } = useParams<{ providerId: string }>();
   const dispatch = useAppDispatch();
-    
-  const { data,isLoading } = useAppSelector((state)=>state.providerBooking);
+
+  const { data, isLoading } = useAppSelector((state) => state.providerInfo);
 
   useEffect(() => {
     if (providerId) {
-      dispatch(fetchProviderBookingInfo(providerId));
+      dispatch(fetchProviderInfo(providerId));
     };
-  }, [dispatch,providerId]); 
+  }, [dispatch, providerId]);
 
   return (
     <div>
@@ -42,12 +42,12 @@ const ProviderBookingPage:React.FC = () => {
           </nav>
           {data && data.service.subcategories.length > 0 ? (
             <>
-              <BookingProvidersInfo/>
+              <BookingProvidersInfo />
               <BookingInfo />
             </>
           ) : (
             <div className="flex justify-center h-[78vh] items-center text-sm text-muted-foreground ">
-                            No Data found.
+              No Data found.
             </div>
           )}
 

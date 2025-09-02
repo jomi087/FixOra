@@ -50,11 +50,11 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
           } else if (booking?.status === BookingStatus.PENDING) {
             slotClass += "bg-orange-400 cursor-not-allowed";
           } else if (isTimePassed) {
-            slotClass += "opacity-50 cursor-not-allowed";
+            slotClass += "opacity-50 cursor-not-allowed ";
           } else {
             slotClass += selectedTime === slot.value? "border-primary text-primary": "text-primary ";
           }
-          
+
           return (
             <button
               key={idx}

@@ -398,7 +398,7 @@ export class UserRepository implements IUserRepository {
         };
     }
 
-    async findProviderBookingsById(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{
+    async findProviderInfoById(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
@@ -446,13 +446,21 @@ export class UserRepository implements IUserRepository {
             {
                 $lookup: {
                     from: "bookings",
-                    localField: "providerDetails.providerId",
-                    foreignField: "provider.id",
+                    let: { providerId: "$providerDetails.providerId" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ["$provider.id", "$$providerId"] },
+                                status: { $in: ["Confirmed", "Pending"] },
+                                //scheduledAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) },
+                                scheduledAt: { $gte: new Date(new Date()) }
+                            }
+                        },
+                        { $project: { bookingId: 1, scheduledAt: 1, status: 1, _id: 0 } }
+                    ],
                     as: "bookingDetails"
                 }
             },
-            // { $match: { "bookingDetails.scheduledAt": gtreaterthan ot equal to currentdate } },
-
             {
                 $addFields: {
                     distanceFee: {
@@ -515,23 +523,7 @@ export class UserRepository implements IUserRepository {
                             }
                         }
                     },
-                    booking: {
-                        $map: {
-                            input: {
-                                $filter: {
-                                    input: "$bookingDetails",
-                                    as: "booking",
-                                    cond: { $in: ["$$booking.status", ["Confirmed", "Pending"]] }
-                                }
-                            },
-                            as: "booking",
-                            in: {
-                                bookingId: "$$booking.bookingId",
-                                scheduledAt: "$$booking.scheduledAt",
-                                status: "$$booking.status"
-                            }
-                        }
-                    },
+                    booking: "$bookingDetails",
                     distanceFee: 1,
                 }
             }
@@ -547,9 +539,9 @@ export class UserRepository implements IUserRepository {
 
         const result = await UserModel.aggregate<AggregatedResult>(pipeline);
         //console.log("come on",result[0])
-
         return result[0];
     }
+    
 
     async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; } | null> {
         const matchConditions: any = {
@@ -610,7 +602,6 @@ export class UserRepository implements IUserRepository {
                     distanceFee: 1
                 }
             }
-
         ];
         interface AggregatedResult {
             serviceCharge: number;

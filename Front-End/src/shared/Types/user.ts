@@ -66,7 +66,7 @@ export type ActiveProvider = {
 }
 
 
-export type ProviderBookingsInfo = {
+export type ProviderInfo = {
   providerId : string
   user: {
       userId: string,
@@ -92,7 +92,6 @@ export type ProviderBookingsInfo = {
   isOnline: boolean;
   distanceFee: number;
 }
-
 
 
 //Admin 

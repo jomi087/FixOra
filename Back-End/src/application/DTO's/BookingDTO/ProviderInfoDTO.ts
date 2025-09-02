@@ -1,7 +1,7 @@
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { Gender } from "../../../shared/Enums/Gender";
 
-export interface ProviderBookingsInfoDTO {
+export interface ProviderInfoDTO {
     providerId: string;
     user: {
         userId: string,
@@ -28,7 +28,7 @@ export interface ProviderBookingsInfoDTO {
     distanceFee: number;
 }
 
-export interface ProviderBookingsInfoInputDTO{
+export interface ProviderInfoInputDTO{
     id: string;
     coordinates: {
         latitude: number;
@@ -36,4 +36,4 @@ export interface ProviderBookingsInfoInputDTO{
     }
 }
 
-export interface ProviderBookingsInfoOutputDTO extends ProviderBookingsInfoDTO {}
+export interface ProviderInfoOutputDTO extends ProviderInfoDTO {}

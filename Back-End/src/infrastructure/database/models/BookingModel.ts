@@ -87,24 +87,26 @@ const BookingSchema = new Schema<IBookingModel>({
         description: {
             type: String
         },
-        replaceParts: [
-            {
-                name: { type: String },
-                cost: { type: Number },
-            },
-        ],
+        replaceParts: {
+            type: [
+                {
+                    name: String,
+                    cost: Number,
+                },
+            ],
+            default: undefined   
+        }
+
     },
     acknowledgment: {
         isWorkCompletedByProvider: {
             type: Boolean,
-            default: false
         },
         imageUrl: {
             type: String
         },
         isWorkConfirmedByUser: {
             type: Boolean,
-            default: false
         },
     },
 }, { timestamps: true });

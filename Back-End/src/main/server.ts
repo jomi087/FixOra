@@ -66,6 +66,14 @@ const server = http.createServer(app); // this was implimented so that i can get
 initializeSocket(server,logger);
 logger.info("Socket.IO initialized");
 
+process.on("unhandledRejection", (reason) => {
+    logger.error("Unhandled Rejection", reason);
+    process.exit(1);
+});
+process.on("uncaughtException", (err) => {
+    logger.error("Uncaught Exception", err);
+    process.exit(1);
+});
 
 server.listen(port, () => {
     logger.info(`Server is started running in http://localhost:${port}`);

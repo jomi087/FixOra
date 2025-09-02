@@ -5,28 +5,27 @@ import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
 import { Messages } from "@/utils/constant";
 
-interface CategoryState{
-    categories: Category[];
-    loading: boolean;
-    error: string | null;
+interface CategoryState {
+  categories: Category[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: CategoryState = {
   categories: [],
   loading: false,
-  error : null
+  error: null
 };
 
 //Thunk logic
-export const fetchCategories = createAsyncThunk( 
+export const fetchCategories = createAsyncThunk(
   "category/fetchCategories", //"sliceName/action" ->  Redux action type string Redux uses it internally to log actions and identify which action is being dispatched.
   async (_, { rejectWithValue }) => {
     try {
       const res = await AuthService.getActiveServicesApi();
       return res.data.servicesData;
-
-    } catch (error:any) {
-      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
       return rejectWithValue(errorMsg);
     }
@@ -36,7 +35,7 @@ export const fetchCategories = createAsyncThunk(
 const categorySlice = createSlice({
   name: "category",
   initialState,
-  reducers:{},
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
@@ -52,7 +51,7 @@ const categorySlice = createSlice({
         state.error = action.payload as string;
       });
   }
-    
+
 });
 
 export default categorySlice.reducer;

@@ -2,21 +2,21 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { Gender } from "../../../shared/Enums/Gender";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../../shared/Messages";
-import { ProviderBookingsInfoDTO, ProviderBookingsInfoInputDTO, ProviderBookingsInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderBookingsInfoDTO";
-import { IProviderBookingsInfoUseCase } from "../../Interface/useCases/Client/IProviderBookingsInfoUseCase";
+import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderInfoDTO";
+import { IProviderInfoUseCase } from "../../Interface/useCases/Client/IProviderInfoUseCase";
 
 const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode;
 const { INTERNAL_ERROR ,PROVIDER_NOT_FOUND } = Messages;
 
 
-export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase{
+export class ProviderInfoUseCase implements IProviderInfoUseCase{
     constructor(
         private readonly _userRepository : IUserRepository, 
     ) { }
     
-    async execute(input: ProviderBookingsInfoInputDTO ): Promise<ProviderBookingsInfoOutputDTO>{
+    async execute(input: ProviderInfoInputDTO ): Promise<ProviderInfoOutputDTO>{
         try { 
-            const providerData = await this._userRepository.findProviderBookingsById(input.id,input.coordinates);
+            const providerData = await this._userRepository.findProviderInfoById(input.id,input.coordinates);
             
             if (!providerData) {
                 throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND }; 
@@ -24,7 +24,7 @@ export class ProviderBookingsInfoUseCase implements IProviderBookingsInfoUseCase
 
             const { user, provider, category, booking, distanceFee } = providerData;
 
-            const mappedData: ProviderBookingsInfoDTO = {
+            const mappedData: ProviderInfoDTO = {
                 providerId: provider.providerId,
                 user: {
                     userId: user.userId , 

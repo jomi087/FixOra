@@ -34,7 +34,11 @@ export class KYCRequestRepository implements IKYCRequestRepository {
         return updated;
     }
 
-    async findWithFilters( option: { searchQuery: string; filter: string }, currentPage: number, limit: number ): Promise<{ data: KYCRequestWithDetails []; total: number }> {
+    //need to fix the the return data type
+    async findWithFilters(option: { searchQuery: string; filter: string },
+        currentPage: number, limit: number
+    ): Promise<{ data: KYCRequestWithDetails[]; total: number }> {
+
         const { searchQuery, filter } = option;
         const skip = (currentPage - 1) * limit;
 
@@ -102,7 +106,6 @@ export class KYCRequestRepository implements IKYCRequestRepository {
             },
             // Match after lookup (status + search)
             { $match: matchConditions },
-
             // Project into the shape of KYCRequestWithDetails
             {
                 $project: {

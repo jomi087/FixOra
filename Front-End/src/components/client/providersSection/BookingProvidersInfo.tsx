@@ -6,7 +6,7 @@ import { PiMathOperationsLight } from "react-icons/pi";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const BookingProvidersInfo: React.FC = () => {
-  const { data } = useAppSelector((state) => state.providerBooking);
+  const { data } = useAppSelector((state) => state.providerInfo);
 
   return (
     <>
