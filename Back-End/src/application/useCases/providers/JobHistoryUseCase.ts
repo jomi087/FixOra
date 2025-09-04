@@ -1,25 +1,28 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../../shared/Messages";
-import { ConfirmBookingOutputDTO } from "../../DTO's/BookingDTO/BookingInfoDTO";
-import { IGetConfirmBookingsUseCase } from "../../Interface/useCases/Provider/IGetConfirmBookingsUseCase";
-
+import { JobHistoryInputDTO, JobHistoryOutputDTO } from "../../DTO's/BookingDTO/BookingHistoryDTO";
+import { IJobHistoryUseCase } from "../../Interface/useCases/Provider/IJobHistoryUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { INTERNAL_ERROR } = Messages;
 
-export class GetConfirmBookingsUseCase implements IGetConfirmBookingsUseCase {
+export class JobHistoryUseCase implements IJobHistoryUseCase {
     constructor(
         private readonly _bookingRepository: IBookingRepository,
-    ){}
-    
-    async execute(input : string): Promise<ConfirmBookingOutputDTO[]>{
-        try {
-            
-            const bookings = await this._bookingRepository.findProviderConfirmBookingsById(input);
-            if (!bookings.length) return [];
+    ) { }
 
-            const mappedData:ConfirmBookingOutputDTO[] = bookings.map((booking) => ({
+    async execute(input: JobHistoryInputDTO): Promise<JobHistoryOutputDTO> {
+        try {
+            const { providerUserId, currentPage, limit } = input;
+
+            const bookings = await this._bookingRepository.findProviderJobHistoryById(
+                providerUserId,
+                currentPage,
+                limit,
+            );
+
+            const mappedData = bookings.data.map((booking) => ({
                 bookingId: booking.bookingId,
                 scheduledAt: booking.scheduledAt,
                 status: booking.status,
@@ -29,10 +32,12 @@ export class GetConfirmBookingsUseCase implements IGetConfirmBookingsUseCase {
                 }
             }));
 
-            return  mappedData;
+            return {
+                data: mappedData,
+                total: bookings.total
+            };
 
         } catch (error: any) {
-            console.log(error,"dkd");
             if (error.status && error.message) {
                 throw error;
             }

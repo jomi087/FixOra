@@ -145,11 +145,11 @@ export class BookingRepository implements IBookingRepository {
         return result[0];
     }
 
-    async findProviderConfirmBookingsById(ProviderUserId: string): Promise<Booking[]> {
+    async findProviderConfirmBookingsById(providerUserId: string): Promise<Booking[]> {
         const pipeline: any[] = [
             {
                 $match: {
-                    providerUserId: ProviderUserId,
+                    providerUserId: providerUserId,
                     status: BookingStatus.CONFIRMED,
                     scheduledAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }
                 }
@@ -161,11 +161,11 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async ConfirmBookingsDetailsById(bookingId: string): Promise<{
-        user: Pick<User, "userId" | "fname" | "lname" | "location">,
+        user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
         booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
-    }|null> {
+    } | null> {
         const pipeline: any[] = [
             {
                 $match: {
@@ -202,6 +202,7 @@ export class BookingRepository implements IBookingRepository {
                         userId: "$userDetails.userId",
                         fname: "$userDetails.fname",
                         lname: "$userDetails.lname",
+                        email: "$userDetails.email",
                         location: {
                             houseinfo: "$userDetails.location.houseinfo",
                             street: "$userDetails.location.street",
@@ -241,13 +242,40 @@ export class BookingRepository implements IBookingRepository {
         ];
 
         interface AggregatedResult {
-            user: Pick<User, "userId" | "fname" | "lname" | "location">,
+            user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
             booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
         }
 
         const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
-        return result ?? null ;
+        return result ?? null;
+    }
+
+    async findProviderJobHistoryById(providerUserId: string, currentPage: number, limit: number): Promise<{ data: Booking[]; total: number; }> {
+        const pipeline: any[] = [
+            {
+                $match: {
+                    providerUserId: providerUserId,
+                    status: BookingStatus.CONFIRMED,
+                }
+            },
+            {
+                $facet: {
+                    data: [
+                        { $skip: (currentPage - 1) * limit },
+                        { $limit: limit }
+                    ],
+                    total: [{ $count: "count" }]
+                }
+            }
+        ];
+
+        const result = await BookingModel.aggregate(pipeline).exec();
+        
+        const data = result[0]?.data ?? [];
+        const total = result[0]?.total[0]?.count ?? 0;
+        
+        return { data, total };
     }
 }

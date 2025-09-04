@@ -33,14 +33,16 @@ export interface IBookingRepository {
     subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
   }>;
 
-  findProviderConfirmBookingsById(ProviderUserId: string): Promise<Booking[]>
+  findProviderConfirmBookingsById(providerUserId: string): Promise<Booking[]>
 
   ConfirmBookingsDetailsById(bookingId: string): Promise<{
-    user: Pick<User, "userId" | "fname" | "lname" | "location">,
+    user: Pick<User, "userId" | "fname" | "lname" | "email" |"location">,
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
     booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
-  }|null >
+  } | null>
+  
+  findProviderJobHistoryById(providerUserId: string, currentPage: number, limit: number): Promise<{ data: Booking[], total: number }>
 }
 
 

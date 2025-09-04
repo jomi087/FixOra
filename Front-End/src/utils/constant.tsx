@@ -2,7 +2,10 @@ import {
   Home, Briefcase, Users, FileText, User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
   LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
+  MessageSquareMore, Scroll, ClipboardClock  
 } from "lucide-react";
+
+
 
 /******************************************************************************************************* */
 export const App_Name:string = "FixOra";
@@ -13,8 +16,11 @@ export const COPYRIGHT_NOTICE = `© ${CURRENT_YEAR} ${App_Name}. All rights rese
 
 /********************************************* Image Sections *******************************************************/
 export const BGImage_404: string = "url('/404_Bg_Image.jpg')";  //used in sign-in, sign-up, pagenot-found,
-export const HeroSectionImage:string = "/Hero-removebg-preview.png";
+export const HeroSectionImage:string = "/hero-removebg-preview.png";
 export const SingInThemeImage: string = "/signIn.png";
+export const ApprovedSeal: string = "/approved.png";
+export const RejectSeal: string = "/rejected.png";
+export const ConfirmSeal: string = "/completedStamp.png";
 
 /********************************************* Rules  *******************************************************/
 
@@ -31,6 +37,7 @@ export const CCPP = 8;                                                    //CCPP
 export const PCPP = 8;                                                   //PCPP => Provider Cards Per page  -> default set to 16
 export const PALPP = 10;                                                 //PALPP => Provider Application List Per Page  -> default set to 15
 export const SLPP = 7;                                                  //SLPP => Service list Per page -> default set to 10
+export const BHPP = 7;
 export const DATE_RANGE_DAYS = 7;
 export const TIME_SLOTS = {
   STARTHOURS: 8,
@@ -128,9 +135,10 @@ export const userSideBarOptions: SideBarOption[] = [
 //provider Side Bar
 export const providerSideBarOptions: SideBarOption[] = [
   { icon: LayoutDashboard, section: "Dashboard", to: "/provider/dashboard" },
-  { icon: AlertTriangle, section: "Chat", to: "/provider/chats" },
-  { icon: AlertTriangle, section: "Wallet", to: "/provider/wallet" },
-  { icon: AlertTriangle, section: "Blogs", to: "/provider/blogs" },
+  { icon: MessageSquareMore , section: "Chat", to: "/provider/chats" },
+  { icon: Wallet , section: "Wallet", to: "/provider/wallet" },
+  { icon: Scroll, section: "Blogs", to: "/provider/blogs" },
+  { icon: ClipboardClock, section: "History", to: "/provider/booking-history" },
   { icon: User, section: "Profile", to: "/provider/profile" },
 ];
 

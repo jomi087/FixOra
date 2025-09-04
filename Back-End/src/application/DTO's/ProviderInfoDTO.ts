@@ -1,5 +1,5 @@
-import { BookingStatus } from "../../../shared/Enums/BookingStatus";
-import { Gender } from "../../../shared/Enums/Gender";
+import { BookingStatus } from "../../shared/Enums/BookingStatus";
+import { Gender } from "../../shared/Enums/Gender";
 
 export interface ProviderInfoDTO {
     providerId: string;

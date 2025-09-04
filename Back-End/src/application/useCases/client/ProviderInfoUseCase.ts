@@ -2,7 +2,7 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { Gender } from "../../../shared/Enums/Gender";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../../shared/Messages";
-import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../DTO's/BookingDTO/ProviderInfoDTO";
+import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../DTO's/ProviderInfoDTO";
 import { IProviderInfoUseCase } from "../../Interface/useCases/Client/IProviderInfoUseCase";
 
 const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode;

@@ -35,10 +35,10 @@ export interface PaymentFailureNotification {
   status: BookingStatus
 }
 
-export interface BookingInfo {
+export interface ConfirmBookingInfo {
   bookingId: string;
   scheduledAt: Date;
-  issue: string;
+  // issue: string;
   status: BookingStatus;
   acknowledgment: {
     isWorkCompletedByProvider: boolean;
@@ -46,15 +46,18 @@ export interface BookingInfo {
   };
 }
 
-export interface BookingDetails {
+export interface jobHistoryInfo extends ConfirmBookingInfo{}
+
+export interface BookingInfoDetails {
   bookingId: string;
   user: {
     userId: string;
     fname: string;
     lname: string;
-    location: AddressWithCoordinates | string;
+    email: string;
+    location: AddressWithCoordinates ;
   };
-  scheduledAt: Date;
+  scheduledAt: string;
   category: {
     categoryId: string;
     name: string;
@@ -71,7 +74,7 @@ export interface BookingDetails {
   };
   acknowledgment?: {
     isWorkCompletedByProvider: boolean;
-    imageUrl: string;
+    imageUrl: string[];
     isWorkConfirmedByUser: boolean;
   };
 }

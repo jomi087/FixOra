@@ -9,6 +9,7 @@ import ReasonDialog from "../../common/Others/ReasonDialog";
 import { KYCStatus } from "@/shared/enums/KycStatus";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import CustomLink from "../../ui/Custom/CustomLink";
+import { ApprovedSeal, Messages, RejectSeal } from "@/utils/constant";
 
 
 interface ProviderKYCDialogProps {
@@ -34,7 +35,7 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
         setSelectedProvider(null);
       }
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || "Failed to Approve application";
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
     } finally {
       setLoading(false);
@@ -118,8 +119,8 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
               >
                 { selectedProvider.status == KYCStatus.Pending
                   ? KYCStatus.Pending : selectedProvider.status == KYCStatus.Approved
-                    ? <img src="/Approved.png" alt={selectedProvider.status} className="w-20" />  
-                    : <img src="/Rejected.png" alt={selectedProvider.status} className="w-20" />
+                    ? <img src={ApprovedSeal} alt={selectedProvider.status} className="w-20" />  
+                    : <img src={RejectSeal} alt={selectedProvider.status} className="w-20" />
                 }
               </span>
             </div>

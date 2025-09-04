@@ -111,6 +111,12 @@ const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingReposit
 
 import { GetConfirmBookingsUseCase } from "../application/useCases/providers/GetConfirmBookingsUseCase";
 const getConfirmBookingsUseCase = new GetConfirmBookingsUseCase(bookingRepository);
+
+import { GetBookingDetailsUseCase } from "../application/useCases/providers/GetBookingDetailsUseCase";
+const getBookingDetailsUseCase = new GetBookingDetailsUseCase(bookingRepository);
+
+import { JobHistoryUseCase } from "../application/useCases/providers/JobHistoryUseCase";
+const jobHistoryUseCase = new JobHistoryUseCase(bookingRepository);
 /******************************************************************************************************************************************************
                                                         Admin Specific
 ******************************************************************************************************************************************************/
@@ -149,7 +155,7 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 const publicController = new PublicController(loggerService, getLandingDataUseCase);
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase); 
 const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerInfoUseCase,bookingUseCase,createPaymentUseCase,verifyPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase);
-const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase);
+const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase,getBookingDetailsUseCase,jobHistoryUseCase);
 const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 
 export {

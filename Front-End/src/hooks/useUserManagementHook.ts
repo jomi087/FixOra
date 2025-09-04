@@ -1,7 +1,8 @@
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { CustomersData  } from "@/shared/Types/user";
-import { CCPP } from "@/utils/constant";
+import { CCPP, Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
@@ -29,8 +30,11 @@ export const useUserManagement = ()=>{
           setCustData(res.data.customersData);
           setTotalCustomers(res.data.total); 
         }
-      } catch {
-        toast.error("Failed to fetch users");
+      } catch(error) {
+        const err = error as AxiosError<{ message: string }>;
+        const errorMsg =
+          err.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
+        toast.error(errorMsg);
       } finally {
         setLoading(false);
       }
