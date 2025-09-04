@@ -39,7 +39,7 @@ export interface Booking {
 
     acknowledgment?: {
         isWorkCompletedByProvider: boolean;
-        imageUrl?: string;
+        imageUrl?: string[];
         isWorkConfirmedByUser: boolean;
     }
     createdAt?: Date;

@@ -41,12 +41,12 @@ const corsOptions = {
     allowedHeaders: ["Content-Type","Authorization","X-Requested-With","Accept","Origin"]
 };
 
-// Connect to MongoDB
+// // Connect to MongoDB
 mongoConnect(logger);
 
 app.use("/api", rawRoutes); //instead of parsing buffer to json we are passing as buffer it self
 
-//Middleware
+// //Middleware
 app.use(cookieParser());
 app.use(morgan("tiny", { stream }));
 app.use(cors(corsOptions));
@@ -59,7 +59,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/provider",providerRoutes);
 app.use("/api/admin", adminRoutes);
-
 app.use(errorHandler);
 
 const server = http.createServer(app); // this was implimented so that i can get the server instanace (server obj) which is required is socket i.O other-wise we only use the listen method of server
@@ -67,11 +66,11 @@ initializeSocket(server,logger);
 logger.info("Socket.IO initialized");
 
 process.on("unhandledRejection", (reason) => {
-    logger.error("Unhandled Rejection", reason);
+    console.error("Unhandled Rejection", reason);
     process.exit(1);
 });
 process.on("uncaughtException", (err) => {
-    logger.error("Uncaught Exception", err);
+    console.error("Uncaught Exception", err);
     process.exit(1);
 });
 

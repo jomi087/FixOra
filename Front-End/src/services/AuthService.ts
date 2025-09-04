@@ -122,6 +122,17 @@ class AuthService {
     return axiosInstance.get("/api/provider/confirm-bookings");
   }
 
+  bookingDetailsApi(bookingId: string) {
+    return axiosInstance.get(`/api/provider/bookingDetails/${bookingId}`);
+  }
+
+  providerJobHistoryApi(currentPage: number, itemsPerPage: number) {
+    return axiosInstance.get("/api/provider/job-history", {
+      params: { currentPage, itemsPerPage }
+    });
+  }
+
+
 
   /*********************************************************************************************************************** */
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {

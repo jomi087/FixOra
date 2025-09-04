@@ -4,10 +4,13 @@ import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCase
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 import { IGetConfirmBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetConfirmBookingsUseCase";
-import { Messages } from "../../shared/Messages";
+import { IGetBookingDetailsUseCase } from "../../application/Interface/useCases/Provider/IGetBookingDetailsUseCase";
 
-const { OK,UNAUTHORIZED, } = HttpStatusCode;
-const { UNAUTHORIZED_MSG } = Messages;
+import { Messages } from "../../shared/Messages";
+import { IJobHistoryUseCase } from "../../application/Interface/useCases/Provider/IJobHistoryUseCase";
+
+const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
+const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
 
 
 
@@ -16,6 +19,8 @@ export class ProviderController {
         private _loggerService: ILoggerService,
         private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
         private _getConfirmBookingsUseCase: IGetConfirmBookingsUseCase,
+        private _getBookingDetailsUseCase: IGetBookingDetailsUseCase,
+        private _jobHistoryUseCase: IJobHistoryUseCase
     ) { }
 
     async respondToBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -40,7 +45,7 @@ export class ProviderController {
         }
     }
 
-    async confirmBookings (req: Request, res: Response, next: NextFunction): Promise<void> {
+    async confirmBookings(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
@@ -51,7 +56,7 @@ export class ProviderController {
 
             res.status(OK).json({
                 success: true,
-                providerBookingsInfoData : data
+                providerBookingsInfoData: data
             });
 
         } catch (error: any) {
@@ -59,4 +64,53 @@ export class ProviderController {
             next(error);
         }
     }
+
+    async BookingDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { bookingId } = req.params;
+
+            if (!bookingId) {
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            }
+
+            const data = await this._getBookingDetailsUseCase.execute(bookingId);
+
+            res.status(OK).json({
+                success: true,
+                bookingDetailsData: data
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+
+    async getJobHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+
+            const providerUserId = req.user.userId;
+
+            const currentPage = parseInt(req.query.currentPage as string) || 1;
+            const limit = parseInt(req.query.itemsPerPage as string) || 8;
+
+            const result = await this._jobHistoryUseCase.execute({ providerUserId,currentPage, limit });
+
+            res.status(OK).json({
+                success: true,
+                bookingHistoryData: result.data,
+                total: result.total
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+
 }

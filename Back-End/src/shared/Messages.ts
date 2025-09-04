@@ -62,6 +62,7 @@ export const Messages = {
     INVALID_GENDER: "Gender must be Male, Female, or Other",
     INVALID_SPECIALIZATION: "Invalid specialization",
     INVALID_DOB: "Invalid date of birth",
+    INVALID_FORMAT : "Invalid Format",
 
     TOKEN_EXPIRED: "Token expired",
     MISSING_TOKEN: "Missing token",

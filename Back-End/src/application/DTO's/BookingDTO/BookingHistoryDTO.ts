@@ -1,0 +1,8 @@
+import { Booking } from "../../../domain/entities/BookingEntity";
+import { PaginationInputDTO, PaginationOutputDTO } from "../Common/PaginationDTO";
+
+export interface JobHistoryInputDTO extends Omit<PaginationInputDTO, "searchQuery" | "filter"> {
+    providerUserId: string;
+}
+
+export interface JobHistoryOutputDTO extends PaginationOutputDTO<Pick<Booking, "bookingId" | "scheduledAt" | "status" | "acknowledgment">> {}

@@ -103,7 +103,8 @@ const BookingSchema = new Schema<IBookingModel>({
             type: Boolean,
         },
         imageUrl: {
-            type: String
+            type: [String],
+            default: [],
         },
         isWorkConfirmedByUser: {
             type: Boolean,

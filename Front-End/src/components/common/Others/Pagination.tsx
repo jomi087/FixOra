@@ -1,8 +1,8 @@
 
 interface PaginationProps {
-    currentPage: number;
-    totalPages: number;
-    onPage : (page: number)=>void
+  currentPage: number;
+  totalPages: number;
+  onPage: (page: number) => void
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage }) => {
@@ -13,27 +13,26 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         onClick={() => onPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
-                Prev
+        Prev
       </button>
 
 
       {[...Array(totalPages)].map((_, i) => (
         <button
           key={i + 1}
-          className={`px-3 py-1 rounded border ${
-            currentPage === i + 1 ? "bg-indigo-600 text-white" : ""
+          className={`px-3 py-1 rounded border ${currentPage === i + 1 ? "bg-indigo-600 text-white" : ""
           }`}
           onClick={() => onPage(i + 1)}
         >
           {i + 1}
         </button>
       ))}
-            
-      <button  className="px-4 py-1 rounded border disabled:opacity-50"
-        onClick={()=>onPage(currentPage + 1 )}
+
+      <button className="px-4 py-1 rounded border disabled:opacity-50"
+        onClick={() => onPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-                Next
+        Next
       </button>
     </div>
   );

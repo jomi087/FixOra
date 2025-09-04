@@ -9,10 +9,10 @@ import OtpPage from "../pages/common/OtpPage.tsx";
 import ResetPasswordPage from "../pages/common/ResetPasswordPage.tsx";
 
 import LandingPage from "../pages/client/LandingPage";
-import ClientProfilePage  from "../pages/client/ProfilePage.tsx";
+import ClientProfilePage from "../pages/client/ProfilePage.tsx";
 import ChangePasswordPage from "@/pages/client/ChangePassword.tsx";
 
-import ProviderDashboardPage  from "@/pages/provider/DashboardPage.tsx";
+import ProviderDashboardPage from "@/pages/provider/DashboardPage.tsx";
 import AdminDashboardPage from "../pages/admin/DashboardPage.tsx";
 import UserManagement from "../pages/admin/UserManagement";
 import ProviderManagement from "../pages/admin/ProviderManagement";
@@ -23,12 +23,14 @@ import ProvidersPage from "@/pages/client/ProvidersPage.tsx";
 import VerifictionFormPage from "@/pages/client/VerifictionPage.tsx";
 import ProviderApplicationPage from "@/pages/admin/ProviderApplicationPage.tsx";
 import ProviderBookingPage from "@/pages/client/ProviderBookingPage.tsx";
-import ProviderProfilePage  from "@/pages/provider/ProfilePage.tsx";
+import ProviderProfilePage from "@/pages/provider/ProfilePage.tsx";
 import ProviderLayout from "@/components/common/layout/ProviderLayout.tsx";
 import UserLayout from "@/components/common/layout/UserLayout.tsx";
 import AdminLayout from "@/components/common/layout/AdminLayout.tsx";
 import BookingHistoryPage from "@/pages/client/BookingHistoryPage.tsx";
 import PaymentPage from "@/pages/common/PaymentPage.tsx";
+import BookingDetailsPage from "@/pages/provider/BookingDetailsPage.tsx";
+import JobHistoryPage from "@/pages/provider/BookingHistoryPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -48,7 +50,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/otp",
-    element: <ErrorBoundary><OtpPage/></ErrorBoundary>
+    element: <ErrorBoundary><OtpPage /></ErrorBoundary>
   },
   {
     path: "/reset-Password",
@@ -65,14 +67,14 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
     children: [
-      { path: "services", element:  <ServicePage/> },
+      { path: "services", element: <ServicePage /> },
       { path: "providers", element: <ProvidersPage /> },
-      { path: "provider-KYC", element:  <VerifictionFormPage/> },
-      { path: "provider/booking/:providerId", element:  <ProviderBookingPage/> },
-      { path: "account/profile", element:  <ClientProfilePage/> },
-      { path: "account/change-password", element:  <ChangePasswordPage/> },
+      { path: "provider-KYC", element: <VerifictionFormPage /> },
+      { path: "provider/booking/:providerId", element: <ProviderBookingPage /> },
+      { path: "account/profile", element: <ClientProfilePage /> },
+      { path: "account/change-password", element: <ChangePasswordPage /> },
       { path: "payment/:bookingId", element: <PaymentPage /> },
-      { path: "bookings", element: <BookingHistoryPage/> },
+      { path: "bookings", element: <BookingHistoryPage /> },
     ],
   },
   //Provider Routes
@@ -87,13 +89,15 @@ const router = createBrowserRouter([
     ),
     children: [
       { path: "dashboard", element: <ProviderDashboardPage /> },
-      { path: "profile", element: <ProviderProfilePage/> },
+      { path: "booking-details/:bookingId", element: <BookingDetailsPage /> },
+      { path: "booking-history", element: <JobHistoryPage/> },
+      { path: "profile", element: <ProviderProfilePage /> },
     ],
   },
   // Admin Routes
   {
     path: "/admin",
-    element : (
+    element: (
       <ErrorBoundary>
         <ProtectedRoute allowedRoles={[RoleEnum.ADMIN]}>
           <AdminLayout />
