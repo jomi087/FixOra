@@ -4,7 +4,7 @@ import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCase
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 import { IGetConfirmBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetConfirmBookingsUseCase";
-import { IGetBookingDetailsUseCase } from "../../application/Interface/useCases/Provider/IGetBookingDetailsUseCase";
+import { IGetJobDetailsUseCase } from "../../application/Interface/useCases/Provider/IGetJobDetailsUseCase";
 
 import { Messages } from "../../shared/Messages";
 import { IJobHistoryUseCase } from "../../application/Interface/useCases/Provider/IJobHistoryUseCase";
@@ -19,7 +19,7 @@ export class ProviderController {
         private _loggerService: ILoggerService,
         private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
         private _getConfirmBookingsUseCase: IGetConfirmBookingsUseCase,
-        private _getBookingDetailsUseCase: IGetBookingDetailsUseCase,
+        private _getJobDetailsUseCase: IGetJobDetailsUseCase,
         private _jobHistoryUseCase: IJobHistoryUseCase
     ) { }
 
@@ -65,7 +65,7 @@ export class ProviderController {
         }
     }
 
-    async BookingDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async jobDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { bookingId } = req.params;
 
@@ -73,11 +73,11 @@ export class ProviderController {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
             }
 
-            const data = await this._getBookingDetailsUseCase.execute(bookingId);
+            const data = await this._getJobDetailsUseCase.execute(bookingId);
 
             res.status(OK).json({
                 success: true,
-                bookingDetailsData: data
+                jobDetailsData: data
             });
 
         } catch (error: any) {
@@ -98,7 +98,7 @@ export class ProviderController {
             const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
-            const result = await this._jobHistoryUseCase.execute({ providerUserId,currentPage, limit });
+            const result = await this._jobHistoryUseCase.execute({ providerUserId,currentPage,limit });
 
             res.status(OK).json({
                 success: true,

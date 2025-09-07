@@ -3,36 +3,34 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../../shared/Messages";
 import { BookingDetailsOutputDTO } from "../../DTO's/BookingDTO/BookingInfoDTO";
-import { IGetBookingDetailsUseCase } from "../../Interface/useCases/Provider/IGetBookingDetailsUseCase";
+import { IGetBookingDetailsUseCase } from "../../Interface/useCases/Client/IGetBookingDetailsUseCase";
 
-
-const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode;
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
 const { INTERNAL_ERROR, NOT_FOUND_MSG } = Messages;
-
 
 export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
     constructor(
         private readonly _bookingRepository: IBookingRepository,
-    ){}
-    
-    async execute(input : string): Promise<BookingDetailsOutputDTO>{
+    ) { }
+
+    async execute(input: string): Promise<BookingDetailsOutputDTO> {
         try {
-            
-            const bookingDataInDetails = await this._bookingRepository.ConfirmBookingsDetailsById(input);
+
+            const bookingDataInDetails = await this._bookingRepository.BookingsDetailsById(input);
             if (!bookingDataInDetails) {
                 throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
             };
 
-            const { booking, category, subCategory, user } = bookingDataInDetails;
-            
-            const mappedData:BookingDetailsOutputDTO = {
+            const { userProvider, provider, category, subCategory, booking } = bookingDataInDetails;
+
+            const mappedData: BookingDetailsOutputDTO = {
                 bookingId: booking.bookingId,
-                user: {
-                    userId: user.userId,
-                    fname: user.fname,
-                    lname: user.lname || "",
-                    email : user.email,
-                    location: user.location
+                providerUser: {
+                    userId: userProvider.userId,
+                    fname: userProvider.fname,
+                    lname: userProvider.lname || "",
+                    email: userProvider.email,
+                    image: provider.profileImage,
                 },
                 scheduledAt: booking.scheduledAt,
                 category: {
@@ -40,26 +38,25 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
                     name: category.name,
                     subCategory: {
                         subCategoryId: subCategory.subCategoryId,
-                        name : subCategory.name
+                        name: subCategory.name
                     }
                 },
                 issue: booking.issue,
                 status: booking.status,
                 pricing: {
                     baseCost: booking.pricing.baseCost,
-                    distanceFee : booking.pricing.distanceFee
+                    distanceFee: booking.pricing.distanceFee
                 },
                 acknowledgment: {
                     isWorkCompletedByProvider: booking.acknowledgment?.isWorkCompletedByProvider || false,
-                    imageUrl: booking.acknowledgment?.imageUrl || [] ,
+                    imageUrl: booking.acknowledgment?.imageUrl || [],
                     isWorkConfirmedByUser: booking.acknowledgment?.isWorkConfirmedByUser || false
                 }
             };
 
-            return  mappedData;
+            return mappedData;
 
         } catch (error: any) {
-            console.log(error,"dkd");
             if (error.status && error.message) {
                 throw error;
             }

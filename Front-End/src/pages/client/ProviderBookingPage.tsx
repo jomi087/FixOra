@@ -1,9 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import Nav from "@/components/common/layout/Nav";
 import { useEffect } from "react";
-import BookingProvidersInfo from "@/components/client/providersSection/BookingProvidersInfo";
+import ProviderInfo from "@/components/client/providersSection/ProviderInfo";
 import PageLoader from "@/components/common/Others/PageLoader";
-import BookingInfo from "../../components/client/providersSection/BookingInfo";
+import BookingSlots from "../../components/client/providersSection/BookingSlots";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchProviderInfo } from "@/store/user/providerInfoSlice";
 
@@ -42,8 +42,8 @@ const ProviderBookingPage: React.FC = () => {
           </nav>
           {data && data.service.subcategories.length > 0 ? (
             <>
-              <BookingProvidersInfo />
-              <BookingInfo />
+              <ProviderInfo />
+              <BookingSlots />
             </>
           ) : (
             <div className="flex justify-center h-[78vh] items-center text-sm text-muted-foreground ">

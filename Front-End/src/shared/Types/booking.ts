@@ -35,10 +35,9 @@ export interface PaymentFailureNotification {
   status: BookingStatus
 }
 
-export interface ConfirmBookingInfo {
+export interface ConfirmJobBookings {
   bookingId: string;
   scheduledAt: Date;
-  // issue: string;
   status: BookingStatus;
   acknowledgment: {
     isWorkCompletedByProvider: boolean;
@@ -46,9 +45,50 @@ export interface ConfirmBookingInfo {
   };
 }
 
-export interface jobHistoryInfo extends ConfirmBookingInfo{}
+export interface BookingsHistory {
+  bookingId: string;
+  scheduledAt: Date;
+  status: BookingStatus;
+  acknowledgment: {
+    isWorkCompletedByProvider: boolean;
+    isWorkConfirmedByUser: boolean;
+  };
+}
+
+export interface jobHistory extends BookingsHistory{}
 
 export interface BookingInfoDetails {
+  bookingId: string;
+  providerUser: {
+    providerUserId: string;
+    fname: string;
+    lname: string;
+    email: string;
+    image: string
+  };
+  scheduledAt: string;
+  category: {
+    categoryId: string;
+    name: string;
+    subCategory: {
+      subCategoryId: string;
+      name: string;
+    };
+  };
+  issue: string;
+  status: BookingStatus;
+  pricing: {
+    baseCost: number;
+    distanceFee: number;
+  };
+  acknowledgment?: {
+    isWorkCompletedByProvider: boolean;
+    imageUrl: string[];
+    isWorkConfirmedByUser: boolean;
+  };
+}
+
+export interface JobInfoDetails {
   bookingId: string;
   user: {
     userId: string;

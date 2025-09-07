@@ -5,7 +5,7 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { PiMathOperationsLight } from "react-icons/pi";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const BookingProvidersInfo: React.FC = () => {
+const ProviderInfo: React.FC = () => {
   const { data } = useAppSelector((state) => state.providerInfo);
 
   return (
@@ -122,5 +122,5 @@ const BookingProvidersInfo: React.FC = () => {
   );
 };
 
-export default BookingProvidersInfo;
+export default ProviderInfo;
 

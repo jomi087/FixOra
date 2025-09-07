@@ -103,6 +103,12 @@ const updateProfileUseCase = new UpdateProfileUseCase(userRepository);
 
 import { VerifyPasswordUseCase } from "../application/useCases/client/VerifyPasswordUseCase";
 const verifyPasswordUseCase = new VerifyPasswordUseCase(userRepository, hashService, emailService);
+
+import { BookingHistoryUseCase } from "../application/useCases/client/BookingHistoryUseCase";
+const bookingHistoryUseCase = new BookingHistoryUseCase(bookingRepository);
+
+import { GetBookingDetailsUseCase } from "../application/useCases/client/GetBookingDetailsUseCase";
+const getBookingDetailsUseCase = new GetBookingDetailsUseCase(bookingRepository);
 /******************************************************************************************************************************************************
                                                         Provider Specific
 ******************************************************************************************************************************************************/
@@ -112,8 +118,8 @@ const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingReposit
 import { GetConfirmBookingsUseCase } from "../application/useCases/providers/GetConfirmBookingsUseCase";
 const getConfirmBookingsUseCase = new GetConfirmBookingsUseCase(bookingRepository);
 
-import { GetBookingDetailsUseCase } from "../application/useCases/providers/GetBookingDetailsUseCase";
-const getBookingDetailsUseCase = new GetBookingDetailsUseCase(bookingRepository);
+import { GetJobDetailsUseCase } from "../application/useCases/providers/GetJobDetailsUseCase";
+const getJobDetailsUseCase = new GetJobDetailsUseCase(bookingRepository);
 
 import { JobHistoryUseCase } from "../application/useCases/providers/JobHistoryUseCase";
 const jobHistoryUseCase = new JobHistoryUseCase(bookingRepository);
@@ -154,8 +160,8 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 
 const publicController = new PublicController(loggerService, getLandingDataUseCase);
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase); 
-const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerInfoUseCase,bookingUseCase,createPaymentUseCase,verifyPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase);
-const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase,getBookingDetailsUseCase,jobHistoryUseCase);
+const userController = new UserController( loggerService, activeServiceUseCase,getActiveProvidersUseCase,kycRequestUseCase,imageUploaderService,providerInfoUseCase,bookingUseCase,createPaymentUseCase,verifyPaymentUseCase,updateProfileUseCase,verifyPasswordUseCase,resetPasswordUseCase,bookingHistoryUseCase,getBookingDetailsUseCase);
+const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase,getJobDetailsUseCase,jobHistoryUseCase);
 const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 
 export {

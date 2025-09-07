@@ -32,9 +32,8 @@ export class PaymentService implements IPaymentService {
                     },
                 ],
                 mode: "payment",
-                success_url: `${process.env.FRONTEND_URL}/user/payment/${bookingId}`,
-                cancel_url: `${process.env.FRONTEND_URL}/user/payment/${bookingId}`,
-     
+                success_url: `${process.env.FRONTEND_URL}/user/providers/provider-booking/payment/${bookingId}`,
+                cancel_url: `${process.env.FRONTEND_URL}/user/providers/provider-booking/payment/${bookingId}`,
                 metadata : {
                     bookingId: bookingId,
                 },

@@ -1,8 +1,8 @@
 import Header from "@/components/common/layout/Header";
 import VerifictionForm from "@/components/client/providersSection/VerifictionForm";
-import VerifyProfile from "@/components/client/profileSection/VerifyProfile";
 import { BGImage_404 } from "@/utils/constant";
 import { useState } from "react";
+import VerifyProfile from "@/components/client/accountSection/profileSection/VerifyProfile";
 
 
 const VerifictionPage = () => {

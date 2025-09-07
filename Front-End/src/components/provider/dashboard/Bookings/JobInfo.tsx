@@ -1,6 +1,6 @@
 import socket from "@/services/soket";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import type { ConfirmBookingInfo } from "@/shared/Types/booking";
+import type { ConfirmJobBookings } from "@/shared/Types/booking";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addConfirmedBooking, fetchProviderBookingsInfo } from "@/store/provider/bookingSlice";
 import { DATE_RANGE_DAYS, TIME_SLOTS } from "@/utils/constant";
@@ -13,7 +13,7 @@ import BookingInfoShimmer from "./shimmer ui/BookingInfoShimmer";
 const dates = generateDateList(DATE_RANGE_DAYS);
 const timeSlots = generateTimeSlots(TIME_SLOTS.STARTHOURS, TIME_SLOTS.ENDHOURS, TIME_SLOTS.INTERVAL);
 
-const BookingInfo: React.FC = () => {
+const JobInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data, isLoading } = useAppSelector((state) => state.providerBookingInfo);
@@ -25,7 +25,7 @@ const BookingInfo: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const handleConfirmedBooking = (payload: ConfirmBookingInfo) => {
+    const handleConfirmedBooking = (payload: ConfirmJobBookings) => {
       dispatch(addConfirmedBooking(payload));
     };
     socket.on("booking:confirmed", handleConfirmedBooking);
@@ -35,11 +35,13 @@ const BookingInfo: React.FC = () => {
     };
   }, [dispatch]);
 
-  const handleBookingDetails = (booking: ConfirmBookingInfo) => {
+  const handleBookingDetails = (booking: ConfirmJobBookings) => {
     if (booking.status !== BookingStatus.CONFIRMED) {
       toast.error("Opps please refresh the page");
     }
-    navigate(`/provider/booking-details/${booking.bookingId}`);
+    navigate(`/provider/booking-details/${booking.bookingId}`, {
+      state: { from: "dashboard" },
+    });
   };
 
   if (isLoading) {
@@ -86,8 +88,8 @@ const BookingInfo: React.FC = () => {
                   const { date, time } = splitDateTime(b.scheduledAt);
                   return (
                     date === dateObj.fullDate &&
-                      time === slot.value &&
-                      b.status === BookingStatus.CONFIRMED
+                    time === slot.value &&
+                    b.status === BookingStatus.CONFIRMED
                   );
                 });
 
@@ -144,4 +146,4 @@ const BookingInfo: React.FC = () => {
   );
 };
 
-export default BookingInfo;
+export default JobInfo;

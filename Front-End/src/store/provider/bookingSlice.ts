@@ -1,13 +1,13 @@
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { ConfirmBookingInfo } from "@/shared/Types/booking";
+import type { ConfirmJobBookings } from "@/shared/Types/booking";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
 interface providerBookingState {
-  data: ConfirmBookingInfo[];
+  data: ConfirmJobBookings[];
   isLoading: boolean;
   error: string | null;
 }

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BGImage_404 } from "@/utils/constant";
 import Lottie from "lottie-react";
 import PaymentFailed from "@/assets/animations/crossFailed.json";
@@ -15,12 +15,14 @@ import { removeBooking, updateBookingStatus } from "@/store/user/providerInfoSli
 type PaymentState = "loading" | "success" | "failure";
 
 const PaymentPage = () => {
+  const { bookingId } = useParams();
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [paymentState, setPaymentState] = useState<PaymentState>("loading");
   const [failureReason, setFailureReason] = useState<string | null>(null);
 
-  useEffect(() => {    
+  useEffect(() => {
     const handlePaymentSuccess = (payload: PaymentSuccessNotification) => {
       dispatch(updateBookingStatus(payload));
       setPaymentState("success");
@@ -28,7 +30,7 @@ const PaymentPage = () => {
 
     const handlePaymentFailed = (payload: PaymentFailureNotification) => {
       dispatch(removeBooking(payload.bookingId));
-      setFailureReason(payload.reason);   
+      setFailureReason(payload.reason);
       setPaymentState("failure");
     };
 
@@ -41,12 +43,14 @@ const PaymentPage = () => {
     };
   }, [dispatch]);
 
+
+
   return (
     <div
       style={{ backgroundImage: BGImage_404 }}
       className="flex items-center justify-center w-full min-h-screen bg-cover bg-center p-4"
     >
-      <div className="bg-white rounded-3xl shadow-2xl shadow-black p-6 sm:p-10 w-full max-w-sm sm:max-w-md md:max-w-lg text-center overflow-auto"> 
+      <div className="bg-white rounded-3xl shadow-2xl shadow-black p-6 sm:p-10 w-full max-w-sm sm:max-w-md md:max-w-lg text-center overflow-auto">
         {paymentState === "loading" && (
           <div className="flex justify-center">
             <Lottie animationData={loading} loop className="w-42 sm:w-82 md:w-140" />
@@ -69,7 +73,13 @@ const PaymentPage = () => {
             </p>
             <div className="space-y-3">
               <Button
-                onClick={() => navigate("/user/bookings")}
+                onClick={() => {
+                  if (!bookingId) {
+                    navigate("/user/account/bookings");
+                  } else {
+                    navigate(`/user/account/bookings/details/${bookingId}`);
+                  }
+                }}
                 variant="success"
                 className="w-full rounded-xl py-3 text-lg shadow-2xl shadow-black border"
               >

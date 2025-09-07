@@ -15,10 +15,13 @@ import { ICreatePaymentUseCase } from "../../application/Interface/useCases/Clie
 import { IActiveServiceUseCase } from "../../application/Interface/useCases/Client/IActiveServiceUseCase";
 import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase";
 import { IVerifyPaymentUseCase } from "../../application/Interface/useCases/Client/IVerifyPaymentUseCase";
+import { IBookingHistoryUseCase } from "../../application/Interface/useCases/Client/IBookingHistoryUseCase";
+import { IGetBookingDetailsUseCase } from "../../application/Interface/useCases/Client/IGetBookingDetailsUseCase";
 
 const { OK, BAD_REQUEST,NOT_FOUND,UNAUTHORIZED,UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
-    VERIFICATION_MAIL_SENT,PROFILE_UPDATED_SUCCESS, ADD_ADDRESS,SUBMITTED_BOOKING_REQUEST } = Messages;
+    VERIFICATION_MAIL_SENT, PROFILE_UPDATED_SUCCESS, ADD_ADDRESS,
+    SUBMITTED_BOOKING_REQUEST, BOOKING_ID_NOT_FOUND } = Messages;
 
 
 export class UserController {
@@ -35,6 +38,8 @@ export class UserController {
         private _updateProfileUseCase: IUpdateProfileUseCase,
         private _verifyPasswordUseCase: IVerifyPasswordUseCase,
         private _resetPasswordUseCase: IResetPasswordUseCase,
+        private _bookingHistoryUseCase: IBookingHistoryUseCase,
+        private _getBookingDetailsUseCase : IGetBookingDetailsUseCase
     ) { }
 
     async activeServices(req: Request, res: Response, next: NextFunction): Promise<void> { 
@@ -296,6 +301,52 @@ export class UserController {
 
         } catch (error : any) {
             this._loggerService.error(`changePassword error:, ${error.message}`,{ stack : error.stack }); 
+            next(error);
+        }
+    }
+
+    async getBookingHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+
+            const userId = req.user.userId;
+
+            const currentPage = parseInt(req.query.currentPage as string) || 1;
+            const limit = parseInt(req.query.itemsPerPage as string) || 8;
+
+            const result = await this._bookingHistoryUseCase.execute({ userId,currentPage, limit });
+
+            res.status(OK).json({
+                success: true,
+                bookingHistoryData: result.data,
+                total: result.total
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async BookingDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { bookingId } = req.params;
+
+            if (!bookingId) {
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            }
+
+            const data = await this._getBookingDetailsUseCase.execute(bookingId);
+
+            res.status(OK).json({
+                success: true,
+                bookingDetailsData: data
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
             next(error);
         }
     }

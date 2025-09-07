@@ -36,6 +36,7 @@ router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMi
 router.patch("/editProfile", validateRequest(editProfileSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.editProfile(req, res, next));
 router.post("/verifyPassword", validateRequest(verifyPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.verifyPassword(req, res, next));
 router.patch("/change-password",validateRequest(resetPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.changePassword(req, res, next));
-
+router.get("/booking-history",AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.getBookingHistory(req, res, next));
+router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.BookingDetails.bind(userController));
 
 export default router;

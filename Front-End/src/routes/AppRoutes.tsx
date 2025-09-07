@@ -27,10 +27,11 @@ import ProviderProfilePage from "@/pages/provider/ProfilePage.tsx";
 import ProviderLayout from "@/components/common/layout/ProviderLayout.tsx";
 import UserLayout from "@/components/common/layout/UserLayout.tsx";
 import AdminLayout from "@/components/common/layout/AdminLayout.tsx";
-import BookingHistoryPage from "@/pages/client/BookingHistoryPage.tsx";
 import PaymentPage from "@/pages/common/PaymentPage.tsx";
-import BookingDetailsPage from "@/pages/provider/BookingDetailsPage.tsx";
-import JobHistoryPage from "@/pages/provider/BookingHistoryPage.tsx";
+import BookingHistoryPage from "@/pages/client/BookingHistoryPage.tsx";
+import BookingDetailsPage from "@/pages/client/BookingDetailsPage.tsx";
+import JobHistoryPage from "@/pages/provider/JobHistoryPage.tsx";
+import JobDetailsPage from "@/pages/provider/JobDetailsPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -69,12 +70,14 @@ const router = createBrowserRouter([
     children: [
       { path: "services", element: <ServicePage /> },
       { path: "providers", element: <ProvidersPage /> },
-      { path: "provider-KYC", element: <VerifictionFormPage /> },
-      { path: "provider/booking/:providerId", element: <ProviderBookingPage /> },
+      { path: "providers/provider-booking/:providerId", element: <ProviderBookingPage /> },
+      { path: "providers/provider-booking/payment/:bookingId", element: <PaymentPage /> },
       { path: "account/profile", element: <ClientProfilePage /> },
-      { path: "account/change-password", element: <ChangePasswordPage /> },
-      { path: "payment/:bookingId", element: <PaymentPage /> },
-      { path: "bookings", element: <BookingHistoryPage /> },
+      { path: "account/profile/change-password", element: <ChangePasswordPage /> },
+      { path: "account/bookings", element: <BookingHistoryPage /> },
+      { path: "account/bookings/details/:bookingId", element: <BookingDetailsPage/> },
+    
+      { path: "provider-KYC", element: <VerifictionFormPage /> },
     ],
   },
   //Provider Routes
@@ -89,8 +92,8 @@ const router = createBrowserRouter([
     ),
     children: [
       { path: "dashboard", element: <ProviderDashboardPage /> },
-      { path: "booking-details/:bookingId", element: <BookingDetailsPage /> },
-      { path: "booking-history", element: <JobHistoryPage/> },
+      { path: "booking-history", element: <JobHistoryPage /> },
+      { path: "booking-details/:bookingId", element: <JobDetailsPage/> },
       { path: "profile", element: <ProviderProfilePage /> },
     ],
   },

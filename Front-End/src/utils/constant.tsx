@@ -126,7 +126,7 @@ export interface SideBarOption {
 //User Side Bar
 export const userSideBarOptions: SideBarOption[] = [
   { icon: User, section: "Profile", to: "/user/account/profile" },
-  { icon: CalendarCheck, section: "Booking", to: "/user/account/booking" },
+  { icon: CalendarCheck, section: "Bookings", to: "/user/account/bookings" },
   { icon: MessageSquareText, section: "Chats", to: "/user/account/chats" },
   { icon: Wallet, section: "Wallet", to: "/user/account/wallet" },
   { icon: ShieldAlert, section: "Dispute", to: "/user/account/dispute" },

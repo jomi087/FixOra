@@ -109,6 +109,16 @@ class AuthService {
     return axiosInstance.patch("/api/user/change-password", { token ,password,cPassword, } , this.getJsonConfig());
   }
 
+  bookingHistoryApi(currentPage: number, itemsPerPage: number) {
+    return axiosInstance.get("/api/user/booking-history", {
+      params: { currentPage, itemsPerPage }
+    });
+  }
+
+  bookingDetailsApi(bookingId: string) {
+    return axiosInstance.get(`/api/user/bookingDetails/${bookingId}`);
+  }
+
   /*********************************************************************************************************************** */
     
   UpdateBookingStatusApi(bookingId: string, action : Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING> , reason:string ) {
@@ -122,8 +132,8 @@ class AuthService {
     return axiosInstance.get("/api/provider/confirm-bookings");
   }
 
-  bookingDetailsApi(bookingId: string) {
-    return axiosInstance.get(`/api/provider/bookingDetails/${bookingId}`);
+  jobDetailsApi(bookingId: string) {
+    return axiosInstance.get(`/api/provider/jobDetails/${bookingId}`);
   }
 
   providerJobHistoryApi(currentPage: number, itemsPerPage: number) {
