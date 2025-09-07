@@ -1,9 +1,9 @@
+import EditProfile from "@/components/client/accountSection/profileSection/EditProfile";
 import SideBar from "../../components/common/Others/SideBar";
 import Nav from "../../components/common/layout/Nav";
 import { userSideBarOptions } from "../../utils/constant";
-import Profile from "@/components/client/profileSection/Profile";
-import EditProfile from "@/components/client/profileSection/EditProfile";
 import { useState } from "react";
+import Profile from "@/components/client/accountSection/profileSection/Profile";
 
 
 const ProfilePage = () => {

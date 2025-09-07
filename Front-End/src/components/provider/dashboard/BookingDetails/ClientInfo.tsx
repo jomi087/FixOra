@@ -71,6 +71,7 @@ const ClientInfo: React.FC<ClientInfoProps> = ({ user }) => {
           )}
         </p>
       </div>
+      {/* get direction logic intigrate will google map */}
     </>
   );
 };

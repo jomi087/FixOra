@@ -10,7 +10,7 @@ import { ModeOfPayment } from "@/components/common/Others/ModeOfPayment";
 
 
 
-const BookingInfo: React.FC = () => {
+const BookingSlots: React.FC = () => {
 
   const {
     isWaiting,showModePayment,
@@ -23,8 +23,6 @@ const BookingInfo: React.FC = () => {
     submitBooking,
     handlePayment,isSubmitting
   } = useBookingRequest();
-
-  console.log(data, "data");
     
   return (
 
@@ -79,7 +77,7 @@ const BookingInfo: React.FC = () => {
   );
 };
 
-export default BookingInfo;
+export default BookingSlots;
 {/* History  if need use it as another component*/}
 // <div className="shadow-lg shadow-ring border-2 mt-6 p-6 rounded-xl">
 //     <h3 className="text-lg font-semibold mb-4">Booking History</h3>

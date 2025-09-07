@@ -15,9 +15,9 @@ import AuthService from "@/services/AuthService";
 import { getCoordinatesFromAddress } from "@/utils/helper/forwardGeocodingLocation";
 import { Userinfo } from "@/store/user/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
-import AddressDialog from "../../common/Others/AddressDialog";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, shortInputLength } from "@/utils/constant";
+import AddressDialog from "@/components/common/Others/AddressDialog";
 
 
 interface EditProfileProps {

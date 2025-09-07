@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.patch("/booking/:bookingId/status", validateRequest(bookingStatusSchema), AuthMiddleware([RoleEnum.Provider]), providerController.respondToBookingRequest.bind(providerController));
 router.get("/confirm-bookings", AuthMiddleware([RoleEnum.Provider]), providerController.confirmBookings.bind(providerController));
-router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Provider]), providerController.BookingDetails.bind(providerController));
 router.get("/job-history", AuthMiddleware([RoleEnum.Provider]), providerController.getJobHistory.bind(providerController)  );
+router.get("/jobDetails/:bookingId", AuthMiddleware([RoleEnum.Provider]), providerController.jobDetails.bind(providerController));
 
 export default router;
 

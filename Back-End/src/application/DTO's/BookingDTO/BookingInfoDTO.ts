@@ -13,6 +13,38 @@ export interface ConfirmBookingOutputDTO{
 
 export interface BookingDetailsOutputDTO {
     bookingId: string;
+    providerUser : {
+        userId: string;
+        fname: string;
+        lname: string;
+        email: string;
+        image: string
+    };
+    scheduledAt: Date;
+    category: {
+        categoryId: string;
+        name: string;
+        subCategory: {
+            subCategoryId: string;
+            name: string;
+        };
+    };
+    issue: string;
+    status: BookingStatus;
+    pricing: {
+        baseCost: number;
+        distanceFee: number;
+    };
+    acknowledgment: {
+        isWorkCompletedByProvider: boolean;
+        imageUrl: string[];
+        isWorkConfirmedByUser: boolean;
+    };
+}
+
+
+export interface jobDetailsOutputDTO {
+    bookingId: string;
     user: {
         userId: string;
         fname: string;
