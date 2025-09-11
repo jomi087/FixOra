@@ -12,11 +12,11 @@ export const Messages = {
     PROFILE_UPDATED_SUCCESS: "Profile updated successfully",
 
     USER_NOT_FOUND: "User Not Found",
-    BOOKING_ID_NOT_FOUND : "BookingId Not Found",
+    BOOKING_ID_NOT_FOUND: "BookingId Not Found",
+    WALLET_ID_NOT_FOUND: "Wallet Not Found",
     EMAIL_NOT_FOUND: "Email Not Found",
     PROVIDER_NOT_FOUND: "Provider Not Found",
     NOT_FOUND_MSG: "Data Not Found",
-
     
     ADD_ADDRESS : "Please add an Address",
 
@@ -36,7 +36,6 @@ export const Messages = {
     SUBCATEGORY_IMAGE_MISSING: "Subcategory image missing",
     CATEGORY_CREATED_SUCCESS: "Category created successfully",
 
-
     KYC_REQUEST_STATUS: (result: "submitted" | "resubmitted") => `KYC request ${result} successfully. You’ll be notified after verification.`,
     KYC_NOT_FOUND: "KYC request not found",
     KYC_ALREADY_REVIEWED: "This KYC request is already reviewed",
@@ -50,7 +49,10 @@ export const Messages = {
     PENDING_BOOKING: "Another booking is pending for this slot",
 
     PROVIDER_NO_RESPONSE: "No response from provider",
-    PAYMENT_TIMEOUT : "Payment TimeOut",
+    PAYMENT_TIMEOUT_MSG: "Payment TimeOut",
+    
+    DATA_MISMATCH: "Data mismatch found.",
+    INSUFFICIENT_BALANCE: "Insufficient Balance",
 
     INVALID_CREDENTIALS: "Invalid credentials",
     INVALID_ROLE: "Invalid role",

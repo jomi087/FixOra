@@ -2,6 +2,7 @@ import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
+import { PAYMENT_SESSION_TIMEOUT } from "../../../shared/constants";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/Enums/Payment";
@@ -12,7 +13,7 @@ import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/I
 
 
 const { INTERNAL_SERVER_ERROR,NOT_FOUND,CONFLICT } = HttpStatusCode;
-const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED } = Messages;
+const { INTERNAL_ERROR,BOOKING_ID_NOT_FOUND,ALREADY_UPDATED,PAYMENT_TIMEOUT_MSG } = Messages;
 
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
     constructor(
@@ -21,30 +22,26 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
         private readonly _bookingSchedulerService: IBookingSchedulerService,
     ) { }
 
-    // private schedulePaymentTimeout(bookingId:string): void{
-    //     const paymentKey = `paymentBooking-${bookingId}`
+    private schedulePaymentTimeout(bookingId:string): void{
+        const paymentKey = `paymentBooking-${bookingId}`;
 
-    //     this._bookingSchedulerService.scheduleTimeoutJob(paymentKey, bookingId, PAYMENT_TIMEOUT_MS, async () => {
-    //         const latestBooking = await this._bookingRepository.findByBookingId(bookingId);
-    //         console.log(latestBooking?.paymentInfo?.status)
+        this._bookingSchedulerService.scheduleTimeoutJob(paymentKey, bookingId, PAYMENT_SESSION_TIMEOUT, async () => {
+            const latestBooking = await this._bookingRepository.findByBookingId(bookingId);
+            // console.log(latestBooking?.paymentInfo?.status);
 
-    //         if (!latestBooking || latestBooking.paymentInfo?.status !== PaymentStatus.PENDING) return
+            if (!latestBooking || latestBooking.paymentInfo?.status !== PaymentStatus.PENDING) return;
 
-    //         let cancelledBookingData  =  await this._bookingRepository.updatePaymentTimeoutAndStatus(
-    //             bookingId,
-    //             BookingStatus.CANCELLED,
-    //             PaymentStatus.FAILED,
-    //             PAYMENT_TIMEOUT,
-    //         )
+            let cancelledBookingData  =  await this._bookingRepository.updatePaymentTimeoutAndStatus(
+                bookingId,
+                BookingStatus.CANCELLED,
+                PaymentStatus.FAILED,
+                PAYMENT_TIMEOUT_MSG
+            );
 
-    //         if (!cancelledBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND }
-            
-    //         this._notificationService.notifyPaymentFailed(cancelledBookingData.userId, {
-    //             bookingId: cancelledBookingData.bookingId,
-    //             reason: cancelledBookingData.paymentInfo?.reason as string
-    //         });
-    //     })
-    // }
+            if (!cancelledBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            this._notificationService.autoRejectTimeOutPayment(cancelledBookingData.userId, cancelledBookingData.bookingId);
+        });
+    }
     
     async execute(input:UpdateBookingStatusInputDTO ): Promise<UpdateBookingStatusOutputDTO|null > {
         try {
@@ -78,9 +75,9 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase{
                 ...(action === ProviderResponseStatus.REJECTED && { reason: updatedBookingData.provider.reason })
             });
 
-            // if (action === ProviderResponseStatus.ACCEPTED) {
-            //     this.schedulePaymentTimeout(updatedBookingData.bookingId)
-            // }
+            if (action === ProviderResponseStatus.ACCEPTED) {
+                this.schedulePaymentTimeout(updatedBookingData.bookingId);
+            }
 
             const jobKey = `providerResponse-${updatedBookingData.bookingId}`;
             this._bookingSchedulerService.cancel(jobKey);

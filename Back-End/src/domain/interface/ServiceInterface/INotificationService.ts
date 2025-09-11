@@ -22,17 +22,16 @@ export interface AutoRejectNotification {
     reason: string
 }
 
-export interface PaymentSuccessNotification {
-    bookingId: string
-    status: BookingStatus //is it required
-    
-}
+// export interface PaymentSuccessNotification {
+//     bookingId: string
+//     status: BookingStatus //is it required
+// }
 
-export interface PaymentFailureNotification {
-    bookingId: string
-    reason: string
-    status : BookingStatus //is it required
-}
+// export interface PaymentFailureNotification {
+//     bookingId: string
+//     reason: string
+//     status : BookingStatus //is it required
+// }
 
 export interface ConfirmBookingNotification {
     bookingId: string;
@@ -51,9 +50,13 @@ export interface INotificationService {
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
     
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
-    
-    notifyPaymentSuccessToUser(userId: string, payload: PaymentSuccessNotification): void 
-    notifyPaymentFailureToUser(userId: string, payload: PaymentFailureNotification): void 
+    autoRejectTimeOutPayment(userId:string, bookingId:string):void
+
+    notifyPaymentSuccessToUser(userId: string): void 
+    notifyPaymentFailureToUser(userId: string, reason: string): void 
+
+   // notifyWalletPaymentSuccessToUser(userId: string, payload: PaymentSuccessNotification): void 
+    //notifyWalletPaymentFailureToUser(userId: string, payload: PaymentFailureNotification): void 
 
     notifyBookingConfirmation(providerUserId: string, payload : ConfirmBookingNotification):void
 

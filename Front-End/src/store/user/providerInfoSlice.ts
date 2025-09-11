@@ -49,6 +49,8 @@ const providerInfoSlice  = createSlice({
     },
     updateBookingStatus: (state, action) => {
       if (state.data?.bookings) {
+        console.log("reached");
+        console.log(action.payload);
         const booking = state.data.bookings.find((b) => b.bookingId === action.payload.bookingId);
         if (booking) {
           booking.status = action.payload.status;

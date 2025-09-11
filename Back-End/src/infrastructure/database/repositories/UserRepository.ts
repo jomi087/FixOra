@@ -23,12 +23,16 @@ export class UserRepository implements IUserRepository {
         return newUser.toObject() as User;
     }
 
+    async delete(userId: string): Promise<void> {
+        await UserModel.findOneAndDelete({ userId });
+    }
+
     async findByUserId(userId: string, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
         const omitSelect = omitFields.map(field => `-${field}`).join(" ");
         return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>();
     }
 
-    async findByUserGoogleId(googleId: string): Promise< User | null> {
+    async findByUserGoogleId(googleId: string): Promise<User | null> {
         return await UserModel.findOne({ googleId }).lean<User>();
     }
 
@@ -72,39 +76,39 @@ export class UserRepository implements IUserRepository {
             { userId },
             { $set: { isBlocked } }
         );
-        return result.modifiedCount > 0; 
+        return result.modifiedCount > 0;
     }
 
-    async updateRefreshTokenAndGetUser (userId: string, refreshToken: string): Promise<Omit<User, "password"> | null> {
+    async updateRefreshTokenAndGetUser(userId: string, refreshToken: string): Promise<Omit<User, "password"> | null> {
         const result = await UserModel.findOneAndUpdate(
             { userId },
             { $set: { refreshToken } },
-            { new : true },
+            { new: true },
         ).select("-password");
-        return result; 
+        return result;
     }
 
-    async resetRefreshTokenById(userId: string, refreshToken:string = ""): Promise<boolean> {
+    async resetRefreshTokenById(userId: string, refreshToken: string = ""): Promise<boolean> {
         const result = await UserModel.updateOne(
             { userId },
             { $set: { refreshToken } }
         );
-        return result.matchedCount  > 0; 
+        return result.matchedCount > 0;
     }
 
-    async resetPasswordByEmail(email: string, password: string): Promise<boolean>{
+    async resetPasswordByEmail(email: string, password: string): Promise<boolean> {
         const result = await UserModel.updateOne(
             { email },
             { $set: { password } }
         );
-        return result.matchedCount  > 0; 
+        return result.matchedCount > 0;
     }
 
     async findUsersWithFilters(
         options: { searchQuery: string; filter: string },
         currentPage: number, limit: number,
     ): Promise<{ data: Partial<User>[]; total: number }> {
-        
+
         const { searchQuery, filter } = options;
         const match: any = { role: RoleEnum.Customer };
 
@@ -130,9 +134,9 @@ export class UserRepository implements IUserRepository {
                     fname: 1,
                     lname: 1,
                     email: 1,
-                    mobileNo : 1,
+                    mobileNo: 1,
                     role: 1,
-                    location :{
+                    location: {
                         houseinfo: 1,
                         street: 1,
                         district: 1,
@@ -141,8 +145,8 @@ export class UserRepository implements IUserRepository {
                         state: 1,
                         postalCode: 1,
                         coordinates: 1
-                    } ,
-                    isBlocked : 1,
+                    },
+                    isBlocked: 1,
                 },
             },
             {
@@ -478,7 +482,7 @@ export class UserRepository implements IUserRepository {
                                     case: { $and: [{ $gt: ["$distance", 10] }, { $lte: ["$distance", 15] }] },
                                     then: 60,
                                 },
-                                {                               
+                                {
                                     case: { $and: [{ $gt: ["$distance", 15] }, { $lte: ["$distance", 20] }] },
                                     then: 90,
                                 },
@@ -541,7 +545,7 @@ export class UserRepository implements IUserRepository {
         //console.log("come on",result[0])
         return result[0];
     }
-    
+
 
     async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; } | null> {
         const matchConditions: any = {

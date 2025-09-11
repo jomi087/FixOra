@@ -32,6 +32,8 @@ import BookingHistoryPage from "@/pages/client/BookingHistoryPage.tsx";
 import BookingDetailsPage from "@/pages/client/BookingDetailsPage.tsx";
 import JobHistoryPage from "@/pages/provider/JobHistoryPage.tsx";
 import JobDetailsPage from "@/pages/provider/JobDetailsPage.tsx";
+import ProviderWalletPage from "@/pages/provider/WalletPage.tsx";
+import UserWalletPage from "@/pages/client/WalletPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -75,8 +77,8 @@ const router = createBrowserRouter([
       { path: "account/profile", element: <ClientProfilePage /> },
       { path: "account/profile/change-password", element: <ChangePasswordPage /> },
       { path: "account/bookings", element: <BookingHistoryPage /> },
-      { path: "account/bookings/details/:bookingId", element: <BookingDetailsPage/> },
-    
+      { path: "account/bookings/details/:bookingId", element: <BookingDetailsPage /> },
+      { path: "account/wallet", element: <UserWalletPage /> },
       { path: "provider-KYC", element: <VerifictionFormPage /> },
     ],
   },
@@ -93,7 +95,8 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <ProviderDashboardPage /> },
       { path: "booking-history", element: <JobHistoryPage /> },
-      { path: "booking-details/:bookingId", element: <JobDetailsPage/> },
+      { path: "booking-history/details/:bookingId", element: <JobDetailsPage /> },
+      { path: "wallet", element: <ProviderWalletPage /> },
       { path: "profile", element: <ProviderProfilePage /> },
     ],
   },

@@ -16,13 +16,19 @@ const timeSlots = generateTimeSlots(TIME_SLOTS.STARTHOURS, TIME_SLOTS.ENDHOURS, 
 const JobInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { data, isLoading } = useAppSelector((state) => state.providerBookingInfo);
+  const { data, isLoading, error } = useAppSelector((state) => state.providerBookingInfo);
 
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(fetchProviderBookingsInfo());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const handleConfirmedBooking = (payload: ConfirmJobBookings) => {
@@ -39,7 +45,7 @@ const JobInfo: React.FC = () => {
     if (booking.status !== BookingStatus.CONFIRMED) {
       toast.error("Opps please refresh the page");
     }
-    navigate(`/provider/booking-details/${booking.bookingId}`, {
+    navigate(`/provider/booking-history/details/${booking.bookingId}`, {
       state: { from: "dashboard" },
     });
   };

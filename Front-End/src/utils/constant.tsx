@@ -1,8 +1,8 @@
 import {
-  Home, Briefcase, Users, FileText, User,
+  Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
   LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
-  MessageSquareMore, Scroll, ClipboardClock  
+  MessageSquareMore, /*Scroll,*/ClipboardClock  
 } from "lucide-react";
 
 
@@ -24,20 +24,21 @@ export const ConfirmSeal: string = "/completedStamp.png";
 
 /********************************************* Rules  *******************************************************/
 
-export const searchInputLength: number = 20; //50
-export const shortInputLength: number = 20; //50
-export const longInputLength: number = 40;  //200
+export const searchInputLength: number = 30; //50
+export const shortInputLength: number = 30; //50
+export const longInputLength: number = 50;  //200
 
 export const categoryImageSize: number = 1;                                 //default set  to 2 mb
 export const providerImageSize: number = 1;                                 //default set  to 2 mb
 export const KYCImageSize : number = 5;                                     //default set  to 5 mb
 export const minYear = `${new Date().getFullYear() - 150}-01-01`; 
 export const maxYear = `${new Date().getFullYear() - 19}-01-01`;
-export const CCPP = 8;                                                    //CCPP => Customer Cards Per page -> default set to 16
-export const PCPP = 8;                                                   //PCPP => Provider Cards Per page  -> default set to 16
-export const PALPP = 10;                                                 //PALPP => Provider Application List Per Page  -> default set to 15
+export const CCPP = 8;                                                  //CCPP => Customer Cards Per page -> default set to 16
+export const PCPP = 8;                                                  //PCPP => Provider Cards Per page  -> default set to 16
+export const PALPP = 10;                                                //PALPP => Provider Application List Per Page  -> default set to 15
 export const SLPP = 7;                                                  //SLPP => Service list Per page -> default set to 10
-export const BHPP = 7;
+export const BHPP = 7;                                                  //BHPP => Booking History Per Page  -> default set to 10
+export const TLPP = 5;                                                  //TLPP => Transaction List Per Page -> default set to 10
 export const DATE_RANGE_DAYS = 7;
 export const TIME_SLOTS = {
   STARTHOURS: 8,
@@ -113,7 +114,7 @@ export const navItems = [
   { name: "Home", to: "/", icon: <Home size={18} /> } ,
   { name: "Services", to: "/user/services", icon: <Briefcase size={18} /> },
   { name: "Providers", to: "/user/providers", icon: <Users size={18} /> },
-  { name: "Blog", to: "/user/blog", icon: <FileText size={18} /> },
+  // { name: "Blog", to: "/user/blog", icon: <FileText size={18} /> },
   { name : "Account" , to: "/user/account/profile", icon: <User  size={18} /> }
 ];
 /********************************************* Side-Bar Sections *******************************************************/
@@ -137,7 +138,7 @@ export const providerSideBarOptions: SideBarOption[] = [
   { icon: LayoutDashboard, section: "Dashboard", to: "/provider/dashboard" },
   { icon: MessageSquareMore , section: "Chat", to: "/provider/chats" },
   { icon: Wallet , section: "Wallet", to: "/provider/wallet" },
-  { icon: Scroll, section: "Blogs", to: "/provider/blogs" },
+  // { icon: Scroll, section: "Blogs", to: "/provider/blogs" },
   { icon: ClipboardClock, section: "History", to: "/provider/booking-history" },
   { icon: User, section: "Profile", to: "/provider/profile" },
 ];

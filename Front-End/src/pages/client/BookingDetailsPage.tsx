@@ -7,10 +7,10 @@ const BookingDetailsPage = () => {
   return (
     <>
       <Nav className='bg-nav-background text-nav-text' />
-      <div className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
+      <main className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
         <SideBar SideBar={userSideBarOptions} className="border-r-1 my-8" />
         <BookingDetails />
-      </div>
+      </main>
     </>
   );
 };

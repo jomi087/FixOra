@@ -24,16 +24,16 @@ export type BookingAutoRejectPayload = {
   reason: string
 }
 
-export interface PaymentSuccessNotification {
-  bookingId: string
-  status: BookingStatus
-}
+// export interface PaymentSuccessNotification {
+//   bookingId: string
+//   status: BookingStatus
+// }
 
-export interface PaymentFailureNotification {
-  bookingId: string
-  reason: string
-  status: BookingStatus
-}
+// export interface PaymentFailureNotification {
+//   bookingId: string
+//   reason: string
+//   status: BookingStatus
+// }
 
 export interface ConfirmJobBookings {
   bookingId: string;

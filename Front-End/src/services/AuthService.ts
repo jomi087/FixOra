@@ -3,12 +3,12 @@ import type { ProfileEdit, Signin, Signup } from "@/shared/Types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
 import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 
-class AuthService {  
+class AuthService {
   getBearerTokenConfig(token?: string) {
     return {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token||""}`
+        Authorization: `Bearer ${token || ""}`
       },
     };
   }
@@ -24,44 +24,44 @@ class AuthService {
   getMultiPartConfig() {
     return {
       headers: {
-        "Content-Type" : "multipart/form-data",
+        "Content-Type": "multipart/form-data",
       }
     };
   }
-    
+
   //#  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
   /*********************************************************************************************************************** */
-    
+
   getLandingDataApi() {
     return axiosInstance.get("/api/public/landing-data");
   }
-    
+
   signupApi(Data: Signup) {
-    return axiosInstance.post("/api/auth/signup", Data , this.getJsonConfig());
+    return axiosInstance.post("/api/auth/signup", Data, this.getJsonConfig());
   }
 
   resendOtpApi() {
     return axiosInstance.get("/api/auth/resend-otp");
   }
 
-  VerifySignupOtpApi(Data: string ) {
-    return axiosInstance.post("/api/auth/verify-otp", { otpData : Data } , this.getJsonConfig());
+  VerifySignupOtpApi(Data: string) {
+    return axiosInstance.post("/api/auth/verify-otp", { otpData: Data }, this.getJsonConfig());
   }
 
   signinApi(Data: Signin) {
-    return axiosInstance.post("/api/auth/signin", Data , this.getJsonConfig());
+    return axiosInstance.post("/api/auth/signin", Data, this.getJsonConfig());
   }
 
   googleSigninApi(data: { code: string, role: string }) {
-    return axiosInstance.post("/api/auth/google-signin", data , this.getJsonConfig());
+    return axiosInstance.post("/api/auth/google-signin", data, this.getJsonConfig());
   }
 
   forgotPasswordApi(email: string) {
-    return axiosInstance.post("/api/auth/forgot-password", { email } , this.getJsonConfig());
+    return axiosInstance.post("/api/auth/forgot-password", { email }, this.getJsonConfig());
   }
 
-  resetPasswordApi( token: string, password: string, cPassword: string ) {
-    return axiosInstance.patch("/api/auth/reset-password", { token ,password,cPassword, } , this.getJsonConfig());
+  resetPasswordApi(token: string, password: string, cPassword: string) {
+    return axiosInstance.patch("/api/auth/reset-password", { token, password, cPassword, }, this.getJsonConfig());
   }
 
   checkAuthStatusApi() {
@@ -74,10 +74,10 @@ class AuthService {
   }
 
   getAuthProvidersApi(params: { searchQuery: string, filter: string, currentPage: number, itemsPerPage: number, selectedService?: string; nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string }) {
-    return axiosInstance.get("/api/user/providers",{ params });
+    return axiosInstance.get("/api/user/providers", { params });
   }
 
-  providerKYCApi(data : FormData) {
+  providerKYCApi(data: FormData) {
     return axiosInstance.post("/api/user/provider-kyc", data, this.getMultiPartConfig());
   }
 
@@ -89,8 +89,12 @@ class AuthService {
     return axiosInstance.post("/api/user/provider/booking", payload, this.getJsonConfig());
   }
 
-  paymentApi(bookingId: string) {
+  onlinePaymentApi(bookingId: string) {
     return axiosInstance.post("/api/user/create-checkout-session", { bookingId }, this.getJsonConfig());
+  }
+
+  walletPaymentApi(bookingId: string) {
+    return axiosInstance.post("/api/user/wallet-payment", { bookingId }, this.getJsonConfig());
   }
 
   checkBookingPaymentStatus(bookingId: string) {
@@ -98,15 +102,15 @@ class AuthService {
   }
 
   editProfileApi(form: ProfileEdit) {
-    return axiosInstance.patch("/api/user/editProfile", form , this.getJsonConfig());
+    return axiosInstance.patch("/api/user/editProfile", form, this.getJsonConfig());
   }
 
-  verifyPasswordApi(password:string) {
-    return axiosInstance.post("/api/user/verifyPassword",{ password } , this.getJsonConfig());
+  verifyPasswordApi(password: string) {
+    return axiosInstance.post("/api/user/verifyPassword", { password }, this.getJsonConfig());
   }
 
-  changePasswordApi( token: string, password: string, cPassword: string ) {
-    return axiosInstance.patch("/api/user/change-password", { token ,password,cPassword, } , this.getJsonConfig());
+  changePasswordApi(token: string, password: string, cPassword: string) {
+    return axiosInstance.patch("/api/user/change-password", { token, password, cPassword, }, this.getJsonConfig());
   }
 
   bookingHistoryApi(currentPage: number, itemsPerPage: number) {
@@ -119,9 +123,17 @@ class AuthService {
     return axiosInstance.get(`/api/user/bookingDetails/${bookingId}`);
   }
 
+  userWalletInfoApi(page: number, limit: number) {
+    return axiosInstance.get(`/api/user/wallet?page=${page}&limit=${limit}`);
+  }
+
+  addFundApi(amount: number) {
+    return axiosInstance.post("/api/user/wallet/add-fund", { amount }, this.getJsonConfig());
+  }
+
   /*********************************************************************************************************************** */
-    
-  UpdateBookingStatusApi(bookingId: string, action : Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING> , reason:string ) {
+
+  UpdateBookingStatusApi(bookingId: string, action: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>, reason: string) {
     return axiosInstance.patch(`/api/provider/booking/${bookingId}/status`, {
       action,
       reason
@@ -143,7 +155,6 @@ class AuthService {
   }
 
 
-
   /*********************************************************************************************************************** */
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
     return axiosInstance.get("/api/admin/customer-management", {
@@ -157,19 +168,19 @@ class AuthService {
 
 
   getAllProviderApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/admin/provider-management",{
+    return axiosInstance.get("/api/admin/provider-management", {
       params: { searchQuery, filter, currentPage, itemsPerPage }
     });
   }
 
   getProviderApplicationList(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
     return axiosInstance.get("/api/admin/provider-applicationList", {
-      params : { searchQuery, filter, currentPage, itemsPerPage }
+      params: { searchQuery, filter, currentPage, itemsPerPage }
     });
   }
 
-  updateProviderKYC(id: string, payload: { action: KYCStatus , reason?: string }) {
-    return axiosInstance.patch(`/api/admin/provider-kyc/${id}`,payload, this.getJsonConfig());
+  updateProviderKYC(id: string, payload: { action: KYCStatus, reason?: string }) {
+    return axiosInstance.patch(`/api/admin/provider-kyc/${id}`, payload, this.getJsonConfig());
   }
 
   getCategoryApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
@@ -179,7 +190,7 @@ class AuthService {
   }
 
   addCategoryApi(data: FormData) {
-    return axiosInstance.post("/api/admin/service-management",data,this.getMultiPartConfig());
+    return axiosInstance.post("/api/admin/service-management", data, this.getMultiPartConfig());
   }
 
   toggleCategoryStatusApi(categoryId: string) {
@@ -187,8 +198,8 @@ class AuthService {
   }
 
   /*********************************************************************************************************************** */
-  signoutApi(token?:string) {
-    return axiosInstance.post("/api/auth/signout",{}, this.getBearerTokenConfig(token));
+  signoutApi(token?: string) {
+    return axiosInstance.post("/api/auth/signout", {}, this.getBearerTokenConfig(token));
   }
 
 
