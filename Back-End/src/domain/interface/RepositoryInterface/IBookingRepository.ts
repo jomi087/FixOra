@@ -27,6 +27,13 @@ export interface IBookingRepository {
     paymentStatus: PaymentStatus
   ): Promise<Booking | null>;
 
+  updatePaymentTimeoutAndStatus(
+    bookingId: string,
+    status: BookingStatus,
+    paymentStatus: PaymentStatus,
+    paymentFailureReason: string,
+  ): Promise<Booking | null>
+
   findCurrentBookingDetails(bookingId: string): Promise<{
     userInfo: Pick<User, "userId" | "fname" | "lname">
     providerInfo: Pick<User, "userId" | "fname" | "lname">
@@ -37,18 +44,18 @@ export interface IBookingRepository {
   findProviderConfirmBookingsById(providerUserId: string): Promise<Booking[]>
 
   jobDetailsById(bookingId: string): Promise<{
-    user: Pick<User, "userId" | "fname" | "lname" | "email" |"location">,
+    user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
     booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
   } | null>
-  
+
   findProviderJobHistoryById(providerUserId: string, currentPage: number, limit: number): Promise<{ data: Booking[], total: number }>
   findUserBookingHistoryById(userId: string, currentPage: number, limit: number): Promise<{ data: Booking[], total: number }>
 
   BookingsDetailsById(bookingId: string): Promise<{
-    userProvider: Pick<User, "userId" | "fname" | "lname" | "email" >,
-    provider : Pick<Provider,"profileImage">
+    userProvider: Pick<User, "userId" | "fname" | "lname" | "email">,
+    provider: Pick<Provider, "profileImage">
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
     booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">

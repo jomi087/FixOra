@@ -48,7 +48,7 @@ const JobHistoryTable = () => {
     if (booking.status !== BookingStatus.CONFIRMED) {
       toast.error("Opps please refresh the page");
     }
-    navigate(`/provider/booking-details/${booking.bookingId}`, {
+    navigate(`/provider/booking-history/details/${booking.bookingId}`, {
       state: { from: "history" },
     });
   };

@@ -8,13 +8,16 @@ import { User } from "../../entities/UserEntity";
 
 export interface IUserRepository {
     findByEmail(email: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    create(user: User): Promise <User>;   
+    create(user: User): Promise<User>; 
+    delete(userId: string): Promise<void>;
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
     findByUserGoogleId(googleId: string): Promise<User | null>;
     updateRole(userId: string, role: RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+    
     updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
     ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">>
+
     toogleUserStatusById(userId: string, isBlocked: boolean): Promise<boolean>;
     updateRefreshTokenAndGetUser(userId: string, refreshToken: string): Promise<Omit<User, "password"> | null>;
     resetRefreshTokenById(userId: string, refreshToken?: string): Promise<boolean>;

@@ -8,23 +8,23 @@ export interface Booking {
     providerUserId: string;
     provider: {
         id: string;
-        response: ProviderResponseStatus //pending/Accept/reject (default pending)
+        response: ProviderResponseStatus //pending/Accept/reject 
         reason?: string;
     },
     scheduledAt: Date;
     issueTypeId: string;
     issue: string;
-    status: BookingStatus; //pending , confirm , cancel  (default pending)
+    status: BookingStatus; //pending , confirm , cancel  
     pricing: {
         baseCost: number;
         distanceFee: number;
     }
     paymentInfo ?: {
-        mop: PaymentMode; //wallet , online (defualt wallet)
-        status: PaymentStatus; //pending,failed,success,refunded (default pending)
+        mop: PaymentMode; //wallet , online
+        status: PaymentStatus; //pending,failed,success,refunded 
         paidAt: Date;
         transactionId?: string
-        reason?: string; //refund reason 
+        reason?: string; 
     }
 
     esCrowAmout?: number

@@ -4,12 +4,12 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import { addBooking, removeBooking } from "@/store/user/providerInfoSlice";
+import { addBooking, removeBooking, updateBookingStatus } from "@/store/user/providerInfoSlice";
 import { useEffect, useState } from "react";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import type { BookingResponsePayload } from "@/shared/Types/booking";
 import socket from "@/services/soket";
-import { PaymentMode } from "@/shared/enums/PaymentMode";
+import { PaymentMode } from "@/shared/enums/Payment";
 import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -22,7 +22,7 @@ export const useBookingRequest = () => {
     TIME_SLOTS.INTERVAL
   ); // Default: 9AM–6PM, every 30 min
 
-  const FirstDate = dates[0]?.fullDate || ""; 
+  const FirstDate = dates[0]?.fullDate || "";
 
   const [selectedDate, setSelectedDate] = useState(FirstDate);
   const [selectedTime, setSelectedTime] = useState("");
@@ -58,11 +58,11 @@ export const useBookingRequest = () => {
     const payload = {
       providerId: data.providerId,
       providerUserId: data.user.userId,
-      scheduledAt:  dateTime(selectedDate,selectedTime),
+      scheduledAt: dateTime(selectedDate, selectedTime),
       issueTypeId: selectedServiceId,
       issue: description
     };
-        
+
     //console.log("payload",payload)
     setIsWaiting(true);
 
@@ -70,7 +70,7 @@ export const useBookingRequest = () => {
       const res = await AuthService.BookingApplicationApi(payload);
       //console.log(res);
       if (res.status === HttpStatusCode.OK) {
-        if ( res.data.booking.status == BookingStatus.PENDING ){
+        if (res.data.booking.status == BookingStatus.PENDING) {
           dispatch(addBooking(res.data.booking));
         }
         setIsDialogOpen(false);
@@ -84,9 +84,9 @@ export const useBookingRequest = () => {
       toast.error(errorMsg);
     }
   };
-        
+
   useEffect(() => {
-    const handleBookingResponse = ( payload: BookingResponsePayload ) => {            
+    const handleBookingResponse = (payload: BookingResponsePayload) => {
       if (payload.response === ProviderResponseStatus.ACCEPTED) {
         setBookingId(payload.bookingId);
         setShowModePayment(true);
@@ -100,46 +100,74 @@ export const useBookingRequest = () => {
       }
     };
 
-    socket.on("booking:response", handleBookingResponse);
+    const handleAutoRejectPayment = (bookingId: string) => {
+      dispatch(removeBooking(bookingId));
+      setShowModePayment(false);
+      setIsWaiting(false);
+    };
 
+    socket.on("booking:response", handleBookingResponse);
+    socket.on("payment:autoReject", handleAutoRejectPayment);
     return () => {
       socket.off("booking:response", handleBookingResponse);
+      socket.off("payment:autoReject", handleAutoRejectPayment);
     };
 
   }, [dispatch]);
-    
+
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
-  const handlePayment = async (paymentType: PaymentMode) => {
+  const handlePayment = async (paymentType: PaymentMode, balance?: number) => {
     setIsSubmitting(true);
-    
+
     if (paymentType === PaymentMode.ONLINE) {
-      try {                
-        const res = await AuthService.paymentApi(bookingId);
+      try {
+        const res = await AuthService.onlinePaymentApi(bookingId);
         const sessionId = res.data;
 
         const stripe = await stripePromise;
 
         if (!stripe) throw new Error(Messages.STRIPE_FAILED);
         await stripe.redirectToCheckout({ sessionId: sessionId });
-                
+
         setShowModePayment(false);
         setIsWaiting(false);
-      
+
       } catch (error: any) {
         console.log(error);
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);
       } finally {
-        setIsSubmitting(false); 
+        setIsSubmitting(false);
       }
 
     } else if (paymentType === PaymentMode.WALLET) {
+      try {
+        if (balance && data?.distanceFee && data.serviceCharge) {
+          if (balance < (data.distanceFee + data.serviceCharge)) {
+            toast.info("Low Balance");
+            return;
+          }
+        }
+        const res = await AuthService.walletPaymentApi(bookingId);
+        console.log(res);
+        dispatch(updateBookingStatus(res.data.result));
+        toast.success("Booking Successfull");
 
+        setShowModePayment(false);
+        setIsWaiting(false);
+
+      } catch (error: any) {
+        console.log(error);
+        const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
+        toast.error(errorMsg);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
   return {
-    isWaiting,showModePayment,
+    isWaiting, showModePayment,
     data,
     dates, selectedDate, handleDateChange,
     timeSlots, selectedTime, handleTimeChange,
@@ -147,7 +175,7 @@ export const useBookingRequest = () => {
     selectedServiceId, setSelectedServiceId,
     description, setDescription,
     submitBooking,
-    handlePayment,isSubmitting
+    handlePayment, isSubmitting
   };
 };
 

@@ -4,7 +4,6 @@ import type { ConfirmJobBookings } from "@/shared/Types/booking";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";
-import { toast } from "react-toastify";
 
 interface providerBookingState {
   data: ConfirmJobBookings[];
@@ -29,7 +28,6 @@ export const fetchProviderBookingsInfo = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       const errorMsg = err.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
-      toast.error(errorMsg);
       return rejectWithValue(errorMsg);
     }
   }

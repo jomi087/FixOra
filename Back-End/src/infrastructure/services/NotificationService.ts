@@ -1,6 +1,6 @@
 import {
-    AutoRejectNotification, ConfirmBookingNotification, INotificationService, PaymentFailureNotification,
-    PaymentSuccessNotification, ProviderBookingNotification, UserResponsNotificaton
+    AutoRejectNotification, ConfirmBookingNotification, INotificationService,
+    ProviderBookingNotification, UserResponsNotificaton
 } from "../../domain/interface/ServiceInterface/INotificationService";
 import { getIO } from "../socket/config";
 
@@ -10,7 +10,7 @@ export class NotificationService implements INotificationService {
         getIO().to(providerUserId).emit("booking:requested", payload);
     }
     //provider response ( provider to user)
-    notifyBookingResponseToUser(userId: string, payload:UserResponsNotificaton): void {
+    notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void {
         getIO().to(userId).emit("booking:response", payload);
     }
     //auto reject 
@@ -18,12 +18,16 @@ export class NotificationService implements INotificationService {
         getIO().to(providerUserId).emit("booking:autoReject", payload);
     }
 
-    notifyPaymentSuccessToUser(userId: string, payload: PaymentSuccessNotification): void {
-        getIO().to(userId).emit("payment:success", payload);
+    autoRejectTimeOutPayment(userId: string, bookingId: string): void {
+        getIO().to(userId).emit("payment:autoReject", bookingId );
     }
 
-    notifyPaymentFailureToUser(userId: string, payload: PaymentFailureNotification): void {
-        getIO().to(userId).emit("payment:failure", payload);
+    notifyPaymentSuccessToUser(userId: string): void {
+        getIO().to(userId).emit("payment:success");
+    }
+
+    notifyPaymentFailureToUser(userId: string, reason: string): void {
+        getIO().to(userId).emit("payment:failure", reason);
     }
 
     notifyBookingConfirmation(providerUserId: string, payload: ConfirmBookingNotification): void {

@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 const BookingHistoryTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalBookingHistoryCount, setTotalBookingHistoryCount] = useState(0);
-  const itemsPerPage = BHPP || 16;
+  const itemsPerPage = BHPP || 10;
 
   const [bookingHistory, setBookingHistory] = useState<BookingsHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);

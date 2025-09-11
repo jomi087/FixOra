@@ -16,7 +16,7 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async findByBookingId(bookingId: string): Promise<Booking | null> {
-        return await BookingModel.findOne({ bookingId }).lean();
+        return await BookingModel.findOne({ bookingId });
     }
 
     async findExistingBooking(providerId: string, scheduledAt: Date): Promise<Booking | null> {
@@ -64,6 +64,28 @@ export class BookingRepository implements IBookingRepository {
         ).lean<Booking>();
         return booking;
     }
+
+    async updatePaymentTimeoutAndStatus(
+        bookingId: string,
+        status: BookingStatus,
+        paymentStatus: PaymentStatus,
+        paymentFailureReason: string,
+    ): Promise<Booking | null> {
+        const booking = await BookingModel.findOneAndUpdate(
+            { bookingId },
+            {
+                $set: {
+                    status,
+                    "paymentInfo.status": paymentStatus,
+                    "paymentInfo.reason": paymentFailureReason,
+                }
+            },
+            { new: true }
+        ).lean<Booking>();
+        return booking;
+    }
+
+
 
     async findCurrentBookingDetails(bookingId: string): Promise<{
         userInfo: Pick<User, "userId" | "fname" | "lname">
@@ -314,11 +336,9 @@ export class BookingRepository implements IBookingRepository {
         return { data, total };
     }
 
-
-    
     async BookingsDetailsById(bookingId: string): Promise<{
-        userProvider: Pick<User, "userId" | "fname" | "lname" | "email" >,
-        provider : Pick<Provider,"profileImage">
+        userProvider: Pick<User, "userId" | "fname" | "lname" | "email">,
+        provider: Pick<Provider, "profileImage">
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
         booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
@@ -370,7 +390,7 @@ export class BookingRepository implements IBookingRepository {
                         email: "$providerUserDetails.email",
                     },
                     provider: {
-                        profileImage:"$providerDetails.profileImage"
+                        profileImage: "$providerDetails.profileImage"
                     },
                     category: {
                         categoryId: "$serviceDetails.categoryId",
@@ -400,8 +420,8 @@ export class BookingRepository implements IBookingRepository {
         ];
 
         interface AggregatedResult {
-            userProvider: Pick<User, "userId" | "fname" | "lname" | "email" >,
-            provider : Pick<Provider,"profileImage">
+            userProvider: Pick<User, "userId" | "fname" | "lname" | "email">,
+            provider: Pick<Provider, "profileImage">
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
             booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">

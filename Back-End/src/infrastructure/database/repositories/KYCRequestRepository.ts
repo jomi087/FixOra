@@ -1,23 +1,24 @@
-import { KYCRequest, KYCRequestWithDetails } from "../../../domain/entities/KYCRequestEntity";
+import { Category } from "../../../domain/entities/CategoryEntity";
+import { KYCRequest } from "../../../domain/entities/KYCRequestEntity";
+import { User } from "../../../domain/entities/UserEntity";
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
 import KYCRequestModel from "../models/KYCRequestModel";
-import { ObjectId } from "mongodb";
 
 export class KYCRequestRepository implements IKYCRequestRepository {
     async findByUserId(userId: string): Promise<KYCRequest | null> {
         return await KYCRequestModel.findOne({ userId }).lean<KYCRequest>();
     }
 
-    async findById(id: string): Promise<KYCRequest | null>{
+    async findById(id: string): Promise<KYCRequest | null> {
         return await KYCRequestModel.findOne({ _id: id }).lean<KYCRequest>();
 
     }
-    
+
     async create(data: KYCRequest): Promise<void> {
         await new KYCRequestModel(data).save();
     }
 
-    async updateById(id: string, updateData: Partial<KYCRequest>): Promise<KYCRequest | null>{
+    async updateById(id: string, updateData: Partial<KYCRequest>): Promise<KYCRequest | null> {
         return await KYCRequestModel.findByIdAndUpdate(
             id,
             { $set: updateData },
@@ -28,16 +29,23 @@ export class KYCRequestRepository implements IKYCRequestRepository {
     async updateByUserId(userId: string, updateData: Partial<KYCRequest>): Promise<KYCRequest | null> {
         const updated = await KYCRequestModel.findOneAndUpdate(
             { userId },
-            { $set: updateData, reviewedAt: undefined, reviewedBy: undefined, reason: undefined }, 
+            { $set: updateData, reviewedAt: undefined, reviewedBy: undefined, reason: undefined },
             { new: true }
         ).lean<KYCRequest>();
         return updated;
     }
 
-    //need to fix the the return data type
     async findWithFilters(option: { searchQuery: string; filter: string },
         currentPage: number, limit: number
-    ): Promise<{ data: KYCRequestWithDetails[]; total: number }> {
+    ): Promise<{
+        data: {
+            id: string;
+            user: Pick<User, "userId" | "fname" | "lname" | "email" | "mobileNo" | "location">
+            kycInfo: Omit<KYCRequest, "userId" | "serviceId" | "specialixationIds">
+            category: Partial<Category>
+        }[];
+        total: number
+    }> {
 
         const { searchQuery, filter } = option;
         const skip = (currentPage - 1) * limit;
@@ -66,9 +74,11 @@ export class KYCRequestRepository implements IKYCRequestRepository {
                     localField: "userId",  //field in kycRequest
                     foreignField: "userId",  // field in User
                     pipeline: [
-                        { $project: { 
-                            userId: 1, fname: 1, lname: 1, email: 1, mobileNo: 1, location: 1 
-                        } }
+                        {
+                            $project: {
+                                userId: 1, fname: 1, lname: 1, email: 1, mobileNo: 1, location: 1
+                            }
+                        }
                     ],
                     as: "userDetails",
                 }, //so  lookup  will return the data in a array
@@ -80,47 +90,72 @@ export class KYCRequestRepository implements IKYCRequestRepository {
                     localField: "serviceId",
                     foreignField: "categoryId",
                     pipeline: [
-                        { $project: { name: 1, subcategories: 1 } }
+                        { $project: {  categoryId: 1, name: 1, subcategories: 1 } }
                     ],
                     as: "serviceDetails"
                 }
             }, { $unwind: "$serviceDetails" },
             // Admin User (Optional)
             {
-                $lookup : {
+                $lookup: {
                     from: "users",
-                    localField: "reviewedBy",  
-                    foreignField: "userId", 
+                    localField: "reviewedBy",
+                    foreignField: "userId",
                     pipeline: [{
-                        $project: { 
+                        $project: {
                             fname: 1, lname: 1
-                        } }
+                        }
+                    }
                     ],
                     as: "adminDetails",
                 }
-            },{
-                $unwind: { 
-                    path: "$adminDetails", 
+            }, {
+                $unwind: {
+                    path: "$adminDetails",
                     preserveNullAndEmptyArrays: true  // keep null if pending
                 }
             },
             // Match after lookup (status + search)
             { $match: matchConditions },
-            // Project into the shape of KYCRequestWithDetails
             {
                 $project: {
                     id: "$_id",
                     user: {
-                        userId: "$userDetails.userId", 
+                        userId: "$userDetails.userId",
                         fname: "$userDetails.fname",
                         lname: "$userDetails.lname",
                         email: "$userDetails.email",
                         mobileNo: "$userDetails.mobileNo",
-                        location: "$userDetails.location"
+                        location: {
+                            houseinfo: "$userDetails.location.houseinfo",
+                            street: "$userDetails.location.street",
+                            district: "$userDetails.location.district",
+                            city: "$userDetails.location.city",
+                            locality: "$userDetails.location.locality",
+                            state: "$userDetails.location.state",
+                            postalCode: "$userDetails.location.postalCode",
+                            coordinates: "$userDetails.location.coordinates"
+                        },
                     },
-                    dob: 1,
-                    gender: 1,
-                    service: {
+                    kycInfo: {
+                        dob: "$dob",
+                        gender: "$gender",
+                        profileImage: "$profileImage",
+                        serviceCharge: "$serviceCharge",
+                        kyc: "$kyc",
+                        status: "$status",
+                        reason: "$reason",
+                        submittedAt: "$submittedAt",
+                        reviewedAt: "$reviewedAt",
+                        reviewedBy: {
+                            $cond: {
+                                if: { $ifNull: ["$adminDetails", false] }, //$ifNull: [ <valueToCheck>, <returnValueforFalsy> ] -> if true then vlaueTOcheck will be return  else returnValueforFalsy will be returned
+                                then: { $concat: ["$adminDetails.fname", " ", "$adminDetails.lname"] },
+                                else: "$$REMOVE" //remove the field
+                            }
+                        }
+                    },
+                    category: {
                         categoryId: "$serviceDetails.categoryId",
                         name: "$serviceDetails.name",
                         subcategories: {
@@ -129,7 +164,7 @@ export class KYCRequestRepository implements IKYCRequestRepository {
                                     $filter: {
                                         input: "$serviceDetails.subcategories",
                                         as: "sub",
-                                        cond: { $in: ["$$sub.subCategoryId", "$specializationIds"] } 
+                                        cond: { $in: ["$$sub.subCategoryId", "$specializationIds"] }
                                     }
                                 },
                                 as: "sub",
@@ -141,20 +176,8 @@ export class KYCRequestRepository implements IKYCRequestRepository {
                         }
 
                     },
-                    profileImage: 1,
-                    serviceCharge: 1,
-                    kyc: 1,
-                    status: 1,
-                    reason: 1,
-                    submittedAt: 1,
-                    reviewedAt: 1,
-                    reviewedBy: {
-                        $cond: {
-                            if: { $ifNull: ["$adminDetails", false] }, //$ifNull: [ <valueToCheck>, <returnValueforFalsy> ] -> if true then vlaueTOcheck will be return  else returnValueforFalsy will be returned
-                            then: { $concat: ["$adminDetails.fname", " ", "$adminDetails.lname"] },
-                            else: "$$REMOVE" //remove the field
-                        }
-                    }
+
+
                 }
             },
             {
@@ -171,26 +194,23 @@ export class KYCRequestRepository implements IKYCRequestRepository {
             }
         ];
 
-        type AggregatedKYC = Omit<KYCRequestWithDetails, "id"> & { id: ObjectId };  //removing  id : string from type KYCRequestWithDetails and replacing it wiltl id: objectID cz aggration will return _id as an object id
- 
+
         interface AggregatedFacetResult {
-            data: AggregatedKYC[];
+            data: {
+                id: string;
+                user: Pick<User, "userId" | "fname" | "lname" | "email" | "mobileNo" | "location">
+                kycInfo: Omit<KYCRequest, "userId" | "serviceId" | "specialixationIds">
+                category: Partial<Category>
+            }[];
             totalCount: { total: number }[];
         }
 
-        const result = await KYCRequestModel.aggregate<AggregatedFacetResult>(pipeline); 
-        console.log("result without id ",result[0].data[2]);
+        const result = await KYCRequestModel.aggregate<AggregatedFacetResult>(pipeline);
+        console.log(result[0].data); 
+        const data = result[0].data ?? [];
+        const total = result[0].totalCount[0]?.total ?? 0;
 
-        const rawData  = result[0].data || [];
-        const total = result[0].totalCount[0]?.total || 0;
-        
-        const mappedData: KYCRequestWithDetails[] = rawData.map((doc) => ({
-            ...doc,
-            id: doc.id.toString(), // convert ObjectId → string
-        })); 
-
-        console.log("mappedData with id",mappedData[2]);
-        return { data:mappedData, total };
+        return { data, total };
     }
 
 }

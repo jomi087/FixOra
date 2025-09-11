@@ -8,12 +8,10 @@ import { useBookingRequest } from "@/hooks/useBookingRequest";
 import { ModeOfPayment } from "@/components/common/Others/ModeOfPayment";
 
 
-
-
 const BookingSlots: React.FC = () => {
 
   const {
-    isWaiting,showModePayment,
+    isWaiting, showModePayment,
     data,
     dates, selectedDate, handleDateChange,
     timeSlots, selectedTime, handleTimeChange,
@@ -21,27 +19,27 @@ const BookingSlots: React.FC = () => {
     selectedServiceId, setSelectedServiceId,
     description, setDescription,
     submitBooking,
-    handlePayment,isSubmitting
+    handlePayment, isSubmitting
   } = useBookingRequest();
-    
+
   return (
 
     <>
-      { isWaiting &&
-                <div className="fixed inset-0 bg-black/60 z-[9999] flex flex-col items-center justify-center">
-                  { showModePayment ? (
-                    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl border rounded-xl overflow-auto shadow-black shadow-2xl bg-background ">
-                      < ModeOfPayment handlePayment={handlePayment} isSubmitting={isSubmitting} />
-                    </div>
-                  ) : (
-                    <>
-                      <Lottie animationData={LodingAnimation} loop={true} className="w-40 h-40" />
-                      <p className=" m-4 text-primary text-lg font-mono">Waiting for provider response...</p>
-                    </>       
-                  )}
-                </div>
+      {isWaiting &&
+      <div className="fixed inset-0 bg-black/60 z-[9999] flex flex-col items-center justify-center">
+        {showModePayment ? (
+          <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl border rounded-xl overflow-auto shadow-black shadow-2xl bg-background ">
+            < ModeOfPayment handlePayment={handlePayment} isSubmitting={isSubmitting} />
+          </div>
+        ) : (
+          <>
+            <Lottie animationData={LodingAnimation} loop={true} className="w-40 h-40" />
+            <p className=" m-4 text-primary text-lg font-mono">Waiting for provider response...</p>
+          </>
+        )}
+      </div>
       }
-      { data ? (
+      {data ? (
         <div className="shadow-lg shadow-ring border-2 mt-10 p-6 rounded-xl">
           <h3 className="text-lg font-semibold mb-4">Booking Details</h3>
           <BookingDatesInfo
@@ -57,7 +55,7 @@ const BookingSlots: React.FC = () => {
             selectedDate={selectedDate}
             bookedSlots={data.bookings}
           />
-                    
+
           <BookingDialog
             isDialogOpen={isDialogOpen}
             setIsDialogOpen={setIsDialogOpen}
@@ -65,23 +63,22 @@ const BookingSlots: React.FC = () => {
             setSelectedServiceId={setSelectedServiceId}
             description={description}
             setDescription={setDescription}
-            submitBooking = {submitBooking}
+            submitBooking={submitBooking}
           />
-        </div> 
-      ):(
+        </div>
+      ) : (
         <div className="flex justify-center h-[78vh] items-center text-sm text-muted-foreground ">
-                    No Data found.
-        </div>     
+        No Data found.
+        </div>
       )}
     </>
   );
 };
 
 export default BookingSlots;
-{/* History  if need use it as another component*/}
+{/* History  if need use it as another component*/ }
 // <div className="shadow-lg shadow-ring border-2 mt-6 p-6 rounded-xl">
 //     <h3 className="text-lg font-semibold mb-4">Booking History</h3>
 //     <p className="text-sm text-gray-500">History section will be added here later.</p>
 // </div>
 
-          

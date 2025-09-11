@@ -8,9 +8,6 @@ import loading from "@/assets/animations/loadingWrist.json";
 
 import { useEffect, useState } from "react";
 import socket from "@/services/soket";
-import { useAppDispatch } from "@/store/hooks";
-import type { PaymentFailureNotification, PaymentSuccessNotification } from "@/shared/Types/booking";
-import { removeBooking, updateBookingStatus } from "@/store/user/providerInfoSlice";
 
 type PaymentState = "loading" | "success" | "failure";
 
@@ -18,19 +15,17 @@ const PaymentPage = () => {
   const { bookingId } = useParams();
 
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  //const dispatch = useAppDispatch();
   const [paymentState, setPaymentState] = useState<PaymentState>("loading");
   const [failureReason, setFailureReason] = useState<string | null>(null);
 
   useEffect(() => {
-    const handlePaymentSuccess = (payload: PaymentSuccessNotification) => {
-      dispatch(updateBookingStatus(payload));
+    const handlePaymentSuccess = () => {
       setPaymentState("success");
     };
 
-    const handlePaymentFailed = (payload: PaymentFailureNotification) => {
-      dispatch(removeBooking(payload.bookingId));
-      setFailureReason(payload.reason);
+    const handlePaymentFailed = (reason: string) => {
+      setFailureReason(reason);
       setPaymentState("failure");
     };
 
@@ -41,7 +36,7 @@ const PaymentPage = () => {
       socket.off("payment:success", handlePaymentSuccess);
       socket.off("payment:failure", handlePaymentFailed);
     };
-  }, [dispatch]);
+  }, []);
 
 
 
@@ -120,7 +115,7 @@ const PaymentPage = () => {
                 Try Again
               </Button>
               <Button
-                onClick={() => navigate("/user/providers")}
+                onClick={() => navigate(-1)}
                 variant="outline"
                 className="w-full rounded-xl py-3 text-base sm:text-lg shadow-2xl shadow-black"
               >

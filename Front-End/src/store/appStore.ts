@@ -5,6 +5,7 @@ import categoryReducer from "./user/categorySlice";
 import filterReducer from "./user/filterSlice";
 import providerInfoReducer from "./user/providerInfoSlice";
 import providerBookingReducer from "./provider/bookingSlice";
+import walletInfoReducer from "./user/walletSlice";
 
 const appStore = configureStore ({
   reducer: {
@@ -13,6 +14,7 @@ const appStore = configureStore ({
     filter: filterReducer,
     providerInfo: providerInfoReducer,
     providerBookingInfo: providerBookingReducer,
+    wallet: walletInfoReducer,
   }
 });
 

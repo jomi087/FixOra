@@ -14,26 +14,38 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { PaymentMode } from "@/shared/enums/PaymentMode";
+import { PaymentMode } from "@/shared/enums/Payment";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useEffect } from "react";
+import { fetchUserWalletInfo } from "@/store/user/walletSlice";
 
 const FormSchema = z.object({
   type: z.enum(PaymentMode)
 });
 
-
 interface ModeOfPaymentProps {
-  handlePayment: (paymentType: PaymentMode) => void
-  isSubmitting : boolean
+  handlePayment: (paymentType: PaymentMode, balance?: number) => void
+  isSubmitting: boolean
 }
 
-export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment,isSubmitting }) => {
+export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isSubmitting }) => {
+  const { data : wallet } = useAppSelector((state) => state.wallet);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserWalletInfo());
+  }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    handlePayment(data.type);
+    if (data.type === PaymentMode.WALLET) {
+      handlePayment(data.type, wallet?.balance );
+    } else {
+      handlePayment(data.type);
+    }
   }
 
   return (
@@ -57,15 +69,15 @@ export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment,isSu
                     <FormControl>
                       <RadioGroupItem value={PaymentMode.WALLET} className="border-2 border-black" />
                     </FormControl>
-                    <FormLabel className="font-normal">
-                      Wallet
+                    <FormLabel className="font-serif text-lg ">
+                      <p>{`Wallet ${wallet?.balance ? `(₹${wallet.balance})` : ""}`}</p>
                     </FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center gap-3">
                     <FormControl>
                       <RadioGroupItem value={PaymentMode.ONLINE} className="border-2 border-black" />
                     </FormControl>
-                    <FormLabel className="font-normal">
+                    <FormLabel className="font-serif text-lg">
                       Online
                     </FormLabel>
                   </FormItem>
@@ -80,7 +92,7 @@ export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment,isSu
           variant={"success"}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Processing..." : "Submit"}
+          { isSubmitting ? "Processing..." : "Submit" }
         </Button>
       </form>
     </Form>
