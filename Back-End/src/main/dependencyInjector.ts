@@ -147,7 +147,7 @@ import { GetProvidersUseCase } from "../application/useCases/admin/GetProvidersU
 const getProvidersUseCase = new GetProvidersUseCase(providerRepository);
 
 import { ProviderApplicationUseCase } from "../application/useCases/admin/ProviderApplicationUseCase";
-const providerApplicationUseCase = new ProviderApplicationUseCase(kycRequestRepository,imageUploaderService);
+const providerApplicationUseCase = new ProviderApplicationUseCase(kycRequestRepository);
 
 import { UpdateKYCStatusUseCase } from "../application/useCases/admin/UpdateKYCStatusUseCase";
 const updateKYCStatusUseCase = new UpdateKYCStatusUseCase(kycRequestRepository,providerRepository,userRepository);

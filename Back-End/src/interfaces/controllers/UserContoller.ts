@@ -129,12 +129,12 @@ export class UserController {
 
             const name = `${req.user?.fname}_${req.user?.lname}_${Date.now()}`;
 
-            const profileImageId = await this._imageUploaderService.uploadImageId(files.profileImage[0].buffer, `FixOra/Provider/${name}`);
-            const idCardId = await this._imageUploaderService.uploadImageId(files.idCard[0].buffer, `FixOra/Provider/${name}`);
-            const educationCertificateId = await this._imageUploaderService.uploadImageId(files.educationCertificate[0].buffer, `FixOra/Provider/${name}`);
+            const profileImageId = await this._imageUploaderService.uploadImage(files.profileImage[0].buffer, `FixOra/Provider/${name}`);
+            const idCardId = await this._imageUploaderService.uploadImage(files.idCard[0].buffer, `FixOra/Provider/${name}`);
+            const educationCertificateId = await this._imageUploaderService.uploadImage(files.educationCertificate[0].buffer, `FixOra/Provider/${name}`);
 
             const experienceCertificateId = files?.experienceCertificate?.[0] ?
-                await this._imageUploaderService.uploadImageId(files.experienceCertificate[0].buffer, `FixOra/Provider/${name}`) : undefined;
+                await this._imageUploaderService.uploadImage(files.experienceCertificate[0].buffer, `FixOra/Provider/${name}`) : undefined;
 
             const { dob, gender, service, specialization, serviceCharge } = req.body;
 
