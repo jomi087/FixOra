@@ -16,7 +16,7 @@ export const socketAuthMiddleware = (logger: ILoggerService) => {
 
             const decoded: any = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
 
-            if (![RoleEnum.Provider, RoleEnum.Customer].includes(decoded.role)) {
+            if (![RoleEnum.Provider, RoleEnum.Customer, RoleEnum.Admin].includes(decoded.role)) {
                 throw new Error("Unauthorized role");
             }
 

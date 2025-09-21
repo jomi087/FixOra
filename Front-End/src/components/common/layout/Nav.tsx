@@ -13,6 +13,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import type { Notification } from "@/shared/Types/booking";
 import { splitDateTime } from "@/utils/helper/date&Time";
+import { clearNotifications } from "@/store/common/notificationSlice";
 
 
 interface NavProps {
@@ -41,6 +42,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
     try {
       const res = await AuthService.signoutApi();
       if (res.status === HttpStatusCode.OK) {
+        dispatch(clearNotifications());
         dispatch(logout());
         toast.success(res.data.message);
         setTimeout(() => {
@@ -70,7 +72,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
       toast.warn("Unhandle notification type", noti.type);
     }
   };
-  
+
   return (
     <>
       <nav className={`shadow-lg fixed w-full z-10 ${className}`}>
@@ -101,13 +103,15 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
           )}
           {/* Right Section */}
           <div className="flex items-center gap-3 md:gap-4  ">
-            <div
-              className="cursor-pointer transform transition-transform duration-200 hover:scale-110"
-              onClick={() => setIsNotificaitonOpen(!isNotificationOpen)}
-            >
-              <span className="text-lg">🔔</span>
-              {unreadCount > 0 && <span className="font-semibold text-sm">({unreadCount})</span>}
-            </div>
+            { isAuthenticated &&
+              <div
+                className="cursor-pointer transform transition-transform duration-200 hover:scale-110"
+                onClick={() => setIsNotificaitonOpen(!isNotificationOpen)}
+              >
+                <span className="text-lg">🔔</span>
+                {unreadCount > 0 && <span className="font-semibold text-sm">({unreadCount})</span>}
+              </div>
+            }
             {isNotificationOpen && (
               <div
                 className="rounded-xl shadow-xl absolute top-16 right-2 bg-primary-foreground/95 text-primary p-2 border-2 overflow-y-scroll max-h-96 w-64 md:w-80 scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent"

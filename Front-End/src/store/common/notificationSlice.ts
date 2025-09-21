@@ -6,9 +6,9 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 
 interface NotificationState {
-	items: Notification[];
-	loading: boolean;
-	error: string | null;
+  items: Notification[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: NotificationState = {
@@ -19,9 +19,9 @@ const initialState: NotificationState = {
 
 
 export const fetchNotifications = createAsyncThunk<
-	Notification[], //return type
-	void, //argument type
-	{ rejectValue: string }
+  Notification[], //return type
+  void, //argument type
+  { rejectValue: string }
 >(
   "notifications/fetchNotifications",
   async (_, { rejectWithValue }) => {
@@ -29,7 +29,7 @@ export const fetchNotifications = createAsyncThunk<
       const res = await AuthService.getNotificationsApi();
       return res.data.notificationData;
     } catch (err: any) {
-      console.log("fetchNotificationError",err);
+      console.log("fetchNotificationError", err);
       return rejectWithValue(err.message || "Failed to fetch notifications");
     }
   }
@@ -41,7 +41,14 @@ const notificationSlice = createSlice({
   reducers: {
     addNotification: (state, action: PayloadAction<Notification>) => {
       state.items.unshift(action.payload);
-    }
+    },
+    clearNotifications: (state) => {
+      state.items = [];
+    },
+    // markAsRead: (state, action: PayloadAction<string>) => {
+    //   const notif = state.items.find(n => n.id === action.payload);
+    //   if (notif) notif.isRead = true;
+    // }
   },
   extraReducers: (builder) => {
     builder
@@ -60,20 +67,16 @@ const notificationSlice = createSlice({
   },
 });
 
-export const { addNotification } = notificationSlice.actions;
+export const { addNotification,clearNotifications/*,markAsRead*/ } = notificationSlice.actions;
 export default notificationSlice.reducer;
 
 /*
-		markAsRead: (state, action: PayloadAction<string>) => {
-			const notif = state.items.find(n => n.id === action.payload);
-			if (notif) notif.isRead = true;
-		},
+    markAsRead: (state, action: PayloadAction<string>) => {
+      const notif = state.items.find(n => n.id === action.payload);
+      if (notif) notif.isRead = true;
+    },
 
-		clearNotifications: (state) => {
-			state.list = [];
-		},
-
-		setNotifications: (state, action: PayloadAction<Notification[]>) => {
-			state.items = action.payload;
-		}
+    setNotifications: (state, action: PayloadAction<Notification[]>) => {
+      state.items = action.payload;
+    }
 */

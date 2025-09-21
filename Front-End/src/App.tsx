@@ -12,8 +12,6 @@ import SocketWrapper from "./pages/common/SocketWrapper";
 
 function App() {
   const [authChecked, setAuthChecked] = useState(false);
-  
-
 
   return (
     <>
