@@ -32,7 +32,7 @@ export class WalletRepository implements IWalletRepository {
 
         let balanceUpdate: any = {};
         if (status === TransactionStatus.SUCCESS) {
-            if (type === TransactionType.CREDIT) {
+            if (type === TransactionType.CREDIT || type === TransactionType.REFUND) {
                 balanceUpdate = { $inc: { balance: amount } };
             } else if (type === TransactionType.DEBIT) {
                 balanceUpdate = { $inc: { balance: -amount } };

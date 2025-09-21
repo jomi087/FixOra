@@ -1,6 +1,17 @@
 import type { BookingStatus } from "../enums/BookingStatus";
+import type { NotificationType } from "../enums/NotificationType";
+import type { PaymentMode, PaymentStatus } from "../enums/Payment";
 import type { ProviderResponseStatus } from "../enums/ProviderResponseStatus";
 import type { AddressWithCoordinates } from "./location";
+
+export interface Notification {
+  type: NotificationType;   // e.g. "BOOKING_CONFIRMED", "BOOKING_CANCELLED"
+  title: string;            // short heading
+  message: string;          // description
+  metadata?: any;            // optional booking/user data
+  createdAt: string;
+  isRead: boolean;
+}
 
 export type BookingRequestPayload = {
   bookingId: string;
@@ -55,7 +66,7 @@ export interface BookingsHistory {
   };
 }
 
-export interface jobHistory extends BookingsHistory{}
+export interface jobHistory extends BookingsHistory { }
 
 export interface BookingInfoDetails {
   bookingId: string;
@@ -81,6 +92,13 @@ export interface BookingInfoDetails {
     baseCost: number;
     distanceFee: number;
   };
+  paymentInfo: {
+    mop?: PaymentMode;
+    status: PaymentStatus;
+    paidAt?: Date;
+    transactionId?: string
+    reason?: string;
+  };
   acknowledgment?: {
     isWorkCompletedByProvider: boolean;
     imageUrl: string[];
@@ -95,7 +113,7 @@ export interface JobInfoDetails {
     fname: string;
     lname: string;
     email: string;
-    location: AddressWithCoordinates ;
+    location: AddressWithCoordinates;
   };
   scheduledAt: string;
   category: {
@@ -111,6 +129,13 @@ export interface JobInfoDetails {
   pricing: {
     baseCost: number;
     distanceFee: number;
+  };
+  paymentInfo: {
+    mop: PaymentMode;
+    status: PaymentStatus;
+    paidAt: Date;
+    transactionId: string
+    reason?: string;
   };
   acknowledgment?: {
     isWorkCompletedByProvider: boolean;

@@ -33,7 +33,11 @@ class AuthService {
   /*********************************************************************************************************************** */
 
   getLandingDataApi() {
-    return axiosInstance.get("/api/public/landing-data");
+    return axiosInstance.get("/api/landing-data");
+  }
+
+  getNotificationsApi() {
+    return axiosInstance.get("/api/notifications");
   }
 
   signupApi(Data: Signup) {
@@ -85,7 +89,7 @@ class AuthService {
     return axiosInstance.get(`/api/user/provider/bookings/${id}`);
   }
 
-  BookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
+  bookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
     return axiosInstance.post("/api/user/provider/booking", payload, this.getJsonConfig());
   }
 
@@ -121,6 +125,14 @@ class AuthService {
 
   bookingDetailsApi(bookingId: string) {
     return axiosInstance.get(`/api/user/bookingDetails/${bookingId}`);
+  }
+
+  retryAvailabilityApi(bookingId: string) {
+    return axiosInstance.patch(`/api/user/booking/retry-availability/${bookingId}`);
+  }
+
+  cancelBookingApi(bookingId: string) {
+    return axiosInstance.patch(`/api/user/booking/cancel-booking/${bookingId}`);
   }
 
   userWalletInfoApi(page: number, limit: number) {

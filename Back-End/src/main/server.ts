@@ -54,7 +54,7 @@ app.use(express.json({ limit: BodyParserLimits.JSON_LIMIT }));//Your server will
 app.use(express.urlencoded({ extended: true, limit: BodyParserLimits.URLENCODED_LIMIT }));
 app.use(express.static(path.join(__dirname, "../public")));  
 
-app.use("/api/public",publicRoutes);
+app.use("/api",publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/provider",providerRoutes);

@@ -19,6 +19,7 @@ export class UpdateProfileUseCase implements IUpdateProfileUseCase{
             const { userId, profileData } = input;
 
             let data = {
+                
                 fname: profileData.fname,
                 lname: profileData.lname,
                 mobileNo: profileData.mobile,

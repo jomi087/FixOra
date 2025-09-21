@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { Category } from "@/shared/Types/category";
 import { Button } from "../../ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setApplyFilters, setAvailabilityFilter, setNearByFilter, setRatingFilter, setReset, setSelectedService } from "@/store/user/filterSlice";
+import { setApplyFilters, setNearByFilter, setRatingFilter, setReset, setSelectedService } from "@/store/user/filterSlice";
 
 interface FilterSideBarProps {
   className?: string;
@@ -14,17 +14,15 @@ interface FilterSideBarProps {
 
 const FilterSideBar: React.FC<FilterSideBarProps> = ({ className, categories, loading }) => {
   const dispatch = useAppDispatch();
-  const { selectedService, nearByFilter, availabilityFilter, ratingFilter } = useAppSelector((state) => state.filter );
+  const { selectedService, nearByFilter, ratingFilter } = useAppSelector((state) => state.filter );
   return (
     <div className={`relative flex flex-col justify-between h-full ${className}`}>
-      <div className="space-y-3 overflow-y-auto p-4 ">
-
+      <div className="space-y-8 overflow-y-auto p-4">
         {/* Services */}
         <div>
           <Select
             value={selectedService}
             onValueChange={(value) => dispatch(setSelectedService(value) )}
-           
           >
             <SelectTrigger className="w-full cursor-pointer">
               <SelectValue placeholder="Services" />
@@ -96,10 +94,9 @@ const FilterSideBar: React.FC<FilterSideBarProps> = ({ className, categories, lo
             </div>
           </RadioGroup>
         </div>
-
         
         {/* Availability  */}
-        <div className="ml-4">
+        {/* <div className="ml-4">
           <h4 className="underline mb-2">Availability</h4>
           <RadioGroup
             disabled = {true}
@@ -115,7 +112,7 @@ const FilterSideBar: React.FC<FilterSideBarProps> = ({ className, categories, lo
               <Label htmlFor="a2">Tomorrow</Label>
             </div>
           </RadioGroup>
-        </div>
+        </div> */}
       </div>
 
       <div className="absolute bottom-3 left-3 right-6 space-y-2">

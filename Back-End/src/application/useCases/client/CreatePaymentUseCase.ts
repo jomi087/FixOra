@@ -13,18 +13,17 @@ export class CreatePaymentUseCase implements ICreatePaymentUseCase {
     constructor(
         private readonly _paymentService: IPaymentService,
         private readonly _bookingRepository: IBookingRepository,
-    ) {}
-    
+    ) { }
+
     async execute(bookingId: string): Promise<string> {
         try {
             let booking = await this._bookingRepository.findByBookingId(bookingId);
             if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
 
-
             const totalAmount = booking.pricing.baseCost + booking.pricing.distanceFee;
 
-            return await this._paymentService.createPaymentIntent(booking.bookingId,totalAmount);
-        
+            return await this._paymentService.createPaymentIntent(booking.bookingId, totalAmount);
+
         } catch (error: any) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };

@@ -8,25 +8,24 @@ export interface Booking {
     providerUserId: string;
     provider: {
         id: string;
-        response: ProviderResponseStatus //pending/Accept/reject 
+        response: ProviderResponseStatus  
         reason?: string;
     },
     scheduledAt: Date;
     issueTypeId: string;
     issue: string;
-    status: BookingStatus; //pending , confirm , cancel  
+    status: BookingStatus;   
     pricing: {
         baseCost: number;
         distanceFee: number;
     }
-    paymentInfo ?: {
-        mop: PaymentMode; //wallet , online
-        status: PaymentStatus; //pending,failed,success,refunded 
+    paymentInfo?: {
+        mop: PaymentMode; 
+        status: PaymentStatus;
         paidAt: Date;
-        transactionId?: string
+        transactionId: string;
         reason?: string; 
     }
-
     esCrowAmout?: number
     
     diagnosed?: {
@@ -41,8 +40,8 @@ export interface Booking {
         isWorkCompletedByProvider: boolean;
         imageUrl?: string[];
         isWorkConfirmedByUser: boolean;
-    }
+    }  
+    cancelledAt?: Date;
     createdAt?: Date;
     updatedAt?: Date;
-
 }

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import ManageFunds from "./ManageFunds";
 import TransactionsTable from "./TransactionsTable";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchUserWalletInfo } from "@/store/user/walletSlice";
+import { fetchUserWalletInfo } from "@/store/common/walletSlice";
 import { toast } from "react-toastify";
 import { TLPP } from "@/utils/constant";
 

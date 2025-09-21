@@ -32,8 +32,6 @@ const AppointmentActions: React.FC<AppointmentActionsProps> = ({ acknowledgment 
           </p>
         )}
       </div>
-
-
     </>
   );
 };

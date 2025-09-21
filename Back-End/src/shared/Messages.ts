@@ -17,13 +17,13 @@ export const Messages = {
     EMAIL_NOT_FOUND: "Email Not Found",
     PROVIDER_NOT_FOUND: "Provider Not Found",
     NOT_FOUND_MSG: "Data Not Found",
-    
-    ADD_ADDRESS : "Please add an Address",
+
+    ADD_ADDRESS: "Please add an Address",
 
     EMAIL_ALREADY_EXISTS: "Email already exists",
     CATEGORY_ALREADY_EXISTS: "Category name already exists",
     PROVIDER_ALREADY_EXISTS: "Provider already exists",
-    ALREADY_UPDATED : "Already Updated",
+    ALREADY_UPDATED: "Already Updated",
 
     CATEGORY_NAME_REQUIRED: "Category name is required",
     CATEGORY_DESCRIPTION_REQUIRED: "Category description is required",
@@ -31,7 +31,7 @@ export const Messages = {
     AT_LEAST_ONE_SUBCATEGORY_REQUIRED: "At least one subcategory is required",
     SUBCATEGORY_NAME_REQUIRED: (index: number) => `Subcategory ${index + 1} name is required`,
     SUBCATEGORY_DESCRIPTION_REQUIRED: (index: number) => `Subcategory ${index + 1} description is required`,
-    
+
     MAIN_CATEGORY_IMAGE_MISSING: "Main category image missing",
     SUBCATEGORY_IMAGE_MISSING: "Subcategory image missing",
     CATEGORY_CREATED_SUCCESS: "Category created successfully",
@@ -40,17 +40,18 @@ export const Messages = {
     KYC_NOT_FOUND: "KYC request not found",
     KYC_ALREADY_REVIEWED: "This KYC request is already reviewed",
     KYC_REJECTED: "KYC Request rejected successfully",
-    KYC_APPROVED: "KYC Request Approved successfully" ,
+    KYC_APPROVED: "KYC Request Approved successfully",
     PENDING_KYC_REQUEST: "You already have a pending KYC request. Please wait for admin review.",
     KYC_ALREADY_APPROVED: "Your KYC is already approved. No need to reapply.",
 
     SUBMITTED_BOOKING_REQUEST: "Booking request submitted",
     ALREDY_BOOKED: "Slot is already booked",
     PENDING_BOOKING: "Another booking is pending for this slot",
+    SLOT_TIME_PASSED: "Slot unavailable - scheduled time has passed",
 
     PROVIDER_NO_RESPONSE: "No response from provider",
     PAYMENT_TIMEOUT_MSG: "Payment TimeOut",
-    
+
     DATA_MISMATCH: "Data mismatch found.",
     INSUFFICIENT_BALANCE: "Insufficient Balance",
 
@@ -64,7 +65,7 @@ export const Messages = {
     INVALID_GENDER: "Gender must be Male, Female, or Other",
     INVALID_SPECIALIZATION: "Invalid specialization",
     INVALID_DOB: "Invalid date of birth",
-    INVALID_FORMAT : "Invalid Format",
+    INVALID_FORMAT: "Invalid Format",
 
     TOKEN_EXPIRED: "Token expired",
     MISSING_TOKEN: "Missing token",

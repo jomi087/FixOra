@@ -23,6 +23,8 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
 
             const { userProvider, provider, category, subCategory, booking } = bookingDataInDetails;
 
+            if(!booking.paymentInfo)throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+
             const mappedData: BookingDetailsOutputDTO = {
                 bookingId: booking.bookingId,
                 providerUser: {
@@ -47,14 +49,21 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
                     baseCost: booking.pricing.baseCost,
                     distanceFee: booking.pricing.distanceFee
                 },
+                paymentInfo: {
+                    mop: booking.paymentInfo?.mop,
+                    status: booking.paymentInfo.status,
+                    paidAt: booking.paymentInfo?.paidAt,
+                    transactionId: booking.paymentInfo?.transactionId,
+                    reason: booking.paymentInfo?.reason,
+                },
                 acknowledgment: {
                     isWorkCompletedByProvider: booking.acknowledgment?.isWorkCompletedByProvider || false,
                     imageUrl: booking.acknowledgment?.imageUrl || [],
                     isWorkConfirmedByUser: booking.acknowledgment?.isWorkConfirmedByUser || false
-                }
+                },
             };
-
             return mappedData;
+
 
         } catch (error: any) {
             if (error.status && error.message) {

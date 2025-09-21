@@ -11,15 +11,16 @@ export interface IBookingRepository {
   findByBookingId(bookingId: string): Promise<Booking | null>;
 
   findExistingBooking(providerId: string, scheduledAt: Date): Promise<Booking | null>;
-
+  
   updateProviderResponseAndStatus(
     bookingId: string,
     status: BookingStatus,
     response: ProviderResponseStatus,
-    reason?: string
+    reason?: string,
+    cancelledAt?: Date
   ): Promise<Booking | null>;
 
-  updateBooking(bookingId: string, updatedBooking: Booking): Promise<Booking | null>;
+  updateBooking(bookingId: string, updateData: Partial<Booking>): Promise<Booking | null>;
 
   updateProviderResponseAndPaymentStatus(
     bookingId: string,
@@ -27,11 +28,12 @@ export interface IBookingRepository {
     paymentStatus: PaymentStatus
   ): Promise<Booking | null>;
 
-  updatePaymentTimeoutAndStatus(
+  updatePaymentAndStatus(
     bookingId: string,
     status: BookingStatus,
     paymentStatus: PaymentStatus,
     paymentFailureReason: string,
+    cancelledAt: Date
   ): Promise<Booking | null>
 
   findCurrentBookingDetails(bookingId: string): Promise<{
@@ -47,7 +49,7 @@ export interface IBookingRepository {
     user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-    booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+    booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
   } | null>
 
   findProviderJobHistoryById(providerUserId: string, currentPage: number, limit: number): Promise<{ data: Booking[], total: number }>
@@ -58,8 +60,10 @@ export interface IBookingRepository {
     provider: Pick<Provider, "profileImage">
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-    booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+    booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
   } | null>
+
+
 }
 
 

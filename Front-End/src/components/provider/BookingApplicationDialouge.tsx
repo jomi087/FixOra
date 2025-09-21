@@ -1,7 +1,7 @@
 import type { BookingRequestPayload } from "@/shared/Types/booking";
 
-import { Dialog,DialogContent,DialogDescription,DialogFooter,DialogTitle, } from "@/components/ui/dialog";
-import { AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle, } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, } from "@/components/ui/alert-dialog";
 import { BellRing } from "lucide-react";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
@@ -17,14 +17,14 @@ interface BookingApplicationDialogueProps {
   onClose: () => void;
 }
 
-const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({ data,onClose, }) => {
-    
+const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({ data, onClose, }) => {
+
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [actionType, setActionType] = useState<Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING> | null>(null);
   const [reason, setReason] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const { date, time } = splitDateTime(data.scheduledAt);
- 
+
 
 
   const askConfirmation = (type: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>) => {
@@ -32,8 +32,8 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
     setConfirmOpen(true);
 
   };
-    
-  const handleConfirm =async () => {
+
+  const handleConfirm = async () => {
 
 
     if (!actionType) return;
@@ -42,10 +42,10 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
     }
 
     try {
-      await AuthService.UpdateBookingStatusApi(data.bookingId, actionType, reason);  
+      await AuthService.UpdateBookingStatusApi(data.bookingId, actionType, reason);
       toast.success(actionType.toLocaleUpperCase());
 
-    } catch (error:any) {
+    } catch (error: any) {
       const errorMsg = error?.response?.data?.message || Messages.BOOKING_STATUS_FAILED;
       toast.error(errorMsg);
     }
@@ -67,10 +67,10 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
               <BellRing className="text-yellow-500" size={32} />
               <div>
                 <DialogTitle className="text-lg font-semibold">
-                                    New Booking Request
+                  New Booking Request
                 </DialogTitle>
                 <DialogDescription className="text-xs text-muted-foreground">
-                                    Please accept to confirm this booking or reject to decline it.
+                  Please accept to confirm this booking or reject to decline it.
                 </DialogDescription>
               </div>
             </div>
@@ -99,20 +99,20 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition"
                 onClick={() => askConfirmation(ProviderResponseStatus.REJECTED)}
               >
-                                Reject
+                Reject
               </button>
               <button
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition"
                 onClick={() => askConfirmation(ProviderResponseStatus.ACCEPTED)}
               >
-                                Accept
+                Accept
               </button>
             </DialogFooter>
           </div>
         </DialogContent>
 
       </Dialog>
-                
+
       {/*Confirmation popup */}
       {confirmOpen && (
         <AlertDialog open>
@@ -120,34 +120,34 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                            Do you really want to{" "}
+                Do you really want to{" "}
                 {actionType === ProviderResponseStatus.ACCEPTED ? "accept" : "reject"}{" "}
-                            this booking ?
+                this booking ?
               </AlertDialogDescription>
             </AlertDialogHeader>
             {actionType === ProviderResponseStatus.REJECTED &&
-                        <>
-                          <Input 
-                            type="text"
-                            placeholder="Enter a reason"
-                            value={ reason }
-                            onChange={(e : React.ChangeEvent<HTMLInputElement>) => {
-                              const val = e.target.value;
-                              setReason(val);
-                              if (val.trim().length > 0) {
-                                setErrorMsg("");
-                              }
-                            }}
-                            maxLength={longInputLength}
-                          />
-                          { errorMsg && <p className="text-sm">{ errorMsg }</p>  }      
-                        </>
+              <>
+                <Input
+                  type="text"
+                  placeholder="Enter a reason"
+                  value={reason}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const val = e.target.value;
+                    setReason(val);
+                    if (val.trim().length > 0) {
+                      setErrorMsg("");
+                    }
+                  }}
+                  maxLength={longInputLength}
+                />
+                {errorMsg && <p className="text-sm">{errorMsg}</p>}
+              </>
             }
             <AlertDialogFooter>
               <AlertDialogCancel onClick={() => {
                 setConfirmOpen(false);
               }}>
-                            Cancel
+                Cancel
               </AlertDialogCancel>
               <AlertDialogAction onClick={handleConfirm}>Yes</AlertDialogAction>
             </AlertDialogFooter>

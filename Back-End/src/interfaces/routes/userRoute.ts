@@ -24,26 +24,29 @@ router.post(
         { name: "profileImage", maxCount: 1 },
         { name: "idCard", maxCount: 1 },
         { name: "educationCertificate", maxCount: 1 },
-        { name : "experienceCertificate", maxCount : 1 }
+        { name: "experienceCertificate", maxCount: 1 }
     ]),
     validateKYCRequest,
     (req, res, next) => userController.kycApplication(req, res, next)
 );
-router.get("/provider/bookings/:id",AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.providerInfo(req, res, next) );
-router.post("/provider/booking",validateRequest(bookingRequestSchema),AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.createBooking(req, res, next) );
-router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]),(req,res,next)=>userController.initiateOnlinePayment(req, res, next));
-router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]),(req,res,next)=>userController.initiateWalletPayment(req, res, next));
+router.get("/provider/bookings/:id", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerInfo(req, res, next));
+router.post("/provider/booking", validateRequest(bookingRequestSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createBooking(req, res, next));
+router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateOnlinePayment(req, res, next));
+router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateWalletPayment(req, res, next));
 
 //Profile Section
 router.patch("/editProfile", validateRequest(editProfileSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.editProfile(req, res, next));
-router.post("/verifyPassword", validateRequest(verifyPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.verifyPassword(req, res, next));
-router.patch("/change-password",validateRequest(resetPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.changePassword(req, res, next));
-router.get("/booking-history",AuthMiddleware([RoleEnum.Customer]), (req,res,next)=>userController.getBookingHistory(req, res, next));
-router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.BookingDetails.bind(userController));
-router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.BookingDetails.bind(userController));
+router.post("/verifyPassword", validateRequest(verifyPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.verifyPassword(req, res, next));
+router.patch("/change-password", validateRequest(resetPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.changePassword(req, res, next));
 
-router.get("/wallet", AuthMiddleware([RoleEnum.Customer,RoleEnum.Provider]), userController.walletInfo.bind(userController));
-router.post("/wallet/add-fund", validateRequest(addFundsSchema), AuthMiddleware([RoleEnum.Customer,RoleEnum.Provider]), (req, res, next) => userController.addFund(req, res, next));
+router.get("/booking-history", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.getBookingHistory(req, res, next));
+router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.bookingDetails.bind(userController));
+router.patch("/booking/retry-availability/:bookingId",AuthMiddleware([RoleEnum.Customer]), userController.retryAvailability.bind(userController));
+router.patch("/booking/cancel-booking/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.cancelBooking.bind(userController));
+
+router.get("/wallet", AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), userController.walletInfo.bind(userController));
+router.post("/wallet/add-fund", validateRequest(addFundsSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), (req, res, next) => userController.addFund(req, res, next));
+
 
 
 export default router;

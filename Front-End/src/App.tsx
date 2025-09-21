@@ -9,12 +9,16 @@ import ToastConfig from "./components/common/Others/ToastConfig";
 import SocketWrapper from "./pages/common/SocketWrapper";
 
 
+
 function App() {
   const [authChecked, setAuthChecked] = useState(false);
+  
+
+
   return (
     <>
       <Provider store={appStore}>
-        <ToastConfig/>
+        <ToastConfig />
         {!authChecked ? (
           <PageLoader />
         ) : (
@@ -22,7 +26,7 @@ function App() {
             <RouterProvider router={router} />
           </SocketWrapper>
         )}
-        <AuthCheck  onComplete={() => setAuthChecked(true)} />
+        <AuthCheck onComplete={() => setAuthChecked(true)} />
       </Provider>
 
     </>

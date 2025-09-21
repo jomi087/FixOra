@@ -67,7 +67,7 @@ export const useBookingRequest = () => {
     setIsWaiting(true);
 
     try {
-      const res = await AuthService.BookingApplicationApi(payload);
+      const res = await AuthService.bookingApplicationApi(payload);
       //console.log(res);
       if (res.status === HttpStatusCode.OK) {
         if (res.data.booking.status == BookingStatus.PENDING) {
@@ -89,6 +89,7 @@ export const useBookingRequest = () => {
     const handleBookingResponse = (payload: BookingResponsePayload) => {
       if (payload.response === ProviderResponseStatus.ACCEPTED) {
         setBookingId(payload.bookingId);
+        console.log("mode of payment was invoked");
         setShowModePayment(true);
 
       } else if (payload.response === ProviderResponseStatus.REJECTED) {
@@ -108,6 +109,7 @@ export const useBookingRequest = () => {
 
     socket.on("booking:response", handleBookingResponse);
     socket.on("payment:autoReject", handleAutoRejectPayment);
+    
     return () => {
       socket.off("booking:response", handleBookingResponse);
       socket.off("payment:autoReject", handleAutoRejectPayment);
@@ -118,7 +120,7 @@ export const useBookingRequest = () => {
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
   const handlePayment = async (paymentType: PaymentMode, balance?: number) => {
     setIsSubmitting(true);
-
+    console.log("hi");
     if (paymentType === PaymentMode.ONLINE) {
       try {
         const res = await AuthService.onlinePaymentApi(bookingId);
@@ -142,19 +144,22 @@ export const useBookingRequest = () => {
 
     } else if (paymentType === PaymentMode.WALLET) {
       try {
+        
         if (balance && data?.distanceFee && data.serviceCharge) {
           if (balance < (data.distanceFee + data.serviceCharge)) {
             toast.info("Low Balance");
             return;
           }
         }
-        const res = await AuthService.walletPaymentApi(bookingId);
-        console.log(res);
-        dispatch(updateBookingStatus(res.data.result));
-        toast.success("Booking Successfull");
 
-        setShowModePayment(false);
-        setIsWaiting(false);
+        const res = await AuthService.walletPaymentApi(bookingId);
+
+        if (res.status === HttpStatusCode.OK) {
+          dispatch(updateBookingStatus(res.data.result));
+          toast.success("Booking Successfull");
+          setShowModePayment(false);
+          setIsWaiting(false);
+        }
 
       } catch (error: any) {
         console.log(error);

@@ -39,7 +39,10 @@ const providerBookingSlice = createSlice({
   reducers: {
     addConfirmedBooking: (state, action) => {
       state.data.push(action.payload);
-    }
+    },
+    removeBooking: (state, action) => { 
+      state.data = state.data.filter((b)=>b.bookingId != action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -58,7 +61,7 @@ const providerBookingSlice = createSlice({
   }
 });
 
-export const { addConfirmedBooking } = providerBookingSlice.actions;
+export const { addConfirmedBooking,removeBooking } = providerBookingSlice.actions;
 export default providerBookingSlice.reducer;
 
 

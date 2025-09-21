@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import appStore from "../store/appStore";
-import { logout } from "../store/user/userSlice";
+import { logout } from "../store/common/userSlice";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 
 

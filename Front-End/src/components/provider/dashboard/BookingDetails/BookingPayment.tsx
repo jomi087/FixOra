@@ -1,18 +1,41 @@
+// import { PaymentStatus, type PaymentMode } from "@/shared/enums/Payment";
+// import { BadgeInfo } from "lucide-react";
 
 interface BookingPaymentProps {
-	pricing: {
+  pricing: {
     baseCost: number;
     distanceFee: number;
   };
+  // paymentInfo: {
+  //   mop: PaymentMode;
+  //   status: PaymentStatus;
+  //   paidAt: Date;
+  //   transactionId: string
+  //   reason?: string;
+  // }
 }
 
 
-const BookingPayment: React.FC<BookingPaymentProps> = ({ pricing }) => {
+const BookingPayment: React.FC<BookingPaymentProps> = ({ pricing/*, paymentInfo*/ }) => {
   return (
-    <div className="">
-      <h3 className="text-lg font-bold mb-2 text-nav-text underline underline-offset-4 font-serif">
-				Payment
-      </h3>
+    <div className="relative">
+      <div className="flex items-center gap-1 text-lg font-bold mb-2 text-nav-text underline underline-offset-4 font-serif">
+        <h3>Payment</h3>
+        {/* <div className="inline-block group relative">
+          <BadgeInfo size={22} />
+          <div className="absolute font-medium left-6 top-4 opacity-0 group-hover:opacity-90 bg-transparent transition-opacity duration-300 ease-in-out min-w-[150px] rounded-md border border-gray-300 text-primary p-2 shadow-md z-50">
+            <ul>
+              <li className="text-[12px]">{paymentInfo.transactionId}</li>
+              <li className="text-[12px]">{paymentInfo.mop}</li>
+              <li className="text-[12px]">{paymentInfo.status}</li>
+              <li className="text-[12px]">{new Date(paymentInfo.paidAt).toLocaleDateString()}</li>
+              {paymentInfo.status === PaymentStatus.FAILED && (
+                <li className="text-[12px]">{paymentInfo.mop}</li>
+              )}
+            </ul>
+          </div>
+        </div> */}
+      </div>
 
       <div className="space-y-1 text-sm text-body-text">
         <div className="flex justify-between">
@@ -37,12 +60,12 @@ const BookingPayment: React.FC<BookingPaymentProps> = ({ pricing }) => {
 
       <div className="mt-4 text-xs text-gray-600 space-y-1">
         <p>
-					* This will be the upfront payment that the user pays when booking the
-					service.
+          * This will be the upfront payment that the user pays when booking the
+          service.
         </p>
         <p>
-					* Additional charges (if any) should be collected after diagnosing the
-					issue with bill.
+          * Additional charges (if any) should be collected after diagnosing the
+          issue with bill.
         </p>
       </div>
     </div>

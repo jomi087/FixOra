@@ -53,7 +53,7 @@ const filterSlice = createSlice({
 export const {
   setSelectedService,
   setNearByFilter,
-  setAvailabilityFilter,
+  //setAvailabilityFilter,    
   setRatingFilter,
   setApplyFilters,
   setReset,

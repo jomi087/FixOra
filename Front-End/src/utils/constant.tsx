@@ -21,6 +21,7 @@ export const SingInThemeImage: string = "/signIn.png";
 export const ApprovedSeal: string = "/approved.png";
 export const RejectSeal: string = "/rejected.png";
 export const ConfirmSeal: string = "/completedStamp.png";
+export const CancelSeal: string = "/cancelledSeal.png";
 
 /********************************************* Rules  *******************************************************/
 

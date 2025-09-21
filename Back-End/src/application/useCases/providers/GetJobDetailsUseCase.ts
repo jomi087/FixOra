@@ -6,18 +6,18 @@ import { jobDetailsOutputDTO } from "../../DTO's/BookingDTO/BookingInfoDTO";
 import { IGetJobDetailsUseCase } from "../../Interface/useCases/Provider/IGetJobDetailsUseCase";
 
 
-const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode;
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
 const { INTERNAL_ERROR, NOT_FOUND_MSG } = Messages;
 
 
 export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     constructor(
         private readonly _bookingRepository: IBookingRepository,
-    ){}
-    
-    async execute(input : string): Promise<jobDetailsOutputDTO>{
+    ) { }
+
+    async execute(input: string): Promise<jobDetailsOutputDTO> {
         try {
-            
+
             const bookingDataInDetails = await this._bookingRepository.jobDetailsById(input);
             if (!bookingDataInDetails) {
                 throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
@@ -25,13 +25,15 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
 
             const { booking, category, subCategory, user } = bookingDataInDetails;
             
-            const mappedData:jobDetailsOutputDTO = {
+            if (!booking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+
+            const mappedData: jobDetailsOutputDTO = {
                 bookingId: booking.bookingId,
                 user: {
                     userId: user.userId,
                     fname: user.fname,
                     lname: user.lname || "",
-                    email : user.email,
+                    email: user.email,
                     location: user.location
                 },
                 scheduledAt: booking.scheduledAt,
@@ -40,23 +42,30 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
                     name: category.name,
                     subCategory: {
                         subCategoryId: subCategory.subCategoryId,
-                        name : subCategory.name
+                        name: subCategory.name
                     }
                 },
                 issue: booking.issue,
                 status: booking.status,
                 pricing: {
                     baseCost: booking.pricing.baseCost,
-                    distanceFee : booking.pricing.distanceFee
+                    distanceFee: booking.pricing.distanceFee
+                },
+                paymentInfo: {
+                    mop: booking.paymentInfo.mop,
+                    status: booking.paymentInfo.status,
+                    paidAt: booking.paymentInfo.paidAt,
+                    transactionId: booking.paymentInfo.transactionId,
+                    reason: booking.paymentInfo?.reason,
                 },
                 acknowledgment: {
                     isWorkCompletedByProvider: booking.acknowledgment?.isWorkCompletedByProvider || false,
-                    imageUrl: booking.acknowledgment?.imageUrl || [] ,
+                    imageUrl: booking.acknowledgment?.imageUrl || [],
                     isWorkConfirmedByUser: booking.acknowledgment?.isWorkConfirmedByUser || false
                 }
             };
 
-            return  mappedData;
+            return mappedData;
 
         } catch (error: any) {
             if (error.status && error.message) {

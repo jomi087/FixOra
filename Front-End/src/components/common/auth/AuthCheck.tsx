@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../store/hooks";
-import { logout, Userinfo } from "../../../store/user/userSlice";
+import { logout, Userinfo } from "../../../store/common/userSlice";
 import AuthService from "../../../services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { fetchNotifications } from "@/store/common/notificationSlice";
 
 const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
   const dispatch = useAppDispatch();
@@ -13,12 +14,13 @@ const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
         const response = await AuthService.checkAuthStatusApi();
         if (response.status === HttpStatusCode.OK) {
           dispatch(Userinfo({ user: response.data.user }));
+          dispatch(fetchNotifications());
         }
-      } catch (error) {
+      } catch{
         dispatch(logout());
-        console.log("user is not logged in",error);
+        //console.log("error",error);
       } finally {
-        onComplete(); 
+        onComplete();
       }
     };
     verifyAuth();
@@ -27,4 +29,5 @@ const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
   return null;
 };
 
-export default AuthCheck; 
+export default AuthCheck;
+
