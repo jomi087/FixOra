@@ -2,13 +2,13 @@ import { Button } from "@/components/ui/button";
 import { BsChatLeftText } from "react-icons/bs";
 
 interface ClientInfoProps {
-	providerUser: {
-		providerUserId: string;
-		fname: string;
-		lname: string;
+  providerUser: {
+    providerUserId: string;
+    fname: string;
+    lname: string;
     email: string;
     image: string;
-	};
+  };
 }
 
 const ProviderInfo: React.FC<ClientInfoProps> = ({ providerUser }) => {
@@ -32,6 +32,7 @@ const ProviderInfo: React.FC<ClientInfoProps> = ({ providerUser }) => {
           variant="outline"
           size="sm"
           className="flex items-center gap-2 cursor-pointer"
+          //onClick={() => {}}
         >
           <BsChatLeftText /> Chat
         </Button>
@@ -48,7 +49,7 @@ const ProviderInfo: React.FC<ClientInfoProps> = ({ providerUser }) => {
           <p className="text-sm font-serif">{providerUser.email}</p>
         </div>
       </div>
-    
+
       {/* <div className="pt-2 mt-3 border-t">
         <p className="font-semibold">Address</p>
         <p className="text-sm pt-1 font-serif">

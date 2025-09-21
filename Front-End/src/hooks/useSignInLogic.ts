@@ -2,7 +2,7 @@ import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { RoleEnum } from "@/shared/enums/roles";
 import { useAppDispatch } from "@/store/hooks";
-import { Userinfo } from "@/store/user/userSlice";
+import { Userinfo } from "@/store/common/userSlice";
 import { Messages } from "@/utils/constant";
 import { validateEmail, validatePassword } from "@/utils/validation/formValidation";
 import { useGoogleLogin } from "@react-oauth/google";

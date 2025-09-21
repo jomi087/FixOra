@@ -11,6 +11,7 @@ import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
+import { SendBookingConfirmedNotificationUseCase } from "../Notificiations/SendBookingConfirmedNotificationUseCase";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, PAYMENT_REQUIRED } = HttpStatusCode;
@@ -22,6 +23,8 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
+        private readonly _sendBookingConfirmedNotificationUseCase: SendBookingConfirmedNotificationUseCase
+
     ) { }
 
     async execute(input: WalletPaymentInputDTO): Promise<WalletPaymentOutputDTO> {
@@ -29,7 +32,6 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
 
             const { userId, bookingId } = input;
             let booking = await this._bookingRepository.findByBookingId(bookingId);
-
 
             if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
             if (booking.userId !== userId) throw { status: BAD_REQUEST, message: DATA_MISMATCH };
@@ -59,29 +61,42 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     reason: error.message || "Wallet Payment failed"
                 });
 
+                const updateData = {
+                    paymentInfo: {
+                        mop: PaymentMode.WALLET,
+                        status: PaymentStatus.FAILED,
+                        paidAt: new Date(),
+                        transactionId,
+                    },
+                    status: BookingStatus.CANCELLED,
+                };
+                await this._bookingRepository.updateBooking(bookingId, updateData);
+
                 throw { status: INTERNAL_SERVER_ERROR, message: error.message || INTERNAL_ERROR };
             };
 
-            booking.paymentInfo = {
-                mop: PaymentMode.WALLET,
-                status: PaymentStatus.SUCCESS,
-                paidAt: new Date(),
-                transactionId,
-            };
-
-            booking.status = BookingStatus.CONFIRMED;
-            booking.esCrowAmout = totalAmount;
-            booking.acknowledgment = {
-                isWorkCompletedByProvider: false,
-                isWorkConfirmedByUser: false,
+            const updateData = {
+                paymentInfo: {
+                    mop: PaymentMode.WALLET,
+                    status: PaymentStatus.SUCCESS,
+                    paidAt: new Date(),
+                    transactionId,
+                },
+                status: BookingStatus.CONFIRMED,
+                esCrowAmout: totalAmount,
+                acknowledgment: {
+                    isWorkCompletedByProvider: false,
+                    isWorkConfirmedByUser: false,
+                },
             };
 
             let updatedBooking: Booking | null;
             try {
-                updatedBooking = await this._bookingRepository.updateBooking(bookingId, booking);
-                if (!updatedBooking) throw { status: NOT_FOUND, message: "hlo hlo" };
 
-                const jobKey = `paymentBooking-${bookingId}`;
+                updatedBooking = await this._bookingRepository.updateBooking(bookingId, updateData);
+                if (!updatedBooking || !updatedBooking.paymentInfo) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+
+                const jobKey = `paymentBooking-${updatedBooking.bookingId}`;
                 this._bookingSchedulerService.cancel(jobKey);
 
             } catch (error: any) {
@@ -98,19 +113,57 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 throw { status: INTERNAL_SERVER_ERROR, message: error.message || INTERNAL_ERROR };
             }
 
-            this._notificationService.notifyBookingConfirmation(booking.providerUserId, {
-                bookingId: booking.bookingId,
-                scheduledAt: booking.scheduledAt,
-                status: booking.status,
-                acknowledgment: {
-                    isWorkCompletedByProvider: booking.acknowledgment.isWorkCompletedByProvider,
-                    isWorkConfirmedByUser: booking.acknowledgment.isWorkConfirmedByUser
+            // this._notificationService.//notifyBookingConfirmation(updatedBooking.providerUserId, {
+            //     bookingId: updatedBooking.bookingId,
+            //     scheduledAt: updatedBooking.scheduledAt,
+            //     status: updatedBooking.status,
+            //     acknowledgment: {
+            //         isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
+            //         isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
+            //     }
+            // });
+
+            //to user
+            await this._sendBookingConfirmedNotificationUseCase.execute({
+                userId: updatedBooking.userId,
+                title: "Booking Confirmed",
+                message: `Your booking has been confirmed for ${updatedBooking.scheduledAt.toLocaleString()}.`,
+                metadata: {
+                    bookingId: updatedBooking.bookingId,
+                    scheduledAt: updatedBooking.scheduledAt,
+                    status: updatedBooking.status,
+                    acknowledgment: {
+                        isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
+                        isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
+                    }
+                }
+            });
+
+            //to provider
+            await this._sendBookingConfirmedNotificationUseCase.execute({
+                userId: updatedBooking.providerUserId,
+                title: "New Booking",
+                message: "You have a new booking",
+                metadata: {
+                    bookingId: updatedBooking.bookingId,
+                    scheduledAt: updatedBooking.scheduledAt,
+                    status: updatedBooking.status,
+                    acknowledgment: {
+                        isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
+                        isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
+                    }
                 }
             });
 
             return {
-                bookingId: booking.bookingId,
-                status: booking.status
+                bookingId: updatedBooking.bookingId,
+                status: updatedBooking.status,
+                paymentInfo: {
+                    mop: updatedBooking.paymentInfo.mop,
+                    status: updatedBooking.paymentInfo.status,
+                    paidAt: updatedBooking.paymentInfo.paidAt,
+                    transactionId: updatedBooking.paymentInfo.transactionId,
+                }
             };
 
         } catch (error: any) {

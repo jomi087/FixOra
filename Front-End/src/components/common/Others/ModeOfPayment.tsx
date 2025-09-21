@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,7 +15,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PaymentMode } from "@/shared/enums/Payment";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
-import { fetchUserWalletInfo } from "@/store/user/walletSlice";
+import { fetchUserWalletInfo } from "@/store/common/walletSlice";
+import { toast } from "react-toastify";
 
 const FormSchema = z.object({
   type: z.enum(PaymentMode)
@@ -29,12 +28,13 @@ interface ModeOfPaymentProps {
 }
 
 export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isSubmitting }) => {
-  const { data : wallet } = useAppSelector((state) => state.wallet);
+  const { data: wallet } = useAppSelector((state) => state.wallet);
+  
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchUserWalletInfo());
-  }, []);
+  },[]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -42,7 +42,11 @@ export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isS
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.type === PaymentMode.WALLET) {
-      handlePayment(data.type, wallet?.balance );
+      if (!wallet) {
+        toast.info("wallet is missing");
+        return;
+      }
+      handlePayment(data.type, wallet.balance );
     } else {
       handlePayment(data.type);
     }
@@ -52,13 +56,13 @@ export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isS
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-5 p-5">
+        className="space-y-5 px-5">
         <FormField
           control={form.control}
           name="type"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-lg font-bold font-mono underline underline-offset-4">Mode of Payment</FormLabel>
+              <FormLabel className=""></FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}

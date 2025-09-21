@@ -110,6 +110,10 @@ const BookingSchema = new Schema<IBookingModel>({
             type: Boolean,
         },
     },
+    cancelledAt: {
+        type: Date
+    }
+
 }, { timestamps: true });
 
 const BookingModel = model<IBookingModel>("Booking", BookingSchema);

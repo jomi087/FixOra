@@ -84,7 +84,7 @@ const router = createBrowserRouter([
   },
   //Provider Routes
   {
-    path: "/provider",
+    path: "/provider", 
     element: (
       <ErrorBoundary>
         <ProtectedRoute allowedRoles={[RoleEnum.PROVIDER]}>

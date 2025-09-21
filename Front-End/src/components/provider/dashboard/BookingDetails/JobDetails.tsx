@@ -8,19 +8,20 @@ import { Messages } from "@/utils/constant";
 import type { JobInfoDetails } from "@/shared/Types/booking";
 import AppointmentDetails from "./AppointmentDetails";
 import BookingPayment from "./BookingPayment";
-import AppointmentActions from "./AppointmentActions";
+// import AppointmentActions from "./AppointmentActions";
 import ClientInfo from "./ClientInfo";
 import WorkProof from "./WorkProof";
 import BookingDetailsShimmer from "./shimmer ui/BookingDetailsShimmer";
+import BookingAction from "./BookingAction";
 
 
 const JobDetails = () => {
   const { bookingId } = useParams();
 
   const location = useLocation();
-  console.log(location);
-  const from = (location.state as { from?: string })?.from;
-
+  const rawFrom = (location.state as { from?: string })?.from;
+  const from = rawFrom === "dashboard" ? "dashboard" : "history";
+  
   const [bookingInDetails, setBookingInDetails] = useState<JobInfoDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,6 +48,7 @@ const JobDetails = () => {
     fetchBooking();
   }, [bookingId]);
 
+
   if (isLoading) {
     return <BookingDetailsShimmer />;
   };
@@ -64,12 +66,12 @@ const JobDetails = () => {
       <nav className="pt-4 sm:px-6 text-sm text-muted-foreground">
         <ol className="flex flex-wrap items-center space-x-2">
           <li>
-            {from === "dashboard" && 
+            {from === "dashboard" &&
               <Link to="/provider/dashboard" className="hover:underline">Dashboard</Link>
-            } 
-            { from === "history" && 
+            }
+            {from === "history" &&
               <Link to="/provider/booking-history" className="hover:underline">History</Link>
-            }  
+            }
           </li>
           <li>/</li>
           <li className="text-foreground font-semibold">Booking Details</li>
@@ -89,10 +91,18 @@ const JobDetails = () => {
             />
 
             <div className="mt-2 sm:mt-5 pt-4 flex justify-between flex-wrap border-t-1 border-black">
-              <BookingPayment pricing={bookingInDetails.pricing} />
-              {bookingInDetails.acknowledgment &&
+              <BookingPayment
+                pricing={bookingInDetails.pricing}
+              // paymentInfo={bookingInDetails.paymentInfo}
+              />
+              <BookingAction
+                status={bookingInDetails.status}
+                paymentInfo={bookingInDetails.paymentInfo}
+              />
+              {bookingInDetails.paymentInfo.reason && (<p className="font-serif text-nav-text text-lg my-5">Reason: <span className="text-primary text-base">{bookingInDetails.paymentInfo.reason}</span></p>)}
+              {/* {bookingInDetails.acknowledgment &&
                 <AppointmentActions acknowledgment={bookingInDetails.acknowledgment} />
-              }
+              } */}
             </div>
           </div>
           {/* right */}
@@ -101,7 +111,7 @@ const JobDetails = () => {
           </div>
         </div>
 
-        { bookingInDetails.acknowledgment?.isWorkCompletedByProvider
+        {bookingInDetails.acknowledgment?.isWorkCompletedByProvider
           && bookingInDetails.acknowledgment.isWorkConfirmedByUser &&
           <WorkProof imageUrls={bookingInDetails.acknowledgment.imageUrl} />
         }

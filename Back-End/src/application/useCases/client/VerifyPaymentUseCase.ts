@@ -9,6 +9,8 @@ import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";
 import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
 import { Messages } from "../../../shared/Messages";
 import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";
+// import { SendBookingCancelledNotificationUseCase } from "../Notificiations/SendBookingCancelledNotificationUseCase";
+import { SendBookingConfirmedNotificationUseCase } from "../Notificiations/SendBookingConfirmedNotificationUseCase";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
@@ -22,57 +24,86 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
         private readonly _bookingRepository: IBookingRepository,
         private readonly _walletRepository: IWalletRepository,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
-
+        private readonly _sendBookingConfirmedNotificationUseCase: SendBookingConfirmedNotificationUseCase,
+        // private readonly _sendBookingCancelledNotificationUseCase: SendBookingCancelledNotificationUseCase    
     ) { }
 
     async execute(rawBody: Buffer, signature: string): Promise<void> {
         try {
-
             const result = await this._paymentService.verifyPayment(rawBody, signature);
             if (!result) return;
             const { eventType, id, transactionId, amount, reason } = result;
             // console.log(transactionId,"transactionID");
-
             if (eventType === "booking_success") {
-
                 const booking = await this._bookingRepository.findByBookingId(id);
                 if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
 
-                const TotalAmount = booking.pricing.baseCost + booking.pricing.distanceFee;
-
-                booking.paymentInfo = {
-                    mop: PaymentMode.ONLINE,
-                    status: PaymentStatus.SUCCESS,
-                    paidAt: new Date(),
-                    transactionId
+                const totalAmount = booking.pricing.baseCost + booking.pricing.distanceFee;
+                const updateData = {
+                    paymentInfo: {
+                        mop: PaymentMode.ONLINE,
+                        status: PaymentStatus.SUCCESS,
+                        paidAt: new Date(),
+                        transactionId,
+                    },
+                    status: BookingStatus.CONFIRMED,
+                    esCrowAmout: totalAmount,
+                    acknowledgment: {
+                        isWorkCompletedByProvider: false,
+                        isWorkConfirmedByUser: false,
+                    },
                 };
 
-                booking.status = BookingStatus.CONFIRMED;
-                booking.esCrowAmout = TotalAmount;
-                booking.acknowledgment = {
-                    isWorkCompletedByProvider: false,
-                    isWorkConfirmedByUser: false,
-                };
-
-                const updatedBooking = await this._bookingRepository.updateBooking(id, booking);
+                //pending: instead of updtedBooking get the Booking data with userName and providerName 
+                const updatedBooking = await this._bookingRepository.updateBooking(id, updateData);
                 if (!updatedBooking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
 
                 const jobKey = `paymentBooking-${id}`;
                 this._bookingSchedulerService.cancel(jobKey);
 
-                setTimeout(() => {
-                    this._notificationService.notifyPaymentSuccessToUser(booking.userId);
+                //user
+                // setTimeout(() => {
+                //     this._notificationService.//notifyPaymentSuccessToUser(booking.userId);
+                // }, 5000);
+
+                //provider
+                // this._notificationService.//notifyBookingConfirmation(booking.providerUserId, {
+                //     bookingId: updatedBooking.bookingId,
+                //     scheduledAt: updatedBooking.scheduledAt,
+                //     status: updatedBooking.status,
+                //     acknowledgment: {
+                //         isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
+                //         isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
+                //     }
+                // });
+
+                //to user
+                setTimeout(async () => {
+                    await this._sendBookingConfirmedNotificationUseCase.execute({
+                        userId: updatedBooking.userId,
+                        title: "Booking Confirmed",
+                        message: `Your booking has been confirmed for ${updatedBooking.scheduledAt.toLocaleString()}.`,
+                        metadata: {
+                            bookingId: updatedBooking.bookingId,
+                        }
+                    });
                 }, 5000);
 
-                this._notificationService.notifyBookingConfirmation(booking.providerUserId, {
-                    bookingId: booking.bookingId,
-                    scheduledAt: booking.scheduledAt,
-                    status: booking.status,
-                    acknowledgment: {
-                        isWorkCompletedByProvider: booking.acknowledgment.isWorkCompletedByProvider,
-                        isWorkConfirmedByUser: booking.acknowledgment.isWorkConfirmedByUser
+                //to provider
+                await this._sendBookingConfirmedNotificationUseCase.execute({
+                    userId: updatedBooking.providerUserId,
+                    title: "New Booking",
+                    message: "You have a new booking",
+                    metadata: {
+                        bookingId: updatedBooking.bookingId,
+                        scheduledAt: updatedBooking.scheduledAt,
+                        status: updatedBooking.status,
+                        acknowledgment: {
+                            isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
+                            isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
+                        }
                     }
-                });
+                }); 
             }
 
             if (eventType === "booking_failed") {
@@ -80,28 +111,30 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                 const booking = await this._bookingRepository.findByBookingId(id);
                 if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
 
-                booking.paymentInfo = {
-                    mop: PaymentMode.ONLINE,
-                    status: PaymentStatus.FAILED,
-                    paidAt: new Date(),
-                    transactionId,
-                    reason: reason || "Payment failed"
+                const updateData = {
+                    paymentInfo: {
+                        mop: PaymentMode.ONLINE,
+                        status: PaymentStatus.FAILED,
+                        paidAt: new Date(),
+                        transactionId,
+                        reason: reason || "Payment failed"
+                    },
+                    status: BookingStatus.CANCELLED,
+                    cancelledAt: new Date()
                 };
-                booking.status = BookingStatus.CANCELLED;
 
-                const updatedBooking = await this._bookingRepository.updateBooking(id, booking);
+                const updatedBooking = await this._bookingRepository.updateBooking(id, updateData);
                 if (!updatedBooking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
 
                 const jobKey = `paymentBooking-${id}`;
                 this._bookingSchedulerService.cancel(jobKey);
 
-                setTimeout(() => {
-                    this._notificationService.notifyPaymentFailureToUser(
-                        booking.userId,
-                        booking.paymentInfo?.reason || "Payment failed",
-                    );
-                }, 5000);
-
+                // setTimeout(() => {
+                //     this._notificationService.//notifyPaymentFailureToUser(
+                //         updatedBooking.userId,
+                //         updatedBooking.paymentInfo?.reason || "Payment failed",
+                //     );
+                // }, 5000);
             }
 
             if (eventType === "wallet_success") {

@@ -1,5 +1,16 @@
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
+import { NotificationType } from "../../../shared/Enums/Notification";
+// import { NotificationType } from "../../../shared/Enums/Notification";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
+
+export interface NotificationPayload {
+    type: NotificationType;
+    title: string;
+    message: string;
+    metadata?: any;
+    createdAt: Date;
+    isRead: boolean;
+}
 
 export interface ProviderBookingNotification {
     bookingId: string;
@@ -9,7 +20,7 @@ export interface ProviderBookingNotification {
     issue: string;
 }
 
-export interface UserResponsNotificaton{
+export interface UserResponsNotificaton {
     bookingId: string;
     response: ProviderResponseStatus;
     scheduledAt: Date
@@ -22,17 +33,6 @@ export interface AutoRejectNotification {
     reason: string
 }
 
-// export interface PaymentSuccessNotification {
-//     bookingId: string
-//     status: BookingStatus //is it required
-// }
-
-// export interface PaymentFailureNotification {
-//     bookingId: string
-//     reason: string
-//     status : BookingStatus //is it required
-// }
-
 export interface ConfirmBookingNotification {
     bookingId: string;
     scheduledAt: Date;
@@ -40,24 +40,22 @@ export interface ConfirmBookingNotification {
     acknowledgment: {
         isWorkCompletedByProvider: boolean;
         isWorkConfirmedByUser: boolean;
-    } 
+    }
 }
 
-
-
 export interface INotificationService {
-    notifyBookingRequestToProvider(providerUserId: string , payload : ProviderBookingNotification): void
+    send(userId: string, payload: NotificationPayload): Promise<void>;
+
+    notifyBookingRequestToProvider(providerUserId: string, payload: ProviderBookingNotification): void
+
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
-    
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
-    autoRejectTimeOutPayment(userId:string, bookingId:string):void
+    autoRejectTimeOutPayment(userId: string, bookingId: string): void
 
-    notifyPaymentSuccessToUser(userId: string): void 
-    notifyPaymentFailureToUser(userId: string, reason: string): void 
+    notifyPaymentSuccessToUser(userId: string): void
+    notifyPaymentFailureToUser(userId: string, reason: string): void
 
-   // notifyWalletPaymentSuccessToUser(userId: string, payload: PaymentSuccessNotification): void 
-    //notifyWalletPaymentFailureToUser(userId: string, payload: PaymentFailureNotification): void 
-
-    notifyBookingConfirmation(providerUserId: string, payload : ConfirmBookingNotification):void
+    //notifyBookingConfirmation(providerUserId: string, payload: ConfirmBookingNotification): void
+    //notifyBookingCancellation(providerUserId: string, bookingId: string): void
 
 }   

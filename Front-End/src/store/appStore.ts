@@ -1,20 +1,24 @@
 //# Typed Version
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./user/userSlice";
+import authReducer from "./common/userSlice";
+import notificationReducer from "./common/notificationSlice";
+import walletInfoReducer from "./common/walletSlice";
 import categoryReducer from "./user/categorySlice";
 import filterReducer from "./user/filterSlice";
 import providerInfoReducer from "./user/providerInfoSlice";
 import providerBookingReducer from "./provider/bookingSlice";
-import walletInfoReducer from "./user/walletSlice";
 
-const appStore = configureStore ({
+const appStore = configureStore({
   reducer: {
     auth: authReducer,
+    notificaitons: notificationReducer,
+    wallet: walletInfoReducer,
+
     category: categoryReducer,
     filter: filterReducer,
     providerInfo: providerInfoReducer,
+
     providerBookingInfo: providerBookingReducer,
-    wallet: walletInfoReducer,
   }
 });
 

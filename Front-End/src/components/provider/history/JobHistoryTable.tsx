@@ -44,10 +44,12 @@ const JobHistoryTable = () => {
   , [totalBookingHistoryCount, itemsPerPage]
   );
 
-  const handleBookingDetails = ( booking: jobHistory ) => {
-    if (booking.status !== BookingStatus.CONFIRMED) {
-      toast.error("Opps please refresh the page");
+  const handleBookingDetails = (booking: jobHistory) => {
+    if (booking.status == BookingStatus.PENDING) {
+      toast.error("Opps Wrong-Booking entry");
+      return;
     }
+    
     navigate(`/provider/booking-history/details/${booking.bookingId}`, {
       state: { from: "history" },
     });

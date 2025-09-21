@@ -2,6 +2,8 @@ import { TransactionStatus, TransactionType } from "../../shared/Enums/Transacti
 
 export interface Transaction {
   transactionId: string;
+  //fromUserId?: string;   // who initiated
+  //toUserId?: string;     // who received
   amount: number;
   status: TransactionStatus;
   type: TransactionType;

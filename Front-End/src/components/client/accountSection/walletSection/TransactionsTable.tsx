@@ -68,8 +68,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page
                   <TableRow key={tx.transactionId}>
                     <TableCell>
                       {tx.transactionId === "N/A" ? (
-                        <span className="text-red-500">
-                          Payment Not Completed
+                        <span
+                          className="text-red-500"
+                        >
+                          Payment Not Completed 
                         </span>
                       ) : (
                         tx.transactionId
@@ -79,7 +81,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page
                     <TableCell>{new Date(tx.date).toLocaleDateString()}</TableCell>
                     <TableCell >
                       <Badge
-                        variant={tx.type === TransactionType.CREDIT ? "success" : "destructive"}
+                        variant={tx.type === TransactionType.CREDIT ?
+                          "success" : tx.type === TransactionType.REFUND ?
+                            "default" : "destructive"
+                        }
                         className="sm:w-15"
                       >
                         {tx.type}

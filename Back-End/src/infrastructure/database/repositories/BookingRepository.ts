@@ -21,11 +21,10 @@ export class BookingRepository implements IBookingRepository {
 
     async findExistingBooking(providerId: string, scheduledAt: Date): Promise<Booking | null> {
         return await BookingModel.findOne({
-            providerId,
+            "provider.id": providerId,
             scheduledAt,
-            status: {
-                $nin: [ProviderResponseStatus.REJECTED]
-            }
+            "provider.response": { $nin: [ProviderResponseStatus.REJECTED] },
+            status: { $in: [BookingStatus.PENDING, BookingStatus.CONFIRMED] }
         });
     }
 
@@ -34,20 +33,28 @@ export class BookingRepository implements IBookingRepository {
         status: BookingStatus,
         response: ProviderResponseStatus,
         reason?: string,
+        cancelledAt?: Date,
     ): Promise<Booking | null> {
 
         const booking = await BookingModel.findOneAndUpdate(
             { bookingId },
-            { $set: { "provider.response": response, "provider.reason": reason, status } },
+            {
+                $set: {
+                    "provider.response": response,
+                    status,
+                    ...(reason !== undefined && { "provider.reason": reason }),
+                    ...(cancelledAt !== undefined && { cancelledAt }),
+                }
+            },
             { new: true }
         ).lean<Booking>();
         return booking;
     }
 
-    async updateBooking(bookingId: string, updatedBooking: Booking): Promise<Booking | null> {
+    async updateBooking(bookingId: string, updateData: Partial<Booking>): Promise<Booking | null> {
         return BookingModel.findOneAndUpdate(
             { bookingId },
-            { $set: updatedBooking },
+            { $set: updateData },
             { new: true }
         ).lean();
     }
@@ -65,17 +72,19 @@ export class BookingRepository implements IBookingRepository {
         return booking;
     }
 
-    async updatePaymentTimeoutAndStatus(
+    async updatePaymentAndStatus(
         bookingId: string,
         status: BookingStatus,
         paymentStatus: PaymentStatus,
         paymentFailureReason: string,
+        cancelledAt: Date,
     ): Promise<Booking | null> {
         const booking = await BookingModel.findOneAndUpdate(
             { bookingId },
             {
                 $set: {
                     status,
+                    cancelledAt,
                     "paymentInfo.status": paymentStatus,
                     "paymentInfo.reason": paymentFailureReason,
                 }
@@ -84,8 +93,6 @@ export class BookingRepository implements IBookingRepository {
         ).lean<Booking>();
         return booking;
     }
-
-
 
     async findCurrentBookingDetails(bookingId: string): Promise<{
         userInfo: Pick<User, "userId" | "fname" | "lname">
@@ -187,14 +194,15 @@ export class BookingRepository implements IBookingRepository {
         user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-        booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+        booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
     } | null> {
         const pipeline: any[] = [
             {
                 $match: {
                     bookingId: bookingId,
-                    status: BookingStatus.CONFIRMED,
-                    // scheduledAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }
+                    status: { $nin: [PaymentStatus.PENDING] },
+                    "provider.response": ProviderResponseStatus.ACCEPTED,
+                    "paymentInfo.status": { $nin: [PaymentStatus.FAILED, PaymentStatus.PENDING] }
                 }
             },
             {
@@ -255,6 +263,13 @@ export class BookingRepository implements IBookingRepository {
                             baseCost: "$pricing.baseCost",
                             distanceFee: "$pricing.distanceFee",
                         },
+                        paymentInfo: {
+                            mop: "$paymentInfo.mop",
+                            status: "$paymentInfo.status",
+                            paidAt: "$paymentInfo.paidAt",
+                            transactionId: "$paymentInfo.transactionId",
+                            reason: "$paymentInfo.reason",
+                        },
                         acknowledgment: {
                             isWorkCompletedByProvider: "$acknowledgment.isWorkCompletedByProvider",
                             imageUrl: "$acknowledgment.imageUrl",
@@ -269,7 +284,7 @@ export class BookingRepository implements IBookingRepository {
             user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-            booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+            booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
         }
 
         const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
@@ -281,7 +296,9 @@ export class BookingRepository implements IBookingRepository {
             {
                 $match: {
                     providerUserId: providerUserId,
-                    status: BookingStatus.CONFIRMED,
+                    status: { $nin: [BookingStatus.PENDING] },
+                    "provider.response": ProviderResponseStatus.ACCEPTED,
+                    "paymentInfo.status": { $nin: [PaymentStatus.FAILED, PaymentStatus.PENDING] }
                 }
             },
             {
@@ -311,7 +328,9 @@ export class BookingRepository implements IBookingRepository {
             {
                 $match: {
                     userId: userId,
-                    status: BookingStatus.CONFIRMED,
+                    //status: { $in: [BookingStatus.CONFIRMED, BookingStatus.CANCELLED] },
+                    status: { $nin: [BookingStatus.PENDING] },
+                    "provider.response": ProviderResponseStatus.ACCEPTED,
                 }
             },
             {
@@ -341,13 +360,15 @@ export class BookingRepository implements IBookingRepository {
         provider: Pick<Provider, "profileImage">
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-        booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+        booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
     } | null> {
         const pipeline: any[] = [
             {
                 $match: {
                     bookingId: bookingId,
-                    status: BookingStatus.CONFIRMED,
+                    //status: { $in: [BookingStatus.CONFIRMED, BookingStatus.CANCELLED] },
+                    status: { $nin: [BookingStatus.PENDING] },
+                    "provider.response": ProviderResponseStatus.ACCEPTED
                 }
             },
             {
@@ -409,11 +430,18 @@ export class BookingRepository implements IBookingRepository {
                             baseCost: "$pricing.baseCost",
                             distanceFee: "$pricing.distanceFee",
                         },
+                        paymentInfo: {
+                            mop: "$paymentInfo.mop",
+                            status: "$paymentInfo.status",
+                            paidAt: "$paymentInfo.paidAt",
+                            transactionId: "$paymentInfo.transactionId",
+                            reason: "$paymentInfo.reason",
+                        },
                         acknowledgment: {
                             isWorkCompletedByProvider: "$acknowledgment.isWorkCompletedByProvider",
                             imageUrl: "$acknowledgment.imageUrl",
                             isWorkConfirmedByUser: "$acknowledgment.isWorkConfirmedByUser",
-                        }
+                        },
                     }
                 }
             }
@@ -424,8 +452,9 @@ export class BookingRepository implements IBookingRepository {
             provider: Pick<Provider, "profileImage">
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-            booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "acknowledgment">
+            booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
         }
+
 
         const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
         return result ?? null;

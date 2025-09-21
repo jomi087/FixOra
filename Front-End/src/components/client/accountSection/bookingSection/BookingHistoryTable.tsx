@@ -47,9 +47,11 @@ const BookingHistoryTable = () => {
 
 
   const handleBookingDetails = (booking: BookingsHistory) => {
-    if (booking.status !== BookingStatus.CONFIRMED) {
-      toast.error("Opps please refresh the page");
+    if (booking.status === BookingStatus.PENDING) {
+      toast.error("Opps Wrong-Booking Entry");
+      return;
     }
+
     navigate(`/user/booking-details/${booking.bookingId}`, {
       state: { from: "history" },
     });

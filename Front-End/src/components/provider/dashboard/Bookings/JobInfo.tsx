@@ -1,14 +1,15 @@
-import socket from "@/services/soket";
+// import socket from "@/services/soket";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import type { ConfirmJobBookings } from "@/shared/Types/booking";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { addConfirmedBooking, fetchProviderBookingsInfo } from "@/store/provider/bookingSlice";
+import { addConfirmedBooking, fetchProviderBookingsInfo, removeBooking } from "@/store/provider/bookingSlice";
 import { DATE_RANGE_DAYS, TIME_SLOTS } from "@/utils/constant";
 import { dateTime, generateDateList, generateTimeSlots, splitDateTime } from "@/utils/helper/date&Time";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import BookingInfoShimmer from "./shimmer ui/BookingInfoShimmer";
+import { NotificationType } from "@/shared/enums/NotificationType";
 
 const dates = generateDateList(DATE_RANGE_DAYS);
 const timeSlots = generateTimeSlots(TIME_SLOTS.STARTHOURS, TIME_SLOTS.ENDHOURS, TIME_SLOTS.INTERVAL);
@@ -24,27 +25,40 @@ const JobInfo: React.FC = () => {
     dispatch(fetchProviderBookingsInfo());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
+  /* useEffect(() => {
+    // const handleConfirmedBooking = (payload: ConfirmJobBookings) => {
+    //   dispatch(addConfirmedBooking(payload));
+    // };
 
-  useEffect(() => {
-    const handleConfirmedBooking = (payload: ConfirmJobBookings) => {
-      dispatch(addConfirmedBooking(payload));
-    };
-    socket.on("booking:confirmed", handleConfirmedBooking);
+    // const handleCancelBooking = (bookingId: string) => {
+    //   dispatch(removeBooking(bookingId));
+    // };
 
+    // socket.on("booking:confirmed", handleConfirmedBooking);
+    // socket.on("booking:cancelled", handleCancelBooking);
     return () => {
-      socket.off("booking:confirmed", handleConfirmedBooking);
+      // socket.off("booking:confirmed", handleConfirmedBooking);
+      // socket.on("booking:cancelled", handleCancelBooking);
     };
-  }, [dispatch]);
+  }, [dispatch]); */
+
+  const { items } = useAppSelector(state => state.notificaitons);
+
+  useEffect(() => {
+    const latest = items[0];
+    if (latest?.type === NotificationType.BOOKING_CONFIRMED) {
+      dispatch(addConfirmedBooking(latest.metadata));
+    } else if (latest?.type === NotificationType.BOOKING_CANCELLED) {
+      dispatch(removeBooking(latest.metadata.bookingId));
+    }
+  }, [items]);
 
   const handleBookingDetails = (booking: ConfirmJobBookings) => {
-    if (booking.status !== BookingStatus.CONFIRMED) {
-      toast.error("Opps please refresh the page");
+    if (booking.status == BookingStatus.PENDING) {
+      toast.error("Opps Wrong-Booking entry");
+      return;
     }
+
     navigate(`/provider/booking-history/details/${booking.bookingId}`, {
       state: { from: "dashboard" },
     });
@@ -52,6 +66,10 @@ const JobInfo: React.FC = () => {
 
   if (isLoading) {
     return <BookingInfoShimmer />;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (

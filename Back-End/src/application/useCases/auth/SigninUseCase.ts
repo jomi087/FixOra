@@ -43,6 +43,7 @@ export class SigninUseCase implements ISigninUseCase {
 
             let mappedupdatedUserData = {
                 userData: {
+                    userid: updatedUserData.userId,
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,
                     email: updatedUserData.email,

@@ -7,7 +7,10 @@ import PaymentSuccess from "@/assets/animations/CardSwipeSuccess.json";
 import loading from "@/assets/animations/loadingWrist.json";
 
 import { useEffect, useState } from "react";
-import socket from "@/services/soket";
+// import socket from "@/services/soket";
+import { useAppSelector } from "@/store/hooks";
+// import { toast } from "react-toastify";
+import { NotificationType } from "@/shared/enums/NotificationType";
 
 type PaymentState = "loading" | "success" | "failure";
 
@@ -17,28 +20,39 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   //const dispatch = useAppDispatch();
   const [paymentState, setPaymentState] = useState<PaymentState>("loading");
-  const [failureReason, setFailureReason] = useState<string | null>(null);
+  // const [failureReason, setFailureReason] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handlePaymentSuccess = () => {
-      setPaymentState("success");
-    };
+  /*useEffect(() => {
+    // const handlePaymentSuccess = () => {
+    //   setPaymentState("success");
+    // };
 
-    const handlePaymentFailed = (reason: string) => {
-      setFailureReason(reason);
-      setPaymentState("failure");
-    };
+    // const handlePaymentFailed = (reason: string) => {
+    //   setFailureReason(reason);
+    //   setPaymentState("failure");
+    // };
 
-    socket.on("payment:success", handlePaymentSuccess);
-    socket.on("payment:failure", handlePaymentFailed);
+    // socket.on("payment:success", handlePaymentSuccess);
+    // socket.on("payment:failure", handlePaymentFailed);
 
     return () => {
-      socket.off("payment:success", handlePaymentSuccess);
-      socket.off("payment:failure", handlePaymentFailed);
+      // socket.off("payment:success", handlePaymentSuccess);
+      // socket.off("payment:failure", handlePaymentFailed);
     };
-  }, []);
+  }, []);*/
 
+  const { items,error } = useAppSelector(state => state.notificaitons);
 
+  useEffect(() => {
+    const latest = items[0];
+    if (latest?.type === NotificationType.BOOKING_CONFIRMED) { 
+      setPaymentState("success");;
+    }
+  }, [items]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div
@@ -103,9 +117,9 @@ const PaymentPage = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
               Payment Failed
             </h1>
-            <p className="text-sm sm:text-base text-gray-600 mb-6">
+            {/* <p className="text-sm sm:text-base text-gray-600 mb-6">
               {failureReason ? `Reason: ${failureReason}` : "Something went wrong while processing your payment."}
-            </p>
+            </p> */}
             <div className="space-y-3">
               <Button
                 onClick={() => navigate("/tryagain")}

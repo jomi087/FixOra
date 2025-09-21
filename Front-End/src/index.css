@@ -189,3 +189,17 @@ html {
   scroll-padding-top: 90px; /* Adjust to your navbar height (e.g., 64px for h-16) */
   scroll-behavior: smooth;  /* Smooth scrolling */
 }
+
+.center-box-toast {
+  background: #1f2937 !important;
+  border: 3px solid #10b981 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+  min-width: 500px !important;
+  max-width: 600px !important;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif !important;
+  font-size: 16px !important;
+  text-align: center !important;
+  padding: 30px !important;
+}
+

@@ -1,41 +1,55 @@
 
 const BookingDetailsShimmer = () => {
   return (
-    <div className="min-h-screen p-0 sm:p-5 overflow-auto text-body-text">
+    <div className="min-h-screen w-full sm:px-2 overflow-auto text-body-text">
       <div className="flex flex-col-reverse md:flex-row">
-        {/* Left */}
-        <div className="w-full md:w-[60%] lg:w-[70%] p-5 space-y-4 animate-pulse">
-          <div className="h-6 w-32 bg-gray-300 rounded" />
-          <div className="h-4 w-48 bg-gray-300 rounded" />
-          <div className="h-4 w-40 bg-gray-300 rounded" />
-          <div className="h-24 w-full bg-gray-300 rounded" />
+        {/* left */}
+        <div className="w-full md:w-[60%] lg:w-[70%] p-5">
+          {/* Section Heading */}
+          <div className="h-6 w-32 bg-gray-300 dark:bg-gray-700 rounded mb-4 animate-pulse" />
 
-          <div className="mt-4 space-y-2">
-            <div className="h-5 w-24 bg-gray-300 rounded" />
-            <div className="h-4 w-32 bg-gray-300 rounded" />
-            <div className="h-4 w-32 bg-gray-300 rounded" />
+          {/* Details */}
+          <div className="space-y-4">
+            <div className="h-4 w-56 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+            <div className="h-4 w-64 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+            <div className="h-4 w-48 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+            <div className="h-4 w-40 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+            <div className="h-20 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+          </div>
+
+          {/* Payment Section */}
+          <div className="mt-6 pt-4 border-t">
+            <div className="h-6 w-28 bg-gray-300 dark:bg-gray-700 rounded mb-3 animate-pulse" />
+
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <div className="h-4 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+                <div className="h-4 w-12 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+              </div>
+              <div className="flex justify-between">
+                <div className="h-4 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+                <div className="h-4 w-12 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+              </div>
+              <div className="flex justify-between font-medium">
+                <div className="h-4 w-20 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+                <div className="h-4 w-16 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+              </div>
+            </div>
+          </div>
+
+          {/* Buttons / Actions */}
+          <div className="mt-6 flex gap-3">
+            <div className="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
+            <div className="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
           </div>
         </div>
 
-        {/* Right */}
-        <div className="w-full md:w-[40%] lg:w-[30%] p-5 space-y-4 md:border-l-2 animate-pulse">
-          <div className="h-6 w-48 mx-auto bg-gray-300 rounded" />
-          <div className="w-24 h-24 mx-auto rounded-full bg-gray-300" />
-
-          <div className="h-4 w-28 mx-auto bg-gray-300 rounded" />
-
-          <div className="space-y-2 border-t pt-4">
-            <div className="h-4 w-36 bg-gray-300 rounded" />
-            <div className="h-4 w-48 bg-gray-300 rounded" />
-          </div>
+        {/* right */}
+        <div className="w-full md:w-[40%] lg:w-[30%] p-5 md:border-l-2">
+          {/* Provider Info placeholder */}
+          <div className="h-8 w-40 bg-gray-300 dark:bg-gray-700 rounded mb-4 animate-pulse" />
+          <div className="h-32 w-full bg-gray-300 dark:bg-gray-700 rounded animate-pulse" />
         </div>
-      </div>
-
-      {/* Bottom Images */}
-      <div className="flex mt-5 gap-3 overflow-x-auto animate-pulse">
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="w-40 h-40 rounded bg-gray-300" />
-        ))}
       </div>
     </div>
   );

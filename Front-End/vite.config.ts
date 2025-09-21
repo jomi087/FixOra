@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
   }
 })
 
+
 /*
  Why the config structure was changed:
 

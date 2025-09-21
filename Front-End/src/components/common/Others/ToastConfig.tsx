@@ -5,7 +5,7 @@ const ToastConfig = () => {
     <ToastContainer
       theme="dark"
       position="top-right"
-      autoClose={2000} 
+      autoClose={3000} 
       className="text-sm font-serif"
       closeOnClick
       draggable={true}

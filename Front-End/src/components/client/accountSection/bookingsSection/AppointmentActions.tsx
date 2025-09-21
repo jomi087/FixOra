@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { ConfirmSeal } from "@/utils/constant";
 
 interface AppointmentActionsProps {
@@ -12,14 +11,6 @@ interface AppointmentActionsProps {
 const AppointmentActions: React.FC<AppointmentActionsProps> = ({ acknowledgment }) => {
   return (
     <>
-      <div className="flex items-end">
-        <Button
-          variant="destructive"
-          className="cursor-pointer hover:bg-red-700 hover:dark:bg-red-700"
-        >
-          Reject Appointment
-        </Button>
-      </div>
       <div className="absolute flex items-center pt-4 opacity-55 xl:static sm:left-75 md:left-82 lg:left-110">
         {acknowledgment.isWorkCompletedByProvider &&
           acknowledgment.isWorkConfirmedByUser && (
@@ -32,8 +23,6 @@ const AppointmentActions: React.FC<AppointmentActionsProps> = ({ acknowledgment 
           </p>
         )}
       </div>
-
-
     </>
   );
 };

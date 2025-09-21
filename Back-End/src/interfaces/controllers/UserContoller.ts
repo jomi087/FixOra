@@ -20,8 +20,10 @@ import { IGetBookingDetailsUseCase } from "../../application/Interface/useCases/
 import { IWalletTopUpUseCase } from "../../application/Interface/useCases/Client/IWalletTopUpUseCase";
 import { IGetUserwalletInfoUseCase } from "../../application/Interface/useCases/Client/IGetUserwalletInfoUseCase";
 import { IWalletPaymentUseCase } from "../../application/Interface/useCases/Client/IWalletPaymentUseCase";
+import { ICancelBookingUseCase } from "../../application/Interface/useCases/Client/ICancelBookingUseCase";
+import { IRetryAvailabilityUseCase } from "../../application/Interface/useCases/Client/IRetryAvailabilityUseCase";
 
-const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY } = HttpStatusCode;
+const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
     VERIFICATION_MAIL_SENT, PROFILE_UPDATED_SUCCESS, ADD_ADDRESS,
     SUBMITTED_BOOKING_REQUEST, BOOKING_ID_NOT_FOUND } = Messages;
@@ -44,8 +46,10 @@ export class UserController {
         private _resetPasswordUseCase: IResetPasswordUseCase,
         private _bookingHistoryUseCase: IBookingHistoryUseCase,
         private _getBookingDetailsUseCase: IGetBookingDetailsUseCase,
+        private _retryAvailabilityUseCase: IRetryAvailabilityUseCase,
+        private _cancelBookingUseCase: ICancelBookingUseCase,
         private _getUserwalletInfoUseCase: IGetUserwalletInfoUseCase,
-        private _walletTopUpUseCase: IWalletTopUpUseCase
+        private _walletTopUpUseCase: IWalletTopUpUseCase,
     ) { }
 
     async activeServices(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -144,13 +148,13 @@ export class UserController {
                 gender,
                 serviceId: service,
                 specializationIds: specialization,
-                profileImage: profileImageId, 
+                profileImage: profileImageId,
                 serviceCharge: Number(serviceCharge),
                 kyc: {
-                    idCard: idCardId, 
+                    idCard: idCardId,
                     certificate: {
-                        education: educationCertificateId, 
-                        experience: experienceCertificateId, 
+                        education: educationCertificateId,
+                        experience: experienceCertificateId,
                     },
                 },
             };
@@ -250,6 +254,7 @@ export class UserController {
             });
 
         } catch (error: any) {
+            console.log(error);
             this._loggerService.error(`walletPayment error:, ${error.message}`, { stack: error.stack });
             next(error);
         }
@@ -357,19 +362,87 @@ export class UserController {
         }
     }
 
-    async BookingDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async bookingDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { bookingId } = req.params;
+            if (!bookingId) {
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            }
+            const data = await this._getBookingDetailsUseCase.execute(bookingId);
+            res.status(OK).json({
+                success: true,
+                bookingDetailsData: data
+            });
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
 
+    async retryAvailability(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+
+            const userId = req.user.userId;
+
+            const { bookingId } = req.params;
             if (!bookingId) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
             }
 
-            const data = await this._getBookingDetailsUseCase.execute(bookingId);
+            const result = await this._retryAvailabilityUseCase.execute({ userId, bookingId });
+
+            if (result === null) {
+                res.status(OK).json({ success: true });
+                return;
+            }
+
+            if (result.reason === Messages.SLOT_TIME_PASSED) {
+                res.status(GONE).json({
+                    success: true,
+                    booking: result
+                });
+                return;
+            }
+
+            if (result.reason === Messages.ALREDY_BOOKED) {
+                res.status(CONFLICT).json({
+                    success: true,
+                    booking: result
+                });
+                return;
+            }
+            
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async cancelBooking(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+
+            const userId = req.user.userId;
+
+            const { bookingId } = req.params;
+            if (!bookingId) {
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            }
+
+            const data = await this._cancelBookingUseCase.execute({ userId, bookingId });
 
             res.status(OK).json({
                 success: true,
-                bookingDetailsData: data
+                message: "Booking Cancelled, Fund has been Refunded to Wallet",
+                bookingStatus: data.status,
+                refundInfo: data.paymentInfo
             });
 
         } catch (error: any) {
@@ -407,7 +480,7 @@ export class UserController {
             const userId = req.user?.userId;
             const role = req.user?.role;
 
-            if (!userId || !role ) {
+            if (!userId || !role) {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
             }
 

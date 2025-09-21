@@ -1,19 +1,20 @@
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
+import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";
 import { AddressDTO } from "../Common/AddressDTO";
 
-export interface ConfirmBookingOutputDTO{
+export interface ConfirmBookingOutputDTO {
     bookingId: string;
     scheduledAt: Date;
     status: BookingStatus;
     acknowledgment: {
         isWorkCompletedByProvider: boolean;
         isWorkConfirmedByUser: boolean;
-    } 
+    }
 }
 
 export interface BookingDetailsOutputDTO {
     bookingId: string;
-    providerUser : {
+    providerUser: {
         userId: string;
         fname: string;
         lname: string;
@@ -35,6 +36,13 @@ export interface BookingDetailsOutputDTO {
         baseCost: number;
         distanceFee: number;
     };
+    paymentInfo: {
+        mop?: PaymentMode;
+        status: PaymentStatus;
+        paidAt?: Date;
+        transactionId?: string
+        reason?: string;
+    }
     acknowledgment: {
         isWorkCompletedByProvider: boolean;
         imageUrl: string[];
@@ -42,6 +50,29 @@ export interface BookingDetailsOutputDTO {
     };
 }
 
+export interface CancelBookingInputDTO {
+    userId: string;
+    bookingId: string;
+}
+
+export interface CancelBookingOutputDTO {
+    status: BookingStatus;
+    paymentInfo: {
+        status: PaymentStatus;
+        reason: string;
+    }
+}
+
+export interface RetryAvailabilityInputDTO extends CancelBookingInputDTO { }
+
+export interface RetryAvailabilityOutputDTO {
+    status: BookingStatus;
+    paymentInfo: {
+        status: PaymentStatus;
+        reason: string;
+    };
+    reason: string;
+}
 
 export interface jobDetailsOutputDTO {
     bookingId: string;
@@ -67,6 +98,13 @@ export interface jobDetailsOutputDTO {
         baseCost: number;
         distanceFee: number;
     };
+    paymentInfo: {
+        mop: PaymentMode;
+        status: PaymentStatus;
+        paidAt: Date;
+        transactionId: string
+        reason?: string;
+    }
     acknowledgment: {
         isWorkCompletedByProvider: boolean;
         imageUrl: string[];

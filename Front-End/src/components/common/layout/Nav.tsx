@@ -5,46 +5,72 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { App_Name, Messages, navItems } from "../../../utils/constant";
 import { useLocation } from "react-router-dom";
-import AuthService from "../../../services/AuthService"; 
-import { logout } from "../../../store/user/userSlice";
+import AuthService from "../../../services/AuthService";
+import { logout } from "../../../store/common/userSlice";
 import { toast } from "react-toastify";
 import { RoleEnum } from "@/shared/enums/roles";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { NotificationType } from "@/shared/enums/NotificationType";
+import type { Notification } from "@/shared/Types/booking";
+import { splitDateTime } from "@/utils/helper/date&Time";
 
 
 interface NavProps {
   className: string; // Pass a bg-color and  text-coler  
 }
 
+
 const Nav: React.FC<NavProps> = ({ className = "" }) => {
-  
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [signInOption, setSignInOption] = useState(false); 
+  const [signInOption, setSignInOption] = useState(false);
+  const [isNotificationOpen, setIsNotificaitonOpen] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => localStorage.getItem("theme") === "dark"); //doubt what will do in next js
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  const { items } = useAppSelector((state) => state.notificaitons);
+
+  const unreadCount = items.filter((itm) => {
+    return itm.isRead === false;
+  }).length;
 
   const handleSignout = async () => {
     try {
-      const res =await AuthService.signoutApi();
+      const res = await AuthService.signoutApi();
       if (res.status === HttpStatusCode.OK) {
         dispatch(logout());
-
         toast.success(res.data.message);
-
         setTimeout(() => {
           navigate("/");
-        },100);
+        }, 500);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
       toast.error(errorMsg);
     }
   };
 
+  const handleNotificationInDetails = async (noti: Notification) => {
+    if (!user) return;
+    const { bookingId } = noti.metadata || {};
+
+    switch (noti.type) {
+    case NotificationType.BOOKING_CONFIRMED:
+    case NotificationType.BOOKING_CANCELLED:
+      if (user.role === RoleEnum.CUSTOMER && bookingId) {
+        navigate(`/user/account/bookings/details/${bookingId}`);
+      } else if (user.role === RoleEnum.PROVIDER && bookingId) {
+        navigate(`/provider/booking-history/details/${bookingId}`);
+      }
+      break;
+    default:
+      toast.warn("Unhandle notification type", noti.type);
+    }
+  };
+  
   return (
     <>
       <nav className={`shadow-lg fixed w-full z-10 ${className}`}>
@@ -56,16 +82,15 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
           <div className="flex md:hidden text-3xl font-bold tracking-wide" aria-label={`${App_Name} Logo`}>
             Fix<ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} version={"mobile"} />ra
           </div>
-          
           {/* Navigation Links */}
-          { isAuthenticated && user?.role === RoleEnum.CUSTOMER  && (
+          {isAuthenticated && user?.role === RoleEnum.CUSTOMER && (
             <div className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
               {navItems
-                .filter((item)=> item.to != location.pathname )
+                .filter((item) => item.to != location.pathname)
                 .map((item) => (
-                  <Link 
+                  <Link
                     key={item.to}
-                    to = {item.to}
+                    to={item.to}
                     className="flex items-center gap-2  hover:font-bold transition"
                   >
                     {item.icon}
@@ -74,10 +99,67 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
                 ))}
             </div>
           )}
-
-          
           {/* Right Section */}
-          <div className="flex items-center gap-3 md:gap-5  ">
+          <div className="flex items-center gap-3 md:gap-4  ">
+            <div
+              className="cursor-pointer transform transition-transform duration-200 hover:scale-110"
+              onClick={() => setIsNotificaitonOpen(!isNotificationOpen)}
+            >
+              <span className="text-lg">🔔</span>
+              {unreadCount > 0 && <span className="font-semibold text-sm">({unreadCount})</span>}
+            </div>
+            {isNotificationOpen && (
+              <div
+                className="rounded-xl shadow-xl absolute top-16 right-2 bg-primary-foreground/95 text-primary p-2 border-2 overflow-y-scroll max-h-96 w-64 md:w-80 scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent"
+                aria-label="Notifications"
+              >
+                <h4 className="text-xl font-semibold underline underline-offset-4">
+                  Notification
+                </h4>
+
+                {items.length > 0 ? (
+                  <>
+                    {items.slice(0, 6).map((noti, i) => {
+                      const { date, time } = splitDateTime(noti.createdAt);
+                      return (
+                        <div
+                          key={i}
+                          className="group border-b-4 p-4 cursor-pointer hover:scale-105"
+                          onClick={() => handleNotificationInDetails(noti)}
+                        >
+                          <p className="text-xs font-semibold text-end">
+                            {`${date} ${time}`}
+                          </p>
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                              <p className="font-semibold font-mono text-sm group-hover:underline">
+                                {noti.title}
+                              </p>
+                              {!noti.isRead && (
+                                <span className="border-2 bg-green-400 h-2 w-2 rounded-full inline-block" />
+                              )}
+                            </div>
+                          </div>
+                          <p className="text-xs">{noti.message}</p>
+                        </div>
+                      );
+                    })}
+                    {items.length > 6 && (
+                      <div className="text-end p-2">
+                        <Link to="/notificaiton" className="cursor-pointer hover:underline">
+                          See More...
+                        </Link>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="p-4 text-center text-gray-500 italic">
+                    No notifications
+                  </div>
+                )}
+              </div>
+
+            )}
 
             {/* Theme Toggle */}
             <div className="hidden md:flex">
@@ -88,22 +170,22 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
             {isAuthenticated && user?.role === RoleEnum.CUSTOMER && (
               <>
                 <button className="md:hidden "
-                  onClick={ () => {
+                  onClick={() => {
                     setIsMenuOpen(!isMenuOpen);
-                    if( signInOption ) setSignInOption(false);
+                    if (signInOption) setSignInOption(false);
                   }}
                   aria-expanded={isMenuOpen} aria-label="Toggle navigation menu" aria-controls="mobile-menu"
                 >
-                  { isMenuOpen ? (<X size={24}/>):(<Menu size={24}/>)}
+                  {isMenuOpen ? (<X size={24} />) : (<Menu size={24} />)}
                 </button>
-                { isMenuOpen && (
+                {isMenuOpen && (
                   <div className="md:hidden rounded-lg shadow-lg absolute top-12 right-2 p-4" aria-label="Mobile menu">
                     {navItems
-                      .filter((item)=> item.to != location.pathname )
+                      .filter((item) => item.to != location.pathname)
                       .map((item) => (
-                        <Link 
+                        <Link
                           key={item.to}
-                          to = {item.to}
+                          to={item.to}
                           className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"
                         >
                           {item.name}
@@ -115,16 +197,16 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
             )}
 
             {/* Login/Logout Button */}
-            <div className=""> 
+            <div className="">
               {!isAuthenticated ? (
                 <button
                   className="flex items-center gap-2  font-bold hover:text-header-hover transition cursor-pointer"
-                  onMouseEnter={ () => {
+                  onMouseEnter={() => {
                     setSignInOption(true);
-                    if (isMenuOpen)  setIsMenuOpen(false);
+                    if (isMenuOpen) setIsMenuOpen(false);
                   }}
                 >
-                  <LogIn size={18} aria-hidden="true" /> 
+                  <LogIn size={18} aria-hidden="true" />
                   <span className="hidden md:flex">In</span>
                 </button>
               ) : (
@@ -132,17 +214,16 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
                   className="flex items-center gap-2  font-bold hover:text-header-hover transition cursor-pointer"
                   onClick={handleSignout}
                 >
-                  <LogOut size={18} aria-hidden="true" /> 
+                  <LogOut size={18} aria-hidden="true" />
                   <span className="hidden md:flex">Out</span>
                 </button>
               )}
-
-              { !isAuthenticated && signInOption && (
+              {!isAuthenticated && signInOption && (
                 <div className="rounded-lg shadow-lg absolute top-12 right-2 p-4" aria-label="Mobile menu"
-                  onMouseLeave={ () => { setSignInOption(false); }}
+                  onMouseLeave={() => { setSignInOption(false); }}
                 >
-                  <Link to={`/signIn/${RoleEnum.CUSTOMER}`}  className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> as User </Link>
-                  <Link to={`/signIn/${RoleEnum.PROVIDER}`}  className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> as Provider </Link>
+                  <Link to={`/signIn/${RoleEnum.CUSTOMER}`} className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> as User </Link>
+                  <Link to={`/signIn/${RoleEnum.PROVIDER}`} className="block py-2 px-4 rounded-lg hover:bg-white hover:text-blue-500 transition font-medium"> as Provider </Link>
                 </div>
               )}
             </div>

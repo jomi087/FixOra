@@ -8,21 +8,21 @@ import { Messages } from "../../../shared/Messages";
 import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase";
 import { SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND,FORBIDDEN } = HttpStatusCode;
+const { INTERNAL_SERVER_ERROR, NOT_FOUND, FORBIDDEN } = HttpStatusCode;
 const { INTERNAL_ERROR, USER_NOT_FOUND, ACCOUNT_BLOCKED } = Messages;
 
 export class GoogleSigninUseCase implements IGoogleSigninUseCase {
     constructor(
         private readonly _googleOAuthService: GoogleOAuthService,
-        private readonly _userRepository : IUserRepository,
+        private readonly _userRepository: IUserRepository,
         private readonly _tokenService: ITokenService,
     ) { }
 
-    async execute(code : string , role : RoleEnum):Promise<SignInOutputDTO> {
+    async execute(code: string, role: RoleEnum): Promise<SignInOutputDTO> {
         try {
             const tokenResponse = await this._googleOAuthService.exchangeCodeForToken(code);
             const googleUser = await this._googleOAuthService.getUserInfo(tokenResponse.access_token);
-            
+
             let user = await this._userRepository.findByUserGoogleId(googleUser.sub);
 
             if (!user) {
@@ -50,10 +50,11 @@ export class GoogleSigninUseCase implements IGoogleSigninUseCase {
             const updatedUserData = await this._userRepository.updateRefreshTokenAndGetUser(user.userId, refToken);
             if (!updatedUserData) {
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND };
-            } 
+            }
 
             let mappedupdatedUserData = {
                 userData: {
+                    userid: updatedUserData.userId,
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,
                     email: updatedUserData.email,
@@ -64,9 +65,9 @@ export class GoogleSigninUseCase implements IGoogleSigninUseCase {
                 accessToken: acsToken,
                 refreshToken: refToken,
             };
-            
+
             return mappedupdatedUserData;
-        } catch (error:any) {
+        } catch (error: any) {
             if (error.status && error.message) {
                 throw error;
             }
