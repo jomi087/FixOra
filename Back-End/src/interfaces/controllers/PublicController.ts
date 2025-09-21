@@ -38,7 +38,7 @@ export class PublicController {
             const userId = req.user.userId;
 
             const notificationData = await this._getNotificationsUseCase.execute(userId);
-            console.log(notificationData);
+            // console.log(notificationData);
 
             res.status(OK).json({
                 success: true,

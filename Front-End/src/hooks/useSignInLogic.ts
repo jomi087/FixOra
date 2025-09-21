@@ -9,6 +9,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { fetchNotifications } from "@/store/common/notificationSlice";
 
 export const useSignInLogic = () => {
   const [ loading, setLoading ] = useState(false); 
@@ -56,8 +57,8 @@ export const useSignInLogic = () => {
       if (res.status === HttpStatusCode.OK) {
         const { userData } = res.data;
         dispatch(Userinfo({ user: userData }));
+        dispatch(fetchNotifications());
         toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
-
         navigateByRole(userData.role);
       }
     } catch (error: any) {

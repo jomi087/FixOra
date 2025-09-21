@@ -24,7 +24,7 @@ export class AdminAuthStrategy  implements IAuthStrategy  {
             if (!user || user.role != credentials.role ||  user.role != RoleEnum.Admin  ) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };
             const isMatch = await this._hashService.compare(credentials.password, user.password as string );
             if (!isMatch) throw { status: FORBIDDEN , message: INVALID_CREDENTIALS };
-            return { userData: user, role: RoleEnum.Customer };
+            return { userData: user, role: RoleEnum.Admin };
             
         } catch (error:any ) {
             if (error.status && error.message) throw error;

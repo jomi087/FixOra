@@ -28,15 +28,15 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, []);
 
   useEffect(() => {
-    // if (!user) {
-    //   if (isConnected.current) {
-    //     socket.disconnect();
-    //     console.log("disconected oooooiiiii");
-    //     isConnected.current = false;
-    //   }
-    //   return;
-    // }
-    if (!user) return;
+    if (!user) {
+      if (isConnected.current) {
+        socket.disconnect();
+        // dispatch(clearNotifications());
+        isConnected.current = false;
+      }
+      return;
+    }
+    // if (!user) return;
 
     if (!isConnected.current) { //We don't accidentally call socket.connect() again on every render useRef will not re-render
       socket.connect();

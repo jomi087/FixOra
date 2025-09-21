@@ -1,9 +1,10 @@
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
-  LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
+  LayoutDashboard, /*Settings,*/ BarChartBig, Wrench, AlertTriangle,
   MessageSquareMore, /*Scroll,*/ClipboardClock  
 } from "lucide-react";
+
 
 
 
@@ -149,7 +150,7 @@ export const providerSideBarOptions: SideBarOption[] = [
 export const adminSideBarOptions: SideBarOption[] = [
   { icon: LayoutDashboard, section: "Dashboard", to: "/admin/dashboard" },
   { icon: Users, section: "Users", to: "/admin/users" },
-  { icon: Settings, section: "Providers", to: "/admin/providers" },
+  { icon: Users, section: "Providers", to: "/admin/providers" },
   { icon: BarChartBig, section: "Sales", to: "/admin/sales" },
   { icon: Wrench, section: "Services", to: "/admin/services" },
   { icon: AlertTriangle, section: "Dispute", to: "/admin/dispute" },
