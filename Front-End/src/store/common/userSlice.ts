@@ -1,4 +1,5 @@
 //# Typed version
+import type { RoleEnum } from "@/shared/enums/roles";
 import type { AddressWithCoordinates } from "@/shared/Types/location";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
@@ -9,7 +10,7 @@ interface info {
   lname?: string;
   email: string;
   mobileNo?: string;
-  role: string;
+  role: RoleEnum;
   location?: AddressWithCoordinates;
 }
 

@@ -61,7 +61,7 @@ const router = createBrowserRouter([
   },
   //client Routes
   {
-    path: "/user",
+    path: `/${RoleEnum.CUSTOMER}`,
     element: (
       <ErrorBoundary>
         <ProtectedRoute allowedRoles={[RoleEnum.CUSTOMER]}>
@@ -77,14 +77,14 @@ const router = createBrowserRouter([
       { path: "account/profile", element: <ClientProfilePage /> },
       { path: "account/profile/change-password", element: <ChangePasswordPage /> },
       { path: "account/bookings", element: <BookingHistoryPage /> },
-      { path: "account/bookings/details/:bookingId", element: <BookingDetailsPage /> },
+      { path: "booking-details/:bookingId", element: <BookingDetailsPage /> },
       { path: "account/wallet", element: <UserWalletPage /> },
       { path: "provider-KYC", element: <VerifictionFormPage /> },
     ],
   },
   //Provider Routes
   {
-    path: "/provider", 
+    path: `/${RoleEnum.PROVIDER}`,
     element: (
       <ErrorBoundary>
         <ProtectedRoute allowedRoles={[RoleEnum.PROVIDER]}>
@@ -95,7 +95,7 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <ProviderDashboardPage /> },
       { path: "booking-history", element: <JobHistoryPage /> },
-      { path: "booking-history/details/:bookingId", element: <JobDetailsPage /> },
+      { path: "booking-details/:bookingId", element: <JobDetailsPage /> },
       { path: "wallet", element: <ProviderWalletPage /> },
       { path: "profile", element: <ProviderProfilePage /> },
     ],

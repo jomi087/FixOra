@@ -41,7 +41,7 @@ const PaymentPage = () => {
     };
   }, []);*/
 
-  const { items,error } = useAppSelector(state => state.notificaitons);
+  const { items,error } = useAppSelector(state => state.notification);
 
   useEffect(() => {
     const latest = items[0];
@@ -84,9 +84,9 @@ const PaymentPage = () => {
               <Button
                 onClick={() => {
                   if (!bookingId) {
-                    navigate("/user/account/bookings");
+                    navigate("/customer/account/bookings");
                   } else {
-                    navigate(`/user/account/bookings/details/${bookingId}`);
+                    navigate(`/customer/booking-details/${bookingId}`);
                   }
                 }}
                 variant="success"
@@ -95,7 +95,7 @@ const PaymentPage = () => {
                 Booking Details
               </Button>
               <Button
-                onClick={() => navigate("/user/providers")}
+                onClick={() => navigate("/customer/providers")}
                 variant="outline"
                 className="w-full rounded-xl py-3 text-lg shadow-2xl shadow-black"
               >

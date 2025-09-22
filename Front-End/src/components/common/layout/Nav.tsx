@@ -13,7 +13,8 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import type { Notification } from "@/shared/Types/booking";
 import { splitDateTime } from "@/utils/helper/date&Time";
-import { clearNotifications } from "@/store/common/notificationSlice";
+import { clearNotifications, markAsRead } from "@/store/common/notificationSlice";
+import type { AxiosError } from "axios";
 
 
 interface NavProps {
@@ -25,14 +26,14 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [signInOption, setSignInOption] = useState(false);
-  const [isNotificationOpen, setIsNotificaitonOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => localStorage.getItem("theme") === "dark"); //doubt what will do in next js
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
-  const { items } = useAppSelector((state) => state.notificaitons);
+  const { items } = useAppSelector((state) => state.notification);
 
   const unreadCount = items.filter((itm) => {
     return itm.isRead === false;
@@ -62,15 +63,24 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
     switch (noti.type) {
     case NotificationType.BOOKING_CONFIRMED:
     case NotificationType.BOOKING_CANCELLED:
-      if (user.role === RoleEnum.CUSTOMER && bookingId) {
-        navigate(`/user/account/bookings/details/${bookingId}`);
-      } else if (user.role === RoleEnum.PROVIDER && bookingId) {
-        navigate(`/provider/booking-history/details/${bookingId}`);
+      if ([RoleEnum.CUSTOMER, RoleEnum.PROVIDER].includes(user.role) && bookingId) {
+        navigate(`/${user.role}/booking-details/${bookingId}`);
       }
       break;
     default:
       toast.warn("Unhandle notification type", noti.type);
     }
+
+    try {
+      await AuthService.acknowledgeNotificationAPI(noti.notificationId);
+      dispatch(markAsRead(noti.notificationId));
+    } catch (error) {
+      console.log(error);
+      const err = error as AxiosError<{ message: string }>;
+      const errorMsg = err.response?.data?.message || "notification aknowledgment failed";
+      toast.info(errorMsg);
+    }
+
   };
 
   return (
@@ -103,10 +113,10 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
           )}
           {/* Right Section */}
           <div className="flex items-center gap-3 md:gap-4  ">
-            { isAuthenticated &&
+            {isAuthenticated && user &&
               <div
                 className="cursor-pointer transform transition-transform duration-200 hover:scale-110"
-                onClick={() => setIsNotificaitonOpen(!isNotificationOpen)}
+                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
               >
                 <span className="text-lg">🔔</span>
                 {unreadCount > 0 && <span className="font-semibold text-sm">({unreadCount})</span>}
@@ -114,55 +124,48 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
             }
             {isNotificationOpen && (
               <div
-                className="rounded-xl shadow-xl absolute top-16 right-2 bg-primary-foreground/95 text-primary p-2 border-2 overflow-y-scroll max-h-96 w-64 md:w-80 scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-transparent"
+                className=" rounded-xl shadow-xl absolute top-16 right-10 bg-primary-foreground/95 text-primary p-2 border-2 "
                 aria-label="Notifications"
               >
-                <h4 className="text-xl font-semibold underline underline-offset-4">
+                <h4 className="text-xl font-semibold underline underline-offset-4 m-2">
                   Notification
                 </h4>
-
-                {items.length > 0 ? (
-                  <>
-                    {items.slice(0, 6).map((noti, i) => {
-                      const { date, time } = splitDateTime(noti.createdAt);
-                      return (
-                        <div
-                          key={i}
-                          className="group border-b-4 p-4 cursor-pointer hover:scale-105"
-                          onClick={() => handleNotificationInDetails(noti)}
-                        >
-                          <p className="text-xs font-semibold text-end">
-                            {`${date} ${time}`}
-                          </p>
-                          <div className="flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                              <p className="font-semibold font-mono text-sm group-hover:underline">
-                                {noti.title}
-                              </p>
-                              {!noti.isRead && (
-                                <span className="border-2 bg-green-400 h-2 w-2 rounded-full inline-block" />
-                              )}
+                <div className="overflow-y-scroll max-h-96 w-64 md:w-80 overflow-x-hidden thin-scrollbar">
+                  {items.length > 0 ? (
+                    <>
+                      {items.map((noti) => {
+                        const { date, time } = splitDateTime(noti.createdAt);
+                        return (
+                          <div
+                            key={noti.notificationId}
+                            className="group border-b-4 p-4 cursor-pointer hover:scale-105"
+                            onClick={() => handleNotificationInDetails(noti)}
+                          >
+                            <p className="text-xs font-semibold text-end">
+                              {`${date} ${time}`}
+                            </p>
+                            <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-2">
+                                <p className="font-semibold font-mono text-sm group-hover:underline">
+                                  {noti.title}
+                                </p>
+                                {!noti.isRead && (
+                                  <span className="border-2 bg-green-400 h-2 w-2 rounded-full inline-block" />
+                                )}
+                              </div>
                             </div>
+                            <p className="text-xs">{noti.message}</p>
                           </div>
-                          <p className="text-xs">{noti.message}</p>
-                        </div>
-                      );
-                    })}
-                    {items.length > 6 && (
-                      <div className="text-end p-2">
-                        <Link to="/notificaiton" className="cursor-pointer hover:underline">
-                          See More...
-                        </Link>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="p-4 text-center text-gray-500 italic">
-                    No notifications
-                  </div>
-                )}
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <div className="p-4 text-center text-gray-500 italic">
+                      No notifications
+                    </div>
+                  )}
+                </div>
               </div>
-
             )}
 
             {/* Theme Toggle */}

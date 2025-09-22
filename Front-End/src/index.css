@@ -10,8 +10,6 @@
 @import 'swiper/css/navigation';
 @import "tw-animate-css";
 
-
-
 @custom-variant dark (&:is(.dark *));
 
 /* @custom-variant dark (&:where(.dark, .dark *)); */
@@ -203,3 +201,14 @@ html {
   padding: 30px !important;
 }
 
+.thin-scrollbar::-webkit-scrollbar {
+  width: 5px; /* thin */
+  height: 8px;
+}
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #9ca3af; /* gray-400 */
+  border-radius: 10px;
+}

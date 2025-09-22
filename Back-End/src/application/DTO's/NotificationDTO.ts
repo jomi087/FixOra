@@ -1,6 +1,7 @@
 import { NotificationType } from "../../shared/Enums/Notification";
 
 export interface NotificationOutputDTO {
+    notificationId: string;
     type: NotificationType;
     title: string;
     message: string;

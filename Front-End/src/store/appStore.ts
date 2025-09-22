@@ -11,7 +11,7 @@ import providerBookingReducer from "./provider/bookingSlice";
 const appStore = configureStore({
   reducer: {
     auth: authReducer,
-    notificaitons: notificationReducer,
+    notification: notificationReducer,
     wallet: walletInfoReducer,
 
     category: categoryReducer,

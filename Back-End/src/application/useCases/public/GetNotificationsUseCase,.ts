@@ -16,8 +16,9 @@ export class GetNotificationsUseCase implements IGetNotificationsUseCase {
         try {
             let notifications = await this._notificationRepository.findByUserId(userId);
 
-            const mappedData = notifications.map(({ type, title, message, metadata, isRead, createdAt }) => {
+            const mappedData = notifications.map(({ notificationId, type, title, message, metadata, isRead, createdAt }) => {
                 return {
+                    notificationId,
                     type,
                     title,
                     message,

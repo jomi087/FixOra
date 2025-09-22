@@ -4,6 +4,7 @@ import { NotificationType } from "../../../shared/Enums/Notification";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
 
 export interface NotificationPayload {
+    notificationId: string;
     type: NotificationType;
     title: string;
     message: string;

@@ -42,6 +42,7 @@ export class SendBookingCancelledNotificationUseCase {
             await this._notificationRepository.save(notification);
 
             await this._notificationService.send(userId, {
+                notificationId: notification.notificationId,
                 type:notification.type,
                 title:notification.title,
                 message:notification.message,

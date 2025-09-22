@@ -34,7 +34,7 @@ const ProviderBookingPage: React.FC = () => {
               </li>
               <li>/</li>
               <li>
-                <Link to="/user/providers" className="hover:underline">Providers</Link>
+                <Link to="/customer/providers" className="hover:underline">Providers</Link>
               </li>
               <li>/</li>
               <li className="text-foreground font-semibold">Booking Info</li>

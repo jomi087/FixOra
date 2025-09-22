@@ -33,7 +33,7 @@ export const useChangePasswordLogic = () => {
       if (res.status === HttpStatusCode.OK) {
         toast.success(res.data.message || Messages.PASSWORD_UPDATED_SUCCESS);
         setTimeout(() => {
-          navigate("/user/account/profile");
+          navigate("/customer/account/profile");
         });
       }
     } catch (error: any) {
@@ -41,7 +41,7 @@ export const useChangePasswordLogic = () => {
       const errorMsg = error?.response?.data?.message || Messages.PASSWORD_UPDATE_FAILED;
       toast.error(errorMsg);
       setTimeout(() => {
-        navigate("/user/account/profile");
+        navigate("/customer/account/profile");
       });
     } finally {
       setLoading(false);

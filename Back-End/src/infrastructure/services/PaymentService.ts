@@ -33,8 +33,8 @@ export class PaymentService implements IPaymentService {
                     },
                 ],
                 mode: "payment",
-                success_url: `${process.env.FRONTEND_URL}/user/providers/provider-booking/payment/${bookingId}`,
-                cancel_url: `${process.env.FRONTEND_URL}/user/providers/provider-booking/payment/${bookingId}`,
+                success_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
+                cancel_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
                 metadata: {
                     bookingId: bookingId,
                 },
@@ -70,11 +70,11 @@ export class PaymentService implements IPaymentService {
                 ],
                 mode: "payment",
                 success_url: role === RoleEnum.Customer
-                    ? `${process.env.FRONTEND_URL}/user/account/wallet`
+                    ? `${process.env.FRONTEND_URL}/customer/account/wallet`
                     : `${process.env.FRONTEND_URL}/provider/wallet`,
 
                 cancel_url: role === RoleEnum.Provider
-                    ? `${process.env.FRONTEND_URL}/user/account/wallet`
+                    ? `${process.env.FRONTEND_URL}/customer/account/wallet`
                     : `${process.env.FRONTEND_URL}/provider/wallet`,
                 metadata: {
                     userId,

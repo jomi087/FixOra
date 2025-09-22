@@ -82,6 +82,9 @@ const getLandingDataUseCase = new GetLandingDataUseCase(categoryRepository);
 import { GetNotificationsUseCase } from "../application/useCases/public/GetNotificationsUseCase,";
 const getNotificationsUseCase = new GetNotificationsUseCase(notificationRepository);
 
+import { NotificationAcknowledgmentUseCase } from "../application/useCases/public/NotificationAcknowledgmentUseCase";
+const notificationAcknowledgmentUseCase = new NotificationAcknowledgmentUseCase(notificationRepository);
+
 import { SendBookingConfirmedNotificationUseCase } from "../application/useCases/Notificiations/SendBookingConfirmedNotificationUseCase";
 const sendBookingConfirmedNotificationUseCase = new SendBookingConfirmedNotificationUseCase(notificationRepository,notificationService);
 
@@ -187,7 +190,7 @@ import { UserController } from "../interfaces/controllers/UserContoller";
 import { AdminController } from "../interfaces/controllers/AdminController";
 import { ProviderController } from "../interfaces/controllers/ProviderController";
 
-const publicController = new PublicController(loggerService, getLandingDataUseCase, getNotificationsUseCase );
+const publicController = new PublicController(loggerService, getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase );
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase);
 const userController = new UserController(loggerService, activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, imageUploaderService, providerInfoUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, cancelBookingUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase);

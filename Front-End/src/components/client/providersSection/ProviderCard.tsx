@@ -17,7 +17,7 @@ const ProviderCard: React.FC<ProvderCardProps> = ({ datas }) => {
         <div
           key={data.providerId}
           className="w-full sm:w-[45%] md:w-[30%] lg:w-[23%] transition-transform duration-300 hover:scale-105"
-          onClick={()=>navigate(`/user/providers/provider-booking/${data.providerId}`)}
+          onClick={()=>navigate(`/customer/providers/provider-booking/${data.providerId}`)}
         >
           <div className="relative rounded-3xl cursor-pointer border border-gray-300 dark:border-white/20 shadow-lg shadow-black pb-2">
             <div className="flex justify-around  rounded-t-3xl">
