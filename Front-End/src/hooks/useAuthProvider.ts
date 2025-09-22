@@ -56,7 +56,7 @@ export const useAuthProvider = () => {
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
         toast.error(errorMsg);
         if (error.response.status === HttpStatusCode.UNPROCESSABLE_ENTITY) {
-          navigate("/user/account/profile");
+          navigate("/customer/account/profile");
         };
       } finally {
         setLoading(false);

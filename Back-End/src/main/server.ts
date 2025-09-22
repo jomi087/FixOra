@@ -56,7 +56,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 app.use("/api",publicRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api/customer", userRoutes);
 app.use("/api/provider",providerRoutes);
 app.use("/api/admin", adminRoutes);
 app.use(errorHandler);

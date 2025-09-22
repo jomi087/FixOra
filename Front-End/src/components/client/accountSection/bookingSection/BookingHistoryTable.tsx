@@ -52,7 +52,7 @@ const BookingHistoryTable = () => {
       return;
     }
 
-    navigate(`/user/booking-details/${booking.bookingId}`, {
+    navigate(`/customer/booking-details/${booking.bookingId}`, {
       state: { from: "history" },
     });
   };

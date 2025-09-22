@@ -29,7 +29,7 @@ export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
 
             const url = process.env.FRONTEND_URL || "http://localhost:5001";
             
-            const resetUrl = `${url}/user/account/profile/change-password?token=${resetToken}`;
+            const resetUrl = `${url}/customer/account/profile/change-password?token=${resetToken}`;
 
             const html = `
                 <h1>FixOra Password Reset Request</h1>

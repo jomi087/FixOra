@@ -14,7 +14,8 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     async markAsRead(notificationId: string): Promise<void> {
-        await NotificationModel.updateOne({ id: notificationId }, { $set: { isRead: true } });
+        await NotificationModel.updateOne({ notificationId : notificationId }, { $set: { isRead: true } });
     }
+
 
 }

@@ -49,7 +49,7 @@ const BookingHistoryTable = () => {
       toast.error("Opps Wrong-Booking entry");
       return;
     }
-    navigate(`/user/account/bookings/details/${booking.bookingId}`);
+    navigate(`/customer/booking-details/${booking.bookingId}`);
   };
 
   if (isLoading) {

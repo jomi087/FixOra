@@ -85,4 +85,4 @@ const providerInfoSlice  = createSlice({
 });
 
 export const { addBooking,updateBookingStatus,removeBooking, clearProviderInfo } = providerInfoSlice .actions;
-export default providerInfoSlice .reducer;
+export default providerInfoSlice.reducer;

@@ -43,8 +43,8 @@ export const BHPP = 7;                                                  //BHPP =
 export const TLPP = 5;                                                  //TLPP => Transaction List Per Page -> default set to 10
 export const DATE_RANGE_DAYS = 7;
 export const TIME_SLOTS = {
-  STARTHOURS: 8,
-  ENDHOURS: 18,
+  STARTHOURS: 0,
+  ENDHOURS: 23,
   INTERVAL : 60,
 };
 
@@ -114,10 +114,10 @@ export const constraints = [
 /******************************Navigation Items for the User navigation bar ********************************/
 export const navItems = [
   { name: "Home", to: "/", icon: <Home size={18} /> } ,
-  { name: "Services", to: "/user/services", icon: <Briefcase size={18} /> },
-  { name: "Providers", to: "/user/providers", icon: <Users size={18} /> },
-  // { name: "Blog", to: "/user/blog", icon: <FileText size={18} /> },
-  { name : "Account" , to: "/user/account/profile", icon: <User  size={18} /> }
+  { name: "Services", to: "/customer/services", icon: <Briefcase size={18} /> },
+  { name: "Providers", to: "/customer/providers", icon: <Users size={18} /> },
+  // { name: "Blog", to: "/customer/blog", icon: <FileText size={18} /> },
+  { name : "Account" , to: "/customer/account/profile", icon: <User  size={18} /> }
 ];
 /********************************************* Side-Bar Sections *******************************************************/
 export interface SideBarOption {
@@ -128,11 +128,11 @@ export interface SideBarOption {
 
 //User Side Bar
 export const userSideBarOptions: SideBarOption[] = [
-  { icon: User, section: "Profile", to: "/user/account/profile" },
-  { icon: CalendarCheck, section: "Bookings", to: "/user/account/bookings" },
-  { icon: MessageSquareText, section: "Chats", to: "/user/account/chats" },
-  { icon: Wallet, section: "Wallet", to: "/user/account/wallet" },
-  { icon: ShieldAlert, section: "Dispute", to: "/user/account/dispute" },
+  { icon: User, section: "Profile", to: "/customer/account/profile" },
+  { icon: CalendarCheck, section: "Bookings", to: "/customer/account/bookings" },
+  { icon: MessageSquareText, section: "Chats", to: "/customer/account/chats" },
+  { icon: Wallet, section: "Wallet", to: "/customer/account/wallet" },
+  { icon: ShieldAlert, section: "Dispute", to: "/customer/account/dispute" },
 ];
 
 //provider Side Bar

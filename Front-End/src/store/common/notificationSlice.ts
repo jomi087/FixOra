@@ -45,10 +45,10 @@ const notificationSlice = createSlice({
     clearNotifications: (state) => {
       state.items = [];
     },
-    // markAsRead: (state, action: PayloadAction<string>) => {
-    //   const notif = state.items.find(n => n.id === action.payload);
-    //   if (notif) notif.isRead = true;
-    // }
+    markAsRead: (state, action: PayloadAction<string>) => {
+      const notif = state.items.find(n => n.notificationId === action.payload);
+      if (notif) notif.isRead = true;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -67,7 +67,7 @@ const notificationSlice = createSlice({
   },
 });
 
-export const { addNotification,clearNotifications/*,markAsRead*/ } = notificationSlice.actions;
+export const { addNotification,clearNotifications,markAsRead } = notificationSlice.actions;
 export default notificationSlice.reducer;
 
 /*

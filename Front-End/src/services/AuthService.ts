@@ -40,6 +40,10 @@ class AuthService {
     return axiosInstance.get("/api/notifications");
   }
 
+  acknowledgeNotificationAPI(notificationId:string) {
+    return axiosInstance.patch(`/api/notification/acknowledge/${notificationId}`);
+  }
+
   signupApi(Data: Signup) {
     return axiosInstance.post("/api/auth/signup", Data, this.getJsonConfig());
   }
@@ -74,73 +78,73 @@ class AuthService {
   /*********************************************************************************************************************** */
 
   getActiveServicesApi() {
-    return axiosInstance.get("/api/user/services");
+    return axiosInstance.get("/api/customer/services");
   }
 
   getAuthProvidersApi(params: { searchQuery: string, filter: string, currentPage: number, itemsPerPage: number, selectedService?: string; nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string }) {
-    return axiosInstance.get("/api/user/providers", { params });
+    return axiosInstance.get("/api/customer/providers", { params });
   }
 
   providerKYCApi(data: FormData) {
-    return axiosInstance.post("/api/user/provider-kyc", data, this.getMultiPartConfig());
+    return axiosInstance.post("/api/customer/provider-kyc", data, this.getMultiPartConfig());
   }
 
   providerInfoApi(id: string) {
-    return axiosInstance.get(`/api/user/provider/bookings/${id}`);
+    return axiosInstance.get(`/api/customer/provider/bookings/${id}`);
   }
 
   bookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
-    return axiosInstance.post("/api/user/provider/booking", payload, this.getJsonConfig());
+    return axiosInstance.post("/api/customer/provider/booking", payload, this.getJsonConfig());
   }
 
   onlinePaymentApi(bookingId: string) {
-    return axiosInstance.post("/api/user/create-checkout-session", { bookingId }, this.getJsonConfig());
+    return axiosInstance.post("/api/customer/create-checkout-session", { bookingId }, this.getJsonConfig());
   }
 
   walletPaymentApi(bookingId: string) {
-    return axiosInstance.post("/api/user/wallet-payment", { bookingId }, this.getJsonConfig());
+    return axiosInstance.post("/api/customer/wallet-payment", { bookingId }, this.getJsonConfig());
   }
 
   checkBookingPaymentStatus(bookingId: string) {
-    return axiosInstance.get(`/api/user/booking/notify-paymentStatus/${bookingId}`);
+    return axiosInstance.get(`/api/customer/booking/notify-paymentStatus/${bookingId}`);
   }
 
   editProfileApi(form: ProfileEdit) {
-    return axiosInstance.patch("/api/user/editProfile", form, this.getJsonConfig());
+    return axiosInstance.patch("/api/customer/editProfile", form, this.getJsonConfig());
   }
 
   verifyPasswordApi(password: string) {
-    return axiosInstance.post("/api/user/verifyPassword", { password }, this.getJsonConfig());
+    return axiosInstance.post("/api/customer/verifyPassword", { password }, this.getJsonConfig());
   }
 
   changePasswordApi(token: string, password: string, cPassword: string) {
-    return axiosInstance.patch("/api/user/change-password", { token, password, cPassword, }, this.getJsonConfig());
+    return axiosInstance.patch("/api/customer/change-password", { token, password, cPassword, }, this.getJsonConfig());
   }
 
   bookingHistoryApi(currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/user/booking-history", {
+    return axiosInstance.get("/api/customer/booking-history", {
       params: { currentPage, itemsPerPage }
     });
   }
 
   bookingDetailsApi(bookingId: string) {
-    return axiosInstance.get(`/api/user/bookingDetails/${bookingId}`);
+    return axiosInstance.get(`/api/customer/bookingDetails/${bookingId}`);
   }
 
   retryAvailabilityApi(bookingId: string) {
-    return axiosInstance.patch(`/api/user/booking/retry-availability/${bookingId}`);
+    return axiosInstance.patch(`/api/customer/booking/retry-availability/${bookingId}`);
   }
 
   cancelBookingApi(bookingId: string) {
-    return axiosInstance.patch(`/api/user/booking/cancel-booking/${bookingId}`);
+    return axiosInstance.patch(`/api/customer/booking/cancel-booking/${bookingId}`);
   }
 
   userWalletInfoApi(page: number, limit: number) {
-    return axiosInstance.get(`/api/user/wallet?page=${page}&limit=${limit}`);
+    return axiosInstance.get(`/api/customer/wallet?page=${page}&limit=${limit}`);
   }
 
   addFundApi(amount: number) {
-    return axiosInstance.post("/api/user/wallet/add-fund", { amount }, this.getJsonConfig());
+    return axiosInstance.post("/api/customer/wallet/add-fund", { amount }, this.getJsonConfig());
   }
 
   /*********************************************************************************************************************** */

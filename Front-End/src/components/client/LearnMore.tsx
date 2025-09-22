@@ -11,9 +11,9 @@ import { slugify } from "@/utils/helper/utils";
 import { useAppSelector } from "@/store/hooks";
 import { RoleEnum } from "@/shared/enums/roles";
 import { toast } from "react-toastify";
- 
 
-interface learMoreProps{
+
+interface learMoreProps {
   categories: MainCategory[]
   //providers:ProviderImage[]
   isPending: Boolean
@@ -21,14 +21,15 @@ interface learMoreProps{
 
 
 const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+
   const navigate = useNavigate();
-  const handleServices = (section:string) => {
+  const handleServices = (section: string) => {
     if (!isAuthenticated) {
       toast.info("Sign-In Required");
       navigate(`/signIn/${RoleEnum.CUSTOMER}`);
     } else {
-      navigate(`/user/services#${slugify(section)}`); 
+      navigate(`/customer/services#${slugify(section)}`);
     }
   };
   return (
@@ -43,58 +44,61 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
         <p className="text-center text-sm sm:text-lg font-mono md:w-3/4 mx-auto">
           {`${App_Name} is your all-in-one solution for home repair services. Whether it's appliances, electrical issues, or plumbing needs – book trusted professionals in just a few taps. Fast, reliable, and hassle-free.`}
         </p>
-  
+
         {/* Service Slider */}
-        <div className="">
-          <h3 className="text-xl font-medium text-center underline pt-10 pb-5" >
-            SERVICES PROVIDED
-          </h3>
-          <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto pb-5" id="service_Provided">
-            We currently offer a wide range of home repair services, including appliance servicing, electrical fixes, and plumbing solutions. Our platform is constantly evolving — new and specialized services will be added regularly to meet your needs more effectively.
-          </p>
-          { !isPending && categories.length != 0 &&
-            <Swiper
-              modules={[Pagination, Navigation, Autoplay]} 
-              loop= { true }
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction : false,
-              }}
-              speed={5000} // Smooth transition duration in milliseconds
-              breakpoints={{
-                340: {
-                  slidesPerView: 1,
-                  spaceBetween: 15,
-                },
-                700: {
-                  slidesPerView: categories.length < 4 ? categories.length : 4 ,
-                  spaceBetween: 20,
-                },
-              }}
-              className="max-w-[90%] lg:max-w-[100%] "
-              aria-label="Service options slider" 
-            >           
-              {categories.map((category) => (
-                <SwiperSlide key={category.categoryId} className="p-4 ">
-                  <div className="w-[99%] rounded-2xl text-center cursor-pointer shadow-lg shadow-black border ">
-                    <div className=" h-48 overflow-hidden p-1 rounded-t-2xl">
-                      <img src={category.image} alt={category.name} className="w-full h-full object-contain rounded-t-2xl "  loading="lazy"/>
+        {user && user.role == RoleEnum.CUSTOMER && (
+          <div className="">
+            <h3 className="text-xl font-medium text-center underline pt-10 pb-5" >
+              SERVICES PROVIDED
+            </h3>
+            <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto pb-5" id="service_Provided">
+              We currently offer a wide range of home repair services, including appliance servicing, electrical fixes, and plumbing solutions. Our platform is constantly evolving — new and specialized services will be added regularly to meet your needs more effectively.
+            </p>
+            {!isPending && categories.length != 0 &&
+              <Swiper
+                modules={[Pagination, Navigation, Autoplay]}
+                loop={true}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+                speed={5000} // Smooth transition duration in milliseconds
+                breakpoints={{
+                  340: {
+                    slidesPerView: 1,
+                    spaceBetween: 15,
+                  },
+                  700: {
+                    slidesPerView: categories.length < 4 ? categories.length : 4,
+                    spaceBetween: 20,
+                  },
+                }}
+                className="max-w-[90%] lg:max-w-[100%] "
+                aria-label="Service options slider"
+              >
+                {categories.map((category) => (
+                  <SwiperSlide key={category.categoryId} className="p-4 ">
+                    <div className="w-[99%] rounded-2xl text-center cursor-pointer shadow-lg shadow-black border ">
+                      <div className=" h-48 overflow-hidden p-1 rounded-t-2xl">
+                        <img src={category.image} alt={category.name} className="w-full h-full object-contain rounded-t-2xl " loading="lazy" />
+                      </div>
+                      <h6 className="text-lg font-mono mb-2 mt-2">{category.name.toUpperCase()}</h6>
+                      <p className="text-sm">{category.description}</p>
+                      <button
+
+                        className="border rounded-full px-2 py-1 mt-4 mb-8 shadow-md shadow-black text-right cursor-pointer"
+                        onClick={() => { handleServices(category.name); }}
+                      >
+                        View More
+                      </button>
                     </div>
-                    <h6 className="text-lg font-mono mb-2 mt-2">{category.name.toUpperCase() }</h6>
-                    <p className="text-sm">{category.description}</p>
-                    <button
-     
-                      className="border rounded-full px-2 py-1 mt-4 mb-8 shadow-md shadow-black text-right cursor-pointer"
-                      onClick={() => { handleServices(category.name); }}
-                    >
-                      View More
-                    </button>
-                  </div> 
-                </SwiperSlide>
-              )) } 
-            </Swiper>  
-          }
-        </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            }
+          </div>
+        )}
+
 
         {/* Certified Provider */}
         <div className="mt-10">
@@ -102,20 +106,20 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
           <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto">
             {` ${App_Name} is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need`}
           </p>
-          <div className ='grid grid-cols-1 md:grid-cols-2 mt-20   to-blue-500 from-amber-500  p-10'>
+          <div className='grid grid-cols-1 md:grid-cols-2 mt-20   to-blue-500 from-amber-500  p-10'>
             <div className=''>
               <div className="rounded-2xl text-center cursor-pointer shadow-2xl shadow-black">
                 <Swiper
-                  modules={ [Pagination, Navigation, Autoplay] } // Add Pagination module
+                  modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
                   pagination={{ clickable: true }} // Enable clickable pagination
                   loop={true}
                   autoplay={{
                     delay: 3000,
-                    disableOnInteraction : false,
+                    disableOnInteraction: false,
                   }}
                   aria-label="Certified service providers slider"
                 >
-                  {providers.map((provider,index) => (
+                  {providers.map((provider, index) => (
                     <SwiperSlide key={index}>
                       <div className="overflow-hidden rounded-t-2xl">
                         <img src={provider} alt="provider1 image" className="rounded-2xl h-[100%]" />

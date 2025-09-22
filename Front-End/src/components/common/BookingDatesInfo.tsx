@@ -1,25 +1,25 @@
 interface BookingDatesInfoProps {
-    dates: {
-        day: string;
-        dayShortName: string;
-        date: string;
-        month: string;
-        fullDate: string;
-    }[];
-    selectedDate: string;
-    onDateChange : (date: string) => void;
+  dates: {
+    day: string;
+    dayShortName: string;
+    date: string;
+    month: string;
+    fullDate: string;
+  }[];
+  selectedDate: string;
+  onDateChange: (date: string) => void;
 }
 
 const BookingDatesInfo: React.FC<BookingDatesInfoProps> = ({ dates, selectedDate, onDateChange }) => {
   return (
-    <div className="flex justify-between items-center gap-5 border p-4 rounded-md overflow-x-auto">
+    <div className="flex justify-between items-center gap-5 border p-4 rounded-md overflow-x-auto thin-scrollbar">
       {dates.map((dateObj, idx) => (
         <button
           key={idx}
           onClick={() => onDateChange(dateObj.fullDate)}
-          className={`flex flex-col items-center md:w-xl px-4 py-2 rounded-md border 
-                        ${selectedDate === dateObj.fullDate ? "bg-chart-2 dark:scale-115 dark:bg-white/95" : "bg-white/95 text-black"} 
-                        hover:border-primary transition`}
+          className={`flex-shrink-0 flex flex-col items-center rounded-md border px-3 py-2
+          ${selectedDate === dateObj.fullDate ? "bg-chart-2 dark:scale-110 dark:bg-white/95" : "bg-white/95 text-black"} 
+          hover:border-primary transition w-1/1 xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/8`}
         >
           <span className="text-sm font-medium">{dateObj.day}</span>
           <span className="text-lg font-semibold">{dateObj.date}</span>

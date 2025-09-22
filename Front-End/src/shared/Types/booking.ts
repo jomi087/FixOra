@@ -5,6 +5,7 @@ import type { ProviderResponseStatus } from "../enums/ProviderResponseStatus";
 import type { AddressWithCoordinates } from "./location";
 
 export interface Notification {
+  notificationId: string;
   type: NotificationType;   // e.g. "BOOKING_CONFIRMED", "BOOKING_CANCELLED"
   title: string;            // short heading
   message: string;          // description

@@ -42,7 +42,7 @@ const JobInfo: React.FC = () => {
     };
   }, [dispatch]); */
 
-  const { items } = useAppSelector(state => state.notificaitons);
+  const { items } = useAppSelector(state => state.notification);
 
   useEffect(() => {
     const latest = items[0];
@@ -59,7 +59,7 @@ const JobInfo: React.FC = () => {
       return;
     }
 
-    navigate(`/provider/booking-history/details/${booking.bookingId}`, {
+    navigate(`/provider/booking-details/${booking.bookingId}`, {
       state: { from: "dashboard" },
     });
   };

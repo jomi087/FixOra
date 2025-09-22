@@ -4,9 +4,10 @@ import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { IGetNotificationsUseCase } from "../../application/Interface/useCases/Public/IGetNotificationsUseCase";
 import { Messages } from "../../shared/Messages";
+import { INotificationAcknowledgmentUseCase } from "../../application/Interface/useCases/Public/INotificationAcknowledgmentUseCase";
 
-const { OK, UNAUTHORIZED } = HttpStatusCode;
-const { UNAUTHORIZED_MSG } = Messages;
+const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
+const { UNAUTHORIZED_MSG, NOTIFICATIONID_NOT_FOUND } = Messages;
 
 
 export class PublicController {
@@ -14,6 +15,7 @@ export class PublicController {
         private _loggerService: ILoggerService,
         private _getLandingDataUseCase: IGetLandingDataUseCase,
         private _getNotificationsUseCase: IGetNotificationsUseCase,
+        private _notificationAcknowledgmentUseCase: INotificationAcknowledgmentUseCase
     ) { }
 
     async getLandingData(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -44,6 +46,23 @@ export class PublicController {
                 success: true,
                 notificationData
             });
+
+        } catch (error: any) {
+            this._loggerService.error(`getLandingData error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async acknowledgeNotification (req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { notificationId } = req.params;
+            if (!notificationId) {
+                throw { status: NOT_FOUND, message: NOTIFICATIONID_NOT_FOUND };
+            }
+
+            await this._notificationAcknowledgmentUseCase.execute(notificationId);
+
+            res.status(OK).json({ success: true });
 
         } catch (error: any) {
             this._loggerService.error(`getLandingData error:, ${error.message}`, { stack: error.stack });
