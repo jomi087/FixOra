@@ -1,15 +1,15 @@
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
-  LayoutDashboard, /*Settings,*/ BarChartBig, Wrench, AlertTriangle,
-  MessageSquareMore, /*Scroll,*/ClipboardClock  
+  LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
+  MessageSquareMore, ClipboardClock, CalendarClock
 } from "lucide-react";
 
 
 
 
 /******************************************************************************************************* */
-export const App_Name:string = "FixOra";
+export const App_Name: string = "FixOra";
 export const Support_Mail: string = `support@${App_Name.toLocaleLowerCase()}.com`;
 export const Support_Contact_No: string = "+91 7907728132";
 export const CURRENT_YEAR = 2025;
@@ -17,7 +17,7 @@ export const COPYRIGHT_NOTICE = `© ${CURRENT_YEAR} ${App_Name}. All rights rese
 
 /********************************************* Image Sections *******************************************************/
 export const BGImage_404: string = "url('/404_Bg_Image.jpg')";  //used in sign-in, sign-up, pagenot-found,
-export const HeroSectionImage:string = "/hero-removebg-preview.png";
+export const HeroSectionImage: string = "/hero-removebg-preview.png";
 export const SingInThemeImage: string = "/signIn.png";
 export const ApprovedSeal: string = "/approved.png";
 export const RejectSeal: string = "/rejected.png";
@@ -32,8 +32,8 @@ export const longInputLength: number = 50;  //200
 
 export const categoryImageSize: number = 1;                                 //default set  to 2 mb
 export const providerImageSize: number = 1;                                 //default set  to 2 mb
-export const KYCImageSize : number = 5;                                     //default set  to 5 mb
-export const minYear = `${new Date().getFullYear() - 150}-01-01`; 
+export const KYCImageSize: number = 5;                                     //default set  to 5 mb
+export const minYear = `${new Date().getFullYear() - 150}-01-01`;
 export const maxYear = `${new Date().getFullYear() - 19}-01-01`;
 export const CCPP = 8;                                                  //CCPP => Customer Cards Per page -> default set to 16
 export const PCPP = 8;                                                  //PCPP => Provider Cards Per page  -> default set to 16
@@ -42,18 +42,19 @@ export const SLPP = 7;                                                  //SLPP =
 export const BHPP = 7;                                                  //BHPP => Booking History Per Page  -> default set to 10
 export const TLPP = 5;                                                  //TLPP => Transaction List Per Page -> default set to 10
 export const DATE_RANGE_DAYS = 7;
+export const ONE_WEEK = 7;
 export const TIME_SLOTS = {
   STARTHOURS: 0,
   ENDHOURS: 23,
-  INTERVAL : 60,
+  INTERVAL: 60,
 };
 
 
 /******************************************* Messages *******************************************************/
 export const Messages = {
   FAILED_CATEGORY_RESPONSE_MSG: "Failed to add category",
-  FAILED_TO_FETCH_ADDRESS_CORDINATES : "Failed to fetch address from coordinates",
-  FAILED_TO_FETCH_CORDINATES : "Failed to fetch coordinates",
+  FAILED_TO_FETCH_ADDRESS_CORDINATES: "Failed to fetch address from coordinates",
+  FAILED_TO_FETCH_CORDINATES: "Failed to fetch coordinates",
   FAILED_TO_FETCH_DATA: "Failed to fetch data",
   MAIL_SENT_MSG: "A Verification mail has been sent to your mail",
   FAILED_PASSWORD_VERIFICATION: "Password verification Failed",
@@ -71,7 +72,7 @@ export const Messages = {
   PASSWORD_RESET_SUCCESS: "Password reset successful!",
   PASSWORD_RESET_FAILED: "Password reset failed",
   FAILED_TO_FETCH_CATEGORY: "Failed to fetch Category",
-  SIGNIN_SUCCESS: "Sign-in successful!",  
+  SIGNIN_SUCCESS: "Sign-in successful!",
   FORGOT_PASSWORD_FAILED: "Forgot Password Failed",
   ACCOUNT_CREATION_FAILED: "Account Creation failed",
   FAILED_TO_UPDATE_STATUS: "Failed to update status",
@@ -79,10 +80,10 @@ export const Messages = {
   NETWORK_ERROR_FETCHING_POSTAL_INFO: "Network error while fetching postal info",
   BOOKING_STATUS_FAILED: "Failed to update booking status",
   ACCESS_DENID: "You don't have permission to access this resource.",
-  STRIPE_FAILED:"Stripe failed to initialize",
+  STRIPE_FAILED: "Stripe failed to initialize",
   PAYMENT_FAILED: "Payment Failed, Try again",
 
-  
+
   //move to validation section
   SERVICE_REQUIRED: "Service required",
   DOB_REQUIRED: "Date of birth is required",
@@ -95,13 +96,13 @@ export const Messages = {
 };
 
 export const validationMsg = {
-  ISSUE_TYPE_REQUIRED : "Issue Type is required.",
+  ISSUE_TYPE_REQUIRED: "Issue Type is required.",
   ISSUE_DESCRIPTION_REQUIRED: "Please describe the issue.",
   REASON_INVALID: "Please enter a valid Reason"
 };
 
 export const placeHolder = {
-  ISSUE_TYPE : "Select issue type", 
+  ISSUE_TYPE: "Select issue type",
   ISSUE_DESCRIPTION: "Briefly describe the problem you're facing"
 };
 /******************************************* Reset Password Constraints Sections *******************************************************/
@@ -113,17 +114,18 @@ export const constraints = [
 ];
 /******************************Navigation Items for the User navigation bar ********************************/
 export const navItems = [
-  { name: "Home", to: "/", icon: <Home size={18} /> } ,
+  { name: "Home", to: "/", icon: <Home size={18} /> },
   { name: "Services", to: "/customer/services", icon: <Briefcase size={18} /> },
   { name: "Providers", to: "/customer/providers", icon: <Users size={18} /> },
   // { name: "Blog", to: "/customer/blog", icon: <FileText size={18} /> },
-  { name : "Account" , to: "/customer/account/profile", icon: <User  size={18} /> }
+  { name: "Account", to: "/customer/account/profile", icon: <User size={18} /> }
 ];
 /********************************************* Side-Bar Sections *******************************************************/
 export interface SideBarOption {
   icon: React.ElementType;
   section: string;
-  to: string;
+  to?: string;
+  children?: SideBarOption[];
 }
 
 //User Side Bar
@@ -138,13 +140,18 @@ export const userSideBarOptions: SideBarOption[] = [
 //provider Side Bar
 export const providerSideBarOptions: SideBarOption[] = [
   { icon: LayoutDashboard, section: "Dashboard", to: "/provider/dashboard" },
-  { icon: MessageSquareMore , section: "Chat", to: "/provider/chats" },
-  { icon: Wallet , section: "Wallet", to: "/provider/wallet" },
-  // { icon: Scroll, section: "Blogs", to: "/provider/blogs" },
+  { icon: MessageSquareMore, section: "Chat", to: "/provider/chats" },
+  { icon: Wallet, section: "Wallet", to: "/provider/wallet" },
   { icon: ClipboardClock, section: "History", to: "/provider/booking-history" },
-  { icon: User, section: "Profile", to: "/provider/profile" },
+  {
+    icon: Settings,
+    section: "Settings",
+    children: [
+      { icon: User, section: "Profile", to: "/provider/settings/profile" },
+      { icon: CalendarClock, section: "Availability", to: "/provider/settings/availability" }
+    ]
+  },
 ];
-
 
 //Admins Side Bar
 export const adminSideBarOptions: SideBarOption[] = [
