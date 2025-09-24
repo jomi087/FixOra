@@ -5,6 +5,7 @@ import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/Enums/Notification";
 import { Messages } from "../../../shared/Messages";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { ISendBookingCancelledNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingCancelledNotificationUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { INTERNAL_ERROR } = Messages;
@@ -18,7 +19,7 @@ export interface SendBookingCancelledInput {
 }
 
 //inteface missing
-export class SendBookingCancelledNotificationUseCase { 
+export class SendBookingCancelledNotificationUseCase implements ISendBookingCancelledNotificationUseCase { 
     constructor(
         private _notificationRepository: INotificationRepository,
         private _notificationService: INotificationService
