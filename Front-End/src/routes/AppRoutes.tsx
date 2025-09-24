@@ -34,6 +34,7 @@ import JobHistoryPage from "@/pages/provider/JobHistoryPage.tsx";
 import JobDetailsPage from "@/pages/provider/JobDetailsPage.tsx";
 import ProviderWalletPage from "@/pages/provider/WalletPage.tsx";
 import UserWalletPage from "@/pages/client/WalletPage.tsx";
+import AvailabilityPage from "@/pages/provider/AvailabilityPage.tsx";
 
 
 const router = createBrowserRouter([
@@ -97,7 +98,9 @@ const router = createBrowserRouter([
       { path: "booking-history", element: <JobHistoryPage /> },
       { path: "booking-details/:bookingId", element: <JobDetailsPage /> },
       { path: "wallet", element: <ProviderWalletPage /> },
-      { path: "profile", element: <ProviderProfilePage /> },
+      { path: "settings/profile", element: <ProviderProfilePage /> },
+      { path: "settings/availability", element: <AvailabilityPage /> },
+
     ],
   },
   // Admin Routes
