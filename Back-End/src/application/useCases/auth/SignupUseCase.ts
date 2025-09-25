@@ -45,7 +45,7 @@ export class SignupUseCase implements ISignupUseCase{
             const tempToken = jwt.sign(tempPayload, process.env.JWT_TEMP_ACCESS_SECRET as string, { expiresIn: expiryTime });
 
             const otp = this._otpGenratorService.generateOtp();
-            console.log("This is the Otp", otp);
+            console.log("This is the signup Otp", otp);
             
             await this._otpRepository.storeOtp({
                 email: userData.email,

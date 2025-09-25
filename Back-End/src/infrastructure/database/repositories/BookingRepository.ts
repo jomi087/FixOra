@@ -28,6 +28,13 @@ export class BookingRepository implements IBookingRepository {
         });
     }
 
+    async updateBookingStatus(bookingId: string, status: BookingStatus): Promise<void> {
+        await BookingModel.updateOne(
+            { bookingId },
+            { $set: { status } }
+        );
+    }
+
     async updateProviderResponseAndStatus(
         bookingId: string,
         status: BookingStatus,

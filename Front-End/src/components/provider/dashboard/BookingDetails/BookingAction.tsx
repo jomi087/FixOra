@@ -1,12 +1,18 @@
-// import { Button } from "@/components/ui/button";
+import Otp from "@/components/common/auth/Otp";
+import { Button } from "@/components/ui/button";
+import { useOtpLogic } from "@/hooks/useOtpLogic";
+import AuthService from "@/services/AuthService";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { PaymentMode, PaymentStatus } from "@/shared/enums/Payment";
-import { CancelSeal } from "@/utils/constant";
+import { CancelSeal, Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 
 interface BookingActionProps {
+  id: string;
   status: BookingStatus
- 
   paymentInfo: {
     mop: PaymentMode;
     status: PaymentStatus;
@@ -14,31 +20,54 @@ interface BookingActionProps {
     transactionId: string
     reason?: string;
   }
+  scheduledAt: string;
+  onStatusUpdate: (newStatus: BookingStatus) => void;
+
 }
 
-const BookingAction: React.FC<BookingActionProps> = ({ status }) => {
+const BookingAction: React.FC<BookingActionProps> = ({ id, status, paymentInfo, scheduledAt, onStatusUpdate }) => {
+  const [otp, setOtp] = useState(false);
+  const { resendOtp } = useOtpLogic();
+
+  const verifyOtp = async (otp: string): Promise<void> => {
+    try {
+      const res = await AuthService.verifyArrivalOtpApi(otp); // verify otp and update status from confirm to Initiated
+      toast.success(res.data.message);
+      onStatusUpdate(BookingStatus.INITIATED);
+      setOtp(false);
+
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || Messages.OTP_VERIFICATION_FAILED;
+      toast.error(errorMsg);
+    }
+  };
+
+  const handleVerifyProviderArrival = async (bookingId: string) => {
+    try {
+      const res = await AuthService.arrivalOtpApi(bookingId);
+      toast.success(res.data.message || "An OTP send to User");
+      setOtp(true);
+
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      const errorMsg =
+        err.response?.data?.message || "Something went wrong";
+      toast.error(errorMsg);
+    }
+  };
   return (
     <>
-      {/* {status == BookingStatus.CONFIRMED && paymentInfo.status === PaymentStatus.SUCCESS &&
-        <div className="flex items-end mt-5 ">
+      {status == BookingStatus.CONFIRMED && paymentInfo.status === PaymentStatus.SUCCESS &&
+        <div className="flex items-end mt-5">
           <Button
-            variant="success"
+            className={`cursor-pointer active:scale-95 w-44 dark:bg-yellow-500 hover:dark:bg-yellow-400   
+              ${new Date() >= new Date(scheduledAt) ? "" : "hidden"}`}
+            onClick={() => handleVerifyProviderArrival(id)}
           >
-           Confirmed
+            Verify Arrival
           </Button>
         </div>
-      } */}
-      {/* {status == BookingStatus.CANCELLED && paymentInfo.status === PaymentStatus.FAILED &&
-        <div className="flex items-end mt-5 ">
-          <Button
-            variant="destructive"
-            className="cursor-pointer hover:bg-red-700 hover:dark:bg-red-700"
-          // onClick={RetryPayment}
-          >
-            Retry Payment
-          </Button>
-        </div>
-      }*/}
+      }
       {status == BookingStatus.CANCELLED &&
         <div className="absolute flex items-center pt-4 opacity-40 sm:opacity-55 xl:static sm:left-75 md:left-82 lg:left-110">
           <p>
@@ -49,14 +78,27 @@ const BookingAction: React.FC<BookingActionProps> = ({ status }) => {
             />
           </p>
         </div>
-      }  
+      }
+      {status == BookingStatus.INITIATED &&
+        <div className="flex flex-col justify-between mt-2 items-end">
+          <Button
+            variant={"success"}
+            className="w-44 cursor-pointer"
+          >
+            Completed
+          </Button>
+          <p className="text-sm font-semibold font-roboto">Work on Process....</p>
+        </div>
+      }
+
+      {otp && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+          <Otp otpTime={30} otpLength={6} otpSubmit={verifyOtp} resendOtp={resendOtp} />
+        </div>
+      )}
     </>
   );
 };
 
 export default BookingAction;
 
-/*
-
-
-*/

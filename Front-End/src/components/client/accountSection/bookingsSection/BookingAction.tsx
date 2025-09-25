@@ -64,6 +64,11 @@ const BookingAction: React.FC<BookingActionProps> = ({ cancelBooking, status, pa
           </p>
         </div>
       )}
+      {status == BookingStatus.INITIATED &&
+        <div className="flex flex-col justify-between mt-2 items-center">
+          <p className="text-sm font-semibold font-roboto">Work on Process....</p>
+        </div>
+      }
       {confirmOpen && (
         <AlertDialog open>
           <AlertDialogContent>

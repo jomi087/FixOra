@@ -154,6 +154,12 @@ const getJobDetailsUseCase = new GetJobDetailsUseCase(bookingRepository);
 
 import { JobHistoryUseCase } from "../application/useCases/providers/JobHistoryUseCase";
 const jobHistoryUseCase = new JobHistoryUseCase(bookingRepository);
+
+import { VerifyArrivalUseCase } from "../application/useCases/providers/VerifyArrivalUseCase";
+const verifyArrivalUseCase = new VerifyArrivalUseCase(bookingRepository,userRepository,otpGenratorservice,otpRepository, emailService, tokenService); 
+
+import { VerifyArrivalOtpUseCase } from "../application/useCases/providers/VerifyArrivalOtpUseCase";
+const verifyArrivalOtpUseCase = new VerifyArrivalOtpUseCase(otpRepository, tokenService, bookingRepository);
 /******************************************************************************************************************************************************
                                                         Admin Specific
 ******************************************************************************************************************************************************/
@@ -193,7 +199,7 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 const publicController = new PublicController(loggerService, getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase );
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase);
 const userController = new UserController(loggerService, activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, imageUploaderService, providerInfoUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, cancelBookingUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
-const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase);
+const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase);
 const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 
 export {

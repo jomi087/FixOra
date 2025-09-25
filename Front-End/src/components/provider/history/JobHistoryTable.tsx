@@ -50,7 +50,7 @@ const JobHistoryTable = () => {
       return;
     }
     
-    navigate(`/provider/booking-details${booking.bookingId}`, {
+    navigate(`/provider/booking-details/${booking.bookingId}`, {
       state: { from: "history" },
     });
   };

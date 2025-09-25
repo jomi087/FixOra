@@ -8,11 +8,11 @@ import { IGetJobDetailsUseCase } from "../../application/Interface/useCases/Prov
 
 import { Messages } from "../../shared/Messages";
 import { IJobHistoryUseCase } from "../../application/Interface/useCases/Provider/IJobHistoryUseCase";
+import { IVerifyArrivalUseCase } from "../../application/Interface/useCases/Provider/IVerifyArrivalUseCase";
+import { IVerifyArrivalOtpUseCase } from "../../application/Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
-
-
 
 export class ProviderController {
     constructor(
@@ -20,7 +20,9 @@ export class ProviderController {
         private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
         private _getConfirmBookingsUseCase: IGetConfirmBookingsUseCase,
         private _getJobDetailsUseCase: IGetJobDetailsUseCase,
-        private _jobHistoryUseCase: IJobHistoryUseCase
+        private _jobHistoryUseCase: IJobHistoryUseCase,
+        private _verifyArrivalUseCase: IVerifyArrivalUseCase,
+        private _verifyArrivalOtpUseCase: IVerifyArrivalOtpUseCase,
     ) { }
 
     async respondToBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -86,7 +88,6 @@ export class ProviderController {
         }
     }
 
-
     async getJobHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
@@ -98,7 +99,7 @@ export class ProviderController {
             const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
-            const result = await this._jobHistoryUseCase.execute({ providerUserId,currentPage,limit });
+            const result = await this._jobHistoryUseCase.execute({ providerUserId, currentPage, limit });
 
             res.status(OK).json({
                 success: true,
@@ -112,5 +113,48 @@ export class ProviderController {
         }
     }
 
+    async arrivalOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { bookingId } = req.params;
+            const token = await this._verifyArrivalUseCase.execute(bookingId);
+
+            res.cookie("arrivaltoken", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+                sameSite: "lax",
+                maxAge: 10 * 60 * 1000 // temp token  for 10 mints  
+            });
+
+
+            res.status(OK).json({
+                success: true,
+                message: "An OTP sent successfully to user"
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async verifyArrivalOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { otp } = req.body;
+
+            const token = req.cookies.arrivaltoken;
+            await this._verifyArrivalOtpUseCase.execute({ otp, token });
+
+            res.clearCookie("arrivaltoken");
+
+            res.status(OK).json({
+                success: true,
+                message: "SucessFull"
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
 
 }

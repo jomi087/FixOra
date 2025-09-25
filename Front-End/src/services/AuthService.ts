@@ -40,7 +40,7 @@ class AuthService {
     return axiosInstance.get("/api/notifications");
   }
 
-  acknowledgeNotificationAPI(notificationId:string) {
+  acknowledgeNotificationAPI(notificationId: string) {
     return axiosInstance.patch(`/api/notification/acknowledge/${notificationId}`);
   }
 
@@ -168,6 +168,14 @@ class AuthService {
     return axiosInstance.get("/api/provider/job-history", {
       params: { currentPage, itemsPerPage }
     });
+  }
+
+  arrivalOtpApi(bookingId: string) {
+    return axiosInstance.post(`/api/provider/arrival-otp/${bookingId}`);
+  }
+
+  verifyArrivalOtpApi(otp: string) {
+    return axiosInstance.post("api/provider/verify-arrivalOtp", { otp }, this.getJsonConfig());
   }
 
 

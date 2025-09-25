@@ -21,7 +21,7 @@ const JobDetails = () => {
   const location = useLocation();
   const rawFrom = (location.state as { from?: string })?.from;
   const from = rawFrom === "dashboard" ? "dashboard" : "history";
-  
+
   const [bookingInDetails, setBookingInDetails] = useState<JobInfoDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -93,11 +93,17 @@ const JobDetails = () => {
             <div className="mt-2 sm:mt-5 pt-4 flex justify-between flex-wrap border-t-1 border-black">
               <BookingPayment
                 pricing={bookingInDetails.pricing}
-              // paymentInfo={bookingInDetails.paymentInfo}
               />
               <BookingAction
+                id={bookingInDetails.bookingId}
                 status={bookingInDetails.status}
                 paymentInfo={bookingInDetails.paymentInfo}
+                scheduledAt={bookingInDetails.scheduledAt}
+                onStatusUpdate={(newStatus) =>
+                  setBookingInDetails((prev) =>
+                    prev ? { ...prev, status: newStatus } : prev
+                  )
+                }
               />
               {bookingInDetails.paymentInfo.reason && (<p className="font-serif text-nav-text text-lg my-5">Reason: <span className="text-primary text-base">{bookingInDetails.paymentInfo.reason}</span></p>)}
               {/* {bookingInDetails.acknowledgment &&
