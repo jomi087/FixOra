@@ -28,7 +28,7 @@ const WeeklyJobInfo: React.FC = () => {
 
   const { items } = useAppSelector(state => state.notification);
 
-  //notificaition
+  //triggering ui with the help of notification
   useEffect(() => {
     const latest = items[0];
     if (latest?.type === NotificationType.BOOKING_CONFIRMED) {

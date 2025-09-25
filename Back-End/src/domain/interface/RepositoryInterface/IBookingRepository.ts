@@ -12,6 +12,8 @@ export interface IBookingRepository {
 
   findExistingBooking(providerId: string, scheduledAt: Date): Promise<Booking | null>;
   
+  updateBookingStatus(bookingId: string, status: BookingStatus): Promise<void>;
+
   updateProviderResponseAndStatus(
     bookingId: string,
     status: BookingStatus,

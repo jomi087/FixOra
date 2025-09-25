@@ -2,8 +2,7 @@ import Calendar from "./Calendar";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import { addConfirmedBooking, fetchProviderBookingsInfo } from "@/store/provider/bookingSlice";
-import { removeBooking } from "@/store/user/providerInfoSlice";
+import { addConfirmedBooking, fetchProviderBookingsInfo, removeBooking } from "@/store/provider/bookingSlice";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import { toast } from "react-toastify";
 import type { ConfirmJobBookings } from "@/shared/Types/booking";
@@ -77,7 +76,6 @@ const DailyJobInfo = () => {
           handleBookingDetails={handleBookingDetails}
         />
       )}
-
     </div>
   );
 

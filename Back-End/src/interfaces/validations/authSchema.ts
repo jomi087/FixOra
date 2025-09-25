@@ -12,7 +12,7 @@ import {
 export const signupSchema = z.object({
     fname: firstNameField,
     lname: lastNameField,
-    email: emailField ,
+    email: emailField,
     mobileNo: mobileField,
     password: passwordField,
 });
@@ -24,21 +24,25 @@ export const signinSchema = z.object({
 });
 
 export const forgotPasswordSchema = z.object({
-    email:emailField
+    email: emailField
 });
 
 export const resetPasswordSchema = z.object({
     token: z.string(),
     password: passwordField,
-    cPassword : passwordField
+    cPassword: passwordField
 })
-    .refine((data) =>  data.password === data.cPassword,{
+    .refine((data) => data.password === data.cPassword, {
         message: Messages.PASSWORDS_DO_NOT_MATCH,
-        path : ["cPassword"]
+        path: ["cPassword"]
     }
     );
 
 export const verifyPasswordSchema = z.object({
-    password:passwordField
+    password: passwordField
+});
+
+export const otpSchema = z.object({
+    otp:z.coerce.number()
 });
 
