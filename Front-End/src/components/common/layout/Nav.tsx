@@ -13,7 +13,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import type { Notification } from "@/shared/Types/booking";
 import { splitDateTime } from "@/utils/helper/date&Time";
-import { clearNotifications, markAsRead } from "@/store/common/notificationSlice";
+import { clearNotifications, fetchNotifications, markAsRead } from "@/store/common/notificationSlice";
 import type { AxiosError } from "axios";
 
 
@@ -34,6 +34,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
 
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
   const { items } = useAppSelector((state) => state.notification);
+  console.log("all items", items);
 
   const unreadCount = items.filter((itm) => {
     return itm.isRead === false;
@@ -59,6 +60,20 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
   const handleNotificationInDetails = async (noti: Notification) => {
     if (!user) return;
     const { bookingId } = noti.metadata || {};
+    if (!noti.notificationId) console.log(" Can't mark a read notification Id is missing");
+
+    if (!noti.isRead && noti.notificationId) {
+      try {
+        await AuthService.acknowledgeNotificationAPI(noti.notificationId);
+        dispatch(markAsRead(noti.notificationId));
+      } catch (error) {
+        const err = error as AxiosError<{ message: string }>;
+        const errorMsg =
+          err.response?.data?.message || "Notification acknowledgment failed";
+        toast.info(errorMsg);
+        return; // stop navigation if ack failed
+      }
+    }
 
     switch (noti.type) {
     case NotificationType.BOOKING_CONFIRMED:
@@ -67,20 +82,13 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
         navigate(`/${user.role}/booking-details/${bookingId}`);
       }
       break;
+    case NotificationType.KYC_REQUEST:
+      navigate(`/${user.role}/provider-request`);
+      break;
+
     default:
-      toast.warn("Unhandle notification type", noti.type);
+      toast.warn(`Unhandled notification type: ${noti.type}`);
     }
-
-    try {
-      await AuthService.acknowledgeNotificationAPI(noti.notificationId);
-      dispatch(markAsRead(noti.notificationId));
-    } catch (error) {
-      console.log(error);
-      const err = error as AxiosError<{ message: string }>;
-      const errorMsg = err.response?.data?.message || "notification aknowledgment failed";
-      toast.info(errorMsg);
-    }
-
   };
 
   return (
@@ -116,10 +124,23 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
             {isAuthenticated && user &&
               <div
                 className="cursor-pointer transform transition-transform duration-200 hover:scale-110"
-                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                onClick={() => {
+                  const nextState = !isNotificationOpen;
+                  setIsNotificationOpen(nextState);
+                  if (nextState && unreadCount > 0) {
+                    dispatch(fetchNotifications());
+                  }
+                }}
               >
                 <span className="text-lg">🔔</span>
-                {unreadCount > 0 && <span className="font-semibold text-sm">({unreadCount})</span>}
+                {unreadCount > 0 &&
+                  <span
+                    className="font-semibold text-sm"
+                    aria-label="Unread notification"
+                  >
+                    ({unreadCount})
+                  </span>
+                }
               </div>
             }
             {isNotificationOpen && (

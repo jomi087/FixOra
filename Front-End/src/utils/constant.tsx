@@ -2,7 +2,7 @@ import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
   LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
-  MessageSquareMore, ClipboardClock, CalendarClock
+  MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined 
 } from "lucide-react";
 
 
@@ -48,8 +48,6 @@ export const TIME_SLOTS = {
   ENDHOURS: 23,
   INTERVAL: 60,
 };
-
-
 /******************************************* Messages *******************************************************/
 export const Messages = {
   FAILED_CATEGORY_RESPONSE_MSG: "Failed to add category",
@@ -148,7 +146,9 @@ export const providerSideBarOptions: SideBarOption[] = [
     section: "Settings",
     children: [
       { icon: User, section: "Profile", to: "/provider/settings/profile" },
-      { icon: CalendarClock, section: "Availability", to: "/provider/settings/availability" }
+      { icon: CalendarClock, section: "Availability", to: "/provider/settings/availability" },
+      { icon: ChartNoAxesCombined, section: "Sales", to: "/provider/settings/sales" }
+
     ]
   },
 ];
