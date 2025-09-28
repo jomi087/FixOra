@@ -31,7 +31,6 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     if (!user) {
       if (isConnected.current) {
         socket.disconnect();
-        // dispatch(clearNotifications());
         isConnected.current = false;
       }
       return;
@@ -48,9 +47,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     };
 
     const handleNotification = (payload: Notification) => {
-      console.log(typeof payload.createdAt);
       dispatch(addNotification(payload));
-      // toast.info(payload.message);
     };
 
     const handleBookingRequested = (payload: BookingRequestPayload) => {

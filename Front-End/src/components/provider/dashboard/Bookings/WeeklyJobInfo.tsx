@@ -143,7 +143,7 @@ const WeeklyJobInfo: React.FC = () => {
                         ? "Booked🔖"
                         : isTimePassed
                           ? slot.timeShort
-                          : "Empty"
+                          : slot.timeShort
                     }
                   </button>
                 );

@@ -5,7 +5,7 @@ import type { ProviderResponseStatus } from "../enums/ProviderResponseStatus";
 import type { AddressWithCoordinates } from "./location";
 
 export interface Notification {
-  notificationId: string;
+  notificationId?: string;
   type: NotificationType;   // e.g. "BOOKING_CONFIRMED", "BOOKING_CANCELLED"
   title: string;            // short heading
   message: string;          // description
@@ -35,17 +35,6 @@ export type BookingAutoRejectPayload = {
   response: ProviderResponseStatus;
   reason: string
 }
-
-// export interface PaymentSuccessNotification {
-//   bookingId: string
-//   status: BookingStatus
-// }
-
-// export interface PaymentFailureNotification {
-//   bookingId: string
-//   reason: string
-//   status: BookingStatus
-// }
 
 export interface ConfirmJobBookings {
   bookingId: string;

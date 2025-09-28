@@ -44,8 +44,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate, setS
             ) : (
               <ChevronRightIcon {...props} />
             ),
-        }
-        }
+        }}
       />
 
       <div className="flex gap-4">
@@ -56,7 +55,6 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate, setS
         >
           All Slots
         </Button>
-
         <Button
           variant={"outline"}
           className={`cursor-pointer ${slot ? "" : "bg-yellow-300 hover:bg-yellow-400"}`}

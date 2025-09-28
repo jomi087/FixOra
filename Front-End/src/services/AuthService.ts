@@ -1,3 +1,4 @@
+import type { Day } from "@/shared/enums/availability";
 import axiosInstance from "./axiosConfig";
 import type { ProfileEdit, Signin, Signup } from "@/shared/Types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
@@ -76,7 +77,7 @@ class AuthService {
     return axiosInstance.get("/api/auth/check");
   }
   /*********************************************************************************************************************** */
-
+  //Customer
   getActiveServicesApi() {
     return axiosInstance.get("/api/customer/services");
   }
@@ -148,7 +149,7 @@ class AuthService {
   }
 
   /*********************************************************************************************************************** */
-
+  //Provider
   UpdateBookingStatusApi(bookingId: string, action: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>, reason: string) {
     return axiosInstance.patch(`/api/provider/booking/${bookingId}/status`, {
       action,
@@ -178,8 +179,12 @@ class AuthService {
     return axiosInstance.post("api/provider/verify-arrivalOtp", { otp }, this.getJsonConfig());
   }
 
+  workTimeAPi(schedule: Record<Day, string[]>) {
+    return axiosInstance.post("api/provider/schedule-work-Time", { schedule }, this.getJsonConfig());
+  }
 
   /*********************************************************************************************************************** */
+  //Admin
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
     return axiosInstance.get("/api/admin/customer-management", {
       params: { searchQuery, filter, currentPage, itemsPerPage }
