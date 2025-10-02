@@ -3,8 +3,8 @@ import type { ConfirmJobBookings } from "@/shared/Types/booking";
 import { splitDateTime } from "@/utils/helper/date&Time";
 
 interface ConfirmedSlotsProps {
-  selectedDate: Date | undefined;
-  setSelectedDate: (selectedDate: Date | undefined) => void;
+  selectedDate: Date ;
+  setSelectedDate: (selectedDate: Date ) => void;
   selectedSlot: string | null;
   setSelectedSlot: (selectedSlot: string | null) => void;
   data: ConfirmJobBookings[];

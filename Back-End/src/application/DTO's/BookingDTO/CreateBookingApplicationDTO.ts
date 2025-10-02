@@ -4,7 +4,7 @@ export interface CreateBookingApplicationDTO {
     userId: string;
     providerUserId: string
     providerId: string
-    scheduledAt: Date;
+    scheduledAt: string;
     issueTypeId: string;
     issue: string;
     coordinates: {

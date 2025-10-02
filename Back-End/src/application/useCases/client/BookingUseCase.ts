@@ -7,20 +7,23 @@ import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } f
 import { IBookingUseCase } from "../../Interface/useCases/Client/IBookingUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
-import { BOOKING_REQUEST_TIMEOUT_MS } from "../../../shared/constants";
+import { BOOKING_REQUEST_TIMEOUT_MS, days } from "../../../shared/constants";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, ALREDY_BOOKED, PENDING_BOOKING, NOT_FOUND_MSG, BOOKING_ID_NOT_FOUND, PROVIDER_NO_RESPONSE } = Messages;
+const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY } = HttpStatusCode;
+const { INTERNAL_ERROR, ALREDY_BOOKED, PENDING_BOOKING, NOT_FOUND_MSG,
+    BOOKING_ID_NOT_FOUND, PROVIDER_NO_RESPONSE, } = Messages;
 
 export class BookingUseCase implements IBookingUseCase {
     constructor(
         private readonly _bookingRepository: IBookingRepository,
         private readonly _notificationService: INotificationService,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
-        private readonly _userRepository: IUserRepository
+        private readonly _userRepository: IUserRepository,
+        private readonly _availabilityRepository: IAvailabilityRepository
     ) { }
 
     private scheduleProviderResponseTimeout(bookingId: string): void {
@@ -59,8 +62,8 @@ export class BookingUseCase implements IBookingUseCase {
 
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
-
-            let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(input.providerId, input.scheduledAt);
+            const scheduledAt: Date = new Date(input.scheduledAt);
+            let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(input.providerId, scheduledAt);
 
             // console.log(CheckExistingNoRejectedBooking)
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.ACCEPTED)) {
@@ -68,6 +71,20 @@ export class BookingUseCase implements IBookingUseCase {
             } else if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.PENDING)) {
                 throw { status: CONFLICT, message: PENDING_BOOKING };
             }
+
+            let availability = await this._availabilityRepository.getProviderAvialability(input.providerId);
+            if (!availability) throw { status: NOT_FOUND, message: "Availability not found" };
+
+            const dayName = days[scheduledAt.getDay()];
+
+            const hours = scheduledAt.getHours().toString().padStart(2, "0");
+            const minutes = scheduledAt.getMinutes().toString().padStart(2, "0");
+            const timeStr = `${hours}:${minutes}`;
+
+            const daySchedule = availability.workTime.find(d => d.day === dayName && d.active);
+            if (!daySchedule) throw { status: CONFLICT, message: "Provider not available on selected day" };
+
+            if(!daySchedule.slots.includes(timeStr)) throw { status: UNPROCESSABLE_ENTITY, message: "Selected time is outside provider’s working hours" };
 
             let result = await this._userRepository.getServiceChargeWithDistanceFee(input.providerId, input.coordinates);
             if (!result) {
@@ -88,7 +105,7 @@ export class BookingUseCase implements IBookingUseCase {
                     id: input.providerId,
                     response: ProviderResponseStatus.PENDING
                 },
-                scheduledAt: input.scheduledAt,
+                scheduledAt: scheduledAt,
                 issueTypeId: input.issueTypeId,
                 issue: input.issue,
                 status: BookingStatus.PENDING,

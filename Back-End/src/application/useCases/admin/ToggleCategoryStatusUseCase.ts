@@ -14,7 +14,7 @@ export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase
     async execute(categoryId: string): Promise<void> {
         try {
             const category = await this._categoryRepository.findById(categoryId);
-            console.log("mainCategory", category);
+            // console.log("mainCategory", category);
 
             const newStatus = !category.isActive;
 

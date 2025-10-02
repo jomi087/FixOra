@@ -7,6 +7,7 @@ import categoryReducer from "./user/categorySlice";
 import filterReducer from "./user/filterSlice";
 import providerInfoReducer from "./user/providerInfoSlice";
 import providerBookingReducer from "./provider/bookingSlice";
+import availabilityReducer from "./provider/availabilitySlice";
 
 const appStore = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const appStore = configureStore({
     providerInfo: providerInfoReducer,
 
     providerBookingInfo: providerBookingReducer,
+    availability: availabilityReducer,
   }
 });
 

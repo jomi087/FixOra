@@ -53,13 +53,15 @@ export class PublicController {
         }
     }
 
-    async acknowledgeNotification (req: Request, res: Response, next: NextFunction): Promise<void> {
+    async acknowledgeNotification(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { notificationId } = req.params;
-            if (!notificationId) {
+
+            if (!notificationId || notificationId === "undefined" ) {
                 throw { status: NOT_FOUND, message: NOTIFICATIONID_NOT_FOUND };
             }
 
+            // console.log("entered ", notificationId);
             await this._notificationAcknowledgmentUseCase.execute(notificationId);
 
             res.status(OK).json({ success: true });

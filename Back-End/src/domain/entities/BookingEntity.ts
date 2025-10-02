@@ -14,7 +14,7 @@ export interface Booking {
     scheduledAt: Date;
     issueTypeId: string;
     issue: string;
-    status: BookingStatus;   
+    status: BookingStatus;
     pricing: {
         baseCost: number;
         distanceFee: number;

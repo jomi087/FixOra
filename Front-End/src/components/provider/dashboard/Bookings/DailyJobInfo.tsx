@@ -11,7 +11,7 @@ import AllSlots from "./AllSlots";
 import ConfirmedSlots from "./ConfirmedSlots";
 
 const DailyJobInfo = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [slot, setSlot] = useState(true);
   const { data } = useAppSelector((state) => state.providerBookingInfo);
@@ -60,7 +60,6 @@ const DailyJobInfo = () => {
       {slot ? (
         <AllSlots
           selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
           selectedSlot={selectedSlot}
           setSelectedSlot={setSelectedSlot}
           data={data}

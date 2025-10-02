@@ -10,6 +10,10 @@ export class NotificationService implements INotificationService {
         getIO().to(userId).emit("notification", payload);
     }
 
+    async sendToRole(role: string, payload: NotificationPayload): Promise<void> {
+        getIO().to(role).emit("notification", payload);
+    }
+
     //booking request (user to provider)
     notifyBookingRequestToProvider(providerUserId: string, payload: ProviderBookingNotification): void {
         getIO().to(providerUserId).emit("booking:requested", payload);
@@ -25,7 +29,7 @@ export class NotificationService implements INotificationService {
         getIO().to(providerUserId).emit("booking:autoReject", payload);
     }
 
-    
+
     autoRejectTimeOutPayment(userId: string, bookingId: string): void {
         getIO().to(userId).emit("payment:autoReject", bookingId);
     }
@@ -39,13 +43,3 @@ export class NotificationService implements INotificationService {
     }
 
 }
-
-
-
-// notifyBookingConfirmation(providerUserId: string, payload: ConfirmBookingNotification): void {
-//     getIO().to(providerUserId).emit("booking:confirmed", payload);
-// }
-
-// notifyBookingCancellation(providerUserId: string, bookingId: string): void {
-//     getIO().to(providerUserId).emit("booking:cancelled", bookingId);
-// }

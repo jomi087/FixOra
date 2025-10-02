@@ -5,7 +5,7 @@ export interface NotificationOutputDTO {
     type: NotificationType;
     title: string;
     message: string;
-    metadata?: any;
+    metadata?: object;
     createdAt: string | Date;
     isRead: boolean;
 }
@@ -14,7 +14,7 @@ export interface NotificationInput {
     userId: string;
     title: string;
     message: string;
-    metadata: any;
+    metadata: object;
 }
 
 export interface SendBookingConfirmedInput extends NotificationInput {}

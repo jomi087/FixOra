@@ -1,17 +1,17 @@
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { NotificationType } from "../../../shared/Enums/Notification";
-// import { NotificationType } from "../../../shared/Enums/Notification";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
 
 export interface NotificationPayload {
-    notificationId: string;
+    // notificationId: string;
     type: NotificationType;
     title: string;
     message: string;
-    metadata?: any;
+    metadata?: object;
     createdAt: Date;
     isRead: boolean;
 }
+
 
 export interface ProviderBookingNotification {
     bookingId: string;
@@ -46,9 +46,9 @@ export interface ConfirmBookingNotification {
 
 export interface INotificationService {
     send(userId: string, payload: NotificationPayload): Promise<void>;
+    sendToRole(role: string, payload: NotificationPayload): Promise<void>
 
     notifyBookingRequestToProvider(providerUserId: string, payload: ProviderBookingNotification): void
-
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
     autoRejectTimeOutPayment(userId: string, bookingId: string): void

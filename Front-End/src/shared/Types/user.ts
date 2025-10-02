@@ -1,3 +1,4 @@
+import type { Day } from "./availability";
 import type { BookingStatus } from "../enums/BookingStatus";
 import type { Gender } from "../enums/Gender";
 import type { RoleEnum } from "../enums/roles";
@@ -43,7 +44,7 @@ export type Provider = User & {
 }
 
 export type ActiveProvider = {
-  providerId : string
+  providerId: string
   user: {
     userId: string,
     fname: string;
@@ -54,8 +55,8 @@ export type ActiveProvider = {
     categoryId: string
     name: string;
     subcategories: {
-        subCategoryId: string;
-        name: string
+      subCategoryId: string;
+      name: string
     }[];
   };
   profileImage: string;
@@ -67,32 +68,36 @@ export type ActiveProvider = {
 
 
 export type ProviderInfo = {
-  providerId : string
+  providerId: string
   user: {
-      userId: string,
-      fname: string;
-      lname: string;
+    userId: string,
+    fname: string;
+    lname: string;
   };
   gender: Gender;
   service: {
-      categoryId: string
-      name: string;
-      subcategories: {
-          subCategoryId: string;
-          name: string
-      }[];
+    categoryId: string
+    name: string;
+    subcategories: {
+      subCategoryId: string;
+      name: string
+    }[];
   };
   bookings: {
     bookingId: string;
     scheduledAt: Date
     status: BookingStatus;
   }[],
+  availability: {
+    day: Day,
+    slots: string[];
+    active: boolean;
+  }[],
   profileImage: string;
   serviceCharge: number;
   isOnline: boolean;
   distanceFee: number;
 }
-
 
 //Admin 
 //userManagement
@@ -104,8 +109,8 @@ export interface CustomersData extends User {
 }
 
 //providerManagement
-export interface ProviderData  {
-  providerId : string
+export interface ProviderData {
+  providerId: string
   user: {
     userId: string,
     fname: string;
@@ -122,8 +127,8 @@ export interface ProviderData  {
       state: string;
       postalCode: string;
       coordinates: {
-          latitude: number;
-          longitude: number
+        latitude: number;
+        longitude: number
       };
     };
   };
@@ -133,17 +138,17 @@ export interface ProviderData  {
     categoryId: string
     name: string;
     subcategories: {
-        subCategoryId: string;
-        name: string
+      subCategoryId: string;
+      name: string
     }[];
   };
   profileImage: string;
   serviceCharge: number;
-  kyc : {
+  kyc: {
     idCard: string;
     certificate: {
-        education: string;
-        experience?: string;
+      education: string;
+      experience?: string;
     };
   },
   isOnline: boolean;
@@ -159,29 +164,29 @@ export interface ProviderList {
     email: string;
     mobileNo: string;
     location: {
-        houseinfo?: string;
-        street?: string;
-        district: string;
-        city: string;
-        locality: string;
-        state: string;
-        postalCode: string;
-        coordinates:{
-            latitude: number;
-            longitude: number;
-        } 
+      houseinfo?: string;
+      street?: string;
+      district: string;
+      city: string;
+      locality: string;
+      state: string;
+      postalCode: string;
+      coordinates: {
+        latitude: number;
+        longitude: number;
+      }
     }
   };
   dob: string;
   gender: string;
   service: {
-        categoryId: string
-        name: string;
-        subcategories: {
-            subCategoryId: string;
-            name: string
-        }[];
-    };
+    categoryId: string
+    name: string;
+    subcategories: {
+      subCategoryId: string;
+      name: string
+    }[];
+  };
   profileImage: string;
   serviceCharge: number;
   kyc: {

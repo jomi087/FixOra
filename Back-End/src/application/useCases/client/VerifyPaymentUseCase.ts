@@ -1,16 +1,22 @@
+import { v4 as uuidv4 } from "uuid";
+
+import { Notification } from "../../../domain/entities/NotificationEntity";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
+import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { NotificationType } from "../../../shared/Enums/Notification";
 import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";
 import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
 import { Messages } from "../../../shared/Messages";
+import { SendBookingConfirmedInput } from "../../DTO's/NotificationDTO";
 import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";
+// import { ISendBookingConfirmedNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingConfirmedNotificationUseCase";
 // import { SendBookingCancelledNotificationUseCase } from "../Notificiations/SendBookingCancelledNotificationUseCase";
-import { SendBookingConfirmedNotificationUseCase } from "../Notificiations/SendBookingConfirmedNotificationUseCase";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
@@ -24,9 +30,43 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
         private readonly _bookingRepository: IBookingRepository,
         private readonly _walletRepository: IWalletRepository,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
-        private readonly _sendBookingConfirmedNotificationUseCase: SendBookingConfirmedNotificationUseCase,
+        private readonly _notificationRepository: INotificationRepository,
+        // private readonly _sendBookingConfirmedNotificationUseCase: ISendBookingConfirmedNotificationUseCase,
         // private readonly _sendBookingCancelledNotificationUseCase: SendBookingCancelledNotificationUseCase    
     ) { }
+
+    private async sendBookingConfirmedNotification(input: SendBookingConfirmedInput): Promise<void> {
+        try {
+            const { userId, title, message, metadata } = input;
+
+            const notification: Notification = {
+                notificationId: uuidv4(),
+                userId, //reciver
+                type: NotificationType.BOOKING_CONFIRMED,
+                title,
+                message,
+                metadata,
+                isRead: false,
+                createdAt: new Date(),
+            };
+
+            await this._notificationRepository.save(notification);
+
+            await this._notificationService.send(userId, {
+                // notificationId: notification.notificationId,
+                type: notification.type,
+                title: notification.title,
+                message: notification.message,
+                metadata: notification.metadata,
+                createdAt: notification.createdAt,
+                isRead: notification.isRead,
+            });
+
+        } catch (error: any) {
+            if (error.status && error.message) throw error;
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        }
+    }
 
     async execute(rawBody: Buffer, signature: string): Promise<void> {
         try {
@@ -79,7 +119,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
                 //to user
                 setTimeout(async () => {
-                    await this._sendBookingConfirmedNotificationUseCase.execute({
+                    await this.sendBookingConfirmedNotification({
                         userId: updatedBooking.userId,
                         title: "Booking Confirmed",
                         message: `Your booking has been confirmed for ${updatedBooking.scheduledAt.toLocaleString()}.`,
@@ -90,7 +130,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                 }, 5000);
 
                 //to provider
-                await this._sendBookingConfirmedNotificationUseCase.execute({
+                await this.sendBookingConfirmedNotification({
                     userId: updatedBooking.providerUserId,
                     title: "New Booking",
                     message: "You have a new booking",
@@ -103,7 +143,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                             isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
                         }
                     }
-                }); 
+                });
             }
 
             if (eventType === "booking_failed") {

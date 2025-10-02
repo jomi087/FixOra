@@ -22,6 +22,7 @@ import { IGetUserwalletInfoUseCase } from "../../application/Interface/useCases/
 import { IWalletPaymentUseCase } from "../../application/Interface/useCases/Client/IWalletPaymentUseCase";
 import { ICancelBookingUseCase } from "../../application/Interface/useCases/Client/ICancelBookingUseCase";
 import { IRetryAvailabilityUseCase } from "../../application/Interface/useCases/Client/IRetryAvailabilityUseCase";
+// import { ISendKYCRequestNotificationUseCase } from "../../application/Interface/useCases/Notificiation/ISendKYCRequestNotificationUseCase";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -161,6 +162,9 @@ export class UserController {
 
             const result = await this._kycRequestUseCase.execute(kycData);
 
+            //await this._sendKYCRequestNotificationUseCase.execute(userId);
+
+
             res.status(OK).json({
                 success: true,
                 message: KYC_REQUEST_STATUS(result)
@@ -248,6 +252,9 @@ export class UserController {
             const { bookingId } = req.body;
 
             const result = await this._walletPaymentUseCase.execute({ userId, bookingId });
+
+            // await this.sendBookingConfirmedNotificationUseCase.execute(result.bookingId);
+
 
             res.status(OK).json({
                 result
@@ -415,7 +422,7 @@ export class UserController {
                 });
                 return;
             }
-            
+
         } catch (error: any) {
             this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
             next(error);

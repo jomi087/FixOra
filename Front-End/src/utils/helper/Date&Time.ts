@@ -1,7 +1,8 @@
+import type { Day } from "@/shared/Types/availability";
 import { format, setHours, setMinutes, addDays, addMinutes } from "date-fns";
 
 //Date
-export const generateDateList = (days:number = 7) => {
+export const generateDateList = (days: number = 7) => {
   const today = new Date();
   const dateList = [];
 
@@ -20,7 +21,7 @@ export const generateDateList = (days:number = 7) => {
 };
 
 //Time
-export const generateTimeSlots = (startHour:number = 9, endHour:number = 18, interval:number = 30) => {
+export const generateTimeSlots = (startHour: number = 9, endHour: number = 18, interval: number = 30) => {
   const slots = [];
   let current = setMinutes(setHours(new Date(), startHour), 0);
   const end = setMinutes(setHours(new Date(), endHour), 0);
@@ -28,7 +29,7 @@ export const generateTimeSlots = (startHour:number = 9, endHour:number = 18, int
   while (current <= end) {  //comparison happends by automactily converting it into millisecond timstamp 
     slots.push({
       time: format(current, "hh:mm a"),  //will format to 12 hrs
-      timeShort: format(current, "h a").replace(" ", ""), 
+      timeShort: format(current, "h a").replace(" ", ""),
       value: format(current, "HH:mm"),   //24hrs 
     });
     current = addMinutes(current, interval);
@@ -37,12 +38,21 @@ export const generateTimeSlots = (startHour:number = 9, endHour:number = 18, int
 };
 
 export const dateTime = (date: string, time: string) => {
-    
-  const [day, month, year] = date.split("-").map(Number) as [number,number,number];
-  const [hours, minutes] = time.split(":").map(Number) as [number,number];
+
+  const [day, month, year] = date.split("-").map(Number) as [number, number, number];
+  const [hours, minutes] = time.split(":").map(Number) as [number, number];
 
   return new Date(year, month - 1, day, hours, minutes);
-}; 
+};
+
+export const DayName = (date: string) => {
+
+  const [day, month, year] = date.split("-").map(Number) as [number, number, number];
+  const dateObj = new Date(year, month - 1, day);
+  return format(dateObj, "EEEE") as Day;
+
+};
+
 
 
 export const splitDateTime = (scheduledAt: string | Date) => {

@@ -11,7 +11,6 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-
   const [bookingDialog, setBookingDialog] = useState<BookingRequestPayload[]>([]); //why arrey is because  to story multer booking request or else it will overide the privous request
   const firstBooking = bookingDialog[0];
 
@@ -64,7 +63,6 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       toast.error(err.message);
     };
 
-
     socket.on("connect", handleConnect);
     socket.on("notification", handleNotification);
     socket.on("booking:requested", handleBookingRequested);
@@ -79,7 +77,6 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       socket.off("connect_error", handleConnectError);
     };
   }, [user]);
-
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -106,7 +103,6 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           }
         />
       )}
-
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
@@ -9,8 +10,11 @@ import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transa
 import { Messages } from "../../../shared/Messages";
 import { CancelBookingInputDTO, CancelBookingOutputDTO } from "../../DTO's/BookingDTO/BookingInfoDTO";
 import { ICancelBookingUseCase } from "../../Interface/useCases/Client/ICancelBookingUseCase";
-import { v4 as uuidv4 } from "uuid";
-import { SendBookingCancelledNotificationUseCase } from "../Notificiations/SendBookingCancelledNotificationUseCase";
+// import { ISendBookingCancelledNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingCancelledNotificationUseCase";
+import { SendBookingCancelledInput } from "../../DTO's/NotificationDTO";
+import { Notification } from "../../../domain/entities/NotificationEntity";
+import { NotificationType } from "../../../shared/Enums/Notification";
+import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
@@ -21,9 +25,43 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
         private readonly _bookingRepository: IBookingRepository,
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
-        private readonly _sendBookingCancelledNotificationUseCase: SendBookingCancelledNotificationUseCase,
+        private readonly _notificationRepository: INotificationRepository,
+        // private readonly _sendBookingCancelledNotificationUseCase: ISendBookingCancelledNotificationUseCase,
 
     ) { }
+
+    private async sendBookingCancelledNotification(input: SendBookingCancelledInput): Promise<void> {
+        try {
+            const { userId, title, message, metadata } = input;
+
+            const notification: Notification = {
+                notificationId: uuidv4(),
+                userId, //reciver
+                type: NotificationType.BOOKING_CANCELLED,
+                title,
+                message,
+                metadata,
+                isRead: false,
+                createdAt: new Date(),
+            };
+
+            await this._notificationRepository.save(notification);
+
+            await this._notificationService.send(userId, {
+                //notificationId: notification.notificationId,
+                type: notification.type,
+                title: notification.title,
+                message: notification.message,
+                metadata: notification.metadata,
+                createdAt: notification.createdAt,
+                isRead: notification.isRead,
+            });
+
+        } catch (error: any) {
+            if (error.status && error.message) throw error;
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        }
+    }
 
     async execute(input: CancelBookingInputDTO): Promise<CancelBookingOutputDTO> {
         try {
@@ -91,7 +129,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 //notifying provider
                 //this._notificationService.//notifyBookingCancellation(updatedBooking.providerUserId, updatedBooking.bookingId);
 
-                await this._sendBookingCancelledNotificationUseCase.execute({
+                await this.sendBookingCancelledNotification({
                     userId: updatedBooking.providerUserId,
                     title: "Booking Cancelled",
                     message: `${updatedBooking.scheduledAt.toLocaleString()} Booking is been Cancelled `,
@@ -155,8 +193,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
 
                 //notifying provider
                 //this._notificationService.//notifyBookingCancellation(updatedBooking.providerUserId, updatedBooking.bookingId);
-                
-                await this._sendBookingCancelledNotificationUseCase.execute({
+
+                await this.sendBookingCancelledNotification({
                     userId: updatedBooking.providerUserId,
                     title: "Booking Cancelled",
                     message: `${updatedBooking.scheduledAt.toLocaleString()} Booking is been Cancelled `,
