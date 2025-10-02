@@ -4,7 +4,7 @@ const ToastConfig = () => {
   return (
     <ToastContainer
       theme="dark"
-      position="top-center"
+      position="top-left"
       autoClose={3000} 
       className="text-sm font-serif"
       closeOnClick

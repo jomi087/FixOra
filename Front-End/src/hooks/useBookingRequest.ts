@@ -1,10 +1,10 @@
 import { DATE_RANGE_DAYS, Messages, TIME_SLOTS } from "@/utils/constant";
-import { dateTime, generateDateList, generateTimeSlots } from "@/utils/helper/date&Time";
+import { dateTime, DayName, generateDateList, generateTimeSlots } from "@/utils/helper/date&Time";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import { addBooking, removeBooking, updateBookingStatus } from "@/store/user/providerInfoSlice";
+import { addBooking, fetchProviderInfo, removeBooking, updateBookingStatus } from "@/store/user/providerInfoSlice";
 import { useEffect, useState } from "react";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import type { BookingResponsePayload } from "@/shared/Types/booking";
@@ -15,12 +15,14 @@ import { loadStripe } from "@stripe/stripe-js";
 
 
 export const useBookingRequest = () => {
-  const dates = generateDateList(DATE_RANGE_DAYS);
-  const timeSlots = generateTimeSlots(
-    TIME_SLOTS.STARTHOURS,
-    TIME_SLOTS.ENDHOURS,
-    TIME_SLOTS.INTERVAL
-  ); // Default: 9AM–6PM, every 30 min
+  const dates = generateDateList(DATE_RANGE_DAYS); //365
+  let allSlots = generateTimeSlots(
+    TIME_SLOTS.STARTHOURS, //0
+    TIME_SLOTS.ENDHOURS, //23
+    TIME_SLOTS.INTERVAL //60
+  );
+
+  console.log("dates",dates);
 
   const FirstDate = dates[0]?.fullDate || "";
 
@@ -38,6 +40,24 @@ export const useBookingRequest = () => {
 
   const { data } = useAppSelector((state) => state.providerInfo);
   const dispatch = useAppDispatch();
+
+  // console.log("dates", dates);
+  const getAvailableSlotsForDate = (date: string) => {  //selectedDate via genrateDate 01-10-2025
+    if (!data?.availability) return [];
+   
+    const dayName = DayName(date);
+
+    const daySchedule = data.availability.find(d => d.day === dayName && d.active);
+    if (!daySchedule) return [];
+
+    // console.log("daySchedule", daySchedule);
+    return allSlots.filter((slot) =>
+      daySchedule.slots.includes(slot.value) // value = "HH:mm"
+    );
+  };
+
+  const filteredTimeSlots = getAvailableSlotsForDate(selectedDate);
+  //  console.log("filteredTimeSlots", selectedDate);
 
   const handleDateChange = (date: string) => {
     setSelectedDate(date);
@@ -80,6 +100,9 @@ export const useBookingRequest = () => {
       }
     } catch (error: any) {
       setIsWaiting(false);
+      if (error.status == HttpStatusCode.CONFLICT) {
+        dispatch(fetchProviderInfo(data.providerId));
+      };
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
       toast.error(errorMsg);
     }
@@ -109,7 +132,7 @@ export const useBookingRequest = () => {
 
     socket.on("booking:response", handleBookingResponse);
     socket.on("payment:autoReject", handleAutoRejectPayment);
-    
+
     return () => {
       socket.off("booking:response", handleBookingResponse);
       socket.off("payment:autoReject", handleAutoRejectPayment);
@@ -144,7 +167,7 @@ export const useBookingRequest = () => {
 
     } else if (paymentType === PaymentMode.WALLET) {
       try {
-        
+
         if (balance && data?.distanceFee && data.serviceCharge) {
           if (balance < (data.distanceFee + data.serviceCharge)) {
             toast.info("Low Balance");
@@ -175,7 +198,7 @@ export const useBookingRequest = () => {
     isWaiting, showModePayment,
     data,
     dates, selectedDate, handleDateChange,
-    timeSlots, selectedTime, handleTimeChange,
+    filteredTimeSlots, selectedTime, handleTimeChange,
     isDialogOpen, setIsDialogOpen,
     selectedServiceId, setSelectedServiceId,
     description, setDescription,

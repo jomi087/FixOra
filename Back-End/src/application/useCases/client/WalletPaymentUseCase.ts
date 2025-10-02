@@ -11,7 +11,11 @@ import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
-import { SendBookingConfirmedNotificationUseCase } from "../Notificiations/SendBookingConfirmedNotificationUseCase";
+// import { ISendBookingConfirmedNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingConfirmedNotificationUseCase";
+import { SendBookingConfirmedInput } from "../../DTO's/NotificationDTO";
+import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { Notification } from "../../../domain/entities/NotificationEntity";
+import { NotificationType } from "../../../shared/Enums/Notification";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, PAYMENT_REQUIRED } = HttpStatusCode;
@@ -22,10 +26,43 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
         private readonly _bookingRepository: IBookingRepository,
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
+        private readonly _notificationRepository: INotificationRepository,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
-        private readonly _sendBookingConfirmedNotificationUseCase: SendBookingConfirmedNotificationUseCase
-
+        // private readonly _sendBookingConfirmedNotificationUseCase: ISendBookingConfirmedNotificationUseCase
     ) { }
+
+    private async sendBookingConfirmedNotification(input: SendBookingConfirmedInput): Promise<void> {
+        try {
+            const { userId, title, message, metadata } = input;
+
+            const notification: Notification = {
+                notificationId: uuidv4(),
+                userId, //reciver
+                type: NotificationType.BOOKING_CONFIRMED,
+                title,
+                message,
+                metadata,
+                isRead: false,
+                createdAt: new Date(),
+            };
+
+            await this._notificationRepository.save(notification);
+
+            await this._notificationService.send(userId, {
+                // notificationId: notification.notificationId,
+                type: notification.type,
+                title: notification.title,
+                message: notification.message,
+                metadata: notification.metadata,
+                createdAt: notification.createdAt,
+                isRead: notification.isRead,
+            });
+
+        } catch (error: any) {
+            if (error.status && error.message) throw error;
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        }
+    }
 
     async execute(input: WalletPaymentInputDTO): Promise<WalletPaymentOutputDTO> {
         try {
@@ -124,7 +161,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
             // });
 
             //to user
-            await this._sendBookingConfirmedNotificationUseCase.execute({
+            await this.sendBookingConfirmedNotification({
                 userId: updatedBooking.userId,
                 title: "Booking Confirmed",
                 message: `Your booking has been confirmed for ${updatedBooking.scheduledAt.toLocaleString()}.`,
@@ -140,7 +177,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
             });
 
             //to provider
-            await this._sendBookingConfirmedNotificationUseCase.execute({
+            await this.sendBookingConfirmedNotification({
                 userId: updatedBooking.providerUserId,
                 title: "New Booking",
                 message: "You have a new booking",

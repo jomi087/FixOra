@@ -1,3 +1,4 @@
+import { DaySchedule } from "../../domain/entities/AvailabilityEntity";
 import { BookingStatus } from "../../shared/Enums/BookingStatus";
 import { Gender } from "../../shared/Enums/Gender";
 
@@ -22,6 +23,7 @@ export interface ProviderInfoDTO {
         scheduledAt: Date;
         status: BookingStatus
     }[],
+    availability: DaySchedule[],
     profileImage: string;
     serviceCharge: number;
     isOnline: boolean;

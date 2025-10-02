@@ -4,7 +4,7 @@ import { ITokenService } from "../../../domain/interface/ServiceInterface/IToken
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { Messages } from "../../../shared/Messages";
-import { IVerifyArrivalOtpUseCase, verifyArrivalOtpInputDto } from "../../Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
+import { IVerifyArrivalOtpUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
 
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { INVALID_OTP, OTP_EXPIRED, INTERNAL_ERROR } = Messages;
@@ -17,9 +17,8 @@ export class VerifyArrivalOtpUseCase implements IVerifyArrivalOtpUseCase {
         private readonly _bookingRepository: IBookingRepository,
     ) { }
 
-    async execute(input: verifyArrivalOtpInputDto): Promise<any> {
+    async execute(otp: string, token: string): Promise<void> {
         try {
-            const { otp, token } = input;
 
             const secret = process.env.JWT_Arival_TOKEN!;
             const decodeUserData = this._tokenService.verifyToken(token, secret) as  {bookingId :string ,email: string};

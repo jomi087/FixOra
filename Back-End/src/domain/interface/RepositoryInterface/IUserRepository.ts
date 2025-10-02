@@ -1,4 +1,5 @@
 import { RoleEnum } from "../../../shared/Enums/Roles";
+import { Availability } from "../../entities/AvailabilityEntity";
 import { Booking } from "../../entities/BookingEntity";
 import { Category } from "../../entities/CategoryEntity";
 import { Provider } from "../../entities/ProviderEntity";
@@ -8,12 +9,17 @@ import { User } from "../../entities/UserEntity";
 
 export interface IUserRepository {
     findByEmail(email: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    create(user: User): Promise<User>; 
+
+    create(user: User): Promise<User>;
+
     delete(userId: string): Promise<void>;
+
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+
     findByUserGoogleId(googleId: string): Promise<User | null>;
+
     updateRole(userId: string, role: RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
-    
+
     updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
     ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">>
@@ -27,7 +33,7 @@ export interface IUserRepository {
         options: { searchQuery: string; filter: string },
         currentPage: number, limit: number,
     ): Promise<{ data: Partial<User>[]; total: number }>;
-    
+
     findActiveProvidersWithFilters(
         option: {
             searchQuery: string;
@@ -48,22 +54,25 @@ export interface IUserRepository {
         data: {
             user: Pick<User, "userId" | "fname" | "lname">,
             provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
-            category: Pick<Category, "categoryId" | "name" | "subcategories" >
+            category: Pick<Category, "categoryId" | "name" | "subcategories">
             averageRating: number,
             totalRatings: number
         }[];
         total: number
     }>
 
-    findProviderInfoById(providerId: string , coordinates: { latitude: number;longitude: number }): Promise<{
+    findProviderInfoById(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{
         user: Pick<User, "userId" | "fname" | "lname">,
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
-        booking: Pick<Booking, "bookingId" | "scheduledAt"| "status">[]
+        booking: Pick<Booking, "bookingId" | "scheduledAt" | "status">[]
+        availability : Pick<Availability, "workTime">
         distanceFee: number
     }>
 
-    getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{serviceCharge : number , distanceFee :number}|null>
+    getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{ serviceCharge: number, distanceFee: number } | null>
+
+    findByRole(Role:RoleEnum): Promise<User[]>
 
 }
 

@@ -1,6 +1,6 @@
 
-import { Dialog,DialogContent,DialogDescription,DialogFooter,DialogHeader,DialogTitle,DialogClose } from "@/components/ui/dialog";
-import { Select,SelectContent,SelectItem,SelectTrigger,SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -13,26 +13,26 @@ import { longInputLength, placeHolder, validationMsg } from "@/utils/constant";
 
 
 interface BookingDialogProps {
-    isDialogOpen: boolean;
-    setIsDialogOpen: ( isDialogOpen: boolean ) => void;
-    selectedServiceId: string;
-    setSelectedServiceId: (selectedServiceId: string) => void;
-    description: string;
-    setDescription: (description: string) => void;
-    submitBooking : () => void;
+  isDialogOpen: boolean;
+  setIsDialogOpen: (isDialogOpen: boolean) => void;
+  selectedServiceId: string;
+  setSelectedServiceId: (selectedServiceId: string) => void;
+  description: string;
+  setDescription: (description: string) => void;
+  submitBooking: () => void;
 }
 
-const BookingDialog:React.FC<BookingDialogProps > = ({ isDialogOpen,setIsDialogOpen,selectedServiceId,setSelectedServiceId ,description,setDescription,submitBooking }) => {
-    
+const BookingDialog: React.FC<BookingDialogProps> = ({ isDialogOpen, setIsDialogOpen, selectedServiceId, setSelectedServiceId, description, setDescription, submitBooking }) => {
+
   const { subCategories } = useAppSelector((state) => state.providerInfo);
   const [error, setError] = useState({
     serviceError: "",
-    descriptionError :""
+    descriptionError: ""
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-        
+
     let hasError = false;
     const newError = { serviceError: "", descriptionError: "" };
 
@@ -55,7 +55,7 @@ const BookingDialog:React.FC<BookingDialogProps > = ({ isDialogOpen,setIsDialogO
     setSelectedServiceId("");
     setDescription("");
     setIsDialogOpen(false);
-        
+
   };
 
   return (
@@ -94,7 +94,7 @@ const BookingDialog:React.FC<BookingDialogProps > = ({ isDialogOpen,setIsDialogO
                   ))}
                 </SelectContent>
               </Select>
-              {error.serviceError && <p className="text-sm text-red-500">{error.serviceError}</p>} 
+              {error.serviceError && <p className="text-sm text-red-500">{error.serviceError}</p>}
             </div>
 
             <div className="mb-4">
@@ -106,19 +106,20 @@ const BookingDialog:React.FC<BookingDialogProps > = ({ isDialogOpen,setIsDialogO
                   const val = e.target.value;
                   setDescription(val);
                   if (val.trim().length > 0) {
-                    setError((prev) => ({ ...prev, descriptionError: "" }));        
+                    setError((prev) => ({ ...prev, descriptionError: "" }));
                   }
                 }}
                 maxLength={longInputLength}
-                placeholder= { placeHolder.ISSUE_DESCRIPTION }
+                placeholder={placeHolder.ISSUE_DESCRIPTION}
               />
-              {error.descriptionError && ( <p className="text-sm text-red-500">{error.descriptionError}</p>)} 
+              {error.descriptionError && (<p className="text-sm text-red-500">{error.descriptionError}</p>)}
             </div>
 
             <DialogFooter className="pt-4 !justify-between">
               <Button
                 type="button"
                 variant="secondary"
+                className="cursor-pointer"
                 onClick={() => {
                   setSelectedServiceId("");
                   setDescription("");
@@ -128,13 +129,14 @@ const BookingDialog:React.FC<BookingDialogProps > = ({ isDialogOpen,setIsDialogO
                   });
                 }}
               >
-                                Clear
+                Clear
               </Button>
-              <div>
+              <div className="flex gap-3 ">
                 <DialogClose asChild>
                   <Button
                     type="button"
                     variant="outline"
+                    className="cursor-pointer"
                     onClick={() => {
                       setError({
                         serviceError: "",
@@ -142,10 +144,15 @@ const BookingDialog:React.FC<BookingDialogProps > = ({ isDialogOpen,setIsDialogO
                       });
                     }}
                   >
-                                        Cancel
+                    Cancel
                   </Button>
                 </DialogClose>
-                <Button type="submit">done</Button>
+                <Button
+                  type="submit"
+                  className="cursor-pointer"
+                >
+                  done
+                </Button>
               </div>
             </DialogFooter>
           </form>

@@ -3,6 +3,7 @@ import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 import { RoleEnum } from "../../shared/Enums/Roles";
 import { KYCStatus } from "../../shared/Enums/KYCstatus";
 import { BookingStatus } from "../../shared/Enums/BookingStatus";
+import { days } from "../../shared/constants";
 
 export const optionalStringField = z.string().optional();
 
@@ -52,8 +53,35 @@ export const issueField = z.string()
 export const bookingStatusField = z
     .enum(BookingStatus, { message: "BookingStatus missing", })
     .refine((val) => val !== BookingStatus.PENDING, { message: "BookingStatus cannot be Pending" });
-    
+
 
 export const providerResponseStatusField = z
     .enum(ProviderResponseStatus, { message: "Provider Response is missing" })
     .refine((val) => val !== ProviderResponseStatus.PENDING, { message: "Provider Response cannot be Pending" });
+
+export const workTimeSchemaField = z.record(
+    z.enum(days),
+    z.array(z
+        .string()
+        .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+            message: "Time must be in HH:mm format (24-hour)",
+        })
+    ).nonempty({ message: "Each day must have at least one slot" })
+);
+
+export const daySchemaField = z.enum(days);
+
+export const TimeSlotField = z
+    .string()
+    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+        message: "Time must be in HH:mm format (24-hour)",
+    });
+
+export const DayScheduleField = z.object({
+    slots: z.array(TimeSlotField).nonempty({
+        message: "Each day must have at least one slot",
+    }),
+    active: z.boolean(),
+});
+
+export const ScheduleField = z.record(daySchemaField, DayScheduleField);

@@ -54,6 +54,7 @@ export const Messages = {
   FAILED_TO_FETCH_ADDRESS_CORDINATES: "Failed to fetch address from coordinates",
   FAILED_TO_FETCH_CORDINATES: "Failed to fetch coordinates",
   FAILED_TO_FETCH_DATA: "Failed to fetch data",
+  FAILED_TO_SAVE_DATA : "Failed to save data",
   MAIL_SENT_MSG: "A Verification mail has been sent to your mail",
   FAILED_PASSWORD_VERIFICATION: "Password verification Failed",
   KYC_SUBMITTED_SUCCESS: "KYC submitted successfully!",

@@ -34,7 +34,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
 
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
   const { items } = useAppSelector((state) => state.notification);
-  console.log("all items", items);
+  // console.log("all items", items);
 
   const unreadCount = items.filter((itm) => {
     return itm.isRead === false;

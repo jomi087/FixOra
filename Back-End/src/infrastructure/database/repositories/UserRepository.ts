@@ -7,6 +7,7 @@ import UserModel from "../models/UserModel";
 import { Category } from "../../../domain/entities/CategoryEntity";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { Provider } from "../../../domain/entities/ProviderEntity";
+import { Availability } from "../../../domain/entities/AvailabilityEntity";
 
 //!mistake in this repository (i have am violatin srp rule need to re-work) 
 //split the logic into indivijual
@@ -168,8 +169,6 @@ export class UserRepository implements IUserRepository {
         return { data: users, total };
     }
 
-
-
     async findActiveProvidersWithFilters(
         option: {
             searchQuery: string;
@@ -285,7 +284,6 @@ export class UserRepository implements IUserRepository {
 
         //logic for availabilty filter to be added (will add later on the basis of booking)
 
-
         pipeline.push(
             {
                 $lookup: {
@@ -296,6 +294,21 @@ export class UserRepository implements IUserRepository {
                 },
             }, { $unwind: "$providerDetails" },
             { $match: matchUserConditions },
+            {
+                $lookup: {
+                    from: "availabilities",
+                    localField: "providerDetails.providerId",  //field in provider
+                    foreignField: "providerId", //field in provider
+                    as: "availabilityDetails",
+                },
+            }, { $unwind: "$availabilityDetails" },
+            {
+                $match: {
+                    "availabilityDetails.workTime": {
+                        $elemMatch: { active: true } // <-- Only keep if at least one slot is active
+                    }
+                }
+            },
             {
                 $lookup: {
                     from: "categories",
@@ -407,12 +420,14 @@ export class UserRepository implements IUserRepository {
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
         booking: Pick<Booking, "bookingId" | "scheduledAt" | "status">[]
+        availability: Pick<Availability, "workTime">
         distanceFee: number
     }> {
         const matchConditions: any = {
             role: "provider",
             isBlocked: false,
-            "providerDetails.providerId": providerId
+            "providerDetails.providerId": providerId,
+
         };
 
         const pipeline: any[] = [
@@ -463,6 +478,21 @@ export class UserRepository implements IUserRepository {
                         { $project: { bookingId: 1, scheduledAt: 1, status: 1, _id: 0 } }
                     ],
                     as: "bookingDetails"
+                }
+            },
+            {
+                $lookup: {
+                    from: "availabilities",
+                    localField: "providerDetails.providerId",
+                    foreignField: "providerId",
+                    as: "availabilityDetails"
+                }
+            }, { $unwind: "$availabilityDetails" },
+            {
+                $match: {
+                    "availabilityDetails.workTime": {
+                        $elemMatch: { active: true }
+                    }
                 }
             },
             {
@@ -527,6 +557,9 @@ export class UserRepository implements IUserRepository {
                             }
                         }
                     },
+                    availability: {
+                        workTime: "$availabilityDetails.workTime"
+                    },
                     booking: "$bookingDetails",
                     distanceFee: 1,
                 }
@@ -538,11 +571,12 @@ export class UserRepository implements IUserRepository {
             provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
             category: Pick<Category, "categoryId" | "name" | "subcategories">
             booking: Pick<Booking, "bookingId" | "scheduledAt" | "status">[]
+            availability: Pick<Availability, "workTime">
             distanceFee: number
         }
 
         const result = await UserModel.aggregate<AggregatedResult>(pipeline);
-        //console.log("come on",result[0])
+        // console.log("come on",result[0]);
         return result[0];
     }
 
@@ -614,6 +648,10 @@ export class UserRepository implements IUserRepository {
 
         const result = await UserModel.aggregate<AggregatedResult>(pipeline);
         return result[0];
+    }
+
+    async findByRole(Role: RoleEnum): Promise<User[]> {
+        return UserModel.find({ role: Role });
     }
 }
 

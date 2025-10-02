@@ -10,6 +10,9 @@ import { Messages } from "../../shared/Messages";
 import { IJobHistoryUseCase } from "../../application/Interface/useCases/Provider/IJobHistoryUseCase";
 import { IVerifyArrivalUseCase } from "../../application/Interface/useCases/Provider/IVerifyArrivalUseCase";
 import { IVerifyArrivalOtpUseCase } from "../../application/Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
+import { ISetAvailabilityUseCase } from "../../application/Interface/useCases/Provider/ISetAvailabilityUseCase";
+import { IGetAvailabilityUseCase } from "../../application/Interface/useCases/Provider/IGetAvailabilityUseCase";
+import { IToggleAvailabilityUseCase } from "../../application/Interface/useCases/Provider/IToggleAvailabilityUseCase";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
@@ -23,6 +26,9 @@ export class ProviderController {
         private _jobHistoryUseCase: IJobHistoryUseCase,
         private _verifyArrivalUseCase: IVerifyArrivalUseCase,
         private _verifyArrivalOtpUseCase: IVerifyArrivalOtpUseCase,
+        private _getAvailabilityUseCase: IGetAvailabilityUseCase,
+        private _setAvailabilityUseCase: ISetAvailabilityUseCase,
+        private _toggleAvailabilityUseCase: IToggleAvailabilityUseCase,
     ) { }
 
     async respondToBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -142,13 +148,78 @@ export class ProviderController {
             const { otp } = req.body;
 
             const token = req.cookies.arrivaltoken;
-            await this._verifyArrivalOtpUseCase.execute({ otp, token });
+            await this._verifyArrivalOtpUseCase.execute(otp, token);
 
             res.clearCookie("arrivaltoken");
 
             res.status(OK).json({
                 success: true,
                 message: "SucessFull"
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async getAvailabilityTime(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const providerUserId = req.user.userId;
+
+            let mappedData = await this._getAvailabilityUseCase.execute(providerUserId);
+
+
+            res.status(OK).json({
+                success: true,
+                message: "Availability fetched successfully",
+                availabilityData: mappedData,
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async scheduleAvailabilityTime(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { schedule } = req.body;
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const providerUserId = req.user.userId;
+
+            let mappedData = await this._setAvailabilityUseCase.execute({ schedule, providerUserId });
+
+            res.status(OK).json({
+                success: true,
+                message: "SucessFull",
+                availabilityData: mappedData,
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async toggleAvailability(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { day } = req.body;
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const providerUserId = req.user.userId;
+
+            await this._toggleAvailabilityUseCase.execute({ day, providerUserId });
+
+            res.status(OK).json({
+                success: true,
+                message: "status updated",
             });
 
         } catch (error: any) {

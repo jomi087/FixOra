@@ -14,7 +14,7 @@ const BookingSlots: React.FC = () => {
     isWaiting, showModePayment,
     data,
     dates, selectedDate, handleDateChange,
-    timeSlots, selectedTime, handleTimeChange,
+    filteredTimeSlots, selectedTime, handleTimeChange,
     isDialogOpen, setIsDialogOpen,
     selectedServiceId, setSelectedServiceId,
     description, setDescription,
@@ -49,7 +49,7 @@ const BookingSlots: React.FC = () => {
           />
 
           <TimeSlotSelector
-            timeSlots={timeSlots}
+            timeSlots={filteredTimeSlots}
             selectedTime={selectedTime}
             onTimeChange={handleTimeChange}
             selectedDate={selectedDate}

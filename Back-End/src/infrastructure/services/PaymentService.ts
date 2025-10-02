@@ -90,12 +90,17 @@ export class PaymentService implements IPaymentService {
         }
     }
 
-    async verifyPayment(rawBody: Buffer, signature: string): Promise<{ eventType: string, id: string, transactionId: string, amount?: string, reason?: string } | null> {
+    async verifyPayment(rawBody: Buffer, signature: string): Promise<{
+        eventType:  "booking_success" | "booking_failed" | "wallet_success" | "wallet_failed",
+        id: string,
+        transactionId: string,
+        amount?: string,
+        reason?: string
+    } | null> {
         const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
         let event: Stripe.Event;
         try {
             event = this.stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
-
 
             switch (event.type) {
             case "checkout.session.completed": {

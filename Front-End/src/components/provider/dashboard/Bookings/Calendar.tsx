@@ -6,8 +6,8 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 interface CalendarProps {
-  selectedDate: Date | undefined;
-  setSelectedDate: (selectedDate: Date | undefined) => void;
+  selectedDate: Date ;
+  setSelectedDate: (selectedDate: Date ) => void;
   slot: boolean;
   setSlot: (slot: boolean) => void;
 }
@@ -21,12 +21,13 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate, setS
   maxDate.setDate(today.getDate() + DATE_RANGE_DAYS - 1);
 
   return (
-    <div className="md:w-auto space-y-5">
+    <div className="min-w-1/3 space-y-5 overflow-auto">
       <h1 className="text-lg font-serif">SELECT DATE</h1>
       <DayPicker
         mode="single"
         selected={selectedDate}
         onSelect={setSelectedDate}
+        required={true} 
         captionLayout="label"
         className="rounded-lg border-2 shadow-lg mt-4 p-2 flex justify-center text-primary "
         classNames={{

@@ -9,12 +9,16 @@ export class NotificationRepository implements INotificationRepository {
         return notification;
     }
 
+    async saveMany(notifications: Notification[]): Promise<void> {
+        await NotificationModel.insertMany(notifications);
+    }
+
     async findByUserId(userId: string): Promise<Notification[]> {
         return NotificationModel.find({ userId }).sort({ createdAt: -1 }).lean();
     }
 
     async markAsRead(notificationId: string): Promise<void> {
-        await NotificationModel.updateOne({ notificationId : notificationId }, { $set: { isRead: true } });
+        await NotificationModel.updateOne({ notificationId: notificationId }, { $set: { isRead: true } });
     }
 
 

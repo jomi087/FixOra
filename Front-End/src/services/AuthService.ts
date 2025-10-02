@@ -1,4 +1,4 @@
-import type { Day } from "@/shared/enums/availability";
+import type { Day } from "@/shared/Types/availability";
 import axiosInstance from "./axiosConfig";
 import type { ProfileEdit, Signin, Signup } from "@/shared/Types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
@@ -179,8 +179,16 @@ class AuthService {
     return axiosInstance.post("api/provider/verify-arrivalOtp", { otp }, this.getJsonConfig());
   }
 
-  workTimeAPi(schedule: Record<Day, string[]>) {
-    return axiosInstance.post("api/provider/schedule-work-Time", { schedule }, this.getJsonConfig());
+  workingTimeInfoApi() {
+    return axiosInstance.get("/api/provider/availability-time");
+  }
+
+  scheduleWorkTimeAPi(schedule: Record<Day, { slots: string[], active: boolean }>) {
+    return axiosInstance.post("api/provider/schedule-availability-time", { schedule }, this.getJsonConfig());
+  }
+
+  toggleAvailability(day: string) {
+    return axiosInstance.patch("api/provider/toggle-availability", { day });
   }
 
   /*********************************************************************************************************************** */

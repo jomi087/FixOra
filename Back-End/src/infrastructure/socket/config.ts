@@ -14,14 +14,21 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
             credentials: true,
         },
     });
-  
+
     ioInstance.use(socketAuthMiddleware(logger));
 
     //socket Event listners
     ioInstance.on("connection", (socket) => {
         const { userId, role } = socket.data;
 
+        // Join user-specific room for personal notifications
         socket.join(userId);
+
+        // Join role-based room (e.g., 'admin', 'customer', 'provider')
+        if (role) {
+            socket.join(role);
+        }
+
         logger.info(`---------${role} ${userId} joined room ${userId}------------`);
 
         socket.on("disconnect", (reason) => {

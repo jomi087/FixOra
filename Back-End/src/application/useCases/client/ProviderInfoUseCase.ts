@@ -22,8 +22,10 @@ export class ProviderInfoUseCase implements IProviderInfoUseCase{
                 throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND }; 
             }
 
-            const { user, provider, category, booking, distanceFee } = providerData;
+            const { user, provider, category, booking, availability, distanceFee } = providerData;
 
+            console.log(availability.workTime);
+            
             const mappedData: ProviderInfoDTO = {
                 providerId: provider.providerId,
                 user: {
@@ -45,12 +47,14 @@ export class ProviderInfoUseCase implements IProviderInfoUseCase{
                     scheduledAt : bk.scheduledAt,
                     status: bk.status,
                 })),
+                availability : availability.workTime,
                 profileImage: provider.profileImage,
                 serviceCharge: provider.serviceCharge,
                 isOnline: provider.isOnline, 
                 distanceFee : distanceFee,
             };
             return mappedData;
+
         } catch (error: any) {
             console.log(error);
             if (error.status && error.message) {

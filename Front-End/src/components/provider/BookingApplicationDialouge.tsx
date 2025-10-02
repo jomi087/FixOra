@@ -30,7 +30,6 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
   const askConfirmation = (type: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>) => {
     setActionType(type);
     setConfirmOpen(true);
-
   };
 
   const handleConfirm = async () => {
