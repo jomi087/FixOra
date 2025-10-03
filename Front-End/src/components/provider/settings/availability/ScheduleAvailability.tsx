@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import type { Day } from "@/shared/Types/availability";
+import type { Day, LeaveOption } from "@/shared/Types/availability";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchAvailability, saveAvailability, toggleAvailability } from "@/store/provider/availabilitySlice";
 import { generateTimeSlots } from "@/utils/helper/date&Time";
 import { TIME_SLOTS } from "@/utils/constant";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, } from "@/components/ui/alert-dialog";
 import { toast } from "react-toastify";
+import ConfirmationBar from "@/components/common/ConfirmationBar";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const timeSlots = generateTimeSlots(
   TIME_SLOTS.STARTHOURS,
@@ -20,7 +21,10 @@ const ScheduleAvailability = () => {
   const [activeDay, setActiveDay] = useState<Day>("Sunday");
   const [workingHours, setWorkingHours] = useState(false);
   const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
+  const [leaveOption, setLeaveOption] = useState<LeaveOption | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingArgs, setPendingArgs] = useState<{ day: Day; active: boolean } | null>(null);
 
   // Why schedule is not of type DayScedule ? (answer given below)
   const [schedule, setSchedule] = useState<Record<Day, { slots: string[], active: boolean }>>({
@@ -39,7 +43,7 @@ const ScheduleAvailability = () => {
 
   useEffect(() => {
     dispatch(fetchAvailability());
-  }, [dispatch]); 
+  }, [dispatch]);
 
   useEffect(() => {
     if (availability.length > 0) {
@@ -74,14 +78,34 @@ const ScheduleAvailability = () => {
     setConfirmOpen(true);
   };
 
-  const handleSave = async () => {
+  const handleSaveAvailability = async () => {
     const resultAction = await dispatch(saveAvailability(schedule));
     if (!saveAvailability.fulfilled.match(resultAction)) {
       toast.error(resultAction.payload as string);
     }
-    setConfirmOpen(false);
+    // setConfirmOpen(false);
     setWorkingHours(false);
     setActiveDay("Sunday");
+  };
+
+
+  const handleToggleAvailability = async (args: { day: Day; active: boolean }, leaveOption?: LeaveOption) => {
+
+    if (!args.active && !leaveOption) {
+      toast.error("Missing leave-Option");
+      return;
+    }
+    const payload = args.active ? args : { ...args, leaveOption };
+
+    const resultAction = await dispatch(toggleAvailability(payload));
+    if (!toggleAvailability.fulfilled.match(resultAction)) {
+      toast.error(resultAction.payload as string);
+      return;
+    }
+    setSchedule((prev) => ({
+      ...prev,
+      [args.day]: { ...prev[args.day], active: args.active },
+    }));
   };
 
   return (
@@ -109,40 +133,100 @@ const ScheduleAvailability = () => {
 
       <div className="flex gap-4 text-primary">
         <div className="basis-[30%] p-2 space-y-4 border border-primary/20 rounded-lg">
-          {availability.map((dayObj) => {
-            return (
-              <div
-                key={dayObj.day}
-                onClick={() => setActiveDay(dayObj.day)}
-                className={`p-2 border rounded-lg cursor-pointer transition 
+          {availability.map((dayObj) => (
+            <div
+              key={dayObj.day}
+              onClick={() => setActiveDay(dayObj.day)}
+              className={`p-2 border rounded-lg cursor-pointer transition 
                 ${activeDay === dayObj.day ? "border-primary bg-chart-2 dark:bg-primary/15 " : "border-primary/30 hover:bg-primary/5"}`}
-              >
-                <div className="flex items-center space-x-3">
-                  {activeDaySlots.length > 0 && !workingHours &&
-                    <Switch
-                      id={dayObj.day}
-                      className="cursor-pointer"
-                      checked={schedule[dayObj.day].active}
-                      onCheckedChange={(checked) => {
-                        setSchedule((prev) => ({
-                          ...prev,
-                          [dayObj.day]: { ...prev[dayObj.day], active: checked },
-                        }));
-                        dispatch(toggleAvailability({ day: dayObj.day, active: checked }));
-                      }}
-                    />
-                  }
-                  <Label
-                    htmlFor={dayObj.day}
-                    onClick={(e) => e.preventDefault()} // prevent label toggling switch
-                    className="cursor-pointer text-lg font-bold font-roboto"
-                  >
-                    {dayObj.day}
-                  </Label>
-                </div>
+            >
+              <div className="flex items-center space-x-3">
+                {activeDaySlots.length > 0 && !workingHours &&
+                  <Switch
+                    id={dayObj.day}
+                    className="cursor-pointer"
+                    checked={schedule[dayObj.day].active}
+                    onCheckedChange={(checked) => {
+                      const args = { day: dayObj.day, active: checked };
+                      setPendingArgs(args);
+                      if (!checked) {
+                        setOpen(true);
+                        //setConfirmOpen(true);
+                      } else {
+                        handleToggleAvailability(args);
+                      }
+                    }}
+                  />
+                }
+                <Label
+                  htmlFor={dayObj.day}
+                  onClick={(e) => e.preventDefault()} // prevent label toggling switch
+                  className="cursor-pointer text-lg font-bold font-roboto"
+                >
+                  {dayObj.day}
+                </Label>
               </div>
-            );
-          })}
+            </div>
+          ))}
+          {pendingArgs && leaveOption &&
+            <ConfirmationBar
+              confirmOpen={confirmOpen}
+              setConfirmOpen={setConfirmOpen}
+              handleAction={() => {
+                handleToggleAvailability(pendingArgs, leaveOption);
+              }}
+              description="Are you sure you want to proceed ?"
+              extraContent={
+                <p className="font-roboto text-[12px]">
+                  {`This action will cancel all existing bookings scheduled on ${activeDay} ${leaveOption === "this_week" ? "for this week" : "for every week"} .`}
+                </p>
+              }
+            />
+          }
+
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Leave Request</DialogTitle>
+                <DialogDescription>
+                  Confirm how you’d like to schedule your leave.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <p>You have requested leave on <span className="font-medium text-foreground">{activeDay}</span>.</p>
+                <p>
+                  Would you like this leave only for  this week,
+                  or repeat it every week?
+                </p>
+              </div>
+
+              <DialogFooter className="flex justify-end gap-3">
+                <Button
+                  variant="outline"
+                  className="cursor-pointer active:scale-95 "
+                  disabled
+                  onClick={() => {
+                    setLeaveOption("this_week");
+                    setConfirmOpen(true);
+                    setOpen(false);
+                  }}
+                >
+                  This Week
+                </Button>
+                <Button
+                  className="cursor-pointer active:scale-95"
+                  onClick={() => {
+                    setLeaveOption("every_week");
+                    setConfirmOpen(true);
+                    setOpen(false);
+                  }}
+                >
+                  Every Week
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {!workingHours ? (
@@ -183,7 +267,7 @@ const ScheduleAvailability = () => {
                     disabled={isSaved}
                     className={`h-12 border-1 rounded-lg flex items-center justify-center transition cursor-pointer
                     ${isSaved ?
-                    "bg-green-500 text-white border-primary cursor-not-allowed" 
+                    "bg-green-500 text-white border-primary cursor-not-allowed"
                     : isSelected ?
                       "bg-chart-2 border-1 border-primary"
                       : "hover:border-primary hover:border-1 bg-primary-foreground text-primary"
@@ -213,29 +297,15 @@ const ScheduleAvailability = () => {
                 </Button>
               )}
             </div>
+            <ConfirmationBar
+              confirmOpen={confirmOpen}
+              setConfirmOpen={setConfirmOpen}
+              handleAction={handleSaveAvailability}
+              description="Are you sure you want to proceed? This action is permanent and cannot be undone."
+            />
           </div>
         )}
       </div>
-      {
-        confirmOpen && (
-          <AlertDialog open>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Confirm Action</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to proceed? This action is permanent and cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setConfirmOpen(false)}>
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction onClick={handleSave}>Yes</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )
-      }
     </div >
   );
 };

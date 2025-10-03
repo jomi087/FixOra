@@ -3,7 +3,6 @@ import axios from "axios";
 
 export const getAddressFromCoordinates = async (lat: number, lon: number) => {
   try {
-    console.log(lat,lon);
     const res = await axios.get("https://api.opencagedata.com/geocode/v1/json", {
       params: {  //for query params are written like this in axios  for path param we can write directly (example shown in pincodeInfo.ts )
         q:`${lat}+${lon}`,

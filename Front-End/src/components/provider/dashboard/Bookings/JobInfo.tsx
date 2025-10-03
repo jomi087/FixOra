@@ -5,9 +5,8 @@ import { useState } from "react";
 
 type ViewState = "weekly" | "daily"
 
-
 const JobInfo = () => {
-  const [viewState, setViewState] = useState<ViewState>("daily");
+  const [viewState, setViewState] = useState<ViewState>("weekly");
 
   return (
     <div className="overflow-x-auto w-screen">
@@ -19,7 +18,7 @@ const JobInfo = () => {
             setViewState("weekly");
           }}
         >
-          Weekly
+            Weekly
         </Button>
         <Button
           variant={"ghost"}
@@ -27,7 +26,7 @@ const JobInfo = () => {
           onClick={() => setViewState("daily")}
 
         >
-          Daily
+            Daily
         </Button>
       </div>
       {viewState == "weekly" && <WeeklyJobInfo />}

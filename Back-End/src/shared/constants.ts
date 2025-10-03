@@ -17,5 +17,5 @@ export const PARTIAL_REFUND_PERCENTAGE = 0.5;
 export const PLATFORM_FEE = 30;
 
 export const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] as const;
-
+export const leaveOptions = ["this_week" , "every_week"];
 

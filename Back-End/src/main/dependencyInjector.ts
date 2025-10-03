@@ -173,7 +173,7 @@ import { SetAvailabilityUseCase } from "../application/useCases/providers/SetAva
 const setAvailabilityUseCase = new SetAvailabilityUseCase(providerRepository, availabilityRepository);
 
 import { ToggleAvailabilityUseCase } from "../application/useCases/providers/ToggleAvailabilityUseCase";
-const toggleAvailabilityUseCase = new ToggleAvailabilityUseCase(providerRepository, availabilityRepository);
+const toggleAvailabilityUseCase = new ToggleAvailabilityUseCase(providerRepository, availabilityRepository, bookingRepository, walletRepository, notificationService, notificationRepository);
 
 /******************************************************************************************************************************************************
                                                         Admin Specific

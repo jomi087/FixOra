@@ -12,6 +12,7 @@ import socket from "@/services/soket";
 import { PaymentMode } from "@/shared/enums/Payment";
 import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { loadStripe } from "@stripe/stripe-js";
+import { NotificationType } from "@/shared/enums/NotificationType";
 
 
 export const useBookingRequest = () => {
@@ -21,8 +22,6 @@ export const useBookingRequest = () => {
     TIME_SLOTS.ENDHOURS, //23
     TIME_SLOTS.INTERVAL //60
   );
-
-  console.log("dates",dates);
 
   const FirstDate = dates[0]?.fullDate || "";
 
@@ -38,13 +37,14 @@ export const useBookingRequest = () => {
   const [bookingId, setBookingId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { items } = useAppSelector(state => state.notification);
   const { data } = useAppSelector((state) => state.providerInfo);
   const dispatch = useAppDispatch();
 
   // console.log("dates", dates);
   const getAvailableSlotsForDate = (date: string) => {  //selectedDate via genrateDate 01-10-2025
     if (!data?.availability) return [];
-   
+
     const dayName = DayName(date);
 
     const daySchedule = data.availability.find(d => d.day === dayName && d.active);
@@ -140,10 +140,16 @@ export const useBookingRequest = () => {
 
   }, [dispatch]);
 
+  useEffect(() => {
+    const latest = items[0];
+    if (latest?.type === NotificationType.BOOKING_CANCELLED) {
+      dispatch(removeBooking(latest.metadata.bookingId));
+    }
+  }, [items]);
+
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
   const handlePayment = async (paymentType: PaymentMode, balance?: number) => {
     setIsSubmitting(true);
-    console.log("hi");
     if (paymentType === PaymentMode.ONLINE) {
       try {
         const res = await AuthService.onlinePaymentApi(bookingId);

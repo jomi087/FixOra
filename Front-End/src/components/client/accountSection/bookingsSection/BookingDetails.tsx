@@ -166,7 +166,6 @@ const BookingDetails = () => {
           }
         }
         const res = await AuthService.walletPaymentApi(bookingInDetails.bookingId);
-        console.log(res);
         const status = res.data.result.status;
         const paymentInfo = res.data.result.paymentInfo;
 

@@ -1,4 +1,4 @@
-import { Day } from "../../shared/types/availability";
+import { Day, LeaveOption } from "../../shared/types/availability";
 
 export interface getAvailabilityOutputDTO {
     day: Day,
@@ -15,5 +15,6 @@ export interface setAvailabilityOutputDTO extends getAvailabilityOutputDTO { }
 
 export interface toggleAvailabilityInputDTO {
     day: Day,
-    providerUserId: string
+    providerUserId: string,
+    leaveOption?: LeaveOption
 }
