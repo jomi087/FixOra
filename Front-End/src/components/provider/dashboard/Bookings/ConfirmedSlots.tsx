@@ -4,7 +4,6 @@ import { splitDateTime } from "@/utils/helper/date&Time";
 
 interface ConfirmedSlotsProps {
   selectedDate: Date ;
-  setSelectedDate: (selectedDate: Date ) => void;
   selectedSlot: string | null;
   setSelectedSlot: (selectedSlot: string | null) => void;
   data: ConfirmJobBookings[];
@@ -12,10 +11,10 @@ interface ConfirmedSlotsProps {
 }
 
 
-const ConfirmedSlots: React.FC<ConfirmedSlotsProps> = ({ selectedDate, setSelectedDate, selectedSlot, setSelectedSlot, data, handleBookingDetails }) => {
+const ConfirmedSlots: React.FC<ConfirmedSlotsProps> = ({ selectedDate, selectedSlot, setSelectedSlot, data, handleBookingDetails }) => {
 
   // Format selectedDate -> "dd-mm-yyyy"
-  const formattedSelectedDate = selectedDate ? splitDateTime(selectedDate).date : setSelectedDate(new Date());;
+  const formattedSelectedDate = splitDateTime(selectedDate).date;
 
   // Filter bookings for selected date
   const bookingsForDate: ConfirmJobBookings[] = formattedSelectedDate
@@ -32,12 +31,13 @@ const ConfirmedSlots: React.FC<ConfirmedSlotsProps> = ({ selectedDate, setSelect
           <p className="text-gray-500 italic">No bookings for this date</p>
         </div>
       ) : (
-        <div className="flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 p-2">
+        <div
+          className="flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 p-2">
           {bookingsForDate.map((booking) => {
             const { time } = splitDateTime(booking.scheduledAt);
 
             let slotClass =
-              "p-4 h-14 w-full border rounded-lg hover:scale-105 flex items-center justify-center transition ";
+              "p-4 h-14 border rounded-lg hover:scale-105 flex items-center justify-center transition ";
 
             if (
               booking.acknowledgment.isWorkCompletedByProvider &&

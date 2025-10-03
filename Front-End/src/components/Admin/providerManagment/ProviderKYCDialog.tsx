@@ -29,7 +29,6 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
     try {
       const res = await AuthService.updateProviderKYC(selectedProvider.id, { action: KYCStatus.Approved });
       if (res.status === HttpStatusCode.OK) {
-        console.log(res.data);
         toast.success("KYC Approved");
         updateData(res.data.id);
         setSelectedProvider(null);

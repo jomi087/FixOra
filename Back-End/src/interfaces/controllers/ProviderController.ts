@@ -209,13 +209,14 @@ export class ProviderController {
 
     async toggleAvailability(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { day } = req.body;
+            const { day, leaveOption } = req.body;
+
             if (!req.user?.userId) {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
             }
             const providerUserId = req.user.userId;
 
-            await this._toggleAvailabilityUseCase.execute({ day, providerUserId });
+            await this._toggleAvailabilityUseCase.execute({ day, providerUserId, leaveOption });
 
             res.status(OK).json({
                 success: true,

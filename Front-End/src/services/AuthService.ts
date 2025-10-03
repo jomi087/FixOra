@@ -1,4 +1,4 @@
-import type { Day } from "@/shared/Types/availability";
+import type { Day, LeaveOption } from "@/shared/Types/availability";
 import axiosInstance from "./axiosConfig";
 import type { ProfileEdit, Signin, Signup } from "@/shared/Types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
@@ -187,8 +187,8 @@ class AuthService {
     return axiosInstance.post("api/provider/schedule-availability-time", { schedule }, this.getJsonConfig());
   }
 
-  toggleAvailability(day: string) {
-    return axiosInstance.patch("api/provider/toggle-availability", { day });
+  toggleAvailability(day: string, leaveOption?: LeaveOption) {
+    return axiosInstance.patch("api/provider/toggle-availability", { day, leaveOption  });
   }
 
   /*********************************************************************************************************************** */

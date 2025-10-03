@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import AuthService from "@/services/AuthService";
-import type { Day } from "@/shared/Types/availability";
+import type { Day, LeaveOption } from "@/shared/Types/availability";
 import type { AxiosError } from "axios";
 import { Messages } from "@/utils/constant";
 
@@ -45,12 +45,11 @@ export const fetchAvailability = createAsyncThunk<
   }
 );
 
-
 export const toggleAvailability = createAsyncThunk(
   "availability/toggleAvailability",
-  async ({ day, active }: { day: string; active: boolean }, { rejectWithValue }) => {
+  async ({ day, active, leaveOption }: { day: string; active: boolean; leaveOption?: LeaveOption }, { rejectWithValue }) => {
     try {
-      await AuthService.toggleAvailability(day);
+      await AuthService.toggleAvailability(day,leaveOption);
       return { day, active };
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Failed to update status");

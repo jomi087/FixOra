@@ -23,8 +23,6 @@ export class ProviderInfoUseCase implements IProviderInfoUseCase{
             }
 
             const { user, provider, category, booking, availability, distanceFee } = providerData;
-
-            console.log(availability.workTime);
             
             const mappedData: ProviderInfoDTO = {
                 providerId: provider.providerId,

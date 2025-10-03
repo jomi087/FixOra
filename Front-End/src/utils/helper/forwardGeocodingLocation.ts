@@ -3,7 +3,6 @@ import type { Coordinates } from "@/shared/Types/location";
 
 
 export const getCoordinatesFromAddress = async (address: string): Promise<Coordinates> => {
-  console.log(address);
   try {
     const res = await axios.get("https://api.opencagedata.com/geocode/v1/json", {
       params: {
@@ -14,7 +13,6 @@ export const getCoordinatesFromAddress = async (address: string): Promise<Coordi
         countrycode: "in",
       }
     });
-    console.log("this one ",res.data.results[0].formatted);
     const result = res.data.results?.[0];
 
     if (!result) {

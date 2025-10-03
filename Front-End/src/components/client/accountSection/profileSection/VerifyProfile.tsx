@@ -96,7 +96,7 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
         const { latitude, longitude } = position.coords;
         try {
           const address = await getAddressFromCoordinates(latitude, longitude);
-          console.log(address);
+          // console.log(address);
           setForm((prev) => ({
             ...prev,
             location: {

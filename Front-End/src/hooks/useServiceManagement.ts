@@ -27,7 +27,6 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
       try {
         const res = await AuthService.getCategoryApi(debouncedQuery, filter, currentPage, itemsPerPage);
         if (res.status === HttpStatusCode.OK) {
-          console.log("serviceMnagement", res.data);
           setCategories(res.data.catogoriesData);
           setTotalCateogories(res.data.total);
 

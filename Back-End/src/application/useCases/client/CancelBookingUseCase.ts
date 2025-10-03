@@ -106,7 +106,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                     amount: numAmount,
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.REFUND,
-                    reason: `Booking cancellation refund for booking ${bookingData.bookingId}`
+                    reason: `Booking cancellation refund, for booking ${bookingData.bookingId}`
                 });
 
                 //updating booking data

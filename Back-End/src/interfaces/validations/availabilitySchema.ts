@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { daySchemaField, ScheduleField } from "./fields";
+import { daySchemaField, leaveOptionField, ScheduleField } from "./fields";
 
 
 export const workTimeSchema = z.object({
@@ -7,6 +7,7 @@ export const workTimeSchema = z.object({
 });
 
 export const daySchema = z.object({
-    day : daySchemaField
+    day: daySchemaField,
+    leaveOption: leaveOptionField.optional(),
 });
 

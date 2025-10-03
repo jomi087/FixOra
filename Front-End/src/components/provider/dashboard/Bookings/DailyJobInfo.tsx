@@ -47,7 +47,7 @@ const DailyJobInfo = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row  mt-5 mx-2 gap-2">
+    <div className="flex flex-col md:flex-row mt-4 mx-2 gap-2">
       {/* Left calendar */}
       <Calendar
         selectedDate={selectedDate}
@@ -68,7 +68,6 @@ const DailyJobInfo = () => {
       ) : (
         <ConfirmedSlots
           selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
           selectedSlot={selectedSlot}
           setSelectedSlot={setSelectedSlot}
           data={data}

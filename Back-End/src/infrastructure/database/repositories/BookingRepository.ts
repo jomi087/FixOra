@@ -462,11 +462,16 @@ export class BookingRepository implements IBookingRepository {
             booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
         }
 
-
         const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
         return result ?? null;
     }
 
-
+    async findBookingsByWeekday(providerId: string, dayIndex: number): Promise<Booking[]> {
+        return BookingModel.find({
+            providerUserId: providerId,
+            status: { $eq: BookingStatus.CONFIRMED },
+            $expr: { $eq: [{ $dayOfWeek: "$scheduledAt" }, dayIndex + 1] }
+        });
+    }
 
 }

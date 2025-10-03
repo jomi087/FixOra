@@ -3,7 +3,7 @@ import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 import { RoleEnum } from "../../shared/Enums/Roles";
 import { KYCStatus } from "../../shared/Enums/KYCstatus";
 import { BookingStatus } from "../../shared/Enums/BookingStatus";
-import { days } from "../../shared/constants";
+import { days, leaveOptions } from "../../shared/constants";
 
 export const optionalStringField = z.string().optional();
 
@@ -70,6 +70,7 @@ export const workTimeSchemaField = z.record(
 );
 
 export const daySchemaField = z.enum(days);
+export const leaveOptionField = z.enum(leaveOptions);
 
 export const TimeSlotField = z
     .string()

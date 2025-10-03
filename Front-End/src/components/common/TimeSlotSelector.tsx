@@ -24,7 +24,6 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
   selectedDate,
   bookedSlots
 }) => {
-  console.log(timeSlots);
   return (
     <div className="mt-6 border p-4 rounded-xl">
       <h3 className="text-lg font-semibold mb-4">Select Time</h3>

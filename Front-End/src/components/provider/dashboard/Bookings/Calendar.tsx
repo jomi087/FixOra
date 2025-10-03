@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { DATE_RANGE_DAYS } from "@/utils/constant";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { DayPicker } from "react-day-picker";
+// import { Calendar as ShadCalendar } from "@/components/ui/calendar";
+
 import "react-day-picker/dist/style.css";
 
 interface CalendarProps {
-  selectedDate: Date ;
-  setSelectedDate: (selectedDate: Date ) => void;
+  selectedDate: Date;
+  setSelectedDate: (selectedDate: Date) => void;
   slot: boolean;
   setSlot: (slot: boolean) => void;
 }
@@ -15,8 +17,6 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate, setSlot, slot }) => {
 
   const today = new Date();
-
-  // Optional: limit to 7 days from today
   const maxDate = new Date();
   maxDate.setDate(today.getDate() + DATE_RANGE_DAYS - 1);
 
@@ -27,7 +27,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate, setS
         mode="single"
         selected={selectedDate}
         onSelect={setSelectedDate}
-        required={true} 
+        required={true}
         captionLayout="label"
         className="rounded-lg border-2 shadow-lg mt-4 p-2 flex justify-center text-primary "
         classNames={{
@@ -47,6 +47,18 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, setSelectedDate, setS
             ),
         }}
       />
+
+      {/* <ShadCalendar
+        mode="single"
+        selected={selectedDate}
+        onSelect={setSelectedDate}
+        required
+        className="rounded-lg border-2 shadow-lg mt-4 p-2 flex justify-center text-primary"
+        disabled={{ before: today, after: maxDate }}
+        defaultMonth={today}
+        numberOfMonths={1}
+        showOutsideDays={false}
+      /> */}
 
       <div className="flex gap-4">
         <Button

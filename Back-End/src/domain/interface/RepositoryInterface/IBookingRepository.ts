@@ -66,6 +66,8 @@ export interface IBookingRepository {
   } | null>
 
 
+  findBookingsByWeekday(providerUserId: string, dayIndex: number): Promise<Booking[]>
+
 }
 
 
