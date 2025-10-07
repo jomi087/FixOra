@@ -88,10 +88,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                     },
                     status: BookingStatus.CONFIRMED,
                     esCrowAmout: totalAmount,
-                    acknowledgment: {
-                        isWorkCompletedByProvider: false,
-                        isWorkConfirmedByUser: false,
-                    },
+                    workProof: []
                 };
 
                 //pending: instead of updtedBooking get the Booking data with userName and providerName 
@@ -100,22 +97,6 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
                 const jobKey = `paymentBooking-${id}`;
                 this._bookingSchedulerService.cancel(jobKey);
-
-                //user
-                // setTimeout(() => {
-                //     this._notificationService.//notifyPaymentSuccessToUser(booking.userId);
-                // }, 5000);
-
-                //provider
-                // this._notificationService.//notifyBookingConfirmation(booking.providerUserId, {
-                //     bookingId: updatedBooking.bookingId,
-                //     scheduledAt: updatedBooking.scheduledAt,
-                //     status: updatedBooking.status,
-                //     acknowledgment: {
-                //         isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
-                //         isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
-                //     }
-                // });
 
                 //to user
                 setTimeout(async () => {
@@ -138,10 +119,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                         bookingId: updatedBooking.bookingId,
                         scheduledAt: updatedBooking.scheduledAt,
                         status: updatedBooking.status,
-                        acknowledgment: {
-                            isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
-                            isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
-                        }
+                        workProof: []
                     }
                 });
             }

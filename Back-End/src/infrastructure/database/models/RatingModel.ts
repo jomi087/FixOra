@@ -5,10 +5,11 @@ export interface IRatingModel extends Rating, Document {}
 
 const RatingSchema = new Schema<IRatingModel>(
     {
-        providerId: { type: String, required: true, uniqueu: true },
-        userId: { type: String, required: true ,unique:true },
+        bookingId: { type: String, required: true, uniqueu: true },
+        providerId: { type: String, required: true },
+        userId: { type: String, required: true },
         rating: { type: Number, required: true, min: 1, max: 5 },
-        review: { type: String },
+        feedback: { type: String, required: true },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 );

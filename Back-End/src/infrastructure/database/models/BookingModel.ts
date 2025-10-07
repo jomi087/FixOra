@@ -1,22 +1,22 @@
-import { Schema ,Document,model } from "mongoose";
+import { Schema, Document, model } from "mongoose";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
 import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";
 
-export interface IBookingModel extends Document,Booking{}
+export interface IBookingModel extends Document, Booking { }
 
 const BookingSchema = new Schema<IBookingModel>({
     bookingId: {
         type: String,
-        unique : true,
+        unique: true,
         required: true
     },
     userId: {
         type: String,
         required: true
     },
-    providerUserId: {    
+    providerUserId: {
         type: String,
         required: true
     },
@@ -74,13 +74,13 @@ const BookingSchema = new Schema<IBookingModel>({
             type: Date,
         },
         transactionId: {
-            type : String,  
+            type: String,
         },
         reason: {
             type: String
         },
     },
-    esCrowAmout :  {
+    esCrowAmout: {
         type: Number,
     },
     diagnosed: {
@@ -94,26 +94,17 @@ const BookingSchema = new Schema<IBookingModel>({
                     cost: Number,
                 },
             ],
-            default: undefined   
+            default: undefined
         }
 
     },
-    acknowledgment: {
-        isWorkCompletedByProvider: {
-            type: Boolean,
-        },
-        imageUrl: {
-            type: [String],
-            default: [],
-        },
-        isWorkConfirmedByUser: {
-            type: Boolean,
-        },
+    workProof: {
+        type: [String],
+        default: [],
     },
     cancelledAt: {
         type: Date
     }
-
 }, { timestamps: true });
 
 const BookingModel = model<IBookingModel>("Booking", BookingSchema);

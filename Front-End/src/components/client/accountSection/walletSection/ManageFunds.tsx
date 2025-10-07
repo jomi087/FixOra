@@ -2,19 +2,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, } from "@/components/ui/card";
-import { useEffect ,useState } from "react";
+import { useEffect, useState } from "react";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { loadStripe } from "@stripe/stripe-js";
 import socket from "@/services/soket";
+import { useAppSelector } from "@/store/hooks";
+import { RoleEnum } from "@/shared/enums/roles";
 
 
 const ManageFunds: React.FC<{ balance: number }> = ({ balance }) => {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
+  const { user } = useAppSelector(state => state.auth);
 
   useEffect(() => {
     const handlePaymentSuccess = () => {
@@ -29,8 +32,8 @@ const ManageFunds: React.FC<{ balance: number }> = ({ balance }) => {
     socket.on("payment:failure", handlePaymentFailed);
 
     return () => {
-      socket.off("payment:success", handlePaymentSuccess );
-      socket.off("payment:failure", handlePaymentFailed );
+      socket.off("payment:success", handlePaymentSuccess);
+      socket.off("payment:failure", handlePaymentFailed);
     };
   }, []);
 
@@ -81,54 +84,56 @@ const ManageFunds: React.FC<{ balance: number }> = ({ balance }) => {
       <CardFooter>
 
         {/* Dialog trigger wraps the button */}
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-green-600 hover:bg-green-700">
-              Add Money
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Money to Wallet</DialogTitle>
-              <DialogDescription>
-                Enter the amount you would like to add to your wallet.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-4">
-              <Input
-                type="number"
-                placeholder="Enter amount"
-                value={amount}
-                onChange={(e) => {
-                  let value = e.target.value;
-                  setAmount(value);
-                  setError("");
-                }}
-              />
-              {error && <p className="m-2 text-sm text-destructive">{error}</p>}
-            </div>
-
-            <DialogFooter>
-              <Button
-                className="bg-green-600 hover:bg-green-700"
-                onClick={handleAddFund}
-              >
-                Add Funds
+        { user && user.role == RoleEnum.CUSTOMER &&
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-green-600 hover:bg-green-700">
+                Add Money
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setOpen(false);
-                  setError("");
-                  setAmount("");
-                }}
-              >
-                Cancel
-              </Button>
-            </DialogFooter>
-          </DialogContent>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Money to Wallet</DialogTitle>
+                <DialogDescription>
+                  Enter the amount you would like to add to your wallet.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-4">
+                <Input
+                  type="number"
+                  placeholder="Enter amount"
+                  value={amount}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    setAmount(value);
+                    setError("");
+                  }}
+                />
+                {error && <p className="m-2 text-sm text-destructive">{error}</p>}
+              </div>
 
-        </Dialog>
+              <DialogFooter>
+                <Button
+                  className="bg-green-600 hover:bg-green-700"
+                  onClick={handleAddFund}
+                >
+                  Add Funds
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setOpen(false);
+                    setError("");
+                    setAmount("");
+                  }}
+                >
+                  Cancel
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+
+          </Dialog>
+        }
 
       </CardFooter>
     </Card>

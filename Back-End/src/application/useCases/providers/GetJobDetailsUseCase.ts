@@ -24,11 +24,11 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
             };
 
             const { booking, category, subCategory, user } = bookingDataInDetails;
-            
             if (!booking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
 
+            // console.log("checking diagnosed " ,booking.diagnosed);
             const mappedData: jobDetailsOutputDTO = {
-                bookingId: booking.bookingId,
+                bookingId: booking.bookingId!,
                 user: {
                     userId: user.userId,
                     fname: user.fname,
@@ -36,7 +36,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
                     email: user.email,
                     location: user.location
                 },
-                scheduledAt: booking.scheduledAt,
+                scheduledAt: booking.scheduledAt!,
                 category: {
                     categoryId: category.categoryId,
                     name: category.name,
@@ -45,11 +45,11 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
                         name: subCategory.name
                     }
                 },
-                issue: booking.issue,
-                status: booking.status,
+                issue: booking.issue!,
+                status: booking.status!,
                 pricing: {
-                    baseCost: booking.pricing.baseCost,
-                    distanceFee: booking.pricing.distanceFee
+                    baseCost: booking.pricing!.baseCost,
+                    distanceFee: booking.pricing!.distanceFee
                 },
                 paymentInfo: {
                     mop: booking.paymentInfo.mop,
@@ -58,10 +58,10 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
                     transactionId: booking.paymentInfo.transactionId,
                     reason: booking.paymentInfo?.reason,
                 },
-                acknowledgment: {
-                    isWorkCompletedByProvider: booking.acknowledgment?.isWorkCompletedByProvider || false,
-                    imageUrl: booking.acknowledgment?.imageUrl || [],
-                    isWorkConfirmedByUser: booking.acknowledgment?.isWorkConfirmedByUser || false
+                workProof: booking.workProof,
+                diagnosed: {
+                    description: booking.diagnosed?.description!,
+                    replaceParts: booking.diagnosed?.replaceParts
                 }
             };
 

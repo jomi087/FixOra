@@ -13,6 +13,9 @@ import { IVerifyArrivalOtpUseCase } from "../../application/Interface/useCases/P
 import { ISetAvailabilityUseCase } from "../../application/Interface/useCases/Provider/ISetAvailabilityUseCase";
 import { IGetAvailabilityUseCase } from "../../application/Interface/useCases/Provider/IGetAvailabilityUseCase";
 import { IToggleAvailabilityUseCase } from "../../application/Interface/useCases/Provider/IToggleAvailabilityUseCase";
+import { allowedTypes, maxSizeMB } from "../../shared/constants";
+import validateFile from "../validations/fileValidation";
+import { IWorkCompletionUseCase } from "../../application/Interface/useCases/Provider/IWorkCompletionUseCase";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
@@ -26,6 +29,7 @@ export class ProviderController {
         private _jobHistoryUseCase: IJobHistoryUseCase,
         private _verifyArrivalUseCase: IVerifyArrivalUseCase,
         private _verifyArrivalOtpUseCase: IVerifyArrivalOtpUseCase,
+        private _workCompletionUseCase: IWorkCompletionUseCase,
         private _getAvailabilityUseCase: IGetAvailabilityUseCase,
         private _setAvailabilityUseCase: ISetAvailabilityUseCase,
         private _toggleAvailabilityUseCase: IToggleAvailabilityUseCase,
@@ -163,6 +167,58 @@ export class ProviderController {
         }
     }
 
+    async acknowledgeCompletionWithProof(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            // console.log(req.body);
+            // console.log(req.files);
+
+            const files = req.files as Express.Multer.File[];
+
+            if (!files || files.length === 0) {
+                throw new Error("At least one work proof image is required");
+            }
+            if (files.length > 3) {
+                throw new Error("You can upload up to 3 images only");
+            }
+            for (const file of files) {
+                const error = validateFile(file, allowedTypes, maxSizeMB);
+                if (error) {
+                    throw { status: 400, message: error };
+                }
+            }
+
+            const { bookingId, diagnose, parts: stringifyParts } = req.body;
+
+            let parts: { name: string; cost: string;}[] = [];
+            if (stringifyParts) {
+                parts = JSON.parse(stringifyParts);
+            }
+            const plainFiles = files.map(file => ({
+                buffer: file.buffer,
+                originalname: file.originalname,
+            }));
+
+            const { status, workProofUrls, diagnosed } = await this._workCompletionUseCase.execute({
+                bookingId,
+                plainFiles,
+                diagnose,
+                parts
+            });
+
+            res.status(OK).json({
+                success: true,
+                message: "success",
+                bookingStatus: status,
+                workProofUrls,
+                diagnosis: diagnosed
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
     async getAvailabilityTime(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
@@ -171,7 +227,6 @@ export class ProviderController {
             const providerUserId = req.user.userId;
 
             let mappedData = await this._getAvailabilityUseCase.execute(providerUserId);
-
 
             res.status(OK).json({
                 success: true,

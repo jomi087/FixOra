@@ -9,25 +9,26 @@ import {
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface ImageModalProps {
-    src: string;
-    alt?: string;
-    trigger?: React.ReactNode; // Optional custom trigger button
+  src: string;
+  alt?: string;
+  trigger?: React.ReactNode; // Optional custom trigger button
+  triggerImageStyle?: string
 }
 
-export function ImageModal({ src, alt = "Preview", trigger }: ImageModalProps) {
+export function ImageModal({ src, alt = "Preview", trigger, triggerImageStyle  }: ImageModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
         {trigger ? (
           trigger
         ) : (
-          <div className="cursor-pointer overflow-hidden rounded-md border w-32 h-32">
+          <div className={`cursor-pointer overflow-hidden rounded-md border-2 ${ triggerImageStyle ? triggerImageStyle : "w-32 h-32" }`}>
             <img
               src={src}
               alt={alt}
-              width={128}
-              height={128}
-              className="object-cover w-full h-full transition-transform hover:scale-105"
+              // width={18}
+              // height={18}
+              className="object-cover w-full h-full transition-transform hover:scale-98"
             />
           </div>
         )}
@@ -39,7 +40,7 @@ export function ImageModal({ src, alt = "Preview", trigger }: ImageModalProps) {
         {/* Accessibility hidden title/description */}
         <VisuallyHidden>
           <DialogTitle>{alt}</DialogTitle>
-          <DialogDescription>Preview of uploaded document</DialogDescription>
+          <DialogDescription>{`Preview of uploaded ${alt}`}</DialogDescription>
         </VisuallyHidden>
 
 

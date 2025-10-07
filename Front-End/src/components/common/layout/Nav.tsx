@@ -78,6 +78,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
     switch (noti.type) {
     case NotificationType.BOOKING_CONFIRMED:
     case NotificationType.BOOKING_CANCELLED:
+    case NotificationType.BOOKING_COMPLETED:
       if ([RoleEnum.CUSTOMER, RoleEnum.PROVIDER].includes(user.role) && bookingId) {
         navigate(`/${user.role}/booking-details/${bookingId}`);
       }

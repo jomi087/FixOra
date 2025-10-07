@@ -107,10 +107,7 @@ const BookingHistoryTable = () => {
                     </TableCell>
                     <TableCell className="text-center py-4 font-semibold">
                       <span className="px-3 py-1 text-sm ">
-                        {d.acknowledgment.isWorkCompletedByProvider &&
-                          d.acknowledgment.isWorkConfirmedByUser
-                          ? "Finished"
-                          : d.status}
+                        {d.status}
                       </span>
                     </TableCell>
                   </TableRow>

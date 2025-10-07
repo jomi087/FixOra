@@ -1,20 +1,6 @@
 import { z } from "zod";
 import { KYCImageSize, Messages } from "../constant";
-
-export const imageValidator = (maxSizeInMB: number = 5 , msg : string) =>
-  z
-    .any()
-    .refine((file) => file instanceof File, {
-      message: `${ msg }is required `,
-    })
-    .refine((file: File) => {
-      const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-      return validTypes.includes(file.type);
-    }, { message: Messages.IMAGE_TYPE_INVALID })
-    .refine((file: File) => {
-      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
-      return file.size <= maxSizeInBytes;
-    }, { message: `Image size should not exceed ${maxSizeInMB}MB.` });
+import { imageValidator } from "./imageValidation";
 
 
 export const providerKYCSchema = z.object({

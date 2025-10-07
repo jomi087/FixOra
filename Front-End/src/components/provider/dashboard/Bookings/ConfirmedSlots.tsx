@@ -3,7 +3,7 @@ import type { ConfirmJobBookings } from "@/shared/Types/booking";
 import { splitDateTime } from "@/utils/helper/date&Time";
 
 interface ConfirmedSlotsProps {
-  selectedDate: Date ;
+  selectedDate: Date;
   selectedSlot: string | null;
   setSelectedSlot: (selectedSlot: string | null) => void;
   data: ConfirmJobBookings[];
@@ -25,24 +25,22 @@ const ConfirmedSlots: React.FC<ConfirmedSlotsProps> = ({ selectedDate, selectedS
     : [];
 
   return (
-    <div className="flex-1 p-2 flex">
+    <div className="md:w-2/3">
       {bookingsForDate.length === 0 ? (
         <div className="flex flex-1 h-full justify-center items-center">
           <p className="text-gray-500 italic">No bookings for this date</p>
         </div>
       ) : (
         <div
-          className="flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 p-2">
+          className="p-2 grid grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-min content-start mt-10 "
+        >
           {bookingsForDate.map((booking) => {
             const { time } = splitDateTime(booking.scheduledAt);
 
             let slotClass =
-              "p-4 h-14 border rounded-lg hover:scale-105 flex items-center justify-center transition ";
+              "text-sm p-3 lg:p-4 border rounded-lg hover:scale-105 flex items-center justify-center transition ";
 
-            if (
-              booking.acknowledgment.isWorkCompletedByProvider &&
-              booking.acknowledgment.isWorkConfirmedByUser
-            ) {
+            if (booking.status === BookingStatus.COMPLETED) {
               slotClass += " text-green-500 font-semibold cursor-pointer";
             } else if (booking.status === BookingStatus.CONFIRMED) {
               slotClass += " text-cyan-500 font-semibold cursor-pointer";
@@ -60,12 +58,10 @@ const ConfirmedSlots: React.FC<ConfirmedSlotsProps> = ({ selectedDate, selectedS
                   : ""
                 }`}
               >
-                {time} —{" "}
-                {booking.acknowledgment.isWorkCompletedByProvider &&
-                  booking.acknowledgment.isWorkConfirmedByUser
-                  ? "Finished ✔️"
+                {booking.status === BookingStatus.COMPLETED
+                  ? `${time}✔️`
                   : booking.status === BookingStatus.CONFIRMED
-                    ? "Booked 🔖"
+                    ? `${time}🔖`
                     : ""}
               </button>
             );

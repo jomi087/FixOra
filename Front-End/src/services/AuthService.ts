@@ -140,6 +140,14 @@ class AuthService {
     return axiosInstance.patch(`/api/customer/booking/cancel-booking/${bookingId}`);
   }
 
+  getReviewStatus(bookingId: string) {
+    return axiosInstance.get(`/api/customer/booking/review-status/${bookingId}`);
+  }
+
+  updateFeedbackApi(payload: { bookingId: string, rating: number, feedback: string }) {
+    return axiosInstance.post("/api/customer/booking/feedback", payload, this.getJsonConfig());
+  }
+
   userWalletInfoApi(page: number, limit: number) {
     return axiosInstance.get(`/api/customer/wallet?page=${page}&limit=${limit}`);
   }
@@ -179,6 +187,10 @@ class AuthService {
     return axiosInstance.post("api/provider/verify-arrivalOtp", { otp }, this.getJsonConfig());
   }
 
+  finalizeBookingApi(data: FormData) {
+    return axiosInstance.post("/api/provider/acknowledge-completion", data, this.getMultiPartConfig());
+  }
+
   workingTimeInfoApi() {
     return axiosInstance.get("/api/provider/availability-time");
   }
@@ -188,7 +200,7 @@ class AuthService {
   }
 
   toggleAvailability(day: string, leaveOption?: LeaveOption) {
-    return axiosInstance.patch("api/provider/toggle-availability", { day, leaveOption  });
+    return axiosInstance.patch("api/provider/toggle-availability", { day, leaveOption });
   }
 
   /*********************************************************************************************************************** */
@@ -202,7 +214,6 @@ class AuthService {
   toggleUserStatusApi(userId: string) {
     return axiosInstance.patch(`/api/admin/customer-management/${userId}`);
   }
-
 
   getAllProviderApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
     return axiosInstance.get("/api/admin/provider-management", {

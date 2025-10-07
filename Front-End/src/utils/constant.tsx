@@ -27,12 +27,13 @@ export const CancelSeal: string = "/cancelledSeal.png";
 /********************************************* Rules  *******************************************************/
 
 export const searchInputLength: number = 30; //50
-export const shortInputLength: number = 30; //50
-export const longInputLength: number = 50;  //200
+export const shortInputLength: number = 50; //50
+export const longInputLength: number = 100;  //200
 
 export const categoryImageSize: number = 1;                                 //default set  to 2 mb
 export const providerImageSize: number = 1;                                 //default set  to 2 mb
-export const KYCImageSize: number = 5;                                     //default set  to 5 mb
+export const KYCImageSize: number = 5; //default set  to 5 mb
+export const ImageSize: number = 5;    //default set  to 5 mb
 export const minYear = `${new Date().getFullYear() - 150}-01-01`;
 export const maxYear = `${new Date().getFullYear() - 19}-01-01`;
 export const CCPP = 8;                                                  //CCPP => Customer Cards Per page -> default set to 16

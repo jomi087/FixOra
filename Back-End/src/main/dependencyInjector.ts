@@ -7,6 +7,8 @@ import { BookingRepository } from "../infrastructure/database/repositories/Booki
 import { WalletRepository } from "../infrastructure/database/repositories/WalletRepository";
 import { NotificationRepository } from "../infrastructure/database/repositories/NotificationRepository";
 import { AvailabilityRepository } from "../infrastructure/database/repositories/AvailabilityRepository";
+import { RatingRepository } from "../infrastructure/database/repositories/RatingRepository";
+
 
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
 import { EmailService } from "../infrastructure/services/EmailService";
@@ -28,6 +30,7 @@ const bookingRepository = new BookingRepository();
 const walletRepository = new WalletRepository();
 const notificationRepository = new NotificationRepository();
 const availabilityRepository = new AvailabilityRepository();
+const ratingRepository = new RatingRepository();
 
 const loggerService = new WinstonLogger();
 const emailService = new EmailService();
@@ -87,11 +90,6 @@ const getNotificationsUseCase = new GetNotificationsUseCase(notificationReposito
 import { NotificationAcknowledgmentUseCase } from "../application/useCases/public/NotificationAcknowledgmentUseCase";
 const notificationAcknowledgmentUseCase = new NotificationAcknowledgmentUseCase(notificationRepository);
 
-// import { SendBookingConfirmedNotificationUseCase } from "../application/useCases/Notificiations/SendBookingConfirmedNotificationUseCase";
-// const sendBookingConfirmedNotificationUseCase = new SendBookingConfirmedNotificationUseCase(notificationRepository, notificationService);
-
-// import { SendBookingCancelledNotificationUseCase } from "../application/useCases/Notificiations/SendBookingCancelledNotificationUseCase";
-// const sendBookingCancelledNotificationUseCase = new SendBookingCancelledNotificationUseCase(notificationRepository, notificationService);
 /******************************************************************************************************************************************************
                                                         Customer Specific
 ******************************************************************************************************************************************************/
@@ -134,8 +132,14 @@ const getBookingDetailsUseCase = new GetBookingDetailsUseCase(bookingRepository)
 import { RetryAvailabilityUseCase } from "../application/useCases/client/RetryAvailabilityUseCase";
 const retryAvailabilityUseCase = new RetryAvailabilityUseCase(bookingRepository);
 
+import { ReviewStatusUseCase } from "../application/useCases/client/ReviewStatusUseCase";
+const reviewStatusUseCase = new ReviewStatusUseCase(ratingRepository);
+
 import { CancelBookingUseCase } from "../application/useCases/client/CancelBookingUseCase";
 const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository);
+
+import { AddFeedbackUseCase } from "../application/useCases/client/AddFeedbackUseCase";
+const addFeedbackUseCase = new AddFeedbackUseCase(ratingRepository, bookingRepository);
 
 import { GetUserwalletInfoUseCase } from "../application/useCases/client/GetUserwalletInfoUseCase";
 const getUserwalletInfoUseCase = new GetUserwalletInfoUseCase(walletRepository);
@@ -143,8 +147,6 @@ const getUserwalletInfoUseCase = new GetUserwalletInfoUseCase(walletRepository);
 import { WalletTopupUseCase } from "../application/useCases/client/WalletTopupUseCase";
 const walletTopUpUseCase = new WalletTopupUseCase(paymentService, walletRepository);
 
-// import { SendKYCRequestNotificationUseCase } from "../application/useCases/Notificiations/SendKYCRequestNotificationUseCase";
-// const sendKYCRequestNotificationUseCase = new SendKYCRequestNotificationUseCase(userRepository, notificationRepository, notificationService);
 /******************************************************************************************************************************************************
                                                         Provider Specific
 ******************************************************************************************************************************************************/
@@ -165,6 +167,9 @@ const verifyArrivalUseCase = new VerifyArrivalUseCase(bookingRepository, userRep
 
 import { VerifyArrivalOtpUseCase } from "../application/useCases/providers/VerifyArrivalOtpUseCase";
 const verifyArrivalOtpUseCase = new VerifyArrivalOtpUseCase(otpRepository, tokenService, bookingRepository);
+
+import { WorkCompletionUseCase } from "../application/useCases/providers/WorkCompletionUseCase";
+const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository);
 
 import { GetAvailabilityUseCase } from "../application/useCases/providers/GetAvailabiltyUseCase";
 const getAvailabilityUseCase = new GetAvailabilityUseCase(providerRepository, availabilityRepository);
@@ -202,8 +207,6 @@ const createServiceCategoryUseCase = new CreateServiceCategoryUseCase(categoryRe
 import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase";
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository);
 
-
-
 /******************************************************************************************************************************************************/
 import { PublicController } from "../interfaces/controllers/PublicController";
 import { AuthController } from "../interfaces/controllers/AuthController";
@@ -215,9 +218,9 @@ const publicController = new PublicController(loggerService, getLandingDataUseCa
 
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase);
 
-const userController = new UserController(loggerService, activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, imageUploaderService, providerInfoUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, cancelBookingUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
+const userController = new UserController(loggerService, activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, imageUploaderService, providerInfoUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
-const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
+const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
 
 const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 

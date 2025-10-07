@@ -121,10 +121,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 },
                 status: BookingStatus.CONFIRMED,
                 esCrowAmout: totalAmount,
-                acknowledgment: {
-                    isWorkCompletedByProvider: false,
-                    isWorkConfirmedByUser: false,
-                },
+                workProof : []
             };
 
             let updatedBooking: Booking | null;
@@ -150,15 +147,6 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 throw { status: INTERNAL_SERVER_ERROR, message: error.message || INTERNAL_ERROR };
             }
 
-            // this._notificationService.//notifyBookingConfirmation(updatedBooking.providerUserId, {
-            //     bookingId: updatedBooking.bookingId,
-            //     scheduledAt: updatedBooking.scheduledAt,
-            //     status: updatedBooking.status,
-            //     acknowledgment: {
-            //         isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
-            //         isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
-            //     }
-            // });
 
             //to user
             await this.sendBookingConfirmedNotification({
@@ -169,10 +157,6 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     bookingId: updatedBooking.bookingId,
                     scheduledAt: updatedBooking.scheduledAt,
                     status: updatedBooking.status,
-                    acknowledgment: {
-                        isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
-                        isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
-                    }
                 }
             });
 
@@ -185,10 +169,6 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     bookingId: updatedBooking.bookingId,
                     scheduledAt: updatedBooking.scheduledAt,
                     status: updatedBooking.status,
-                    acknowledgment: {
-                        isWorkCompletedByProvider: updatedBooking.acknowledgment?.isWorkCompletedByProvider || false,
-                        isWorkConfirmedByUser: updatedBooking.acknowledgment?.isWorkConfirmedByUser || false
-                    }
                 }
             });
 
