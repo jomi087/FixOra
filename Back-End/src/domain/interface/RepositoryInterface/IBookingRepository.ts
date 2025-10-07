@@ -11,7 +11,7 @@ export interface IBookingRepository {
   findByBookingId(bookingId: string): Promise<Booking | null>;
 
   findExistingBooking(providerId: string, scheduledAt: Date): Promise<Booking | null>;
-  
+
   updateBookingStatus(bookingId: string, status: BookingStatus): Promise<void>;
 
   updateProviderResponseAndStatus(
@@ -51,7 +51,8 @@ export interface IBookingRepository {
     user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-    booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
+    booking: Partial<Booking>
+    //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
   } | null>
 
   findProviderJobHistoryById(providerUserId: string, currentPage: number, limit: number): Promise<{ data: Booking[], total: number }>
@@ -62,9 +63,9 @@ export interface IBookingRepository {
     provider: Pick<Provider, "profileImage">
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-    booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
+    booking: Partial<Booking>
+    // booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
   } | null>
-
 
   findBookingsByWeekday(providerUserId: string, dayIndex: number): Promise<Booking[]>
 

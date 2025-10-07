@@ -30,7 +30,6 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
             const user = await this._userRepository.findByUserId(userId);
             if (!user) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
 
-
             const admins = await this._userRepository.findByRole(RoleEnum.Admin);
 
             const notifications = admins.map(admin => ({

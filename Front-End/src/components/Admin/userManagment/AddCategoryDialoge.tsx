@@ -95,7 +95,6 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({ open,setOpen,triggerRe
                 accept="image/*"
                 onChange={(e) => setImage(e.target.files?.[0] || null)}
                 className={errors.image ? "border-red-500" : ""}
-                maxLength={10}
               />
               {errors.image && <p className="text-sm text-red-500">{errors.image}</p>}
             </div>

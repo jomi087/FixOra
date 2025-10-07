@@ -1,26 +1,25 @@
+import { ImageModal } from "@/components/common/Others/ImageModal";
+import React from "react";
 
 
 interface WorkProofProps {
-	imageUrls: string[]
+  imageUrls: string[]
 }
 
 const WorkProof: React.FC<WorkProofProps> = ({ imageUrls }) => {
   return (
-    <div className="flex mt-5">
-      <div className="border-1 w-full overflow-auto" >
-        <div className="flex items-start gap-3">
-          { imageUrls.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt="completed image"
-              className="rounded border"
-            />
-          ))
-          }
-        </div>
-      </div>
+    <div className="flex gap-4 p-4 ">
+      {imageUrls.map((img, index) => (
+        <React.Fragment key={index}>
+          <ImageModal
+            src={img}
+            alt={`completed Image-${index + 1}`}
+            triggerImageStyle="w-full h-44"
 
+          />
+        </React.Fragment>
+      ))
+      }
     </div>
   );
 };

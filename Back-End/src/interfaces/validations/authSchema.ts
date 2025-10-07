@@ -45,4 +45,3 @@ export const verifyPasswordSchema = z.object({
 export const otpSchema = z.object({
     otp:z.coerce.number()
 });
-

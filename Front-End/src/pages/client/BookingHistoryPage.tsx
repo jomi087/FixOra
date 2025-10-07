@@ -1,7 +1,7 @@
 import SideBar from "../../components/common/Others/SideBar";
 import Nav from "../../components/common/layout/Nav";
 import { userSideBarOptions } from "@/utils/constant";
-import BookingHistoryTable from "@/components/client/accountSection/bookingsSection/BookingHistoryTable";
+import BookingHistoryTable from "@/components/client/accountSection/bookingsSection/history/BookingHistoryTable";
 
 
 const BookingHistoryPage: React.FC = () => {

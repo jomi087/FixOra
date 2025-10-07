@@ -23,10 +23,10 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
 
             const { userProvider, provider, category, subCategory, booking } = bookingDataInDetails;
 
-            if(!booking.paymentInfo)throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+            if (!booking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
 
             const mappedData: BookingDetailsOutputDTO = {
-                bookingId: booking.bookingId,
+                bookingId: booking.bookingId!,
                 providerUser: {
                     userId: userProvider.userId,
                     fname: userProvider.fname,
@@ -34,7 +34,7 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
                     email: userProvider.email,
                     image: provider.profileImage,
                 },
-                scheduledAt: booking.scheduledAt,
+                scheduledAt: booking.scheduledAt!,
                 category: {
                     categoryId: category.categoryId,
                     name: category.name,
@@ -43,11 +43,11 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
                         name: subCategory.name
                     }
                 },
-                issue: booking.issue,
-                status: booking.status,
+                issue: booking.issue!,
+                status: booking.status!,
                 pricing: {
-                    baseCost: booking.pricing.baseCost,
-                    distanceFee: booking.pricing.distanceFee
+                    baseCost: booking.pricing!.baseCost,
+                    distanceFee: booking.pricing!.distanceFee
                 },
                 paymentInfo: {
                     mop: booking.paymentInfo?.mop,
@@ -56,11 +56,11 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
                     transactionId: booking.paymentInfo?.transactionId,
                     reason: booking.paymentInfo?.reason,
                 },
-                acknowledgment: {
-                    isWorkCompletedByProvider: booking.acknowledgment?.isWorkCompletedByProvider || false,
-                    imageUrl: booking.acknowledgment?.imageUrl || [],
-                    isWorkConfirmedByUser: booking.acknowledgment?.isWorkConfirmedByUser || false
-                },
+                workProof: booking.workProof,
+                diagnosed: {
+                    description: booking.diagnosed?.description!,
+                    replaceParts: booking.diagnosed?.replaceParts
+                }
             };
             return mappedData;
 

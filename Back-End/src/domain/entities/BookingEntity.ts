@@ -26,8 +26,7 @@ export interface Booking {
         transactionId: string;
         reason?: string; 
     }
-    esCrowAmout?: number
-    
+    esCrowAmout?: number;
     diagnosed?: {
         description: string;
         replaceParts?: {
@@ -35,12 +34,7 @@ export interface Booking {
             cost: number;
         }[]
     }
-
-    acknowledgment?: {
-        isWorkCompletedByProvider: boolean;
-        imageUrl?: string[];
-        isWorkConfirmedByUser: boolean;
-    }  
+    workProof?: string[];
     cancelledAt?: Date;
     createdAt?: Date;
     updatedAt?: Date;

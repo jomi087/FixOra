@@ -37,7 +37,6 @@ interface TransactionsTableProps {
   totalPages: number;
 }
 
-
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page,setPage,totalPages }) => {
   return (
     <>

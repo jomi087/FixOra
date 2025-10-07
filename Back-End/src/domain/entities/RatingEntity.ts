@@ -1,9 +1,10 @@
 export interface Rating {
+    bookingId:string
     providerId: string;    
     userId: string;      
     rating: number;      
-    review?: string;       
-    createdAt?: Date;
+    feedback: string;       
+    createdAt: Date;
     updatedAt?: Date;
 }
  

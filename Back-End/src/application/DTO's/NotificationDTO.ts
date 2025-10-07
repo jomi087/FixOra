@@ -20,3 +20,5 @@ export interface NotificationInput {
 export interface SendBookingConfirmedInput extends NotificationInput {}
 
 export interface SendBookingCancelledInput extends NotificationInput {}
+
+export interface SendWorkFinsihedInput extends NotificationInput {}

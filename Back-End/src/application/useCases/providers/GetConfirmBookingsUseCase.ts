@@ -23,10 +23,6 @@ export class GetConfirmBookingsUseCase implements IGetConfirmBookingsUseCase {
                 bookingId: booking.bookingId,
                 scheduledAt: booking.scheduledAt,
                 status: booking.status,
-                acknowledgment: {
-                    isWorkCompletedByProvider: booking.acknowledgment?.isWorkCompletedByProvider || false,
-                    isWorkConfirmedByUser: booking.acknowledgment?.isWorkConfirmedByUser || false
-                }
             }));
 
             return  mappedData;

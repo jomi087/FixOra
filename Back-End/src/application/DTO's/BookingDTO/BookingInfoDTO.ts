@@ -6,10 +6,6 @@ export interface ConfirmBookingOutputDTO {
     bookingId: string;
     scheduledAt: Date;
     status: BookingStatus;
-    acknowledgment: {
-        isWorkCompletedByProvider: boolean;
-        isWorkConfirmedByUser: boolean;
-    }
 }
 
 export interface BookingDetailsOutputDTO {
@@ -43,11 +39,14 @@ export interface BookingDetailsOutputDTO {
         transactionId?: string
         reason?: string;
     }
-    acknowledgment: {
-        isWorkCompletedByProvider: boolean;
-        imageUrl: string[];
-        isWorkConfirmedByUser: boolean;
-    };
+    workProof?: string[];
+    diagnosed?: {
+        description: string;
+        replaceParts?: {
+            name: string;
+            cost: number;
+        }[]
+    }
 }
 
 export interface CancelBookingInputDTO {
@@ -105,9 +104,12 @@ export interface jobDetailsOutputDTO {
         transactionId: string
         reason?: string;
     }
-    acknowledgment: {
-        isWorkCompletedByProvider: boolean;
-        imageUrl: string[];
-        isWorkConfirmedByUser: boolean;
-    };
+    workProof?: string[];
+    diagnosed?: {
+        description: string;
+        replaceParts?: {
+            name: string;
+            cost: number;
+        }[]
+    }
 }

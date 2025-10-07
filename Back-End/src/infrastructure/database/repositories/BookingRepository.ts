@@ -187,7 +187,8 @@ export class BookingRepository implements IBookingRepository {
             {
                 $match: {
                     providerUserId: providerUserId,
-                    status: BookingStatus.CONFIRMED,
+                    //status: BookingStatus.CONFIRMED,
+                    status: { $in: [BookingStatus.CONFIRMED, BookingStatus.COMPLETED] },
                     scheduledAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) }
                 }
             },
@@ -201,7 +202,8 @@ export class BookingRepository implements IBookingRepository {
         user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-        booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
+        //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof" | >
+        booking: Partial<Booking>
     } | null> {
         const pipeline: any[] = [
             {
@@ -277,11 +279,8 @@ export class BookingRepository implements IBookingRepository {
                             transactionId: "$paymentInfo.transactionId",
                             reason: "$paymentInfo.reason",
                         },
-                        acknowledgment: {
-                            isWorkCompletedByProvider: "$acknowledgment.isWorkCompletedByProvider",
-                            imageUrl: "$acknowledgment.imageUrl",
-                            isWorkConfirmedByUser: "$acknowledgment.isWorkConfirmedByUser",
-                        }
+                        workProof: "$workProof",
+                        diagnosed: "$diagnosed"
                     }
                 }
             }
@@ -291,7 +290,8 @@ export class BookingRepository implements IBookingRepository {
             user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-            booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
+            //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
+            booking: Partial<Booking>
         }
 
         const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
@@ -367,7 +367,8 @@ export class BookingRepository implements IBookingRepository {
         provider: Pick<Provider, "profileImage">
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-        booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
+        //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
+        booking: Partial<Booking>
     } | null> {
         const pipeline: any[] = [
             {
@@ -444,11 +445,8 @@ export class BookingRepository implements IBookingRepository {
                             transactionId: "$paymentInfo.transactionId",
                             reason: "$paymentInfo.reason",
                         },
-                        acknowledgment: {
-                            isWorkCompletedByProvider: "$acknowledgment.isWorkCompletedByProvider",
-                            imageUrl: "$acknowledgment.imageUrl",
-                            isWorkConfirmedByUser: "$acknowledgment.isWorkConfirmedByUser",
-                        },
+                        workProof: "$workProof",
+                        diagnosed: "$diagnosed"
                     }
                 }
             }
@@ -459,8 +457,8 @@ export class BookingRepository implements IBookingRepository {
             provider: Pick<Provider, "profileImage">
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
-            booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "acknowledgment">
-        }
+            //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
+            booking: Partial<Booking>        }
 
         const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
         return result ?? null;

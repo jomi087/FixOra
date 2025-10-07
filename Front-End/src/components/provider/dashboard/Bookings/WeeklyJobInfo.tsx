@@ -18,6 +18,7 @@ const WeeklyJobInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data, isLoading, error } = useAppSelector((state) => state.providerBookingInfo);
+  // console.log("data", data);
 
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
@@ -99,7 +100,7 @@ const WeeklyJobInfo: React.FC = () => {
                   return (
                     date === dateObj.fullDate &&
                     time === slot.value &&
-                    b.status === BookingStatus.CONFIRMED
+                    (b.status === BookingStatus.CONFIRMED || b.status === BookingStatus.COMPLETED)
                   );
                 });
 
@@ -108,7 +109,7 @@ const WeeklyJobInfo: React.FC = () => {
 
                 let slotClass = "h-10 border-1 rounded-md rounded-md border  hover:border-primary transition ";
 
-                if (booking?.acknowledgment.isWorkCompletedByProvider && booking?.acknowledgment.isWorkConfirmedByUser) {
+                if (booking?.status === BookingStatus.COMPLETED) {
                   slotClass += " text-green-500  text-center cursor-pointer text-base font-serif";
                 } else if (booking?.status === BookingStatus.CONFIRMED) {
                   slotClass += "text-cyan-500 cursor-pointer text-center text-base font-mono";
@@ -117,6 +118,8 @@ const WeeklyJobInfo: React.FC = () => {
                 } else {
                   slotClass += "text-primary cursor-not-allowed text-sm";
                 }
+
+                //console.log("hi",booking?.status);
 
                 return (
                   <button
@@ -137,8 +140,8 @@ const WeeklyJobInfo: React.FC = () => {
                     }
                     className={`${slotClass} ${selectedSlot === `${dateObj.fullDate}_${slot.value}` ? " !text-base shadow-md shadow-ring border-primary " : ""} `}
                   >
-                    {booking?.acknowledgment.isWorkCompletedByProvider && booking?.acknowledgment.isWorkConfirmedByUser
-                      ? "finished✔️"
+                    {booking?.status === BookingStatus.COMPLETED
+                      ? "Finished✔️"
                       : booking?.status === BookingStatus.CONFIRMED
                         ? "Booked🔖"
                         : isTimePassed

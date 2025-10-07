@@ -6,7 +6,7 @@ export interface BookingHistoryInputDTO extends Omit<PaginationInputDTO, "search
     userId: string;
 }
 
-export interface BookingHistoryOutputDTO extends PaginationOutputDTO<Pick<Booking, "bookingId" | "scheduledAt" | "status" | "acknowledgment">> {}
+export interface BookingHistoryOutputDTO extends PaginationOutputDTO<Pick<Booking, "bookingId" | "scheduledAt" | "status" >> {}
 
 
 
@@ -14,4 +14,4 @@ export interface JobHistoryInputDTO extends Omit<PaginationInputDTO, "searchQuer
     providerUserId: string;
 }
 
-export interface JobHistoryOutputDTO extends PaginationOutputDTO<Pick<Booking, "bookingId" | "scheduledAt" | "status" | "acknowledgment">> {}
+export interface JobHistoryOutputDTO extends PaginationOutputDTO<Pick<Booking, "bookingId" | "scheduledAt" | "status" >>{}

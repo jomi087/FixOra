@@ -10,3 +10,5 @@ function validateFile(file: Express.Multer.File, allowedTypes: string[], maxSize
 }
 
 export default validateFile;
+
+

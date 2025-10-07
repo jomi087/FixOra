@@ -27,7 +27,6 @@ export type BookingResponsePayload = {
   response: ProviderResponseStatus;
   scheduledAt: Date,
   reason?: string;
-
 }
 
 export type BookingAutoRejectPayload = {
@@ -40,20 +39,12 @@ export interface ConfirmJobBookings {
   bookingId: string;
   scheduledAt: Date;
   status: BookingStatus;
-  acknowledgment: {
-    isWorkCompletedByProvider: boolean;
-    isWorkConfirmedByUser: boolean;
-  };
 }
 
 export interface BookingsHistory {
   bookingId: string;
   scheduledAt: Date;
   status: BookingStatus;
-  acknowledgment: {
-    isWorkCompletedByProvider: boolean;
-    isWorkConfirmedByUser: boolean;
-  };
 }
 
 export interface jobHistory extends BookingsHistory { }
@@ -89,11 +80,15 @@ export interface BookingInfoDetails {
     transactionId?: string
     reason?: string;
   };
-  acknowledgment?: {
-    isWorkCompletedByProvider: boolean;
-    imageUrl: string[];
-    isWorkConfirmedByUser: boolean;
-  };
+  diagnosed?: {
+    description: string;
+    replaceParts?: {
+      name: string;
+      cost: number;
+    }[]
+  }
+  workProof?: string[];
+  
 }
 
 export interface JobInfoDetails {
@@ -127,9 +122,13 @@ export interface JobInfoDetails {
     transactionId: string
     reason?: string;
   };
-  acknowledgment?: {
-    isWorkCompletedByProvider: boolean;
-    imageUrl: string[];
-    isWorkConfirmedByUser: boolean;
-  };
+  diagnosed?: {
+    description: string;
+    replaceParts?: {
+      name: string;
+      cost: number;
+    }[]
+  }
+  workProof?: string[];
+
 }

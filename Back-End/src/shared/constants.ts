@@ -9,6 +9,9 @@ export const BOOKING_REQUEST_TIMEOUT_MS =
 export const PAYMENT_SESSION_TIMEOUT =
     process.env.NODE_ENV === "production" ? 15 * 60 * 1000 : 60 * 1000;
 
+export const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+export const maxSizeMB = 5;
 
 export const FULL_REFUND_WINDOW_MINUTES = 15;
 
@@ -16,6 +19,6 @@ export const PARTIAL_REFUND_PERCENTAGE = 0.5;
 
 export const PLATFORM_FEE = 30;
 
-export const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] as const;
-export const leaveOptions = ["this_week" , "every_week"];
+export const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] as const;
+export const leaveOptions = ["this_week", "every_week"];
 

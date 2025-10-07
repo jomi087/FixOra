@@ -17,7 +17,7 @@ interface AppointmentDetailsProps {
 
 const AppointmentDetails: React.FC<AppointmentDetailsProps> = ({ scheduledAt, category, issue }) => {
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 border-b-1 border-primary pb-5">
       <p className="space-x-2">
         <span className="font-semibold">Appointment Time:</span>{" "}
         <span className="font-mono text-gray-600 dark:text-gray-400">

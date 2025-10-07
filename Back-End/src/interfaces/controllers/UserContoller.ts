@@ -22,7 +22,10 @@ import { IGetUserwalletInfoUseCase } from "../../application/Interface/useCases/
 import { IWalletPaymentUseCase } from "../../application/Interface/useCases/Client/IWalletPaymentUseCase";
 import { ICancelBookingUseCase } from "../../application/Interface/useCases/Client/ICancelBookingUseCase";
 import { IRetryAvailabilityUseCase } from "../../application/Interface/useCases/Client/IRetryAvailabilityUseCase";
-// import { ISendKYCRequestNotificationUseCase } from "../../application/Interface/useCases/Notificiation/ISendKYCRequestNotificationUseCase";
+import { allowedTypes, maxSizeMB } from "../../shared/constants";
+import { IAddFeedbackUseCase } from "../../application/Interface/useCases/Client/IAddFeedbackUseCase";
+import { IReviewStatusUseCase } from "../../application/Interface/useCases/Client/IReviewStatusUseCase";
+// import { FileData } from "../../application/DTO's/Common/FileDataDTO";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -48,7 +51,9 @@ export class UserController {
         private _bookingHistoryUseCase: IBookingHistoryUseCase,
         private _getBookingDetailsUseCase: IGetBookingDetailsUseCase,
         private _retryAvailabilityUseCase: IRetryAvailabilityUseCase,
+        private _reviewStatusUseCase: IReviewStatusUseCase,
         private _cancelBookingUseCase: ICancelBookingUseCase,
+        private _addFeedbackUseCase: IAddFeedbackUseCase,
         private _getUserwalletInfoUseCase: IGetUserwalletInfoUseCase,
         private _walletTopUpUseCase: IWalletTopUpUseCase,
     ) { }
@@ -120,14 +125,11 @@ export class UserController {
                 }
             }
 
-            const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-            const maxSizeMB = 5;
-
             for (const field in files) {
                 for (const file of files[field]) {
                     const validationError = validateFile(file, allowedTypes, maxSizeMB);
                     if (validationError) {
-                        throw { status: BAD_REQUEST, message: IMAGE_VALIDATION_ERROR };
+                        throw { status: BAD_REQUEST, message: validationError || IMAGE_VALIDATION_ERROR };
                     }
                 }
             }
@@ -140,6 +142,19 @@ export class UserController {
 
             const experienceCertificateId = files?.experienceCertificate?.[0] ?
                 await this._imageUploaderService.uploadImage(files.experienceCertificate[0].buffer, `FixOra/Provider/${name}`) : undefined;
+
+            // let plainFiles:FileData[] = [];
+            // for (let key in files) {
+            //     if (Array.isArray(files[key])) { // only process arrays, skip "length"
+            //         plainFiles = plainFiles.concat(
+            //             files[key].map(file => ({
+            //                 buffer: file.buffer,
+            //                 originalname: file.originalname
+            //             }))
+            //         );
+            //     }
+            // }
+
 
             const { dob, gender, service, specialization, serviceCharge } = req.body;
 
@@ -161,9 +176,6 @@ export class UserController {
             };
 
             const result = await this._kycRequestUseCase.execute(kycData);
-
-            //await this._sendKYCRequestNotificationUseCase.execute(userId);
-
 
             res.status(OK).json({
                 success: true,
@@ -450,6 +462,47 @@ export class UserController {
                 message: "Booking Cancelled, Fund has been Refunded to Wallet",
                 bookingStatus: data.status,
                 refundInfo: data.paymentInfo
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async reviewStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            
+            const { bookingId } = req.params;
+            if (!bookingId) {
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            }
+
+
+            const reviewStatus = await this._reviewStatusUseCase.execute(bookingId);
+
+            res.status(OK).json({
+                success: true,
+                message: reviewStatus,
+                reviewStatus
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    };
+
+    async addFeedback(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            //console.log(req.body);
+            const { bookingId, rating, feedback } = req.body;
+
+            await this._addFeedbackUseCase.execute({ bookingId, rating, feedback });
+
+            res.status(OK).json({
+                success: true,
+                message: "successfull",
             });
 
         } catch (error: any) {

@@ -8,7 +8,6 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AppointmentDetails from "./AppointmentDetails";
 import BookingPayment from "./BookingPayment";
-// import AppointmentActions from "./AppointmentActions";
 import ProviderInfo from "./ProviderInfo";
 import WorkProof from "./WorkProof";
 import BookingAction from "./BookingAction";
@@ -16,6 +15,14 @@ import { PaymentMode, PaymentStatus } from "@/shared/enums/Payment";
 import { ModeOfPayment } from "@/components/common/Others/ModeOfPayment";
 import { loadStripe } from "@stripe/stripe-js";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import { BookingStatus } from "@/shared/enums/BookingStatus";
+import { NotificationType } from "@/shared/enums/NotificationType";
+import { useAppSelector } from "@/store/hooks";
+import Diagnosed from "@/components/common/Others/Diagnosed";
+import FeedbackDialog from "./dialoge/FeedbackDialog";
+import CancelDialoge from "./dialoge/CancelDialoge";
+import { InvoicePDF } from "./invoice/InvoicePDF";
+import { pdf } from "@react-pdf/renderer";
 
 
 const BookingDetails = () => {
@@ -25,7 +32,11 @@ const BookingDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showModePayment, setShowModePayment] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const { items, error } = useAppSelector(state => state.notification);
+  const [openFeedBack, setOpenFeedBack] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [hasUserReviewed, setHasUserReviewed] = useState<boolean | null>(null);
+  //fetch Booking
   useEffect(() => {
     const fetchBooking = async () => {
       if (!bookingId) {
@@ -47,6 +58,25 @@ const BookingDetails = () => {
     fetchBooking();
   }, [bookingId]);
 
+  // review raiting 
+  useEffect(() => {
+    if (!bookingInDetails || bookingInDetails.status !== BookingStatus.COMPLETED) return;
+    const fetchReviewStatus = async () => {
+      try {
+        const res = await AuthService.getReviewStatus(bookingInDetails.bookingId);
+        setHasUserReviewed(res.data.reviewStatus);
+      } catch (error) {
+        const err = error as AxiosError<{ message: string }>;
+        const errorMsg =
+          err.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
+        toast.error(errorMsg);
+      }
+    };
+
+    fetchReviewStatus();
+  }, [bookingInDetails]);
+
+  //cancel Booking
   const cancelBooking = async () => {
     if (!bookingId || !bookingInDetails) {
       toast.error("Something went wrong");
@@ -91,15 +121,19 @@ const BookingDetails = () => {
       const errorMsg =
         err.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
+    } finally {
+      setConfirmOpen(false);
     }
   };
 
+  // validate retry payment
   const retryPayment = async () => {
     if (!bookingId || !bookingInDetails) {
       toast.error("Something went wrong");
       return;
     }
 
+    //check slot is still avialable or not
     try {
       await AuthService.retryAvailabilityApi(bookingId);
       setShowModePayment(true);
@@ -129,6 +163,7 @@ const BookingDetails = () => {
     }
   };
 
+  //payment
   const handlePayment = async (paymentType: PaymentMode, balance?: number) => {
     if (!bookingInDetails) {
       toast.error("booking id missing");
@@ -197,6 +232,55 @@ const BookingDetails = () => {
     }
   };
 
+  //notify work completion
+  useEffect(() => {
+    const latest = items[0];
+    if (latest?.type === NotificationType.BOOKING_COMPLETED) {
+      setBookingInDetails((prev) => prev ? {
+        ...prev,
+        status: latest.metadata.status,
+        workProof: latest.metadata.workProof
+      } : prev);
+    }
+  }, [items]);
+
+  const handleDownloadPDF = async () => {
+    // Create a Blob from the document
+
+    const blob = await pdf(<InvoicePDF invoiceData={bookingInDetails!} />).toBlob();
+    const url = URL.createObjectURL(blob);
+    //console.log(url)
+
+    // Trigger a download
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `INV-${new Date().toLocaleString()}.pdf`;
+    link.click();
+
+    // Cleanup
+    URL.revokeObjectURL(url);
+  };
+
+  //handleFeedback
+
+  const handleFeedBack = async (data: { rating: number, feedback: string }) => {
+    try {
+      if (!bookingInDetails) return;
+      const payload = {
+        bookingId: bookingInDetails.bookingId,
+        ...data,
+      };
+      await AuthService.updateFeedbackApi(payload);
+      toast.success("Thank you for your valuable feedback");
+      setHasUserReviewed(true);
+      setOpenFeedBack(false);
+    } catch (error: any) {
+      console.log(error);
+      const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
+      toast.error(errorMsg);
+    }
+  };
+
   if (isLoading) {
     return <BookingDetailsShimmer />;
   };
@@ -207,6 +291,10 @@ const BookingDetails = () => {
         No booking details found
       </p>
     );
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (
@@ -230,7 +318,7 @@ const BookingDetails = () => {
       <div className="min-h-screen w-full sm:px-2 overflow-auto text-body-text ">
         <div className="flex flex-col-reverse md:flex-row">
           {/* left */}
-          <div className="w-full md:w-[60%] lg:w-[70%] p-5">
+          <div className="w-full md:w-[60%] lg:w-[70%] p-5 pb-0">
             <h2 className="text-lg font-bold mb-4 underline underline-offset-4 text-nav-text font-serif">Details</h2>
 
             <AppointmentDetails
@@ -244,29 +332,54 @@ const BookingDetails = () => {
                 pricing={bookingInDetails.pricing}
                 paymentInfo={bookingInDetails.paymentInfo}
               />
+
               <BookingAction
                 status={bookingInDetails.status}
-                cancelBooking={cancelBooking}
                 retryPayment={retryPayment}
                 paymentInfo={bookingInDetails.paymentInfo}
+                setOpenFeedBack={setOpenFeedBack}
+                setConfirmOpen={setConfirmOpen}
+                hasUserReviewed={hasUserReviewed}
+                handleDownloadPDF={handleDownloadPDF}
               />
-
-              {/* {bookingInDetails.acknowledgment &&
-                <AppointmentActions acknowledgment={bookingInDetails.acknowledgment}  />
-              } */}
             </div>
+
             {bookingInDetails.paymentInfo.reason && (<p className="font-serif text-nav-text text-lg my-5">Reason: <span className="text-primary text-base">{bookingInDetails.paymentInfo.reason}</span></p>)}
+
+            {bookingInDetails.status == BookingStatus.COMPLETED && bookingInDetails.workProof &&
+              <div className="overflow-auto w-[100%] ">
+                <WorkProof imageUrls={bookingInDetails.workProof} />
+              </div>
+            }
+
+            {confirmOpen &&
+              <CancelDialoge
+                setConfirmOpen={setConfirmOpen}
+                handleConfirmation={cancelBooking}
+              />
+            }
+
+            {openFeedBack &&
+              <FeedbackDialog
+                openFeedBack={openFeedBack}
+                setOpenFeedBack={setOpenFeedBack}
+                handleFeedBack={handleFeedBack}
+              />
+            }
+
           </div>
           {/* right */}
           <div className="w-full md:w-[40%] lg:w-[30%] p-5 md:border-l-2">
             <ProviderInfo providerUser={bookingInDetails.providerUser} />
+
+            {/* Diagnosed */}
+            {bookingInDetails.status == BookingStatus.COMPLETED && bookingInDetails.diagnosed &&
+              <Diagnosed
+                diagnose={bookingInDetails.diagnosed}
+              />
+            }
           </div>
         </div>
-
-        {bookingInDetails.acknowledgment?.isWorkCompletedByProvider
-          && bookingInDetails.acknowledgment.isWorkConfirmedByUser &&
-          <WorkProof imageUrls={bookingInDetails.acknowledgment.imageUrl} />
-        }
       </div>
     </>
   );

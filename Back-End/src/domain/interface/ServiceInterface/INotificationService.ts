@@ -38,10 +38,6 @@ export interface ConfirmBookingNotification {
     bookingId: string;
     scheduledAt: Date;
     status: BookingStatus;
-    acknowledgment: {
-        isWorkCompletedByProvider: boolean;
-        isWorkConfirmedByUser: boolean;
-    }
 }
 
 export interface INotificationService {
@@ -52,7 +48,7 @@ export interface INotificationService {
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
     autoRejectTimeOutPayment(userId: string, bookingId: string): void
-
+    
     notifyPaymentSuccessToUser(userId: string): void
     notifyPaymentFailureToUser(userId: string, reason: string): void
 
