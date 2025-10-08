@@ -1,44 +1,70 @@
 import AuthService from "@/services/AuthService";
-import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { ProviderInfo } from "@/shared/Types/user";
+import type { ProviderInfo, providerReviews } from "@/shared/Types/user";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
+
 interface ProviderInfoState {
-  data?: ProviderInfo;
+  data: ProviderInfo | null;
+  reviews: providerReviews[];
+  totalPages: number,
   subCategories: {
-      subCategoryId: string;
-      name: string;
+    subCategoryId: string;
+    name: string;
   }[]
-  isLoading: boolean;
+  isLoadingProvider: boolean;
+  isLoadingReviews: boolean;
   error: string | null;
 }
 
-const initialState:ProviderInfoState = {
-  data: undefined,
+const initialState: ProviderInfoState = {
+  data: null,
+  reviews: [],
+  totalPages: 1,
   subCategories: [],
-  isLoading: false,
-  error : null,
+  isLoadingProvider: false,
+  isLoadingReviews: false,
+  error: null,
 };
 
-export const fetchProviderInfo  = createAsyncThunk<ProviderInfo,string>(
+export const fetchProviderInfo = createAsyncThunk<ProviderInfo, string>(
   "providerInfo/fetchData",
   async (providerId: string, { rejectWithValue }) => {
     try {
       const res = await AuthService.providerInfoApi(providerId);
-      if (res.status === HttpStatusCode.OK) {
-        return res.data.providerInfoData;
-      }
-    } catch (error:any) {
-      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
+      return res.data.providerInfoData;
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
       return rejectWithValue(errorMsg);
     }
   }
 );
 
-const providerInfoSlice  = createSlice({
+
+export const fetchProviderReviews = createAsyncThunk<
+  { reviews: providerReviews[]; totalPages: number },
+  { providerId: string; currentPage: number; itemsPerPage: number }
+>(
+  "providerReviews/fetchData",
+  async ({ providerId, currentPage, itemsPerPage }, { rejectWithValue }) => {
+    try {
+      const res = await AuthService.providerReviewApi(providerId, currentPage, itemsPerPage);
+      return {
+        reviews: res.data.providerReviewData,
+        totalPages: res.data.totalPages,
+      };
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
+      return rejectWithValue(errorMsg);
+    }
+  }
+);
+
+
+
+const providerInfoSlice = createSlice({
   name: "providerInfo",
   initialState,
   reducers: {
@@ -55,34 +81,50 @@ const providerInfoSlice  = createSlice({
         }
       }
     },
-    removeBooking: (state, action) => { 
+    removeBooking: (state, action) => {
       if (state.data?.bookings) {
-        state.data.bookings = state.data.bookings.filter((b)=>b.bookingId != action.payload);
+        state.data.bookings = state.data.bookings.filter((b) => b.bookingId != action.payload);
       }
     },
     clearProviderInfo: (state) => {
-      state.data = undefined;
+      state.data = null;
       state.subCategories = [];
-      state.isLoading = false;
+      state.isLoadingProvider = false;
     },
   },
   extraReducers: (builder) => {
     builder
+      //fetchprovider
       .addCase(fetchProviderInfo.pending, (state) => {
-        state.isLoading = true;
+        state.isLoadingProvider = true;
         state.error = null;
       })
       .addCase(fetchProviderInfo.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.isLoadingProvider = false;
         state.data = action.payload;
         state.subCategories = action.payload.service.subcategories;
       })
       .addCase(fetchProviderInfo.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isLoadingProvider = false;
+        state.error = action.payload as string;
+      })
+
+      //fetchProviderReviews
+      .addCase(fetchProviderReviews.pending, (state) => {
+        state.isLoadingReviews = true;
+        state.error = null;
+      })
+      .addCase(fetchProviderReviews.fulfilled, (state, action) => {
+        state.isLoadingReviews = false;
+        state.reviews = action.payload.reviews;
+        state.totalPages = action.payload.totalPages;
+      })
+      .addCase(fetchProviderReviews.rejected, (state, action) => {
+        state.isLoadingReviews = false;
         state.error = action.payload as string;
       });
   }
 });
 
-export const { addBooking,updateBookingStatus,removeBooking, clearProviderInfo } = providerInfoSlice .actions;
+export const { addBooking, updateBookingStatus, removeBooking, clearProviderInfo } = providerInfoSlice.actions;
 export default providerInfoSlice.reducer;

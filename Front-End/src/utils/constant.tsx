@@ -42,6 +42,7 @@ export const PALPP = 10;                                                //PALPP 
 export const SLPP = 7;                                                  //SLPP => Service list Per page -> default set to 10
 export const BHPP = 7;                                                  //BHPP => Booking History Per Page  -> default set to 10
 export const TLPP = 5;                                                  //TLPP => Transaction List Per Page -> default set to 10
+export const RLPP = 6;                                                  //RLPP => Review List Per Page
 export const DATE_RANGE_DAYS = 365;
 export const ONE_WEEK = 7;
 export const TIME_SLOTS = {

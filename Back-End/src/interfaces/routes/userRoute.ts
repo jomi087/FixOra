@@ -31,6 +31,8 @@ router.post(
     (req, res, next) => userController.kycApplication(req, res, next)
 );
 router.get("/provider/bookings/:id", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerInfo(req, res, next));
+router.get("/provider/:id/reviews", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerReview(req, res, next));
+
 router.post("/provider/booking", validateRequest(bookingRequestSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createBooking(req, res, next));
 router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateOnlinePayment(req, res, next));
 router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateWalletPayment(req, res, next));

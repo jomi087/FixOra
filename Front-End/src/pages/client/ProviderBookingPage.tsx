@@ -6,23 +6,23 @@ import PageLoader from "@/components/common/Others/PageLoader";
 import BookingSlots from "../../components/client/providersSection/BookingSlots";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchProviderInfo } from "@/store/user/providerInfoSlice";
+import Review from "@/components/client/providersSection/Review";
 
 const ProviderBookingPage: React.FC = () => {
   const { providerId } = useParams<{ providerId: string }>();
   const dispatch = useAppDispatch();
 
-  const { data, isLoading } = useAppSelector((state) => state.providerInfo);
+  const { data, isLoadingProvider } = useAppSelector((state) => state.providerInfo);
 
   useEffect(() => {
-    if (providerId) {
-      dispatch(fetchProviderInfo(providerId));
-    };
-  }, [dispatch, providerId]);
+    if (!providerId) return;
+    dispatch(fetchProviderInfo(providerId));
+  }, [providerId]);
 
   return (
     <div>
       <Nav className="bg-nav-background text-nav-text" />
-      {isLoading ? (
+      {isLoadingProvider ? (
         <PageLoader />
       ) : (
         <main className="pt-16 min-h-screen text-nav-text bg-background px-6 lg:px-10 py-6">
@@ -44,6 +44,7 @@ const ProviderBookingPage: React.FC = () => {
             <>
               <ProviderInfo />
               <BookingSlots />
+              <Review providerId={providerId!} />
             </>
           ) : (
             <div className="flex justify-center h-[78vh] items-center text-sm text-muted-foreground ">

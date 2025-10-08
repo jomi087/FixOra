@@ -105,6 +105,9 @@ const kycRequestUseCase = new KYCRequestUseCase(kycRequestRepository, userReposi
 import { ProviderInfoUseCase } from "../application/useCases/client/ProviderInfoUseCase";
 const providerInfoUseCase = new ProviderInfoUseCase(userRepository);
 
+import { GetProviderReviewsUseCase } from "../application/useCases/client/GetProviderReviewsUseCase";
+const getProviderReviewsUseCase = new GetProviderReviewsUseCase(ratingRepository);
+
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
 const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, bookingSchedulerService, userRepository, availabilityRepository);
 
@@ -218,7 +221,7 @@ const publicController = new PublicController(loggerService, getLandingDataUseCa
 
 const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase);
 
-const userController = new UserController(loggerService, activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, imageUploaderService, providerInfoUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
+const userController = new UserController(loggerService, activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, imageUploaderService, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase,verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
 const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
 

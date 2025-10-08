@@ -94,6 +94,12 @@ class AuthService {
     return axiosInstance.get(`/api/customer/provider/bookings/${id}`);
   }
 
+  providerReviewApi(id: string, currentPage: number, itemsPerPage: number) {
+    return axiosInstance.get(`/api/customer/provider/${id}/reviews`, {
+      params: { currentPage, itemsPerPage },
+    });
+  }
+
   bookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
     return axiosInstance.post("/api/customer/provider/booking", payload, this.getJsonConfig());
   }
