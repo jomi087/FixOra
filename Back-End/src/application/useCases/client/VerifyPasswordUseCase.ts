@@ -5,7 +5,7 @@ import { IHashService } from "../../../domain/interface/ServiceInterface/IHashSe
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase";
 
 const { FORBIDDEN,INTERNAL_SERVER_ERROR } = HttpStatusCode;

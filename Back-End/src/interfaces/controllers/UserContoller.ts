@@ -5,7 +5,7 @@ import { IImageUploaderService } from "../../domain/interface/ServiceInterface/I
 import { KYCInputDTO } from "../../application/DTO's/KYCDTO";
 import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/Client/IGetActiveProvidersUseCase";
 import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase";
 import { IProviderInfoUseCase } from "../../application/Interface/useCases/Client/IProviderInfoUseCase";
@@ -22,7 +22,7 @@ import { IGetUserwalletInfoUseCase } from "../../application/Interface/useCases/
 import { IWalletPaymentUseCase } from "../../application/Interface/useCases/Client/IWalletPaymentUseCase";
 import { ICancelBookingUseCase } from "../../application/Interface/useCases/Client/ICancelBookingUseCase";
 import { IRetryAvailabilityUseCase } from "../../application/Interface/useCases/Client/IRetryAvailabilityUseCase";
-import { allowedTypes, maxSizeMB } from "../../shared/constants";
+import { allowedTypes, maxSizeMB } from "../../shared/const/constants";
 import { IAddFeedbackUseCase } from "../../application/Interface/useCases/Client/IAddFeedbackUseCase";
 import { IReviewStatusUseCase } from "../../application/Interface/useCases/Client/IReviewStatusUseCase";
 import { IGetProviderReviewsUseCase } from "../../application/Interface/useCases/Client/IGetProviderReviewsUseCase";

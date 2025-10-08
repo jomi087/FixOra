@@ -8,7 +8,7 @@ import { INotificationService } from "../../../domain/interface/ServiceInterface
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { KYCStatus } from "../../../shared/Enums/KYCstatus";
 import { RoleEnum } from "../../../shared/Enums/Roles";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { KYCInputDTO } from "../../DTO's/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/Client/IKYCRequestUseCase";
 import { NotificationType } from "../../../shared/Enums/Notification";

@@ -1,4 +1,4 @@
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
 import { IWalletTopUpUseCase, WalletTopUpInput } from "../../Interface/useCases/Client/IWalletTopUpUseCase";

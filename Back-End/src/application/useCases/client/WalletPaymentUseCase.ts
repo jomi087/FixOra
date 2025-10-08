@@ -3,7 +3,7 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../DTO's/WalletDTO/walletPaymentDTO";
 import { IWalletPaymentUseCase } from "../../Interface/useCases/Client/IWalletPaymentUseCase";
 import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";

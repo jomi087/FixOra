@@ -2,12 +2,12 @@ import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
-import { PAYMENT_SESSION_TIMEOUT } from "../../../shared/constants";
+import { PAYMENT_SESSION_TIMEOUT } from "../../../shared/const/constants";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/Enums/Payment";
 import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../DTO's/BookingDTO/UpdateBookingStatusDTO";
 import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/IUpdateBookingStatusUseCase";
 

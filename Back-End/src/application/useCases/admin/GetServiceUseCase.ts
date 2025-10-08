@@ -1,6 +1,6 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { GetServicesInputDTO, GetServicesOutputDTO } from "../../DTO's/GetServiceDTO";
 import { IGetServiceUseCase } from "../../Interface/useCases/Admin/IGetServiceUseCase";
 

@@ -4,7 +4,7 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase";
 import { SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO";
 

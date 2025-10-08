@@ -1,6 +1,6 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { JobHistoryInputDTO, JobHistoryOutputDTO } from "../../DTO's/BookingDTO/BookingHistoryDTO";
 import { IJobHistoryUseCase } from "../../Interface/useCases/Provider/IJobHistoryUseCase";
 

@@ -1,6 +1,6 @@
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../DTO's/GetProviderDTO";
 import { IGetProvidersUseCase } from "../../Interface/useCases/Admin/IGetProvidersUseCase";
 

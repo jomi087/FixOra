@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { SignupDTO } from "../../application/DTO's/AuthDTO/SignupDTO";
 import { SigninInputDTO } from "../../application/DTO's/AuthDTO/SigninDTO";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { IVerifySignupOtpUseCase } from "../../application/Interface/useCases/Auth/IVerifySignupOtpUseCase";
 import { IResendOtpUseCase } from "../../application/Interface/useCases/Auth/IResendOtpUseCase";

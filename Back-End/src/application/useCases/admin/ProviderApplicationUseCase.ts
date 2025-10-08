@@ -1,6 +1,6 @@
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { ProviderApplicationDTO, ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../DTO's/ProviderApplicationDTO";
 import { IProviderApplicationUseCase } from "../../Interface/useCases/Admin/IProviderApplicationUseCase";
 
@@ -56,14 +56,12 @@ export class ProviderApplicationUseCase implements IProviderApplicationUseCase {
                 reviewedBy: kycInfo.reviewedBy,
             }));
 
-
             return {
                 data: mappedData,
                 total
             };
 
-        } catch (error: any) {
-            // console.log("check error",error)
+        } catch (error:any) {
             if (error.status && error.message) {
                 throw error;
             }

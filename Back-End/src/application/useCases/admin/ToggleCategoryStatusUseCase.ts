@@ -1,6 +1,6 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/Admin/IToggleCategoryStatusUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;

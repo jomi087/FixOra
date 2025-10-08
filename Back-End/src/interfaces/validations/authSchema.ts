@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 import {
     firstNameField,
     lastNameField,

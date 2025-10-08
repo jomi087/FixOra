@@ -3,7 +3,7 @@ import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Pub
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { IGetNotificationsUseCase } from "../../application/Interface/useCases/Public/IGetNotificationsUseCase";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 import { INotificationAcknowledgmentUseCase } from "../../application/Interface/useCases/Public/INotificationAcknowledgmentUseCase";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;

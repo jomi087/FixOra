@@ -1,7 +1,7 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { AddFeedbackInputDTO } from "../../DTO's/FeedbackDTO";
 import { IAddFeedbackUseCase } from "../../Interface/useCases/Client/IAddFeedbackUseCase";
 
@@ -14,7 +14,7 @@ export class AddFeedbackUseCase implements IAddFeedbackUseCase {
         private readonly _bookingRepository: IBookingRepository,
     ) { }
 
-    async execute(input: AddFeedbackInputDTO): Promise<any> {
+    async execute(input: AddFeedbackInputDTO): Promise<void> {
         try {
 
             const { bookingId, rating, feedback } = input;

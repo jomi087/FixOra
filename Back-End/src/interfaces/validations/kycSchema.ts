@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 
 //implimented with zod was bit hard so validated with plain js
 import { Request, Response, NextFunction } from "express";

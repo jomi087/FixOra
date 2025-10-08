@@ -4,7 +4,7 @@ import { IProviderRepository } from "../../../domain/interface/RepositoryInterfa
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { KYCStatus } from "../../../shared/Enums/KYCstatus";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { RoleEnum } from "../../../shared/Enums/Roles";
 import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../DTO's/UpdateKYCStatusDTO";
 import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/Admin/IUpdateKYCStatusUseCase";

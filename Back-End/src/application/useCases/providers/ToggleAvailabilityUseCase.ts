@@ -5,9 +5,9 @@ import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInt
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
-import { days } from "../../../shared/constants";
+import { days } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { toggleAvailabilityInputDTO } from "../../DTO's/AvailabilityDTO";
 import { IToggleAvailabilityUseCase } from "../../Interface/useCases/Provider/IToggleAvailabilityUseCase";
 import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
