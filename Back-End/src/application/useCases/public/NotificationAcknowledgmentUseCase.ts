@@ -1,6 +1,6 @@
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { INotificationAcknowledgmentUseCase } from "../../Interface/useCases/Public/INotificationAcknowledgmentUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;

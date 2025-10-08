@@ -12,7 +12,7 @@ import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { NotificationType } from "../../../shared/Enums/Notification";
 import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";
 import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { SendBookingConfirmedInput } from "../../DTO's/NotificationDTO";
 import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";
 // import { ISendBookingConfirmedNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingConfirmedNotificationUseCase";

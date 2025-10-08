@@ -10,7 +10,7 @@ import { SignupDTO } from "../../DTO's/AuthDTO/SignupDTO";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { ISignupUseCase } from "../../Interface/useCases/Auth/ISignupUseCase";
 
 const { CONFLICT, INTERNAL_SERVER_ERROR } = HttpStatusCode;

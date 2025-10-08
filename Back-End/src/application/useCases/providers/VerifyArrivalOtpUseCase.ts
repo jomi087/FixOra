@@ -3,7 +3,7 @@ import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IO
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IVerifyArrivalOtpUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
 
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = HttpStatusCode;

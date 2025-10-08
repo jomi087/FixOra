@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 
 
 const { BAD_REQUEST } = HttpStatusCode;

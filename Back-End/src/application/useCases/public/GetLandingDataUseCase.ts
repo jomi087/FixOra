@@ -1,6 +1,6 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { GetLandingDataOutputDTO } from "../../DTO's/LandingPageDto";
 import { IGetLandingDataUseCase } from "../../Interface/useCases/Public/IGetLandingDataUseCase";
 
@@ -23,7 +23,7 @@ export class GetLandingDataUseCase implements IGetLandingDataUseCase{
                 //providers
                 //blogs
             };
-        } catch (error:any) {
+        } catch (error: any) {
             if (error.status && error.message) {
                 throw error;
             }
@@ -31,3 +31,4 @@ export class GetLandingDataUseCase implements IGetLandingDataUseCase{
         }
     }
 }
+

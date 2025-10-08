@@ -6,14 +6,14 @@ import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 import { IGetConfirmBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetConfirmBookingsUseCase";
 import { IGetJobDetailsUseCase } from "../../application/Interface/useCases/Provider/IGetJobDetailsUseCase";
 
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 import { IJobHistoryUseCase } from "../../application/Interface/useCases/Provider/IJobHistoryUseCase";
 import { IVerifyArrivalUseCase } from "../../application/Interface/useCases/Provider/IVerifyArrivalUseCase";
 import { IVerifyArrivalOtpUseCase } from "../../application/Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
 import { ISetAvailabilityUseCase } from "../../application/Interface/useCases/Provider/ISetAvailabilityUseCase";
 import { IGetAvailabilityUseCase } from "../../application/Interface/useCases/Provider/IGetAvailabilityUseCase";
 import { IToggleAvailabilityUseCase } from "../../application/Interface/useCases/Provider/IToggleAvailabilityUseCase";
-import { allowedTypes, maxSizeMB } from "../../shared/constants";
+import { allowedTypes, maxSizeMB } from "../../shared/const/constants";
 import validateFile from "../validations/fileValidation";
 import { IWorkCompletionUseCase } from "../../application/Interface/useCases/Provider/IWorkCompletionUseCase";
 

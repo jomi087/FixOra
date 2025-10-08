@@ -1,6 +1,6 @@
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IReviewStatusUseCase } from "../../Interface/useCases/Client/IReviewStatusUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;

@@ -4,7 +4,7 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { DecodedUserDTO } from "../../DTO's/AuthDTO/DecodedUserDTO";
 import { RoleEnum } from "../../../shared/Enums/Roles";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IVerifySignupOtpUseCase } from "../../Interface/useCases/Auth/IVerifySignupOtpUseCase";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 

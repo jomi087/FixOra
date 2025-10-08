@@ -5,7 +5,7 @@ import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmail
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IVerifyArrivalUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalUseCase";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { RoleEnum } from "../../shared/Enums/Roles";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 
 
 import { IGetCustomersUseCase } from "../../application/Interface/useCases/Admin/IGetCustomersUseCase";

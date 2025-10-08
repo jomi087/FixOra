@@ -3,7 +3,7 @@ import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenSer
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
 import { User } from "../../domain/entities/UserEntity";
 import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../shared/Messages";
+import { Messages } from "../../shared/const/Messages";
 import { RoleEnum } from "../../shared/Enums/Roles";
 
 const { UNAUTHORIZED } = HttpStatusCode;

@@ -4,7 +4,7 @@ import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IO
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase";
 
 const { FORBIDDEN,INTERNAL_SERVER_ERROR } = HttpStatusCode;

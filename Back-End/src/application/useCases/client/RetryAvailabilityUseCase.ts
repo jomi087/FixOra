@@ -2,7 +2,7 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { BookingStatus } from "../../../shared/Enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/Enums/Payment";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { RetryAvailabilityInputDTO, RetryAvailabilityOutputDTO } from "../../DTO's/BookingDTO/BookingInfoDTO";
 import { IRetryAvailabilityUseCase } from "../../Interface/useCases/Client/IRetryAvailabilityUseCase";
 

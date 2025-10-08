@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 //From Local files
-import { BodyParserLimits } from "../shared/constants";
+import { BodyParserLimits } from "../shared/const/constants";
 
 import publicRoutes from "../interfaces/routes/publicRoute";
 import authRoutes from "../interfaces/routes/authRoute";

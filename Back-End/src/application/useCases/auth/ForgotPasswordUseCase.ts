@@ -5,7 +5,7 @@ import type { SignOptions } from "jsonwebtoken";
 
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
 import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase";
 

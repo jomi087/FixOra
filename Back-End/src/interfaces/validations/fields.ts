@@ -3,7 +3,7 @@ import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
 import { RoleEnum } from "../../shared/Enums/Roles";
 import { KYCStatus } from "../../shared/Enums/KYCstatus";
 import { BookingStatus } from "../../shared/Enums/BookingStatus";
-import { days, leaveOptions } from "../../shared/constants";
+import { days, leaveOptions } from "../../shared/const/constants";
 
 export const optionalStringField = z.string().optional();
 

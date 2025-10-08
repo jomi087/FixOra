@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { IResetPasswordUseCase } from "../../Interface/useCases/Auth/IResetPasswordUseCase";
 
 const { NOT_FOUND,INTERNAL_SERVER_ERROR } = HttpStatusCode;

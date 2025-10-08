@@ -1,6 +1,6 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { Messages } from "../../../shared/Messages";
+import { Messages } from "../../../shared/const/Messages";
 import { BookingHistoryInputDTO, BookingHistoryOutputDTO } from "../../DTO's/BookingDTO/BookingHistoryDTO";
 import { IBookingHistoryUseCase } from "../../Interface/useCases/Client/IBookingHistoryUseCase";
 
