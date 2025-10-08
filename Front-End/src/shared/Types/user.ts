@@ -32,7 +32,6 @@ export type ProfileEdit = {
   location: AddressWithCoordinates;
 };
 
-
 export type Provider = User & {
   userId: string;
   location: AddressWithCoordinates;
@@ -98,6 +97,19 @@ export type ProviderInfo = {
   isOnline: boolean;
   distanceFee: number;
 }
+
+export interface providerReviews {
+  ratingData: {
+    rating: number;
+    feedback: string;
+    createdAt: string;
+  },
+  userData: {
+    userId: string;
+    fname: string;
+    lname: string;
+  },
+};
 
 //Admin 
 //userManagement

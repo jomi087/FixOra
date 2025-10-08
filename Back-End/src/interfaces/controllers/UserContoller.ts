@@ -25,6 +25,7 @@ import { IRetryAvailabilityUseCase } from "../../application/Interface/useCases/
 import { allowedTypes, maxSizeMB } from "../../shared/constants";
 import { IAddFeedbackUseCase } from "../../application/Interface/useCases/Client/IAddFeedbackUseCase";
 import { IReviewStatusUseCase } from "../../application/Interface/useCases/Client/IReviewStatusUseCase";
+import { IGetProviderReviewsUseCase } from "../../application/Interface/useCases/Client/IGetProviderReviewsUseCase";
 // import { FileData } from "../../application/DTO's/Common/FileDataDTO";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
@@ -41,6 +42,7 @@ export class UserController {
         private _kycRequestUseCase: IKYCRequestUseCase,
         private _imageUploaderService: IImageUploaderService,
         private _providerInfoUseCase: IProviderInfoUseCase,
+        private _getProviderReviewsUseCase: IGetProviderReviewsUseCase,
         private _bookingUseCase: IBookingUseCase,
         private _createPaymentUseCase: ICreatePaymentUseCase,
         private _walletPaymentUseCase: IWalletPaymentUseCase,
@@ -204,6 +206,27 @@ export class UserController {
             res.status(OK).json({
                 success: true,
                 providerInfoData: result
+            });
+
+        } catch (error: any) {
+            this._loggerService.error(`providerBookings error:, ${error.message}`, { stack: error.stack });
+            next(error);
+        }
+    }
+
+    async providerReview(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { id:providerId } = req.params;
+
+            const currentPage = parseInt(req.query.currentPage as string) || 1;
+            const limit = parseInt(req.query.itemsPerPage as string) || 6;
+
+            const result = await this._getProviderReviewsUseCase.execute({ providerId, currentPage, limit });
+
+            res.status(OK).json({
+                success: true,
+                providerReviewData: result.data,
+                totalPages : result.total,
             });
 
         } catch (error: any) {
@@ -472,7 +495,7 @@ export class UserController {
 
     async reviewStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            
+
             const { bookingId } = req.params;
             if (!bookingId) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
