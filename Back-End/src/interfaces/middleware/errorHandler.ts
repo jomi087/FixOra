@@ -1,12 +1,12 @@
 
 import { Request, Response, NextFunction } from "express";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
 // import { Request, Response , NextFunction } from "express";
 // // import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
-// import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+// import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 // import { Messages } from "../../shared/Messages";
 
 // export const errorHandler = (err: any, req: Request, res: Response ,next: NextFunction) => {

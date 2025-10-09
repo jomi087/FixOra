@@ -7,11 +7,11 @@ import { IWalletRepository } from "../../../domain/interface/RepositoryInterface
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
-import { BookingStatus } from "../../../shared/Enums/BookingStatus";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { NotificationType } from "../../../shared/Enums/Notification";
-import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";
-import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { NotificationType } from "../../../shared/enums/Notification";
+import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
 import { SendBookingConfirmedInput } from "../../DTO's/NotificationDTO";
 import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";

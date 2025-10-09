@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
 

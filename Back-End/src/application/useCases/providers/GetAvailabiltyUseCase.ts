@@ -1,7 +1,7 @@
 import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { days } from "../../../shared/const/constants";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
 import { getAvailabilityOutputDTO } from "../../DTO's/AvailabilityDTO";

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { RoleEnum } from "../../shared/Enums/Roles";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { RoleEnum } from "../../shared/enums/Roles";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
 

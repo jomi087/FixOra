@@ -1,4 +1,4 @@
-import { TransactionStatus, TransactionType } from "../../shared/Enums/Transaction";
+import { TransactionStatus, TransactionType } from "../../shared/enums/Transaction";
 
 export interface Transaction {
   transactionId: string;

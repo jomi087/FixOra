@@ -1,6 +1,6 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { AddFeedbackInputDTO } from "../../DTO's/FeedbackDTO";
 import { IAddFeedbackUseCase } from "../../Interface/useCases/Client/IAddFeedbackUseCase";

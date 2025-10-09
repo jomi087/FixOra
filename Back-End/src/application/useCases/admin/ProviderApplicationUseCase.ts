@@ -1,5 +1,5 @@
 import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ProviderApplicationDTO, ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../DTO's/ProviderApplicationDTO";
 import { IProviderApplicationUseCase } from "../../Interface/useCases/Admin/IProviderApplicationUseCase";

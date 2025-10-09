@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../../shared/Enums/Roles";
+import { RoleEnum } from "../../../../shared/enums/Roles";
 import { SignInOutputDTO } from "../../../DTO's/AuthDTO/SigninDTO";
 
 export interface IGoogleSigninUseCase {

@@ -7,7 +7,7 @@ import { validateKYCRequest } from "../validations/kycSchema";
 import { editProfileSchema } from "../validations/profileSchema";
 
 import upload from "../middleware/upload";
-import { RoleEnum } from "../../shared/Enums/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 import { addFundsSchema } from "../validations/walletSchema";
 import { FeedbackSchema } from "../validations/feedbackSchema";
 

@@ -1,8 +1,8 @@
 import { Schema, Document, model } from "mongoose";
 import { Booking } from "../../../domain/entities/BookingEntity";
-import { BookingStatus } from "../../../shared/Enums/BookingStatus";
-import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
-import { PaymentMode, PaymentStatus } from "../../../shared/Enums/Payment";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
+import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 
 export interface IBookingModel extends Document, Booking { }
 

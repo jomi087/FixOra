@@ -4,7 +4,7 @@ import { User } from "../../../domain/entities/UserEntity";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase";
 

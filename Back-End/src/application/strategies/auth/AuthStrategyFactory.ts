@@ -1,6 +1,6 @@
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { RoleEnum } from "../../../shared/Enums/Roles";
+import { RoleEnum } from "../../../shared/enums/Roles";
 import { IAuthStrategy } from "../../Interface/strategies/auth/IAuthStrategy";
 
 

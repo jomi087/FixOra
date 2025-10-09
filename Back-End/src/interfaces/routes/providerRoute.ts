@@ -2,7 +2,7 @@ import express from "express";
 import { validateRequest } from "../middleware/validateRequest";
 import { bookingStatusSchema } from "../validations/bookingSchema";
 import { providerController, AuthMiddleware } from "../../main/dependencyInjector";
-import { RoleEnum } from "../../shared/Enums/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 import { otpSchema } from "../validations/authSchema";
 import { daySchema, workTimeSchema } from "../validations/availabilitySchema";
 import upload from "../middleware/upload";

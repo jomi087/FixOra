@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../shared/Enums/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
 import { IHashService } from "../../domain/interface/ServiceInterface/IHashService";
 import { AuthStrategyFactory } from "../../application/strategies/auth/AuthStrategyFactory";

@@ -1,5 +1,5 @@
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IReviewStatusUseCase } from "../../Interface/useCases/Client/IReviewStatusUseCase";
 

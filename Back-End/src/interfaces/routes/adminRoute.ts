@@ -4,7 +4,7 @@ import upload from "../middleware/upload";
 import { validateCategory } from "../validations/categorySchema";
 import { validateRequest } from "../middleware/validateRequest";
 import { kycStatus } from "../validations/kycSchema";
-import { RoleEnum } from "../../shared/Enums/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 
 const router = express.Router();
 router.get("/customer-management", AuthMiddleware([RoleEnum.Admin]), adminController.getCustomers.bind(adminController));

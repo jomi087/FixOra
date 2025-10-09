@@ -3,7 +3,7 @@ import { DecodedUserDTO  } from "../../DTO's/AuthDTO/DecodedUserDTO";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase";
 

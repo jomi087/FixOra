@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCases/Provider/IUpdateBookingStatusUseCase";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
-import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
+import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
 import { IGetConfirmBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetConfirmBookingsUseCase";
 import { IGetJobDetailsUseCase } from "../../application/Interface/useCases/Provider/IGetJobDetailsUseCase";
 

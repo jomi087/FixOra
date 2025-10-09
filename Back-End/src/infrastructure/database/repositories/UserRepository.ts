@@ -1,6 +1,6 @@
 // Infrastructure talking to MongoDB using the IUserRepository interface.
 // Parameters like email/userId come from the use case layer.
-import { RoleEnum } from "../../../shared/Enums/Roles";
+import { RoleEnum } from "../../../shared/enums/Roles";
 import { User } from "../../../domain/entities/UserEntity";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import UserModel from "../models/UserModel";

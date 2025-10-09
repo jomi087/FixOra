@@ -1,7 +1,7 @@
 import { PipelineStage } from "mongoose";
 import { Wallet } from "../../../domain/entities/WalletEntity";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
-import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import WalletModel from "../models/WalletModel";
 
 export class WalletRepository implements IWalletRepository {

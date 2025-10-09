@@ -1,8 +1,8 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
-import { BookingStatus } from "../../../shared/Enums/BookingStatus";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyArrivalOtpUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
 
