@@ -6,6 +6,7 @@ import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { ProviderList } from "@/shared/Types/user";
 import { Messages, PALPP } from "@/utils/constant";
+import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
@@ -45,7 +46,7 @@ const ProviderApplicationList: React.FC = () => {
           setTotalApplications(res.data.total);
         }
       } catch (err) {
-      const error = err as AxiosError<{ message: string }>;
+        const error = err as AxiosError<{ message: string }>;
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
         toast.error(errorMsg);
       } finally {
