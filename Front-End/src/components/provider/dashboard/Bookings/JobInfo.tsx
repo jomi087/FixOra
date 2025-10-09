@@ -35,7 +35,7 @@ const JobInfo = () => {
       }
 
       //if slots have value that means alredey provder has setting the time but not acitved 
-      //so it in 7 days at all active is false then show dialouge  if any at least 1 is true then no need 
+      //so it in 7 days at all active is false then show dialouge  if ny at least 1 is true then no need 
       const inActive = availability.every(dayObj => dayObj.active === false);
 
       if (!allEmpty && inActive) {

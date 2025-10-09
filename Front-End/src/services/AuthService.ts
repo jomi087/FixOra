@@ -97,12 +97,6 @@ class AuthService {
     return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDER_BOOKINGS(id));
   }
 
-  // providerReviewApi(id: string, currentPage: number, itemsPerPage: number) {
-  //   return axiosInstance.get(`/api/customer/provider/${id}/reviews`, {
-  //     params: { currentPage, itemsPerPage },
-  //   });
-  // }
-
   providerReviewApi(id: string, currentPage: number, itemsPerPage: number) {
     return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDER_REVIEWS(id), {
       params: { currentPage, itemsPerPage },

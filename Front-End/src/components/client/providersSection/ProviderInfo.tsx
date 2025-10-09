@@ -113,7 +113,7 @@ const ProviderInfo: React.FC = () => {
             </div>
             <div className="mt-4 text-xs text-gray-600 space-y-1">
               <p>* This will be the upfront payment that the user pays when booking the service.</p>
-              <p>* Additional charges (if any) will be added after diagnosing the issue.</p>
+              <p>* Additional charges (if ny) will be added after diagnosing the issue.</p>
             </div>
           </div>
         </div>

@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-    // For any other error, just reject
+    // For other error, just reject
     return Promise.reject(error);
   }
 );

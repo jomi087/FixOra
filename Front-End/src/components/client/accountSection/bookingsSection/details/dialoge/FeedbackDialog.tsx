@@ -29,7 +29,7 @@ const FeedbackDialog: React.FC<FeedbackDialogProps> = ({ openFeedBack, setOpenFe
             Send us your Feedback
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-500">
-            We’d love to hear your thoughts! Please rate your experience and share any suggestions to help us improve.
+            We’d love to hear your thoughts! Please rate your experience and share suggestions to help us improve.
           </DialogDescription>
         </DialogHeader>
 

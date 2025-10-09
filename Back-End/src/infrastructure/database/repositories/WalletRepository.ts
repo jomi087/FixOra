@@ -31,7 +31,7 @@ export class WalletRepository implements IWalletRepository {
             ...(reason ? { reason } : {})
         };
 
-        let balanceUpdate: any = {};
+        let balanceUpdate: { $inc?: { balance: number } } = {};
         if (status === TransactionStatus.SUCCESS) {
             if (type === TransactionType.CREDIT || type === TransactionType.REFUND) {
                 balanceUpdate = { $inc: { balance: amount } };

@@ -2,7 +2,7 @@
     
 * src/domain/ :
     - **EnterPrise Buisnesss Rule [inner most layer]** 
-    - Contains the core business entities (plain TypeScript classes or interfaces) and domain logic, independent of any frameworks or external tech 
+    - Contains the core business entities (plain TypeScript classes or interfaces) and domain logic, independent of ny frameworks or external tech 
     -It just defines: What your app does and **what rules it follows.**
 
 * **Entity** ( Here we deffine the structure and  its behavior(optional))
