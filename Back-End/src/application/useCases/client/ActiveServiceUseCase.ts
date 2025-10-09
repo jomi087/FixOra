@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ActiveCategoryOutputDTO } from "../../DTO's/CategoryDTO";
 import { IActiveServiceUseCase } from "../../Interface/useCases/Client/IActiveServiceUseCase";

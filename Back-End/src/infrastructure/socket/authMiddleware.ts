@@ -1,7 +1,7 @@
 import { Socket, ExtendedError } from "socket.io";
 import * as cookie from "cookie";
 import jwt from "jsonwebtoken";
-import { RoleEnum } from "../../shared/Enums/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 
 export const socketAuthMiddleware = (logger: ILoggerService) => {

@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { RoleEnum } from "../../../shared/Enums/Roles";
+import { RoleEnum } from "../../../shared/enums/Roles";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase";
 import { SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO";

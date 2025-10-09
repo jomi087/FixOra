@@ -1,4 +1,4 @@
-import { NotificationType } from "../../shared/Enums/Notification";
+import { NotificationType } from "../../shared/enums/Notification";
 
 export interface Notification {
   notificationId: string;

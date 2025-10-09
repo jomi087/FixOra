@@ -1,4 +1,4 @@
-import { BookingStatus } from "../../shared/Enums/BookingStatus";
+import { BookingStatus } from "../../shared/enums/BookingStatus";
 import { FileData } from "./Common/FileDataDTO";
 
 export interface WorkCompletionInputDTO {

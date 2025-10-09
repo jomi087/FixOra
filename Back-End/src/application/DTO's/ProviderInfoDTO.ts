@@ -1,6 +1,6 @@
 import { DaySchedule } from "../../domain/entities/AvailabilityEntity";
-import { BookingStatus } from "../../shared/Enums/BookingStatus";
-import { Gender } from "../../shared/Enums/Gender";
+import { BookingStatus } from "../../shared/enums/BookingStatus";
+import { Gender } from "../../shared/enums/Gender";
 
 export interface ProviderInfoDTO {
     providerId: string;

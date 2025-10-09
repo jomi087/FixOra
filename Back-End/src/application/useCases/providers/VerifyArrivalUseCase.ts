@@ -4,7 +4,7 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyArrivalUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalUseCase";
 

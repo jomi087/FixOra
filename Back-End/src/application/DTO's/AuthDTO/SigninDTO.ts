@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../shared/Enums/Roles";
+import { RoleEnum } from "../../../shared/enums/Roles";
 import { AddressDTO } from "../Common/AddressDTO";
 
 export type SigninInputDTO = {

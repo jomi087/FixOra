@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { ProviderResponseStatus } from "../../shared/Enums/ProviderResponse";
-import { RoleEnum } from "../../shared/Enums/Roles";
-import { KYCStatus } from "../../shared/Enums/KYCstatus";
-import { BookingStatus } from "../../shared/Enums/BookingStatus";
+import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
+import { RoleEnum } from "../../shared/enums/Roles";
+import { KYCStatus } from "../../shared/enums/KYCstatus";
+import { BookingStatus } from "../../shared/enums/BookingStatus";
 import { days, leaveOptions } from "../../shared/const/constants";
 
 export const optionalStringField = z.string().optional();

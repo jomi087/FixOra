@@ -1,5 +1,5 @@
 import { Schema ,Document,model } from "mongoose";
-import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Wallet } from "../../../domain/entities/WalletEntity";
 
 

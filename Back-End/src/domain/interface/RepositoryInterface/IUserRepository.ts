@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../shared/Enums/Roles";
+import { RoleEnum } from "../../../shared/enums/Roles";
 import { Availability } from "../../entities/AvailabilityEntity";
 import { Booking } from "../../entities/BookingEntity";
 import { Category } from "../../entities/CategoryEntity";

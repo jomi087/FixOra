@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IResetPasswordUseCase } from "../../Interface/useCases/Auth/IResetPasswordUseCase";
 

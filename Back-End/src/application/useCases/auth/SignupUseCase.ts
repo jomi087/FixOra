@@ -9,7 +9,7 @@ import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmail
 import { SignupDTO } from "../../DTO's/AuthDTO/SignupDTO";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { IHashService } from "../../../domain/interface/ServiceInterface/IHashService";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ISignupUseCase } from "../../Interface/useCases/Auth/ISignupUseCase";
 

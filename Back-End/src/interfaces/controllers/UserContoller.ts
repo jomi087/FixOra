@@ -4,7 +4,7 @@ import validateFile from "../validations/fileValidation";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
 import { KYCInputDTO } from "../../application/DTO's/KYCDTO";
 import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/Client/IGetActiveProvidersUseCase";
 import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase";

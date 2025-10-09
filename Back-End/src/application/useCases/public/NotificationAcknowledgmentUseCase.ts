@@ -1,5 +1,5 @@
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { INotificationAcknowledgmentUseCase } from "../../Interface/useCases/Public/INotificationAcknowledgmentUseCase";
 

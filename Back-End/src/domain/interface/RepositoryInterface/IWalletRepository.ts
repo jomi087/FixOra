@@ -1,4 +1,4 @@
-import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Wallet } from "../../entities/WalletEntity";
 
 export interface IWalletRepository {

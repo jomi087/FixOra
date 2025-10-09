@@ -1,5 +1,5 @@
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { WalletDTO, WalletInputDTO, WalletOutputDTO } from "../../DTO's/WalletDTO/walletDTO";
 import { IGetUserwalletInfoUseCase } from "../../Interface/useCases/Client/IGetUserwalletInfoUseCase";

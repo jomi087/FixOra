@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Public/IGetLandingDataUseCase";
-import { HttpStatusCode } from "../../shared/Enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { IGetNotificationsUseCase } from "../../application/Interface/useCases/Public/IGetNotificationsUseCase";
 import { Messages } from "../../shared/const/Messages";

@@ -1,6 +1,6 @@
-import { BookingStatus } from "../../../shared/Enums/BookingStatus";
-import { PaymentStatus } from "../../../shared/Enums/Payment";
-import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { PaymentStatus } from "../../../shared/enums/Payment";
+import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { Booking } from "../../entities/BookingEntity";
 import { Category, Subcategory } from "../../entities/CategoryEntity";
 import { Provider } from "../../entities/ProviderEntity";

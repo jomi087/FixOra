@@ -5,13 +5,13 @@ import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInter
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
-import { HttpStatusCode } from "../../../shared/Enums/HttpStatusCode";
-import { KYCStatus } from "../../../shared/Enums/KYCstatus";
-import { RoleEnum } from "../../../shared/Enums/Roles";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { KYCStatus } from "../../../shared/enums/KYCstatus";
+import { RoleEnum } from "../../../shared/enums/Roles";
 import { Messages } from "../../../shared/const/Messages";
 import { KYCInputDTO } from "../../DTO's/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/Client/IKYCRequestUseCase";
-import { NotificationType } from "../../../shared/Enums/Notification";
+import { NotificationType } from "../../../shared/enums/Notification";
 
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
 const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED, INTERNAL_ERROR, USER_NOT_FOUND } = Messages;

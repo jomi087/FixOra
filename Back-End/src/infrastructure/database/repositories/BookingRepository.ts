@@ -4,9 +4,9 @@ import { Category, Subcategory } from "../../../domain/entities/CategoryEntity";
 import { Provider } from "../../../domain/entities/ProviderEntity";
 import { User } from "../../../domain/entities/UserEntity";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { BookingStatus } from "../../../shared/Enums/BookingStatus";
-import { PaymentStatus } from "../../../shared/Enums/Payment";
-import { ProviderResponseStatus } from "../../../shared/Enums/ProviderResponse";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { PaymentStatus } from "../../../shared/enums/Payment";
+import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import BookingModel from "../models/BookingModel";
 
 export class BookingRepository implements IBookingRepository {
