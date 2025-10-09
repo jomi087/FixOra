@@ -1,4 +1,4 @@
-import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../../DTO's/UpdateKYCStatusDTO";
+import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../../DTOs/UpdateKYCStatusDTO";
 
 export interface IUpdateKYCStatusUseCase {
   execute(input: UpdateKYCStatusInputDTO): Promise<UpdateKYCStatusOutputDTO>;

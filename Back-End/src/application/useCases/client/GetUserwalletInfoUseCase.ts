@@ -1,7 +1,7 @@
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { WalletDTO, WalletInputDTO, WalletOutputDTO } from "../../DTO's/WalletDTO/walletDTO";
+import { WalletDTO, WalletInputDTO, WalletOutputDTO } from "../../DTOs/WalletDTO/walletDTO";
 import { IGetUserwalletInfoUseCase } from "../../Interface/useCases/Client/IGetUserwalletInfoUseCase";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;

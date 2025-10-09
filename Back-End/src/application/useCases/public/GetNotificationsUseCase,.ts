@@ -1,7 +1,7 @@
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { NotificationOutputDTO } from "../../DTO's/NotificationDTO";
+import { NotificationOutputDTO } from "../../DTOs/NotificationDTO";
 import { IGetNotificationsUseCase } from "../../Interface/useCases/Public/IGetNotificationsUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;

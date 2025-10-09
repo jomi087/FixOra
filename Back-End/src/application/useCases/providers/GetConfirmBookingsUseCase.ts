@@ -1,7 +1,7 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { ConfirmBookingOutputDTO } from "../../DTO's/BookingDTO/BookingInfoDTO";
+import { ConfirmBookingOutputDTO } from "../../DTOs/BookingDTO/BookingInfoDTO";
 import { IGetConfirmBookingsUseCase } from "../../Interface/useCases/Provider/IGetConfirmBookingsUseCase";
 
 

@@ -1,4 +1,4 @@
-import { ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../../DTO's/ProviderApplicationDTO";
+import { ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../../DTOs/ProviderApplicationDTO";
 
 export interface IProviderApplicationUseCase {
     execute(input : ProviderApplicationInputDTO):Promise<ProviderApplicationOutputDTO>

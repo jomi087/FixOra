@@ -8,12 +8,12 @@ import { IWalletRepository } from "../../../domain/interface/RepositoryInterface
 import { days } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { toggleAvailabilityInputDTO } from "../../DTO's/AvailabilityDTO";
+import { toggleAvailabilityInputDTO } from "../../DTOs/AvailabilityDTO";
 import { IToggleAvailabilityUseCase } from "../../Interface/useCases/Provider/IToggleAvailabilityUseCase";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
-import { SendBookingCancelledInput } from "../../DTO's/NotificationDTO";
+import { SendBookingCancelledInput } from "../../DTOs/NotificationDTO";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";

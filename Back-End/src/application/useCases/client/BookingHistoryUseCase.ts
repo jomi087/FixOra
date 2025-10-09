@@ -1,7 +1,7 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { BookingHistoryInputDTO, BookingHistoryOutputDTO } from "../../DTO's/BookingDTO/BookingHistoryDTO";
+import { BookingHistoryInputDTO, BookingHistoryOutputDTO } from "../../DTOs/BookingDTO/BookingHistoryDTO";
 import { IBookingHistoryUseCase } from "../../Interface/useCases/Client/IBookingHistoryUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;

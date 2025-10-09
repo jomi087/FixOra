@@ -3,7 +3,7 @@ import { IProviderRepository } from "../../../domain/interface/RepositoryInterfa
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
-import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../DTO's/AvailabilityDTO";
+import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../DTOs/AvailabilityDTO";
 import { ISetAvailabilityUseCase } from "../../Interface/useCases/Provider/ISetAvailabilityUseCase";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;

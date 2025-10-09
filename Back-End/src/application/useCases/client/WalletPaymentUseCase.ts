@@ -4,7 +4,7 @@ import { IWalletRepository } from "../../../domain/interface/RepositoryInterface
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
-import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../DTO's/WalletDTO/walletPaymentDTO";
+import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../DTOs/WalletDTO/walletPaymentDTO";
 import { IWalletPaymentUseCase } from "../../Interface/useCases/Client/IWalletPaymentUseCase";
 import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
@@ -12,7 +12,7 @@ import { INotificationService } from "../../../domain/interface/ServiceInterface
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
 // import { ISendBookingConfirmedNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingConfirmedNotificationUseCase";
-import { SendBookingConfirmedInput } from "../../DTO's/NotificationDTO";
+import { SendBookingConfirmedInput } from "../../DTOs/NotificationDTO";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";

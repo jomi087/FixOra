@@ -1,4 +1,4 @@
-import { KYCInputDTO } from "../../../DTO's/KYCDTO";
+import { KYCInputDTO } from "../../../DTOs/KYCDTO";
 
 
 export interface IKYCRequestUseCase{

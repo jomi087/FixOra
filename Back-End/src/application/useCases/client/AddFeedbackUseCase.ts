@@ -2,7 +2,7 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { AddFeedbackInputDTO } from "../../DTO's/FeedbackDTO";
+import { AddFeedbackInputDTO } from "../../DTOs/FeedbackDTO";
 import { IAddFeedbackUseCase } from "../../Interface/useCases/Client/IAddFeedbackUseCase";
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND } = HttpStatusCode;

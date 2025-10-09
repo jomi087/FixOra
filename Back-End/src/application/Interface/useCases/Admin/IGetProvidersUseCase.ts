@@ -1,4 +1,4 @@
-import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../../DTO's/GetProviderDTO";
+import { GetProvidersInputDTO, GetProvidersOutputDTO } from "../../../DTOs/GetProviderDTO";
 
 export interface IGetProvidersUseCase {
     execute(input : GetProvidersInputDTO):Promise<GetProvidersOutputDTO>
