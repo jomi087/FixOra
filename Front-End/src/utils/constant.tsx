@@ -2,7 +2,7 @@ import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
   LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
-  MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined 
+  MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined
 } from "lucide-react";
 
 
@@ -56,7 +56,7 @@ export const Messages = {
   FAILED_TO_FETCH_ADDRESS_CORDINATES: "Failed to fetch address from coordinates",
   FAILED_TO_FETCH_CORDINATES: "Failed to fetch coordinates",
   FAILED_TO_FETCH_DATA: "Failed to fetch data",
-  FAILED_TO_SAVE_DATA : "Failed to save data",
+  FAILED_TO_SAVE_DATA: "Failed to save data",
   MAIL_SENT_MSG: "A Verification mail has been sent to your mail",
   FAILED_PASSWORD_VERIFICATION: "Password verification Failed",
   KYC_SUBMITTED_SUCCESS: "KYC submitted successfully!",
@@ -176,6 +176,88 @@ interface BlogPost {
   author: string;     // new
   date: string;       // new (ISO or readable format)
 }
+
+/********************************************************************************************************************************************************* */
+
+// constants/apiRoutes.ts
+export const API_ROUTES = {
+  AUTH: {
+    SIGNUP: "/api/auth/signup", //
+    SIGNIN: "/api/auth/signin", //
+    GOOGLE_SIGNIN: "/api/auth/google-signin",//
+    VERIFY_OTP: "/api/auth/verify-otp",//
+    RESEND_OTP: "/api/auth/resend-otp",//
+    FORGOT_PASSWORD: "/api/auth/forgot-password",//
+    RESET_PASSWORD: "/api/auth/reset-password",//
+    CHECK_STATUS: "/api/auth/check",//
+    SIGNOUT: "/api/auth/signout",//
+  },
+
+  NOTIFICATIONS: {
+    GET_ALL: "/api/notifications",
+    ACKNOWLEDGE: (id: string) => `/api/notification/acknowledge/${id}`,
+  },
+
+  CUSTOMER: {
+    SERVICES: "/api/customer/services",//
+    PROVIDERS: "/api/customer/providers", //
+    PROVIDER_KYC: "/api/customer/provider-kyc",//
+    PROVIDER_BOOKINGS: (id: string) => `/api/customer/provider/bookings/${id}`,
+    PROVIDER_REVIEWS: (id: string) => `/api/customer/provider/${id}/reviews`,
+    BOOKING_APPLICATION: "/api/customer/provider/booking",
+    ONLINE_PAYMENT: "/api/customer/create-checkout-session",
+    WALLET_PAYMENT: "/api/customer/wallet-payment",
+    PAYMENT_STATUS: (bookingId: string) =>
+      `/api/customer/booking/notify-paymentStatus/${bookingId}`,
+    EDIT_PROFILE: "/api/customer/editProfile",
+    VERIFY_PASSWORD: "/api/customer/verifyPassword",
+    CHANGE_PASSWORD: "/api/customer/change-password",
+    BOOKING_HISTORY: "/api/customer/booking-history",
+    BOOKING_DETAILS: (id: string) => `/api/customer/bookingDetails/${id}`,
+    RETRY_AVAILABILITY: (id: string) =>
+      `/api/customer/booking/retry-availability/${id}`,
+    CANCEL_BOOKING: (id: string) => `/api/customer/booking/cancel-booking/${id}`,
+    REVIEW_STATUS: (id: string) =>
+      `/api/customer/booking/review-status/${id}`,
+    FEEDBACK: "/api/customer/booking/feedback",
+    WALLET_INFO: (page: number, limit: number) =>
+      `/api/customer/wallet?page=${page}&limit=${limit}`,
+    ADD_FUND: "/api/customer/wallet/add-fund",
+  },
+
+  PROVIDER: {
+    UPDATE_BOOKING_STATUS: (id: string) => `/api/provider/booking/${id}/status`,
+    CONFIRM_BOOKINGS: "/api/provider/confirm-bookings",
+    JOB_DETAILS: (id: string) => `/api/provider/jobDetails/${id}`,
+    JOB_HISTORY: "/api/provider/job-history",
+    ARRIVAL_OTP: (id: string) => `/api/provider/arrival-otp/${id}`,
+    VERIFY_ARRIVAL_OTP: "api/provider/verify-arrivalOtp",
+    FINALIZE_BOOKING: "/api/provider/acknowledge-completion",
+    WORKING_TIME_INFO: "/api/provider/availability-time",
+    SCHEDULE_WORK_TIME: "api/provider/schedule-availability-time",
+    TOGGLE_AVAILABILITY: "api/provider/toggle-availability",
+  },
+
+  ADMIN: {
+    CUSTOMER_MANAGEMENT: "/api/admin/customer-management",
+    TOGGLE_CUSTOMER_STATUS: (userId: string) =>
+      `/api/admin/customer-management/${userId}`,
+
+    PROVIDER_MANAGEMENT: "/api/admin/provider-management",
+    PROVIDER_APPLICATION_LIST: "/api/admin/provider-applicationList",
+    PROVIDER_KYC: (id: string) => `/api/admin/provider-kyc/${id}`,
+
+    CATEGORY_MANAGEMENT: "/api/admin/service-management",
+    TOGGLE_CATEGORY_STATUS: (id: string) =>
+      `/api/admin/service-management/${id}`,
+  },
+
+  LANDING: {
+    GET_DATA: "/api/landing-data",
+  },
+};
+
+/********************************************************************************************************************************************************** */
 
 export const blogPosts: Array<BlogPost> = [
   {

@@ -3,6 +3,7 @@ import axiosInstance from "./axiosConfig";
 import type { ProfileEdit, Signin, Signup } from "@/shared/Types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
 import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
+import { API_ROUTES } from "@/utils/constant";
 
 class AuthService {
   getBearerTokenConfig(token?: string) {
@@ -34,226 +35,234 @@ class AuthService {
   /*********************************************************************************************************************** */
 
   getLandingDataApi() {
-    return axiosInstance.get("/api/landing-data");
+    return axiosInstance.get(API_ROUTES.LANDING.GET_DATA);
   }
 
   getNotificationsApi() {
-    return axiosInstance.get("/api/notifications");
+    return axiosInstance.get(API_ROUTES.NOTIFICATIONS.GET_ALL);
   }
 
   acknowledgeNotificationAPI(notificationId: string) {
-    return axiosInstance.patch(`/api/notification/acknowledge/${notificationId}`);
+    // return axiosInstance.patch(`/api/notification/acknowledge/${notificationId}`);
+    return axiosInstance.patch(API_ROUTES.NOTIFICATIONS.ACKNOWLEDGE(notificationId));
+
   }
 
-  signupApi(Data: Signup) {
-    return axiosInstance.post("/api/auth/signup", Data, this.getJsonConfig());
+  signupApi(data: Signup) {
+    return axiosInstance.post(API_ROUTES.AUTH.SIGNUP, data, this.getJsonConfig());
   }
 
   resendOtpApi() {
-    return axiosInstance.get("/api/auth/resend-otp");
+    return axiosInstance.get(API_ROUTES.AUTH.RESEND_OTP);
   }
 
   VerifySignupOtpApi(Data: string) {
-    return axiosInstance.post("/api/auth/verify-otp", { otpData: Data }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.AUTH.VERIFY_OTP, { otpData: Data }, this.getJsonConfig());
   }
 
   signinApi(Data: Signin) {
-    return axiosInstance.post("/api/auth/signin", Data, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.AUTH.SIGNIN, Data, this.getJsonConfig());
   }
 
   googleSigninApi(data: { code: string, role: string }) {
-    return axiosInstance.post("/api/auth/google-signin", data, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.AUTH.GOOGLE_SIGNIN, data, this.getJsonConfig());
   }
 
   forgotPasswordApi(email: string) {
-    return axiosInstance.post("/api/auth/forgot-password", { email }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.AUTH.FORGOT_PASSWORD, { email }, this.getJsonConfig());
   }
 
   resetPasswordApi(token: string, password: string, cPassword: string) {
-    return axiosInstance.patch("/api/auth/reset-password", { token, password, cPassword, }, this.getJsonConfig());
+    return axiosInstance.patch(API_ROUTES.AUTH.RESET_PASSWORD, { token, password, cPassword, }, this.getJsonConfig());
   }
 
   checkAuthStatusApi() {
-    return axiosInstance.get("/api/auth/check");
+    return axiosInstance.get(API_ROUTES.AUTH.CHECK_STATUS);
   }
   /*********************************************************************************************************************** */
   //Customer
   getActiveServicesApi() {
-    return axiosInstance.get("/api/customer/services");
+    return axiosInstance.get(API_ROUTES.CUSTOMER.SERVICES);
   }
 
   getAuthProvidersApi(params: { searchQuery: string, filter: string, currentPage: number, itemsPerPage: number, selectedService?: string; nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string }) {
-    return axiosInstance.get("/api/customer/providers", { params });
+    return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDERS, { params });
   }
 
   providerKYCApi(data: FormData) {
-    return axiosInstance.post("/api/customer/provider-kyc", data, this.getMultiPartConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.PROVIDER_KYC, data, this.getMultiPartConfig());
   }
 
   providerInfoApi(id: string) {
-    return axiosInstance.get(`/api/customer/provider/bookings/${id}`);
+    return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDER_BOOKINGS(id));
   }
 
+  // providerReviewApi(id: string, currentPage: number, itemsPerPage: number) {
+  //   return axiosInstance.get(`/api/customer/provider/${id}/reviews`, {
+  //     params: { currentPage, itemsPerPage },
+  //   });
+  // }
+
   providerReviewApi(id: string, currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get(`/api/customer/provider/${id}/reviews`, {
+    return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDER_REVIEWS(id), {
       params: { currentPage, itemsPerPage },
     });
   }
 
   bookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
-    return axiosInstance.post("/api/customer/provider/booking", payload, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.BOOKING_APPLICATION, payload, this.getJsonConfig());
   }
 
   onlinePaymentApi(bookingId: string) {
-    return axiosInstance.post("/api/customer/create-checkout-session", { bookingId }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.ONLINE_PAYMENT, { bookingId }, this.getJsonConfig());
   }
 
   walletPaymentApi(bookingId: string) {
-    return axiosInstance.post("/api/customer/wallet-payment", { bookingId }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.WALLET_PAYMENT, { bookingId }, this.getJsonConfig());
   }
 
   checkBookingPaymentStatus(bookingId: string) {
-    return axiosInstance.get(`/api/customer/booking/notify-paymentStatus/${bookingId}`);
+    return axiosInstance.get(API_ROUTES.CUSTOMER.PAYMENT_STATUS(bookingId));
   }
 
   editProfileApi(form: ProfileEdit) {
-    return axiosInstance.patch("/api/customer/editProfile", form, this.getJsonConfig());
+    return axiosInstance.patch(API_ROUTES.CUSTOMER.EDIT_PROFILE, form, this.getJsonConfig());
   }
 
   verifyPasswordApi(password: string) {
-    return axiosInstance.post("/api/customer/verifyPassword", { password }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.VERIFY_PASSWORD, { password }, this.getJsonConfig());
   }
 
   changePasswordApi(token: string, password: string, cPassword: string) {
-    return axiosInstance.patch("/api/customer/change-password", { token, password, cPassword, }, this.getJsonConfig());
+    return axiosInstance.patch(API_ROUTES.CUSTOMER.CHANGE_PASSWORD, { token, password, cPassword, }, this.getJsonConfig());
   }
 
   bookingHistoryApi(currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/customer/booking-history", {
+    return axiosInstance.get(API_ROUTES.CUSTOMER.BOOKING_HISTORY, {
       params: { currentPage, itemsPerPage }
     });
   }
 
   bookingDetailsApi(bookingId: string) {
-    return axiosInstance.get(`/api/customer/bookingDetails/${bookingId}`);
+    return axiosInstance.get(API_ROUTES.CUSTOMER.BOOKING_DETAILS(bookingId));
   }
 
   retryAvailabilityApi(bookingId: string) {
-    return axiosInstance.patch(`/api/customer/booking/retry-availability/${bookingId}`);
+    return axiosInstance.patch(API_ROUTES.CUSTOMER.RETRY_AVAILABILITY(bookingId));
   }
 
   cancelBookingApi(bookingId: string) {
-    return axiosInstance.patch(`/api/customer/booking/cancel-booking/${bookingId}`);
+    return axiosInstance.patch(API_ROUTES.CUSTOMER.CANCEL_BOOKING(bookingId));
   }
 
   getReviewStatus(bookingId: string) {
-    return axiosInstance.get(`/api/customer/booking/review-status/${bookingId}`);
+    return axiosInstance.get(API_ROUTES.CUSTOMER.REVIEW_STATUS(bookingId));
   }
 
   updateFeedbackApi(payload: { bookingId: string, rating: number, feedback: string }) {
-    return axiosInstance.post("/api/customer/booking/feedback", payload, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.FEEDBACK, payload, this.getJsonConfig());
   }
 
   userWalletInfoApi(page: number, limit: number) {
-    return axiosInstance.get(`/api/customer/wallet?page=${page}&limit=${limit}`);
+    return axiosInstance.get(API_ROUTES.CUSTOMER.WALLET_INFO(page,limit));
   }
 
   addFundApi(amount: number) {
-    return axiosInstance.post("/api/customer/wallet/add-fund", { amount }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.ADD_FUND, { amount }, this.getJsonConfig());
   }
 
   /*********************************************************************************************************************** */
   //Provider
   UpdateBookingStatusApi(bookingId: string, action: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>, reason: string) {
-    return axiosInstance.patch(`/api/provider/booking/${bookingId}/status`, {
+    return axiosInstance.patch(API_ROUTES.PROVIDER.UPDATE_BOOKING_STATUS(bookingId), {
       action,
       reason
     });
   }
 
   providerBookingsInfoApi() {
-    return axiosInstance.get("/api/provider/confirm-bookings");
+    return axiosInstance.get(API_ROUTES.PROVIDER.CONFIRM_BOOKINGS);
   }
 
   jobDetailsApi(bookingId: string) {
-    return axiosInstance.get(`/api/provider/jobDetails/${bookingId}`);
+    return axiosInstance.get(API_ROUTES.PROVIDER.JOB_DETAILS(bookingId));
   }
 
   providerJobHistoryApi(currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/provider/job-history", {
+    return axiosInstance.get(API_ROUTES.PROVIDER.JOB_HISTORY, {
       params: { currentPage, itemsPerPage }
     });
   }
 
   arrivalOtpApi(bookingId: string) {
-    return axiosInstance.post(`/api/provider/arrival-otp/${bookingId}`);
+    return axiosInstance.post(API_ROUTES.PROVIDER.ARRIVAL_OTP(bookingId));
   }
 
   verifyArrivalOtpApi(otp: string) {
-    return axiosInstance.post("api/provider/verify-arrivalOtp", { otp }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.PROVIDER.VERIFY_ARRIVAL_OTP, { otp }, this.getJsonConfig());
   }
 
   finalizeBookingApi(data: FormData) {
-    return axiosInstance.post("/api/provider/acknowledge-completion", data, this.getMultiPartConfig());
+    return axiosInstance.post(API_ROUTES.PROVIDER.FINALIZE_BOOKING, data, this.getMultiPartConfig());
   }
 
   workingTimeInfoApi() {
-    return axiosInstance.get("/api/provider/availability-time");
+    return axiosInstance.get(API_ROUTES.PROVIDER.WORKING_TIME_INFO);
   }
 
   scheduleWorkTimeAPi(schedule: Record<Day, { slots: string[], active: boolean }>) {
-    return axiosInstance.post("api/provider/schedule-availability-time", { schedule }, this.getJsonConfig());
+    return axiosInstance.post(API_ROUTES.PROVIDER.SCHEDULE_WORK_TIME, { schedule }, this.getJsonConfig());
   }
 
   toggleAvailability(day: string, leaveOption?: LeaveOption) {
-    return axiosInstance.patch("api/provider/toggle-availability", { day, leaveOption });
+    return axiosInstance.patch(API_ROUTES.PROVIDER.TOGGLE_AVAILABILITY, { day, leaveOption });
   }
 
   /*********************************************************************************************************************** */
   //Admin
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/admin/customer-management", {
+    return axiosInstance.get(API_ROUTES.ADMIN.CUSTOMER_MANAGEMENT, {
       params: { searchQuery, filter, currentPage, itemsPerPage }
     });
   }
 
   toggleUserStatusApi(userId: string) {
-    return axiosInstance.patch(`/api/admin/customer-management/${userId}`);
+    return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CUSTOMER_STATUS(userId));
   }
 
   getAllProviderApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/admin/provider-management", {
+    return axiosInstance.get(API_ROUTES.ADMIN.PROVIDER_MANAGEMENT, {
       params: { searchQuery, filter, currentPage, itemsPerPage }
     });
   }
 
   getProviderApplicationList(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/admin/provider-applicationList", {
+    return axiosInstance.get(API_ROUTES.ADMIN.PROVIDER_APPLICATION_LIST, {
       params: { searchQuery, filter, currentPage, itemsPerPage }
     });
   }
 
   updateProviderKYC(id: string, payload: { action: KYCStatus, reason?: string }) {
-    return axiosInstance.patch(`/api/admin/provider-kyc/${id}`, payload, this.getJsonConfig());
+    return axiosInstance.patch(API_ROUTES.ADMIN.PROVIDER_KYC(id), payload, this.getJsonConfig());
   }
 
   getCategoryApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
-    return axiosInstance.get("/api/admin/service-management", {
+    return axiosInstance.get(API_ROUTES.ADMIN.CATEGORY_MANAGEMENT, {
       params: { searchQuery, filter, currentPage, itemsPerPage }
     });
   }
 
   addCategoryApi(data: FormData) {
-    return axiosInstance.post("/api/admin/service-management", data, this.getMultiPartConfig());
+    return axiosInstance.post(API_ROUTES.ADMIN.CATEGORY_MANAGEMENT, data, this.getMultiPartConfig());
   }
 
   toggleCategoryStatusApi(categoryId: string) {
-    return axiosInstance.patch(`/api/admin/service-management/${categoryId}`);
+    return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CATEGORY_STATUS(categoryId));
   }
 
   /*********************************************************************************************************************** */
   signoutApi(token?: string) {
-    return axiosInstance.post("/api/auth/signout", {}, this.getBearerTokenConfig(token));
+    return axiosInstance.post(API_ROUTES.AUTH.SIGNOUT, {}, this.getBearerTokenConfig(token));
   }
 
 
