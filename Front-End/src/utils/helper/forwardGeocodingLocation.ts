@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import type { Coordinates } from "@/shared/Types/location";
 
 
@@ -21,7 +21,8 @@ export const getCoordinatesFromAddress = async (address: string): Promise<Coordi
 
     const { lat, lng } = result.geometry;
     return { latitude: lat, longitude: lng };
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
     console.error("Forward geocoding error:", error.message);
     throw new Error("Unable to get coordinates from address.");
   }

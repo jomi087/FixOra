@@ -4,6 +4,7 @@ import type { Category } from "@/shared/Types/category";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
 import { Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 
 interface CategoryState {
   categories: Category[];
@@ -24,7 +25,8 @@ export const fetchCategories = createAsyncThunk(
     try {
       const res = await AuthService.getActiveServicesApi();
       return res.data.servicesData;
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
       return rejectWithValue(errorMsg);

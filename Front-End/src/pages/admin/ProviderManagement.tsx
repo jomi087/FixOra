@@ -12,6 +12,7 @@ import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { toast } from "react-toastify";
 import ProviderInfoCard from "@/components/admin/providerManagment/ProviderInfoCard";
+import type { AxiosError } from "axios";
 
 
 const filterOptions= [
@@ -53,7 +54,8 @@ const ProviderManagement: React.FC = () => {
           } : data )
         );
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       console.log(error);
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS ;
       toast.error(errorMsg);

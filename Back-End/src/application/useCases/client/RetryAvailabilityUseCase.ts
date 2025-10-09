@@ -84,7 +84,7 @@ export class RetryAvailabilityUseCase implements IRetryAvailabilityUseCase {
             }
             return null; 
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

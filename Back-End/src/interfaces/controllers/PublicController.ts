@@ -26,8 +26,7 @@ export class PublicController {
                 landingData
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`getLandingData error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -47,8 +46,7 @@ export class PublicController {
                 notificationData
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`getLandingData error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -66,8 +64,7 @@ export class PublicController {
 
             res.status(OK).json({ success: true });
 
-        } catch (error: any) {
-            this._loggerService.error(`getLandingData error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }

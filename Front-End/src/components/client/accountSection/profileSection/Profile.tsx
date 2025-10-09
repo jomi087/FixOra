@@ -10,9 +10,10 @@ import { validatePassword } from "@/utils/validation/formValidation";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
 import { RoleEnum } from "@/shared/enums/roles";
+import type { AxiosError } from "axios";
 
-interface ProfileProps { 
-    toggle?: (editMode: boolean) => void;
+interface ProfileProps {
+  toggle?: (editMode: boolean) => void;
 }
 
 const Profile: React.FC<ProfileProps> = ({ toggle }) => {
@@ -25,8 +26,8 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
   if (user?.role === RoleEnum.CUSTOMER && !toggle) {
     throw new Error(" The 'toggle' prop is required ");
   }
-    
-  const handleChangePassword = async (password:string) => { 
+
+  const handleChangePassword = async (password: string) => {
     const error = validatePassword(password);
     if (error) {
       setErrorMsg(error);
@@ -37,11 +38,12 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
     try {
       const res = await AuthService.verifyPasswordApi(password);
       if (res.status === HttpStatusCode.OK) {
-        toast.success(res.data.message || Messages.MAIL_SENT_MSG );
+        toast.success(res.data.message || Messages.MAIL_SENT_MSG);
       }
       setIsDialogOpen(false);
-    } catch (error:any) {
-      const errorMsg = error?.response?.data?.message || Messages.FAILED_PASSWORD_VERIFICATION;
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      const errorMsg = err?.response?.data?.message || Messages.FAILED_PASSWORD_VERIFICATION;
       toast.error(errorMsg);
     } finally {
       setLoading(false);
@@ -66,7 +68,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
           )}
 
           <h3 className="text-xl font-semibold mt-4 flex items-center gap-2 ">
-            {`${user?.fname} ${user?.lname ||""} `}
+            {`${user?.fname} ${user?.lname || ""} `}
             {user?.role === RoleEnum.CUSTOMER && toggle && (
               <CiEdit
                 size={20}
@@ -90,11 +92,11 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
 
           <div>
             <span className="font-semibold">Address:</span>
-            <p className="text-gray-600 dark:text-white ml-5">{ `${user?.location ? getFormattedAddress(user.location) : "N/A"}`} </p>
+            <p className="text-gray-600 dark:text-white ml-5">{`${user?.location ? getFormattedAddress(user.location) : "N/A"}`} </p>
           </div>
         </div>
       </div>
-            
+
       <div className="flex justify-end">
         <ChangePassowrdDialog
           changePassword={handleChangePassword}

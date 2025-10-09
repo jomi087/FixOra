@@ -72,7 +72,7 @@ export class AuthMiddleware {  //verify Jwt
                 req.user = user;
                 next();
 
-            } catch (error: any) {
+            } catch (error) {
                 
                 if (error.name === "JsonWebTokenError") {
                     res.status(UNAUTHORIZED).json({ message: INVALID_TOKEN });

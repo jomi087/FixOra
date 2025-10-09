@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Messages } from "../constant";
 
 // work for indian postal
@@ -15,7 +15,8 @@ export const getPostalInfo = async (pincode: string) => {
       const apiMessage = data?.Message || Messages.INVALID_OR_UNAVAILABLE_PINCODE;
       throw new Error(apiMessage);
     }
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
     // If it's an axios error, return a more meaningful message
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || Messages.NETWORK_ERROR_FETCHING_POSTAL_INFO);

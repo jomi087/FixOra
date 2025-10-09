@@ -61,7 +61,7 @@ export class VerifyArrivalUseCase implements IVerifyArrivalUseCase {
 
             return token;
             
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

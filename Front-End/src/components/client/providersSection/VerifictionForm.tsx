@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Form, FormControl,FormDescription,FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useFetchCategories from "@/hooks/useFetchCategories";
@@ -9,6 +9,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { maxYear, Messages, minYear } from "@/utils/constant";
 import { providerKYCSchema, type ProviderKYCType } from "@/utils/validation/providerKYCValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -17,24 +18,24 @@ import { toast } from "react-toastify";
 
 
 interface VerifictionFormProps {
-    toggle: (editMode: boolean) => void;
+  toggle: (editMode: boolean) => void;
 }
 
 const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
-  
-  const { categories, loading:isLoading } = useFetchCategories();
+
+  const { categories, loading: isLoading } = useFetchCategories();
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const genderOptions = Object.values(Gender);
-  const form = useForm<ProviderKYCType> ({ // a custom hook  which return several an object that gives you full control over your form — register, validation, error, handleSubmit, and more.
+  const form = useForm<ProviderKYCType>({ // a custom hook  which return several an object that gives you full control over your form — register, validation, error, handleSubmit, and more.
     resolver: zodResolver(providerKYCSchema),
     defaultValues: {
-      service:"",
+      service: "",
       specialization: [],
-      serviceCharge:"",
-      dob:"",
+      serviceCharge: "",
+      dob: "",
       gender: undefined,
       profileImage: undefined,
       idCard: undefined,
@@ -42,7 +43,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
       experienceCertificate: undefined
     }
   });
-  
+
   const onSubmit = async (data: ProviderKYCType) => {
     setLoading(true);
     try {
@@ -56,21 +57,22 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
       formData.append("idCard", data.idCard);
       formData.append("educationCertificate", data.educationCertificate);
       if (data.experienceCertificate) {
-        formData.append("experienceCertificate",data.experienceCertificate);
+        formData.append("experienceCertificate", data.experienceCertificate);
       }
 
       const res = await AuthService.providerKYCApi(formData);
       if (res.status === HttpStatusCode.OK) {
-        toast.success(res.data.message|| Messages.KYC_SUBMITTED_SUCCESS);
+        toast.success(res.data.message || Messages.KYC_SUBMITTED_SUCCESS);
         navigate(-1);
       }
-    } catch (error:any) {
-      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_SUBMIT_KYC ;
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      const errorMsg = err?.response?.data?.message || Messages.FAILED_TO_SUBMIT_KYC;
       toast.error(errorMsg);
     } finally {
-      setLoading(false);   
+      setLoading(false);
     }
-    
+
   };
 
   return (
@@ -86,7 +88,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
               <FormControl>
                 <Select
                   isClearable
-                  isLoading = {isLoading}
+                  isLoading={isLoading}
                   options={categories.map(cat => ({
                     label: cat.name, value: cat.categoryId
                   }))}
@@ -115,7 +117,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
           name="specialization"
           render={({ field }) => {
             const selectedServiceId = form.watch("service");
-            const selectedCategory = categories.find((cat) => cat.categoryId === selectedServiceId );
+            const selectedCategory = categories.find((cat) => cat.categoryId === selectedServiceId);
             const specializationOptions = selectedCategory?.subcategories.map((sub) => ({
               label: sub.name,
               value: sub.subCategoryId,
@@ -144,7 +146,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
               </FormItem>
             );
           }}
-        />  
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Service Charge */}
@@ -301,7 +303,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
           <Button variant="outline" type="button"
             onClick={() => toggle(false)}
           >
-              Go Back
+            Go Back
           </Button>
           <Button type="submit" disabled={loading}>Submit KYC</Button>
         </div>

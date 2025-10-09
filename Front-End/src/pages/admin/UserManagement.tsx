@@ -10,6 +10,7 @@ import SearchInput from "@/components/common/Others/SearchInput";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
+import type { AxiosError } from "axios";
 
 
 const UserManagement: React.FC = () => {
@@ -32,7 +33,8 @@ const UserManagement: React.FC = () => {
           }: data )
         );
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       console.log(error);
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS ;
       toast.error(errorMsg);

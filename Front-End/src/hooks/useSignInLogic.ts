@@ -10,11 +10,12 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fetchNotifications } from "@/store/common/notificationSlice";
+import type { AxiosError } from "axios";
 
 export const useSignInLogic = () => {
-  const [ loading, setLoading ] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { role } = useParams(); 
+  const { role } = useParams();
   const dispatch = useAppDispatch();
 
   const isValidRole = Object.values(RoleEnum).includes(role as RoleEnum);
@@ -43,7 +44,7 @@ export const useSignInLogic = () => {
       toast.error(emailError || passwordError);
       return;
     }
-        
+
     const data = {
       email,
       password,
@@ -61,7 +62,8 @@ export const useSignInLogic = () => {
         toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
         navigateByRole(userData.role);
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
       toast.error(errorMsg);
     } finally {
@@ -69,27 +71,28 @@ export const useSignInLogic = () => {
     }
   };
 
-  const handleForgotPassword = async (email: string) => { 
+  const handleForgotPassword = async (email: string) => {
     setLoading(true);
     try {
       const res = await AuthService.forgotPasswordApi(email);
       if (res.status === HttpStatusCode.OK) {
         toast.success(res.data.message || Messages.MAIL_SENT_MSG);
       }
-    } catch (error : any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
       const errorMsg = error?.response?.data?.message || Messages.FORGOT_PASSWORD_FAILED;
       toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
-  }; 
+  };
 
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (authResult: { code?: string }) => {
       if (authResult.code) {
-        const data = { code: authResult.code, role: userRole  };
+        const data = { code: authResult.code, role: userRole };
         try {
-          const res =await AuthService.googleSigninApi(data);
+          const res = await AuthService.googleSigninApi(data);
 
           if (res.status === HttpStatusCode.OK) {
             const { userData } = res.data;
@@ -98,8 +101,9 @@ export const useSignInLogic = () => {
 
             navigateByRole(userData.role);
           }
-                        
-        } catch (error: any) {
+
+        } catch (err) {
+          const error = err as AxiosError<{ message: string }>;
           console.log(error.response);
           const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
           toast.error(errorMsg);
@@ -112,7 +116,7 @@ export const useSignInLogic = () => {
     },
     flow: "auth-code",  // this enables PKCE under the hood
   });
-    
+
   return {
     handleLogin,
     handleForgotPassword,

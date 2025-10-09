@@ -58,7 +58,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
@@ -88,7 +88,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.DEBIT,
                 });
-            } catch (error: any) {
+            } catch (error) {
                 await this._walletRepository.updateWalletOnTransaction({
                     userId: userId,
                     transactionId,
@@ -133,7 +133,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 const jobKey = `paymentBooking-${updatedBooking.bookingId}`;
                 this._bookingSchedulerService.cancel(jobKey);
 
-            } catch (error: any) {
+            } catch (error) {
 
                 await this._walletRepository.updateWalletOnTransaction({
                     userId,
@@ -183,7 +183,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 }
             };
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

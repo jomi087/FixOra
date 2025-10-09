@@ -23,7 +23,7 @@ export class GetLandingDataUseCase implements IGetLandingDataUseCase{
                 //providers
                 //blogs
             };
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

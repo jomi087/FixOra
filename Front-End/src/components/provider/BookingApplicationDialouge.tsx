@@ -10,6 +10,7 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { splitDateTime } from "@/utils/helper/date&Time";
 import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
+import type { AxiosError } from "axios";
 
 
 interface BookingApplicationDialogueProps {
@@ -44,7 +45,8 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
       await AuthService.UpdateBookingStatusApi(data.bookingId, actionType, reason);
       toast.success(actionType.toLocaleUpperCase());
 
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.BOOKING_STATUS_FAILED;
       toast.error(errorMsg);
     }

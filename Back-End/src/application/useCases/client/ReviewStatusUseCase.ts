@@ -18,7 +18,7 @@ export class ReviewStatusUseCase implements IReviewStatusUseCase {
             if (reviewData) return true;
             return false;
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

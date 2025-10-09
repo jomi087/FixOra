@@ -37,7 +37,7 @@ export class ResendOtpUseCase implements IResendOtpUseCase{
             const html = `<h1>Welcome to FixOra</h1><p>Your OTP code is: <strong>${otp}</strong></p>`;
             await this._emailService.sendEmail(decodeUserData.email, "Your FixOra OTP", html);
 
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

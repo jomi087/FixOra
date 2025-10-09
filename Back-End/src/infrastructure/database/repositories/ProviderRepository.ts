@@ -1,3 +1,4 @@
+import { PipelineStage } from "mongoose";
 import { Provider, ProviderWithDetails } from "../../../domain/entities/ProviderEntity";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { RoleEnum } from "../../../shared/Enums/Roles";
@@ -18,7 +19,7 @@ export class ProviderRepository implements IProviderRepository{
         const { searchQuery, filter } = option;
         const skip = (currentPage - 1) * limit;
 
-        const matchConditions: any = { "userDetails.role" : RoleEnum.Provider };
+        const matchConditions:  Record<string, unknown>  = { "userDetails.role" : RoleEnum.Provider };
 
         // Filter by status
         if (filter === "blocked") matchConditions["userDetails.isBlocked"] = true;
@@ -35,7 +36,7 @@ export class ProviderRepository implements IProviderRepository{
             ];
         }
 
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $lookup: {
                     from: "users",

@@ -56,7 +56,7 @@ export class UpdateProfileUseCase implements IUpdateProfileUseCase{
             return { data: mappedData };
 
 
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

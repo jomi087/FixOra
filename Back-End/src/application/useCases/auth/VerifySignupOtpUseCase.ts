@@ -55,7 +55,7 @@ export class VerifySignupOtpUseCase implements IVerifySignupOtpUseCase {
             await this._otpRepository.deleteOtpByEmail(decodeUserData.email);
 
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) {
                 throw error;

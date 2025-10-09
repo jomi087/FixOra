@@ -12,6 +12,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, PCPP } from "@/utils/constant";
 import type { ActiveProvider } from "@/shared/Types/user";
 import { setApplyFilters, setReset } from "@/store/user/filterSlice";
+import type { AxiosError } from "axios";
 
 export const useAuthProvider = () => {
   const dispatch = useAppDispatch();
@@ -52,10 +53,11 @@ export const useAuthProvider = () => {
         if (applyFilter) dispatch(setApplyFilters(false));
         if (reset) dispatch(setReset(false));
 
-      } catch (error: any) {
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
         toast.error(errorMsg);
-        if (error.response.status === HttpStatusCode.UNPROCESSABLE_ENTITY) {
+        if (error?.response?.status === HttpStatusCode.UNPROCESSABLE_ENTITY) {
           navigate("/customer/account/profile");
         };
       } finally {

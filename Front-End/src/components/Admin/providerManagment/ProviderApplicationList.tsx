@@ -44,7 +44,8 @@ const ProviderApplicationList: React.FC = () => {
           setProviderApplications(res.data.ApplicationData);
           setTotalApplications(res.data.total);
         }
-      } catch (error: any) {
+      } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
         toast.error(errorMsg);
       } finally {

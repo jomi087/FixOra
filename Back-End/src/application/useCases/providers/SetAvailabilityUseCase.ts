@@ -40,7 +40,7 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
             const mappedData: setAvailabilityOutputDTO[] = availability.workTime;
             return mappedData;
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

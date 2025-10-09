@@ -81,7 +81,7 @@ export const Messages = {
     AGE_RESTRICTED: "Age restricted: must be at least 18",
     REASON_REQUIRED_ON_REJECTION: "Reason is required when rejecting",
 
-    INTERNAL_ERROR: "Something went wrong. Please try again later",
+    INTERNAL_ERROR: "Something went wrong",
     UNAUTHORIZED_MSG: "Unauthorized",
     FORBIDDEN_MSG: "Access denied",
 

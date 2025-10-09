@@ -8,6 +8,7 @@ import { Category } from "../../../domain/entities/CategoryEntity";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { Provider } from "../../../domain/entities/ProviderEntity";
 import { Availability } from "../../../domain/entities/AvailabilityEntity";
+import { PipelineStage } from "mongoose";
 
 //!mistake in this repository (i have am violatin srp rule need to re-work) 
 //split the logic into indivijual
@@ -126,7 +127,7 @@ export class UserRepository implements IUserRepository {
             match.isBlocked = false;
         }
 
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             { $match: match },
             {
                 $project: {
@@ -198,7 +199,7 @@ export class UserRepository implements IUserRepository {
         const { searchQuery, filter, extraFilter, coordinates } = option;
         const skip = (currentPage - 1) * limit;
 
-        const pipeline: any[] = [];
+        const pipeline: PipelineStage[] = [];
         const hasNearbyFilter = extraFilter?.nearByFilter && coordinates?.latitude && coordinates?.longitude;
 
         if (hasNearbyFilter) {
@@ -423,14 +424,14 @@ export class UserRepository implements IUserRepository {
         availability: Pick<Availability, "workTime">
         distanceFee: number
     }> {
-        const matchConditions: any = {
+        const matchConditions:  Record<string, unknown>  = {
             role: "provider",
             isBlocked: false,
             "providerDetails.providerId": providerId,
 
         };
 
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $geoNear: {
                     near: {
@@ -587,7 +588,7 @@ export class UserRepository implements IUserRepository {
             isBlocked: false,
             "providerDetails.providerId": providerId
         };
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $geoNear: {
                     near: {

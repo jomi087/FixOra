@@ -30,7 +30,7 @@ export class CustomerAuthStrategy  implements IAuthStrategy  {
             
             return { userData: user, role: RoleEnum.Customer };
             
-        } catch (error:any ) {
+        } catch (error) {
             if (error.status && error.message) throw error;
 
             throw {

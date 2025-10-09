@@ -57,7 +57,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
@@ -212,7 +212,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 };
             }
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

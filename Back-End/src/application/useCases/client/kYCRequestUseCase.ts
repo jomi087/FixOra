@@ -55,7 +55,7 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
             await this._notificationService.sendToRole(RoleEnum.Admin, payload);
 
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
@@ -96,7 +96,7 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
             await this.sendKYCRequestNotification(input.userId);
             return "submitted";
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

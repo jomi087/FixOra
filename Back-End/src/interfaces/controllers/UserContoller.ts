@@ -68,8 +68,7 @@ export class UserController {
                 success: true,
                 servicesData
             });
-        } catch (error: any) {
-            this._loggerService.error(`activeServices error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -107,8 +106,7 @@ export class UserController {
                 total: result.total
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`activeProviders error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -184,8 +182,7 @@ export class UserController {
                 message: KYC_REQUEST_STATUS(result)
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`kycApplication error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -208,8 +205,7 @@ export class UserController {
                 providerInfoData: result
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`providerBookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -229,8 +225,7 @@ export class UserController {
                 totalPages : result.total,
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`providerBookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -256,8 +251,7 @@ export class UserController {
                 booking
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`createBooking error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -271,8 +265,7 @@ export class UserController {
                 sessionId
             );
 
-        } catch (error: any) {
-            this._loggerService.error(`initiatePayment error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -295,9 +288,8 @@ export class UserController {
                 result
             });
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
-            this._loggerService.error(`walletPayment error:, ${error.message}`, { stack: error.stack });
             next(error);
         }
     }
@@ -306,14 +298,13 @@ export class UserController {
     async verifyPaymentViaWebHook(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const sig = req.headers["stripe-signature"] as string;
-            const rawBody = (req as any).body;
+            const rawBody = req.body;
 
             await this._verifyPaymentUseCase.execute(rawBody, sig);
 
             res.status(OK).send("Webhook received"); //to notify stripe
 
-        } catch (error: any) {
-            this._loggerService.error(`payment verification error:,${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -336,8 +327,7 @@ export class UserController {
                 user: updatedUser
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`editProfile error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -356,8 +346,7 @@ export class UserController {
                 success: true,
                 message: VERIFICATION_MAIL_SENT,
             });
-        } catch (error: any) {
-            this._loggerService.error(`verifyPassword error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -373,8 +362,7 @@ export class UserController {
                 message: VERIFICATION_MAIL_SENT
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`changePassword error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -398,8 +386,7 @@ export class UserController {
                 total: result.total
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -415,8 +402,7 @@ export class UserController {
                 success: true,
                 bookingDetailsData: data
             });
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -458,8 +444,7 @@ export class UserController {
                 return;
             }
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -487,8 +472,7 @@ export class UserController {
                 refundInfo: data.paymentInfo
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -510,8 +494,7 @@ export class UserController {
                 reviewStatus
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     };
@@ -528,8 +511,7 @@ export class UserController {
                 message: "successfull",
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -552,8 +534,7 @@ export class UserController {
                 total: result.total
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -575,8 +556,7 @@ export class UserController {
                 sessionId
             );
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }

@@ -43,7 +43,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase{
             
             await this._emailService.sendEmail(email, "FixOra Reset Password", html);
 
-        } catch (error :any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

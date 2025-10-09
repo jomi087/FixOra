@@ -59,7 +59,7 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
@@ -147,7 +147,7 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
 
             await this._availabilityRepository.toogleAvailability(provider.providerId, day, !daySchedule.active);
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

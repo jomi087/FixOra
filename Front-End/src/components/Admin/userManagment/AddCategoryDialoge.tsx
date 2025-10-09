@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog,DialogClose,DialogContent,DialogDescription,DialogFooter,DialogHeader,DialogTitle,DialogTrigger, } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,19 +8,20 @@ import { useCategoryForm } from "@/hooks/useCategoryForm";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import { shortInputLength,longInputLength, Messages } from "@/utils/constant";
+import { shortInputLength, longInputLength, Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 
 interface AddCategoryProps {
   open: boolean;
   setOpen: (value: boolean) => void;
-  triggerRefresh: () => void; 
+  triggerRefresh: () => void;
 }
 
-const AddCategoryDialoge: React.FC<AddCategoryProps> = ({ open,setOpen,triggerRefresh }) => {
-  const { name,setName,description,setDescription,setImage,subcategories,errors,loading,setLoading,handleAddSubcategory,handleSubcategoryChange,handleRemoveSubcategory,validate,createFormData, } = useCategoryForm();
-  
+const AddCategoryDialoge: React.FC<AddCategoryProps> = ({ open, setOpen, triggerRefresh }) => {
+  const { name, setName, description, setDescription, setImage, subcategories, errors, loading, setLoading, handleAddSubcategory, handleSubcategoryChange, handleRemoveSubcategory, validate, createFormData, } = useCategoryForm();
 
-  const handleSubmit =async (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
     if (!validate()) return;
@@ -35,8 +36,9 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({ open,setOpen,triggerRe
         triggerRefresh();
         setOpen(false);
       }
-    } catch (error:any) {
-      const errorMsg = error?.response?.data?.message || Messages.FAILED_CATEGORY_RESPONSE_MSG;
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      const errorMsg = err?.response?.data?.message || Messages.FAILED_CATEGORY_RESPONSE_MSG;
       toast.error(errorMsg);
 
     } finally {
@@ -112,7 +114,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({ open,setOpen,triggerRe
                     className={
                       errors.subcategories[index] ? "border-red-500" : ""
                     }
-                    maxLength={shortInputLength} 
+                    maxLength={shortInputLength}
                   />
                   <Textarea
                     placeholder="Description"
@@ -123,7 +125,7 @@ const AddCategoryDialoge: React.FC<AddCategoryProps> = ({ open,setOpen,triggerRe
                     className={
                       errors.subcategories[index] ? "border-red-500" : ""
                     }
-                    maxLength={longInputLength} 
+                    maxLength={longInputLength}
                   />
                   <Input
                     type="file"

@@ -24,7 +24,7 @@ export class ResetPasswordUseCase implements IResetPasswordUseCase{
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND };
             }
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) {
                 throw error;

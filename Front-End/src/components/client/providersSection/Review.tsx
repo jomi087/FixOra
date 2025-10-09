@@ -17,7 +17,7 @@ const Review: React.FC<{ providerId: string }> = ({ providerId }) => {
     dispatch(fetchProviderReviews({ providerId, currentPage, itemsPerPage }));
   }, [dispatch, providerId, currentPage]);
 
-  console.log("reviews", reviews);
+  // console.log("reviews", reviews);
 
   return (
     <div className="shadow-lg shadow-ring border-2 mt-10 p-6 pt-4  rounded-xl">

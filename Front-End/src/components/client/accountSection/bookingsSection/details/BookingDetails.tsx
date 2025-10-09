@@ -23,6 +23,7 @@ import FeedbackDialog from "./dialoge/FeedbackDialog";
 import CancelDialoge from "./dialoge/CancelDialoge";
 import { InvoicePDF } from "./invoice/InvoicePDF";
 import { pdf } from "@react-pdf/renderer";
+import axios from "axios";
 
 
 const BookingDetails = () => {
@@ -137,28 +138,39 @@ const BookingDetails = () => {
     try {
       await AuthService.retryAvailabilityApi(bookingId);
       setShowModePayment(true);
-    } catch (err: any) {
-      const status = err.response?.status;
-      if (status === HttpStatusCode.CONFLICT || status === HttpStatusCode.GONE) {
-        const booking = err.response?.data?.booking;
-        setBookingInDetails((prev) =>
-          prev
-            ? {
-              ...prev,
-              status: booking.status,
-              paymentInfo: {
-                ...prev.paymentInfo,
-                status: booking.paymentInfo.status,
-                reason: booking.paymentInfo.reason,
-              },
-            }
-            : prev
-        );
+    } catch (err) {
+      let errorMsg = Messages.FAILED_TO_FETCH_DATA;
 
-        toast.error(booking.paymentInfo.reason || "Slot is unavailable");
-        return;
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+
+        if (status === HttpStatusCode.CONFLICT || status === HttpStatusCode.GONE) {
+          const booking = err.response?.data?.booking;
+
+          if (booking) {
+            setBookingInDetails((prev) =>
+              prev
+                ? {
+                  ...prev,
+                  status: booking.status,
+                  paymentInfo: {
+                    ...prev.paymentInfo,
+                    status: booking.paymentInfo.status,
+                    reason: booking.paymentInfo.reason,
+                  },
+                }
+                : prev
+            );
+            errorMsg = booking.paymentInfo?.reason || "Slot is unavailable";
+          } else {
+            errorMsg = "Slot is unavailable";
+          }
+        } else {
+          errorMsg = err.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
+        }
+      } else if (err instanceof Error) {
+        errorMsg = err.message || Messages.FAILED_TO_FETCH_DATA;
       }
-      const errorMsg = err.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
     }
   };
@@ -184,7 +196,8 @@ const BookingDetails = () => {
         await stripe.redirectToCheckout({ sessionId: sessionId });
 
         setShowModePayment(false);
-      } catch (error: any) {
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
         console.log(error);
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);
@@ -222,8 +235,8 @@ const BookingDetails = () => {
         toast.success("Booking Successfull");
         setShowModePayment(false);
 
-      } catch (error: any) {
-        console.log(error);
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);
       } finally {
@@ -274,8 +287,9 @@ const BookingDetails = () => {
       toast.success("Thank you for your valuable feedback");
       setHasUserReviewed(true);
       setOpenFeedBack(false);
-    } catch (error: any) {
-      console.log(error);
+
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
       toast.error(errorMsg);
     }

@@ -23,7 +23,7 @@ export class GetProvidersUseCase implements IGetProvidersUseCase {
             
             return { data ,total };
             
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

@@ -14,6 +14,7 @@ import type { JobInfoDetails } from "@/shared/Types/booking";
 import { useState } from "react";
 import Lottie from "lottie-react";
 import LoadingAnimation from "@/assets/animations/LoadingPaperplane.json";
+import type { AxiosError } from "axios";
 
 const PartSchema = z.object({
   name: z.string().min(1, "Part name required"),
@@ -90,7 +91,8 @@ const UploadWorkProofDialog: React.FC<UploadWorkProofDialogProps> = ({ bookingId
       }
 
       onOpenChange(false);
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg =
         error?.response?.data?.message || Messages.FAILED_TO_SUBMIT_KYC;
       toast.error(errorMsg);

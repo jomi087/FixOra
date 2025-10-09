@@ -51,7 +51,7 @@ export class GetActiveProvidersUseCase implements IGetActiveProvidersUseCase{
                 total,
             };
             
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) {
                 throw error;

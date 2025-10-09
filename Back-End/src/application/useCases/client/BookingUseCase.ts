@@ -144,7 +144,7 @@ export class BookingUseCase implements IBookingUseCase {
             };
             return mappedData;
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };

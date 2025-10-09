@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 
 export const useResetPasswordLogic = () => {
   const [searchParams] = useSearchParams();
@@ -35,7 +36,8 @@ export const useResetPasswordLogic = () => {
           navigate("/");
         }); // no delay added
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       console.error("Reset Password Error:", error);
       const errorMsg = error?.response?.data?.message || Messages.PASSWORD_RESET_FAILED;
       toast.error(errorMsg);

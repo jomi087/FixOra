@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 
 
 export const useSignUpLogic = () => {
@@ -46,7 +47,8 @@ export const useSignUpLogic = () => {
           navigate("/otp");
         }, 1000);
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.ACCOUNT_CREATION_FAILED ;
       toast.error(errorMsg);
     } finally {

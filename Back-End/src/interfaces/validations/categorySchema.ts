@@ -49,7 +49,7 @@ export function validateCategory( req: Request, res: Response, next: NextFunctio
         req.body.subcategories = parsedSubcategories;
 
         next();
-    } catch (error: any) {
+    } catch (error) {
         next(error);
     }
 }

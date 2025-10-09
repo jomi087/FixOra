@@ -18,10 +18,11 @@ import { validateFName, validateLName, validateMobileNo } from "@/utils/validati
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, shortInputLength } from "@/utils/constant";
 import AddressDialog from "@/components/common/Others/AddressDialog";
+import type { AxiosError } from "axios";
 
 
 interface EditProfileProps {
-    toggle: (editMode: boolean) => void;
+  toggle: (editMode: boolean) => void;
 }
 
 const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
@@ -108,8 +109,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
             }
           }));
 
-        } catch (error: any) {
-          const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_ADDRESS_CORDINATES;
+        } catch (err) {
+          const error = err as AxiosError<{ message: string }>; const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_ADDRESS_CORDINATES;
           toast.error(errorMsg);
         } finally {
           setLoading(false);;
@@ -150,7 +151,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
       }));
 
       setIsDialogOpen(false);
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CORDINATES;
       toast.error(errorMsg);
     } finally {
@@ -172,9 +174,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
 
     const isSame = (
       form.fname === user?.fname &&
-            form.lname === user?.lname &&
-            form.mobile === user?.mobileNo &&
-            JSON.stringify(form.location) === JSON.stringify(user?.location)
+      form.lname === user?.lname &&
+      form.mobile === user?.mobileNo &&
+      JSON.stringify(form.location) === JSON.stringify(user?.location)
     );
 
     if (isSame) {
@@ -191,7 +193,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
         toast.success("Updated");
         toggle(false);
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.PROFILE_MODIFICATION_FAILED;
       toast.error(errorMsg);
     } finally {
@@ -277,7 +280,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
               onClick={handleGetLocation}
               disabled={loading}
             >
-                            Use Current Location
+              Use Current Location
             </Button>
           </div>
         </div>
@@ -288,7 +291,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
           <Button variant="outline" type="button"
             onClick={() => toggle(false)}
           >
-                        Go Back
+            Go Back
           </Button>
         </div>
       </form>

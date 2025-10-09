@@ -1,3 +1,4 @@
+import { PipelineStage } from "mongoose";
 import { Rating } from "../../../domain/entities/RatingEntity";
 import { User } from "../../../domain/entities/UserEntity";
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
@@ -20,7 +21,7 @@ export class RatingRepository implements IRatingRepository {
         total: number;
     }> {
 
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $match: {
                     providerId: providerId
