@@ -26,9 +26,9 @@ const ProviderTandC: React.FC<ProviderTandCProps> = ({ openConfirm, setOpenConfi
               <p>4. <strong>Conduct:</strong> Providers must maintain professional behavior and respect towards customers. Any misuse of the platform may lead to suspension or permanent removal.</p>
               <p>5. <strong>Commission:</strong> By registering, you agree to the commission structure and payment terms outlined in our Provider Agreement.</p>
               <p>6. <strong>Privacy:</strong> Your personal and service-related data will be used in accordance with our Privacy Policy.</p>
-              <p>7. <strong>Termination:</strong> We reserve the right to revoke provider access at any time in case of policy violations or legal issues.</p>
+              <p>7. <strong>Termination:</strong> We reserve the right to revoke provider access at ny time in case of policy violations or legal issues.</p>
               <p>8. <strong>Transportation:</strong> It is recommended to have your own vehicle for smooth operations. You will be paid an additional ₹30 fuel allowance for every 5 km travelled beyond the initial service area (fuel allowance may vary depending on current fuel prices).</p>
-              <p>9. <strong>Modifications:</strong> Terms may be updated at any time. It is your responsibility to stay informed.</p>
+              <p>9. <strong>Modifications:</strong> Terms may be updated at ny time. It is your responsibility to stay informed.</p>
               <p>By clicking <strong>Confirm</strong>, you acknowledge that you have read, understood, and agreed to abide by these terms.</p>
             </div>
           </DialogDescription>

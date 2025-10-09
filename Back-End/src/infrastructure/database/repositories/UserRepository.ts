@@ -112,7 +112,7 @@ export class UserRepository implements IUserRepository {
     ): Promise<{ data: Partial<User>[]; total: number }> {
 
         const { searchQuery, filter } = options;
-        const match: any = { role: RoleEnum.Customer };
+        const match: Record<string, unknown>  = { role: RoleEnum.Customer };
 
         if (searchQuery) {
             match.$or = [
@@ -245,7 +245,7 @@ export class UserRepository implements IUserRepository {
 
         }
 
-        const sortCondition: any = {};
+        const sortCondition: Record<string, 1|-1> = {};
         switch (filter) {
         case "ascending":
             sortCondition["fname"] = 1;
@@ -258,7 +258,7 @@ export class UserRepository implements IUserRepository {
             break;
         }
 
-        const matchUserConditions: any = {
+        const matchUserConditions: Record<string, unknown>  = {
             role: "provider",
             isBlocked: false,
         };
@@ -271,14 +271,14 @@ export class UserRepository implements IUserRepository {
         }
 
         //filter via service(category)
-        const matchServiceCondition: any = {};
+        const matchServiceCondition: Record<string, unknown>  = {};
         matchServiceCondition["serviceDetails.isActive"] = true;
         if (extraFilter?.selectedService) {
             matchServiceCondition["serviceDetails.categoryId"] = extraFilter.selectedService;
         }
 
         // filter via rating
-        const matchRatingCondition: any = {};
+        const matchRatingCondition: Record<string, unknown>  = {};
         if (extraFilter?.ratingFilter) {
             matchRatingCondition["averageRating"] = { $eq: extraFilter.ratingFilter };
         }
@@ -583,7 +583,7 @@ export class UserRepository implements IUserRepository {
 
 
     async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; } | null> {
-        const matchConditions: any = {
+        const matchConditions: Record<string, unknown>  = {
             role: "provider",
             isBlocked: false,
             "providerDetails.providerId": providerId

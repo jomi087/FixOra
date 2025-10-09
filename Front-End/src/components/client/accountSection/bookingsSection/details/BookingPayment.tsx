@@ -71,7 +71,7 @@ const BookingPayment: React.FC<BookingPaymentProps> = ({ pricing, paymentInfo })
           service.
         </p>
         <p>
-          * Additional charges (if any) should be collected after diagnosing the
+          * Additional charges (if ny) should be collected after diagnosing the
           issue with bill.
         </p>
       </div>

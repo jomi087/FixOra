@@ -28,7 +28,7 @@ ________________________________________________________________________________
 * how to config axios and how to  use axios interceptor
 
 * .filter(Boolean) a shortend verson of .filter(item => Boolean(item)) 
-    - Boolean() - it's a built-in JavaScript function (constructor) it converts any value to its truthy or falsy equivalent:
+    - Boolean() - it's a built-in JavaScript function (constructor) it converts ny value to its truthy or falsy equivalent:
     
 * how to get Location coordinates with browser help (navigator.geoLocation)
 

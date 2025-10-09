@@ -11,7 +11,7 @@ if (!fs.existsSync(logDir)) {
 
 const combinedTransport = new DailyRotateFile({
     filename: path.join(logDir, "combined-%DATE%.log"),
-    datePattern: process.env.LOG_DATE_PATTERN,                  //  creates a new log file every day at midnight (default frequency is set to 24hrs thats y every day new file is created to make more then one day chage it explicitly to any hours like 48h )
+    datePattern: process.env.LOG_DATE_PATTERN,                  //  creates a new log file every day at midnight (default frequency is set to 24hrs thats y every day new file is created to make more then one day chage it explicitly to ny hours like 48h )
     zippedArchive: process.env.LOG_ZIPPED === "true",           // compress previous log files into .gz when rotated
     maxSize: process.env.LOG_MAX_SIZE,                                             // if a log file exceeds 20 MB during the day, it will rotate early
     maxFiles: process.env.LOG_COMBINED_MAX_FILES,                                           // keep logs (raw + compressed) for 14 days, then delete
