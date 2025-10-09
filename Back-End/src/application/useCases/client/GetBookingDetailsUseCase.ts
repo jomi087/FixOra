@@ -65,7 +65,7 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
             return mappedData;
 
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

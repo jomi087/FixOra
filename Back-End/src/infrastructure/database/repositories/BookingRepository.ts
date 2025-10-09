@@ -1,3 +1,4 @@
+import { PipelineStage } from "mongoose";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { Category, Subcategory } from "../../../domain/entities/CategoryEntity";
 import { Provider } from "../../../domain/entities/ProviderEntity";
@@ -107,7 +108,7 @@ export class BookingRepository implements IBookingRepository {
         bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "provider">
         subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
     }> {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             { $match: { bookingId: bookingId } },
             {
                 $lookup: {
@@ -183,7 +184,7 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async findProviderConfirmBookingsById(providerUserId: string): Promise<Booking[]> {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $match: {
                     providerUserId: providerUserId,
@@ -205,7 +206,7 @@ export class BookingRepository implements IBookingRepository {
         //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof" | >
         booking: Partial<Booking>
     } | null> {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $match: {
                     bookingId: bookingId,
@@ -299,7 +300,7 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async findProviderJobHistoryById(providerUserId: string, currentPage: number, limit: number): Promise<{ data: Booking[]; total: number; }> {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $match: {
                     providerUserId: providerUserId,
@@ -331,7 +332,7 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async findUserBookingHistoryById(userId: string, currentPage: number, limit: number): Promise<{ data: Booking[], total: number }> {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $match: {
                     userId: userId,
@@ -370,7 +371,7 @@ export class BookingRepository implements IBookingRepository {
         //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
         booking: Partial<Booking>
     } | null> {
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             {
                 $match: {
                     bookingId: bookingId,

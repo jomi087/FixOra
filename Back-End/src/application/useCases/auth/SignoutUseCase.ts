@@ -16,7 +16,7 @@ export class SignoutUseCase implements ISignoutUseCase {
             if ( !(await this._userRepository.resetRefreshTokenById( userId ))) {
                 throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
             }
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

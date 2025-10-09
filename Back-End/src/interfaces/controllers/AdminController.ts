@@ -48,8 +48,7 @@ export class AdminController {
                 total: result.total
             });
             
-        } catch (error:any) {
-            this._loggerService.error(`getCustomers error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -60,8 +59,7 @@ export class AdminController {
             await this._toggleUserStatusUseCase.execute(userId);
 
             res.status(OK).json({ success: true });
-        } catch (error:any) {
-            this._loggerService.error(`toggleUserStatus error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -82,8 +80,7 @@ export class AdminController {
                 total: result.total
             });
             
-        } catch (error:any) {
-            this._loggerService.error(`getProviders error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -103,8 +100,7 @@ export class AdminController {
                 total: result.total
             });
 
-        } catch (error:any) {
-            this._loggerService.error(`getProviderApplications error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -127,8 +123,7 @@ export class AdminController {
                 id : result.id
             });
 
-        } catch (error:any) {
-            this._loggerService.error(`updateKYCStatus error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -148,8 +143,7 @@ export class AdminController {
                 total : result.total
             });
 
-        } catch (error:any) {
-            this._loggerService.error(`getService error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -194,8 +188,7 @@ export class AdminController {
                 message: CATEGORY_CREATED_SUCCESS,
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`activeServices error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -206,8 +199,7 @@ export class AdminController {
             await this._toggleCategoryStatusUseCase.execute(categoryId);
 
             res.status(OK).json({ success: true });
-        } catch (error:any) {
-            this._loggerService.error(`toggleCategoryStatus Error:, ${error.message}`,{ stack : error.stack });
+        } catch (error) {
             next(error);
         }
     }

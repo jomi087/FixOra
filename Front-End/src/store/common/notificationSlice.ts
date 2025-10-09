@@ -3,6 +3,7 @@ import AuthService from "@/services/AuthService";
 import type { Notification } from "@/shared/Types/booking";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
 
 interface NotificationState {
@@ -28,9 +29,17 @@ export const fetchNotifications = createAsyncThunk<
     try {
       const res = await AuthService.getNotificationsApi();
       return res.data.notificationData;
-    } catch (err: any) {
-      console.log("fetchNotificationError", err);
-      return rejectWithValue(err.message || "Failed to fetch notifications");
+
+    } catch (err) {
+
+      let errorMsg = "Failed to fetch notifications";
+      if (axios.isAxiosError(err)) {
+        errorMsg =
+          err?.response?.data?.message || err.message || "Failed to fetch notifications";
+      } else if (err instanceof Error) {
+        errorMsg = err.message ||  "Failed to fetch notifications";
+      }
+      return rejectWithValue(errorMsg);
     }
   }
 );
@@ -67,7 +76,7 @@ const notificationSlice = createSlice({
   },
 });
 
-export const { addNotification,clearNotifications,markAsRead } = notificationSlice.actions;
+export const { addNotification, clearNotifications, markAsRead } = notificationSlice.actions;
 export default notificationSlice.reducer;
 
 /*

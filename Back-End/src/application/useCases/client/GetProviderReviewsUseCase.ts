@@ -35,20 +35,33 @@ export class GetProviderReviewsUseCase implements IGetProviderReviewsUseCase {
                     lname: item.user.lname,
                 },
             }));
-            
-            const totalPages = Math.ceil(reviewData.total / limit);             
+
+            const totalPages = Math.ceil(reviewData.total / limit);
 
             return {
                 data: mappedData,
                 total: totalPages
             };
 
-        } catch (error: any) {
-            console.log(error);
-            if (error.status && error.message) {
+        } catch (error) {
+            if (error.message) {
                 throw error;
             }
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
     }
 }
+
+/*
+           if (error instanceof Error) {
+                const appError = new AppError(INTERNAL_SERVER_ERROR, error.message || "Internal Server Error");
+                appError.stack = error.stack;
+                throw appError;
+            }
+
+            if (error instanceof AppError) {
+                throw error;
+            }
+            
+            throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR);
+*/

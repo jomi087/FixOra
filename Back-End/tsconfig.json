@@ -20,6 +20,8 @@
     "noUnusedParameters": false,                        /* Disable checking for unused parameters */
     "noFallthroughCasesInSwitch": true,                 /* Report errors for fallthrough cases in switch statement */
     "skipLibCheck": true,                               /* Skip type checking of declaration files */
+    
+    "useUnknownInCatchVariables": false,
   },
   "include": ["src/**/*"], // Includes all TypeScript files in the src folder and its subfolders.
   "exclude": ["node_modules","dist"] // Excludes the node_modules folder from compilation.

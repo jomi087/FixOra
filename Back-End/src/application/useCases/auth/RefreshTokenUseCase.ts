@@ -51,7 +51,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
                 refreshToken: newRefreshToken,
             };
 
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

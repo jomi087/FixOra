@@ -13,6 +13,7 @@ import { PaymentMode } from "@/shared/enums/Payment";
 import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { loadStripe } from "@stripe/stripe-js";
 import { NotificationType } from "@/shared/enums/NotificationType";
+import type { AxiosError } from "axios";
 
 
 export const useBookingRequest = () => {
@@ -98,7 +99,8 @@ export const useBookingRequest = () => {
         setSelectedServiceId("");
         setDescription("");
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       setIsWaiting(false);
       if (error.status == HttpStatusCode.CONFLICT) {
         dispatch(fetchProviderInfo(data.providerId));
@@ -163,7 +165,8 @@ export const useBookingRequest = () => {
         setShowModePayment(false);
         setIsWaiting(false);
 
-      } catch (error: any) {
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
         console.log(error);
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);
@@ -190,7 +193,8 @@ export const useBookingRequest = () => {
           setIsWaiting(false);
         }
 
-      } catch (error: any) {
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
         console.log(error);
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);

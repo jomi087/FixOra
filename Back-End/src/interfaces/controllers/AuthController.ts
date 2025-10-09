@@ -53,8 +53,7 @@ export class AuthController {
                 message: OTP_SENT,
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`Signup error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -73,8 +72,7 @@ export class AuthController {
                 message: ACCOUNT_CREATED_SUCCESS
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`Signup verification error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -89,8 +87,7 @@ export class AuthController {
                 message: OTP_SENT,
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`resendOtp error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -122,8 +119,7 @@ export class AuthController {
                     message: SIGNIN_SUCCESSFUL,
                     userData: result.userData,
                 });
-        } catch (error: any) {
-            this._loggerService.error(`googleSignin error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
 
@@ -153,8 +149,7 @@ export class AuthController {
                     message: SIGNIN_SUCCESSFUL,
                     userData: result.userData,
                 });
-        } catch (error: any) {
-            this._loggerService.error(`signin error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -169,8 +164,7 @@ export class AuthController {
                 message: VERIFICATION_MAIL_SENT
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`ForgotPassword error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -187,8 +181,7 @@ export class AuthController {
                 message: PASSWORD_RESET_SUCCESS,
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`verifyOtp error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
 
@@ -214,8 +207,7 @@ export class AuthController {
                     location: req.user?.location,
                 }
             });
-        } catch (error: any) {
-            this._loggerService.error(`checkAuth error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -246,8 +238,7 @@ export class AuthController {
                 message: TOKENS_REFRESHED_SUCCESS
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`Refresh token error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
 
             // Clear tokens on error
             const cookieOptions = {
@@ -284,8 +275,7 @@ export class AuthController {
                 .clearCookie("refreshToken", options)
                 .json({ message: LOGGED_OUT });
 
-        } catch (error: any) {
-            this._loggerService.error(`signout error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }

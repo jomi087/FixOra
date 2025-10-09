@@ -57,7 +57,7 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
@@ -126,7 +126,7 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
                 },
             };
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) {
                 throw error;

@@ -30,7 +30,7 @@ export class ProviderAuthStrategy  implements IAuthStrategy  {
             
             return { userData: user, role: RoleEnum.Provider };
             
-        } catch (error:any ) {
+        } catch (error) {
             if (error.status && error.message) throw error;
 
             throw {

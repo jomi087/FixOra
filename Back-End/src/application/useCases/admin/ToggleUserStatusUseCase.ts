@@ -19,7 +19,7 @@ export class ToggleUserStatusUseCase implements IToggleUserStatusUseCase {
                 throw { status: NOT_FOUND, message: USER_NOT_FOUND  };
             }
 
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

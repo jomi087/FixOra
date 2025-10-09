@@ -20,8 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, shortInputLength } from "@/utils/constant";
 import AddressDialog from "@/components/common/Others/AddressDialog";
-
-
+import type { AxiosError } from "axios";
 
 interface VerifyProfileProps {
     toggle: (editMode: boolean) => void;
@@ -111,7 +110,8 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
             }
           }));
 
-        } catch (error: any) {
+        } catch (err) {
+          const error = err as AxiosError<{ message: string }>;
           const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_ADDRESS_CORDINATES;
           toast.error(errorMsg);
         } finally {
@@ -153,7 +153,8 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
       }));
 
       setIsDialogOpen(false);
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CORDINATES;
       toast.error(errorMsg);
     } finally {
@@ -194,7 +195,8 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
         toast.success("Updated");
         toggle(true);
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.PROFILE_MODIFICATION_FAILED;
       toast.error(errorMsg);
     } finally {
@@ -235,7 +237,7 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
             maxLength={shortInputLength}
           />
           <p className="text-[12px] font-extralight before:content-['*'] before:text-red-500 before:mr-1">
-                        Make sure your Name is exactly the same as in your ID card
+            Make sure your Name is exactly the same as in your ID card
           </p>
         </div>
 
@@ -285,7 +287,7 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
               onClick={handleGetLocation}
               disabled={loading}
             >
-                            Use Current Location
+              Use Current Location
             </Button>
           </div>
         </div>
@@ -295,7 +297,7 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
           <Button variant="outline" type="button"
             onClick={() => navigate(-1)}
           >
-                        Go Back
+            Go Back
           </Button>
           <Button type="submit" disabled={loading}>Next</Button>
         </div>

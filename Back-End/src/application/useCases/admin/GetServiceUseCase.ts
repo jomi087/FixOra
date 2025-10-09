@@ -41,7 +41,7 @@ export class GetServiceUseCase implements IGetServiceUseCase {
                 total : categories.total
             };
 
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

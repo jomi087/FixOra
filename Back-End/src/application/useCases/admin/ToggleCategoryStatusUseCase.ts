@@ -28,7 +28,7 @@ export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase
             //save
             await this._categoryRepository.save(category);
     
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

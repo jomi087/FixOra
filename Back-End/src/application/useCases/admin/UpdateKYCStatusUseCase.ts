@@ -72,7 +72,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
 
             return KYC_APPROVED;
 
-        } catch (error: any) {
+        } catch (error) {
             //if db error then roll back
             request.status = KYCStatus.Pending;
             request.reviewedAt = undefined;
@@ -99,7 +99,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
                 throw { status: BAD_REQUEST, message: INVALID_ACTION };
             }
             return { id , message };
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
@@ -156,7 +156,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
 
             throw { status : BAD_REQUEST , message : INVALID_ACTION }  
 
-        } catch (error:any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

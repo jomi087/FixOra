@@ -45,7 +45,7 @@ export class PaymentService implements IPaymentService {
 
             return session.id;
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
@@ -83,7 +83,7 @@ export class PaymentService implements IPaymentService {
             });
             return session.id;
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
@@ -176,7 +176,7 @@ export class PaymentService implements IPaymentService {
             default:
                 return null;
             }
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

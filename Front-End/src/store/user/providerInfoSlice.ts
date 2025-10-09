@@ -2,6 +2,7 @@ import AuthService from "@/services/AuthService";
 import type { ProviderInfo, providerReviews } from "@/shared/Types/user";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
 
@@ -34,7 +35,8 @@ export const fetchProviderInfo = createAsyncThunk<ProviderInfo, string>(
     try {
       const res = await AuthService.providerInfoApi(providerId);
       return res.data.providerInfoData;
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
       return rejectWithValue(errorMsg);
@@ -55,8 +57,10 @@ export const fetchProviderReviews = createAsyncThunk<
         reviews: res.data.providerReviewData,
         totalPages: res.data.totalPages,
       };
-    } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
+      const errorMsg = error?.response?.data?.message ||error.message|| Messages.FAILED_TO_FETCH_DATA;
+      toast.error(errorMsg);
       return rejectWithValue(errorMsg);
     }
   }

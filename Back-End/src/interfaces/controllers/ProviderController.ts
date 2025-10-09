@@ -51,8 +51,7 @@ export class ProviderController {
                 updatedBookingStatusData: data
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`updateBookingStatus error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -71,8 +70,7 @@ export class ProviderController {
                 providerBookingsInfoData: data
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -92,8 +90,7 @@ export class ProviderController {
                 jobDetailsData: data
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -117,8 +114,7 @@ export class ProviderController {
                 total: result.total
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -141,8 +137,7 @@ export class ProviderController {
                 message: "An OTP sent successfully to user"
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -161,8 +156,7 @@ export class ProviderController {
                 message: "SucessFull"
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -213,8 +207,7 @@ export class ProviderController {
                 diagnosis: diagnosed
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -234,8 +227,7 @@ export class ProviderController {
                 availabilityData: mappedData,
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -256,8 +248,7 @@ export class ProviderController {
                 availabilityData: mappedData,
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }
@@ -278,8 +269,7 @@ export class ProviderController {
                 message: "status updated",
             });
 
-        } catch (error: any) {
-            this._loggerService.error(`bookings error:, ${error.message}`, { stack: error.stack });
+        } catch (error) {
             next(error);
         }
     }

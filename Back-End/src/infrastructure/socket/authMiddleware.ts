@@ -24,7 +24,7 @@ export const socketAuthMiddleware = (logger: ILoggerService) => {
             socket.data.role = decoded.role;
 
             next();
-        } catch (error: any) {
+        } catch (error) {
       
             logger.error("Socket auth error:", error);
             next(new Error("Unauthorized"));

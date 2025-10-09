@@ -42,7 +42,8 @@ const BookingAction: React.FC<BookingActionProps> = ({ id, status, paymentInfo, 
 
       setOtp(false);
 
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.OTP_VERIFICATION_FAILED;
       toast.error(errorMsg);
     }

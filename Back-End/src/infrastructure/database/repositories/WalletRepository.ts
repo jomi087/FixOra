@@ -1,3 +1,4 @@
+import { PipelineStage } from "mongoose";
 import { Wallet } from "../../../domain/entities/WalletEntity";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { TransactionStatus, TransactionType } from "../../../shared/Enums/Transaction";
@@ -58,7 +59,7 @@ export class WalletRepository implements IWalletRepository {
     ): Promise<{ data: Wallet; totalTransactions: number } | null> {
         const skip = (currentPage - 1) * limit;
 
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             { $match: { userId } },
             { $unwind: { path: "$transactions", preserveNullAndEmptyArrays: true } },
             { $sort: { "transactions.createdAt": -1 } },

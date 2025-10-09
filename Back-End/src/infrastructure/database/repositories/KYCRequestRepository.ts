@@ -1,3 +1,4 @@
+import { PipelineStage } from "mongoose";
 import { Category } from "../../../domain/entities/CategoryEntity";
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity";
 import { User } from "../../../domain/entities/UserEntity";
@@ -50,7 +51,7 @@ export class KYCRequestRepository implements IKYCRequestRepository {
         const { searchQuery, filter } = option;
         const skip = (currentPage - 1) * limit;
 
-        const matchConditions: any = {};
+        const matchConditions:  Record<string, unknown>  = {};
 
         // Filter by status
         if (filter) {
@@ -66,7 +67,7 @@ export class KYCRequestRepository implements IKYCRequestRepository {
             ];
         }
 
-        const pipeline: any[] = [
+        const pipeline: PipelineStage[] = [
             //join User Colletion
             {
                 $lookup: {

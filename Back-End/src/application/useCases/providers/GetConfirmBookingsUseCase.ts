@@ -27,7 +27,7 @@ export class GetConfirmBookingsUseCase implements IGetConfirmBookingsUseCase {
 
             return  mappedData;
 
-        } catch (error: any) {
+        } catch (error) {
             console.log(error,"dkd");
             if (error.status && error.message) {
                 throw error;

@@ -26,7 +26,7 @@ export class AdminAuthStrategy  implements IAuthStrategy  {
             if (!isMatch) throw { status: FORBIDDEN , message: INVALID_CREDENTIALS };
             return { userData: user, role: RoleEnum.Admin };
             
-        } catch (error: any ) {
+        } catch (error ) {
             if (error.status && error.message) throw error;
             throw {
                 status: INTERNAL_SERVER_ERROR,

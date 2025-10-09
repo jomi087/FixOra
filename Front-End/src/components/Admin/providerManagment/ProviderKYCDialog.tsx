@@ -10,6 +10,7 @@ import { KYCStatus } from "@/shared/enums/KycStatus";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { ApprovedSeal, Messages, RejectSeal } from "@/utils/constant";
 import { ImageModal } from "@/components/common/Others/ImageModal";
+import type { AxiosError } from "axios";
 
 
 interface ProviderKYCDialogProps {
@@ -33,7 +34,8 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
         updateData(res.data.id);
         setSelectedProvider(null);
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
     } finally {
@@ -53,7 +55,8 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
 
       }
 
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
 
       const errorMsg = error?.response?.data?.message || "Failed to  Reject application";
       toast.error(errorMsg);

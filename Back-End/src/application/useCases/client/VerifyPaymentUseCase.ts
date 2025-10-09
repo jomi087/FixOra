@@ -62,7 +62,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }
@@ -196,7 +196,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                 }, 5000);
             }
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
         }

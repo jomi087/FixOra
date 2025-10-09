@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import type { MainCategory } from "@/shared/Types/category";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 // import type { ProviderImage } from "@/shared/Types/providers"
 
 
@@ -26,7 +27,8 @@ const LandingPage: React.FC = () => {
           setCategories(res.data?.landingData?.categories);
           // setProviders(res.data?.providers)
         }
-      } catch (error: any) {
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
         // console.log(error)
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
         toast.error(errorMsg);

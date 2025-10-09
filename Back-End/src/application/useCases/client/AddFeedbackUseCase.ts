@@ -34,7 +34,7 @@ export class AddFeedbackUseCase implements IAddFeedbackUseCase {
                 createdAt: new Date()
             });
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

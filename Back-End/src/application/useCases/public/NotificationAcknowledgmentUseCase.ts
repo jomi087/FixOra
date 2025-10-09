@@ -15,7 +15,7 @@ export class NotificationAcknowledgmentUseCase implements INotificationAcknowled
         try {
             await this._notificationRepository.markAsRead(notificationId);
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

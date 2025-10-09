@@ -4,6 +4,7 @@ import AuthService from "@/services/AuthService";
 import { RoleEnum } from "@/shared/enums/roles";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 
 export const useOtpLogic = () => {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ export const useOtpLogic = () => {
           navigate(`/signIn/${RoleEnum.CUSTOMER}`);
         }, 500);
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.OTP_VERIFICATION_FAILED ;
       toast.error(errorMsg);
       if (error?.response?.status === 403) {
@@ -32,7 +34,8 @@ export const useOtpLogic = () => {
       if (res.status === HttpStatusCode.OK) {
         toast.info(res.data.message || Messages.OTP_SENT_SUCCESS );
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.OTP_RESENT_FAILED ;
       toast.error(errorMsg);
     }

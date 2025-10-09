@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { validateCity, validateState, validateDistrict, validateHouseInfo, validateLocality, validatePostalCode, validateStreet } from "@/utils/validation/addressValidation";
 import type { Address } from "@/shared/Types/location";
 import { Messages, shortInputLength } from "@/utils/constant";
+import type { AxiosError } from "axios";
 
 interface AddAdressProps {
     saveAdress: (formData: Address) => Promise<void>;
@@ -50,7 +51,8 @@ const AddressDialog: React.FC<AddAdressProps> = ({ saveAdress, open, setOpen, pr
         locality: Block || "",
         state: State || ""
       }));
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMsg =
                 error?.message || Messages.FAILED_FETCH_POSTAL_INFO;
       toast.error(errorMsg);

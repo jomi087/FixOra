@@ -51,7 +51,8 @@ export const toggleAvailability = createAsyncThunk(
     try {
       await AuthService.toggleAvailability(day,leaveOption);
       return { day, active };
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(error.response?.data?.message || "Failed to update status");
     }
   }

@@ -2,6 +2,7 @@ import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { Category } from "@/shared/Types/category";
 import { Messages, SLPP } from "@/utils/constant";
+import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
@@ -31,7 +32,8 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
           setTotalCateogories(res.data.total);
 
         }
-      } catch (error: any) {
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CATEGORY ;
         toast.error(errorMsg);
       } finally {

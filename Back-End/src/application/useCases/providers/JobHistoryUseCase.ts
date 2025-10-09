@@ -33,7 +33,7 @@ export class JobHistoryUseCase implements IJobHistoryUseCase {
                 total: bookings.total
             };
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

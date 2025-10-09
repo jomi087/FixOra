@@ -58,7 +58,7 @@ export class SignupUseCase implements ISignupUseCase{
 
             return tempToken;
 
-        } catch (error: any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }

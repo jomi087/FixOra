@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 
 export const useChangePasswordLogic = () => {
   const [searchParams] = useSearchParams();
@@ -36,7 +37,8 @@ export const useChangePasswordLogic = () => {
           navigate("/customer/account/profile");
         });
       }
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
       console.error("Reset Password Error:", error);
       const errorMsg = error?.response?.data?.message || Messages.PASSWORD_UPDATE_FAILED;
       toast.error(errorMsg);

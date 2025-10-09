@@ -43,7 +43,7 @@ export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
             
             await this._emailService.sendEmail(user.email, "FixOra Reset Password", html); 
 
-        } catch (error :any) {
+        } catch (error) {
             if (error.status && error.message) {
                 throw error;
             }
