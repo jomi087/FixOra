@@ -1,6 +1,6 @@
-import type { Day, LeaveOption } from "@/shared/Types/availability";
+import type { Day, LeaveOption } from "@/shared/types/availability";
 import axiosInstance from "./axiosConfig";
-import type { ProfileEdit, Signin, Signup } from "@/shared/Types/user";
+import type { ProfileEdit, Signin, Signup } from "@/shared/types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
 import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { API_ROUTES } from "@/utils/constant";

@@ -1,5 +1,5 @@
 import AuthService from "@/services/AuthService";
-import type { WalletInfo } from "@/shared/Types/wallet";
+import type { WalletInfo } from "@/shared/types/wallet";
 import { Messages, TLPP } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";

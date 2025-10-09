@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import type { Category } from "@/shared/Types/category";
+import type { Category } from "@/shared/types/category";
 import { Textarea } from "../../ui/textarea";
 import { CiEdit } from "react-icons/ci";
 import { longInputLength, shortInputLength } from "@/utils/constant";

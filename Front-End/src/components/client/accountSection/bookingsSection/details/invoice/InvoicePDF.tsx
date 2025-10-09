@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, Image } from "@react-pdf/renderer";
-import type { BookingInfoDetails } from "@/shared/Types/booking";
+import type { BookingInfoDetails } from "@/shared/types/booking";
 import { toPascalCase } from "@/utils/helper/utils";
 import { styles } from "./style";
 

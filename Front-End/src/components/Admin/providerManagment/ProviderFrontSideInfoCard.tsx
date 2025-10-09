@@ -1,4 +1,4 @@
-import type { ProviderData } from "@/shared/Types/user";
+import type { ProviderData } from "@/shared/types/user";
 import { IoPersonCircleOutline } from "react-icons/io5";
 
 interface ProviderFrontSideInfoCardProps {

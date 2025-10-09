@@ -1,7 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
-import type { MainCategory } from "@/shared/Types/category";
-// import type { ProviderImage } from '@/shared/Types/providers';
+import type { MainCategory } from "@/shared/types/category";
 
 
 //temp data

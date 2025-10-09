@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import type { ProfileEdit } from "@/shared/Types/user";
-import type { Address } from "@/shared/Types/location";
+import type { ProfileEdit } from "@/shared/types/user";
+import type { Address } from "@/shared/types/location";
 
 import { getAddressFromCoordinates } from "@/utils/helper/reverseGeocodingLocation";
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";

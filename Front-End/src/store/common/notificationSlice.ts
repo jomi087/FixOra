@@ -1,6 +1,6 @@
 // notificationSlice.ts
 import AuthService from "@/services/AuthService";
-import type { Notification } from "@/shared/Types/booking";
+import type { Notification } from "@/shared/types/booking";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";

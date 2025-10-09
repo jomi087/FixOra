@@ -1,6 +1,6 @@
 //This is a version with createAsyncThunk [Regular version given below]
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { Category } from "@/shared/Types/category";
+import type { Category } from "@/shared/types/category";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
 import { Messages } from "@/utils/constant";
@@ -62,7 +62,7 @@ export default categorySlice.reducer;
 
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Category } from "@/shared/Types/category";
+import type { Category } from "@/shared/types/category";
 
 interface CategoryState {
   categories: Category[];

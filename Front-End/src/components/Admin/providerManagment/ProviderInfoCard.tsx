@@ -1,4 +1,4 @@
-import type { ProviderData } from "@/shared/Types/user";
+import type { ProviderData } from "@/shared/types/user";
 import React from "react";
 import FlippableProviderCard from "./FlippableProviderCard";
 

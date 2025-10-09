@@ -1,7 +1,7 @@
 import Spline from "@splinetool/react-spline";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { Signup } from "@/shared/Types/user";
+import type { Signup } from "@/shared/types/user";
 import { RoleEnum } from "@/shared/enums/roles";
 import { App_Name, shortInputLength, } from "@/utils/constant";
 

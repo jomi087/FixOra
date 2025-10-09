@@ -6,7 +6,7 @@ import { useState } from "react";
 import { getPostalInfo } from "@/utils/helper/postalinfo";
 import { toast } from "react-toastify";
 import { validateCity, validateState, validateDistrict, validateHouseInfo, validateLocality, validatePostalCode, validateStreet } from "@/utils/validation/addressValidation";
-import type { Address } from "@/shared/Types/location";
+import type { Address } from "@/shared/types/location";
 import { Messages, shortInputLength } from "@/utils/constant";
 import type { AxiosError } from "axios";
 
