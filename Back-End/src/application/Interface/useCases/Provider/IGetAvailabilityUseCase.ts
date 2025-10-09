@@ -1,4 +1,4 @@
-import { getAvailabilityOutputDTO } from "../../../DTO's/AvailabilityDTO";
+import { getAvailabilityOutputDTO } from "../../../DTOs/AvailabilityDTO";
 
 export interface IGetAvailabilityUseCase{
     execute( providerUserId: string ):Promise<getAvailabilityOutputDTO[]>

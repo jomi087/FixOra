@@ -5,14 +5,14 @@ import { IImageUploaderService } from "../../../domain/interface/ServiceInterfac
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { WorkCompletionInputDTO, WorkCompletionOutputDTO } from "../../DTO's/WorkCompletionDTO";
+import { WorkCompletionInputDTO, WorkCompletionOutputDTO } from "../../DTOs/WorkCompletionDTO";
 import { IWorkCompletionUseCase } from "../../Interface/useCases/Provider/IWorkCompletionUseCase";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { PLATFORM_FEE } from "../../../shared/const/constants";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { NotificationType } from "../../../shared/enums/Notification";
-import { SendWorkFinsihedInput } from "../../DTO's/NotificationDTO";
+import { SendWorkFinsihedInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 

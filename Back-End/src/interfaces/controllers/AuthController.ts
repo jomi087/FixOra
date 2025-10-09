@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 //api logic
-import { SignupDTO } from "../../application/DTO's/AuthDTO/SignupDTO";
-import { SigninInputDTO } from "../../application/DTO's/AuthDTO/SigninDTO";
+import { SignupDTO } from "../../application/DTOs/AuthDTO/SignupDTO";
+import { SigninInputDTO } from "../../application/DTOs/AuthDTO/SigninDTO";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";

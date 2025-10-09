@@ -9,7 +9,7 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { KYCStatus } from "../../../shared/enums/KYCstatus";
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { Messages } from "../../../shared/const/Messages";
-import { KYCInputDTO } from "../../DTO's/KYCDTO";
+import { KYCInputDTO } from "../../DTOs/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/Client/IKYCRequestUseCase";
 import { NotificationType } from "../../../shared/enums/Notification";
 

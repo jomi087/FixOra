@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import {  EditProfileInputDTO, ProfileDTO, UpdatedProfileOutputDTO } from "../../DTO's/EditProfileDTO";
+import {  EditProfileInputDTO, ProfileDTO, UpdatedProfileOutputDTO } from "../../DTOs/EditProfileDTO";
 import { IUpdateProfileUseCase } from "../../Interface/useCases/Client/IUpdateProfileUseCase";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;

@@ -1,4 +1,4 @@
-import { GetLandingDataOutputDTO } from "../../../DTO's/LandingPageDto";
+import { GetLandingDataOutputDTO } from "../../../DTOs/LandingPageDto";
 
 export interface IGetLandingDataUseCase {
     execute():Promise<GetLandingDataOutputDTO>

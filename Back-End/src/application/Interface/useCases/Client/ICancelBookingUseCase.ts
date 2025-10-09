@@ -1,4 +1,4 @@
-import { CancelBookingInputDTO, CancelBookingOutputDTO } from "../../../DTO's/BookingDTO/BookingInfoDTO";
+import { CancelBookingInputDTO, CancelBookingOutputDTO } from "../../../DTOs/BookingDTO/BookingInfoDTO";
 
 export interface ICancelBookingUseCase  {
     execute(input: CancelBookingInputDTO):Promise<CancelBookingOutputDTO>

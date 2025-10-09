@@ -1,4 +1,4 @@
-import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../../DTO's/GetCustomerDTO";
+import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../../DTOs/GetCustomerDTO";
 
 export interface IGetCustomersUseCase {
   execute(input: GetCustomersInputDTO): Promise<GetCustomersOutputDTO>;

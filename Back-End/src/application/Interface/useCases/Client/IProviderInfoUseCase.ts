@@ -1,4 +1,4 @@
-import { ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../../DTO's/ProviderInfoDTO";
+import { ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../../DTOs/ProviderInfoDTO";
 
 export interface IProviderInfoUseCase{
     execute(input: ProviderInfoInputDTO ): Promise<ProviderInfoOutputDTO>

@@ -6,7 +6,7 @@ import { ITokenService } from "../../../domain/interface/ServiceInterface/IToken
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase";
-import { SignInOutputDTO } from "../../DTO's/AuthDTO/SigninDTO";
+import { SignInOutputDTO } from "../../DTOs/AuthDTO/SigninDTO";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, FORBIDDEN } = HttpStatusCode;
 const { INTERNAL_ERROR, USER_NOT_FOUND, ACCOUNT_BLOCKED } = Messages;

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { DecodedUserDTO  } from "../../DTO's/AuthDTO/DecodedUserDTO";
+import { DecodedUserDTO  } from "../../DTOs/AuthDTO/DecodedUserDTO";
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";

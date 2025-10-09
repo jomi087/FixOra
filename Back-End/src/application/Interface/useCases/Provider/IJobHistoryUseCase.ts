@@ -1,4 +1,4 @@
-import { JobHistoryInputDTO, JobHistoryOutputDTO } from "../../../DTO's/BookingDTO/BookingHistoryDTO";
+import { JobHistoryInputDTO, JobHistoryOutputDTO } from "../../../DTOs/BookingDTO/BookingHistoryDTO";
 
 export interface IJobHistoryUseCase {
   execute(input: JobHistoryInputDTO): Promise<JobHistoryOutputDTO>;

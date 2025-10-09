@@ -2,7 +2,7 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { Gender } from "../../../shared/enums/Gender";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { ActiveProviderDTO, GetActiveProvidersInputDTO, GetActiveProvidersOutputDTO } from "../../DTO's/GetActiveProvidersDTO";
+import { ActiveProviderDTO, GetActiveProvidersInputDTO, GetActiveProvidersOutputDTO } from "../../DTOs/GetActiveProvidersDTO";
 import { IGetActiveProvidersUseCase } from "../../Interface/useCases/Client/IGetActiveProvidersUseCase";
 
 

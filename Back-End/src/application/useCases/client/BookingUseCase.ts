@@ -3,7 +3,7 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { Messages } from "../../../shared/const/Messages";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } from "../../DTO's/BookingDTO/CreateBookingApplicationDTO";
+import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } from "../../DTOs/BookingDTO/CreateBookingApplicationDTO";
 import { IBookingUseCase } from "../../Interface/useCases/Client/IBookingUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";

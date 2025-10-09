@@ -1,7 +1,7 @@
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { ReviewInputDTO, ReviewOutputDTO } from "../../DTO's/ReviewDTO";
+import { ReviewInputDTO, ReviewOutputDTO } from "../../DTOs/ReviewDTO";
 import { IGetProviderReviewsUseCase } from "../../Interface/useCases/Client/IGetProviderReviewsUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;

@@ -1,4 +1,4 @@
-import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../../DTO's/AvailabilityDTO";
+import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../../DTOs/AvailabilityDTO";
 
 export interface ISetAvailabilityUseCase{
     execute(input:setAvailabilityInputDTO):Promise<setAvailabilityOutputDTO[]>

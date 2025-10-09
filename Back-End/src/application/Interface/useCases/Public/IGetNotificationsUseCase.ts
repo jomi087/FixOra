@@ -1,4 +1,4 @@
-import { NotificationOutputDTO } from "../../../DTO's/NotificationDTO";
+import { NotificationOutputDTO } from "../../../DTOs/NotificationDTO";
 
 export interface IGetNotificationsUseCase {
     execute(userId: string):Promise<NotificationOutputDTO[]>

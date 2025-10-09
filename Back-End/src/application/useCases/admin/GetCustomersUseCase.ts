@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../DTO's/GetCustomerDTO";
+import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../DTOs/GetCustomerDTO";
 import { IGetCustomersUseCase } from "../../Interface/useCases/Admin/IGetCustomersUseCase";
 
 

@@ -1,7 +1,7 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { GetLandingDataOutputDTO } from "../../DTO's/LandingPageDto";
+import { GetLandingDataOutputDTO } from "../../DTOs/LandingPageDto";
 import { IGetLandingDataUseCase } from "../../Interface/useCases/Public/IGetLandingDataUseCase";
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;

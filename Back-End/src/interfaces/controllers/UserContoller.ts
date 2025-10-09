@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IVerifyPasswordUseCase } from "../../application/Interface/useCases/Client/IVerifyPasswordUseCase";
 import validateFile from "../validations/fileValidation";
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
-import { KYCInputDTO } from "../../application/DTO's/KYCDTO";
+import { KYCInputDTO } from "../../application/DTOs/KYCDTO";
 import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
@@ -26,7 +26,6 @@ import { allowedTypes, maxSizeMB } from "../../shared/const/constants";
 import { IAddFeedbackUseCase } from "../../application/Interface/useCases/Client/IAddFeedbackUseCase";
 import { IReviewStatusUseCase } from "../../application/Interface/useCases/Client/IReviewStatusUseCase";
 import { IGetProviderReviewsUseCase } from "../../application/Interface/useCases/Client/IGetProviderReviewsUseCase";
-// import { FileData } from "../../application/DTO's/Common/FileDataDTO";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
