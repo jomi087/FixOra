@@ -1,6 +1,6 @@
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { ConfirmJobBookings } from "@/shared/Types/booking";
+import type { ConfirmJobBookings } from "@/shared/types/booking";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";

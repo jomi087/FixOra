@@ -1,6 +1,6 @@
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { Category } from "@/shared/Types/category";
+import type { Category } from "@/shared/types/category";
 import { Messages, SLPP } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";

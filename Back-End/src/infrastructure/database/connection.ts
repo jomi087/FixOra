@@ -31,7 +31,7 @@ export default mongoConnect;
 
 //Notes 
 /* This above code is same as the this basic version(give below) jst added  
-Types ,
+types ,
 Fallback url(same like port number)
  and 
 Retry with delay logic 

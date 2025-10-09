@@ -1,6 +1,6 @@
 // import socket from "@/services/soket";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import type { ConfirmJobBookings } from "@/shared/Types/booking";
+import type { ConfirmJobBookings } from "@/shared/types/booking";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addConfirmedBooking, fetchProviderBookingsInfo, removeBooking } from "@/store/provider/bookingSlice";
 import { ONE_WEEK, TIME_SLOTS } from "@/utils/constant";

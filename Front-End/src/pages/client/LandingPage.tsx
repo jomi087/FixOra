@@ -6,11 +6,10 @@ import Footer from "../../components/common/layout/Footer";
 import Nav from "../../components/common/layout/Nav";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
-import type { MainCategory } from "@/shared/Types/category";
+import type { MainCategory } from "@/shared/types/category";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
-// import type { ProviderImage } from "@/shared/Types/providers"
 
 
 const LandingPage: React.FC = () => {

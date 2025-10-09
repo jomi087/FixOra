@@ -1,4 +1,4 @@
-import type { Day } from "@/shared/Types/availability";
+import type { Day } from "@/shared/types/availability";
 import { format, setHours, setMinutes, addDays, addMinutes } from "date-fns";
 
 //Date

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import type { AddressWithCoordinates } from "@/shared/Types/location";
+import type { AddressWithCoordinates } from "@/shared/types/location";
 import { BsChatLeftText } from "react-icons/bs";
 
 interface ClientInfoProps {

@@ -1,5 +1,5 @@
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import type { ConfirmJobBookings } from "@/shared/Types/booking";
+import type { ConfirmJobBookings } from "@/shared/types/booking";
 import { splitDateTime } from "@/utils/helper/date&Time";
 
 interface ConfirmedSlotsProps {

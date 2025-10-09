@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import type { Coordinates } from "@/shared/Types/location";
+import type { Coordinates } from "@/shared/types/location";
 
 
 export const getCoordinatesFromAddress = async (address: string): Promise<Coordinates> => {

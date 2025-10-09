@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import type { Day, LeaveOption } from "@/shared/Types/availability";
+import type { Day, LeaveOption } from "@/shared/types/availability";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchAvailability, saveAvailability, toggleAvailability } from "@/store/provider/availabilitySlice";

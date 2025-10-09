@@ -1,5 +1,5 @@
 import AuthService from "@/services/AuthService";
-import type { ProviderData } from "@/shared/Types/user";
+import type { ProviderData } from "@/shared/types/user";
 import { usePaginatedProviderApi } from "./usePaginatedProviderApi";
 import { PCPP } from "@/utils/constant";
 

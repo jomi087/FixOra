@@ -1,5 +1,5 @@
 import socket from "@/services/soket";
-import type { BookingAutoRejectPayload, BookingRequestPayload, Notification } from "@/shared/Types/booking";
+import type { BookingAutoRejectPayload, BookingRequestPayload, Notification } from "@/shared/types/booking";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import React, { useEffect, useRef, useState } from "react";
 import BookingApplicationDialouge from "../../components/provider/BookingApplicationDialouge";

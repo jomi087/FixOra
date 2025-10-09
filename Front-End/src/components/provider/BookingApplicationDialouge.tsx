@@ -1,4 +1,4 @@
-import type { BookingRequestPayload } from "@/shared/Types/booking";
+import type { BookingRequestPayload } from "@/shared/types/booking";
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, } from "@/components/ui/alert-dialog";
