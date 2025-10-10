@@ -23,6 +23,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { user } = useAppSelector((state) => state.auth);
+  console.log("user",user);
   if (user?.role === RoleEnum.CUSTOMER && !toggle) {
     throw new Error(" The 'toggle' prop is required ");
   }
