@@ -18,7 +18,5 @@ export interface ProfileDTO {
 }
 
 
-export interface UpdatedProfileOutputDTO {
-    data: ProfileDTO;
-}
+export interface UpdatedProfileOutputDTO  extends ProfileDTO{}
 

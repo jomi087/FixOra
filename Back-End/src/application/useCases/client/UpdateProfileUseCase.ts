@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import {  EditProfileInputDTO, ProfileDTO, UpdatedProfileOutputDTO } from "../../DTOs/EditProfileDTO";
+import {  EditProfileInputDTO, UpdatedProfileOutputDTO } from "../../DTOs/EditProfileDTO";
 import { IUpdateProfileUseCase } from "../../Interface/useCases/Client/IUpdateProfileUseCase";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
@@ -46,15 +46,14 @@ export class UpdateProfileUseCase implements IUpdateProfileUseCase{
             const { geo: _, ...restLocation } = updatedUser.location!;
             // cz in eslint rules we have mention that leading traling with "_" will be ignored
 
-            const mappedData: ProfileDTO = {
+            const mappedData: UpdatedProfileOutputDTO = {
                 fname: updatedUser.fname,
-                lname: updatedUser.lname!,
-                mobileNo: updatedUser.mobileNo!,
+                lname: updatedUser.lname || "N/A" ,
+                mobileNo: updatedUser.mobileNo || "N/A" ,
                 location: restLocation
             };
 
-            return { data: mappedData };
-
+            return mappedData ;
 
         } catch (error) {
             if (error.status && error.message) {
