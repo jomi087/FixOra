@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IGetLandingDataUseCase } from "../../application/Interface/useCases/Public/IGetLandingDataUseCase";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { IGetNotificationsUseCase } from "../../application/Interface/useCases/Public/IGetNotificationsUseCase";
 import { Messages } from "../../shared/const/Messages";
 import { INotificationAcknowledgmentUseCase } from "../../application/Interface/useCases/Public/INotificationAcknowledgmentUseCase";
@@ -12,7 +11,6 @@ const { UNAUTHORIZED_MSG, NOTIFICATIONID_NOT_FOUND } = Messages;
 
 export class PublicController {
     constructor(
-        private _loggerService: ILoggerService,
         private _getLandingDataUseCase: IGetLandingDataUseCase,
         private _getNotificationsUseCase: IGetNotificationsUseCase,
         private _notificationAcknowledgmentUseCase: INotificationAcknowledgmentUseCase

@@ -3,7 +3,6 @@ import { RoleEnum } from "../../shared/enums/Roles";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
-
 import { IGetCustomersUseCase } from "../../application/Interface/useCases/Admin/IGetCustomersUseCase";
 import { IGetProvidersUseCase } from "../../application/Interface/useCases/Admin/IGetProvidersUseCase";
 import { IGetServiceUseCase } from "../../application/Interface/useCases/Admin/IGetServiceUseCase";
@@ -13,14 +12,12 @@ import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/A
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
 import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase";
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const {  UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
 
 export class AdminController {
     constructor(
-        private _loggerService: ILoggerService,
         private _getCustomersUseCase: IGetCustomersUseCase,
         private _toggleUserStatusUseCase: IToggleUserStatusUseCase,
         private _getProvidersUseCase: IGetProvidersUseCase,

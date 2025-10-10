@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCases/Provider/IUpdateBookingStatusUseCase";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
 import { IGetConfirmBookingsUseCase } from "../../application/Interface/useCases/Provider/IGetConfirmBookingsUseCase";
 import { IGetJobDetailsUseCase } from "../../application/Interface/useCases/Provider/IGetJobDetailsUseCase";
@@ -22,7 +21,6 @@ const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
 
 export class ProviderController {
     constructor(
-        private _loggerService: ILoggerService,
         private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
         private _getConfirmBookingsUseCase: IGetConfirmBookingsUseCase,
         private _getJobDetailsUseCase: IGetJobDetailsUseCase,
