@@ -5,7 +5,7 @@ export interface GetProvidersInputDTO extends PaginationInputDTO {}
 
 export interface GetProvidersOutputDTO extends PaginationOutputDTO<ProviderDTO> { }
 
-interface ProviderDTO {
+export interface ProviderDTO {
     providerId : string
     user: {
         userId: string,

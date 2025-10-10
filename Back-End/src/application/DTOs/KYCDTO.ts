@@ -1,21 +1,21 @@
 import { Gender } from "../../shared/enums/Gender";
 
-export interface KYCDTO  {
+export interface KYCFile {
+    fieldName: string;
+    originalName: string;
+    buffer: Buffer;
+}
+
+export interface KYCDTO {
     userId: string;
+    name: string;
     dob: string; // string from frontend (convert to Date in use case)
     gender: Gender;
     serviceId: string;
     specializationIds: string[];
-    profileImage: string;
     serviceCharge: number;
-    kyc: {
-        idCard: string;
-        certificate: {
-            education: string;
-            experience?: string;
-        };
-    };
+    files: Record<string, KYCFile[]>; // e.g. { profileImage: [..], idCard: [..] }
 }
 
 
-export interface KYCInputDTO extends KYCDTO {}
+export interface KYCInputDTO extends KYCDTO { }

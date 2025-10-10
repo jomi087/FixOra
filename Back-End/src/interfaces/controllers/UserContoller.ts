@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IVerifyPasswordUseCase } from "../../application/Interface/useCases/Client/IVerifyPasswordUseCase";
 import validateFile from "../validations/fileValidation";
-import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
-import { KYCInputDTO } from "../../application/DTOs/KYCDTO";
 import { IKYCRequestUseCase } from "../../application/Interface/useCases/Client/IKYCRequestUseCase";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
@@ -10,7 +8,6 @@ import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases
 import { IUpdateProfileUseCase } from "../../application/Interface/useCases/Client/IUpdateProfileUseCase";
 import { IProviderInfoUseCase } from "../../application/Interface/useCases/Client/IProviderInfoUseCase";
 import { IBookingUseCase } from "../../application/Interface/useCases/Client/IBookingUseCase";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { ICreatePaymentUseCase } from "../../application/Interface/useCases/Client/ICreatePaymentUseCase";
 import { IActiveServiceUseCase } from "../../application/Interface/useCases/Client/IActiveServiceUseCase";
 import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth/IResetPasswordUseCase";
@@ -35,11 +32,9 @@ const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED
 
 export class UserController {
     constructor(
-        private _loggerService: ILoggerService,
         private _activeServiceUseCase: IActiveServiceUseCase,
         private _getActiveProvidersUseCase: IGetActiveProvidersUseCase,
         private _kycRequestUseCase: IKYCRequestUseCase,
-        private _imageUploaderService: IImageUploaderService,
         private _providerInfoUseCase: IProviderInfoUseCase,
         private _getProviderReviewsUseCase: IGetProviderReviewsUseCase,
         private _bookingUseCase: IBookingUseCase,
@@ -115,6 +110,8 @@ export class UserController {
             const userId = req.user?.userId;
             if (!userId) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
 
+            const { dob, gender, service, specialization, serviceCharge } = req.body;
+
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
             const requiredFields = ["profileImage", "idCard", "educationCertificate"];
@@ -132,49 +129,28 @@ export class UserController {
                     }
                 }
             }
+            console.log("files", files);
 
-            const name = `${req.user?.fname}_${req.user?.lname}_${Date.now()}`;
+            const dtoFiles = Object.entries(files).reduce((acc, [key, value]) => {
+                acc[key] = value.map(f => ({
+                    fieldName: f.fieldname,
+                    originalName: f.originalname,
+                    buffer: f.buffer,
+                }));
+                return acc;
+            }, {} as Record<string, { fieldName: string; originalName: string; buffer: Buffer }[]>);
 
-            const profileImageId = await this._imageUploaderService.uploadImage(files.profileImage[0].buffer, `FixOra/Provider/${name}`);
-            const idCardId = await this._imageUploaderService.uploadImage(files.idCard[0].buffer, `FixOra/Provider/${name}`);
-            const educationCertificateId = await this._imageUploaderService.uploadImage(files.educationCertificate[0].buffer, `FixOra/Provider/${name}`);
-
-            const experienceCertificateId = files?.experienceCertificate?.[0] ?
-                await this._imageUploaderService.uploadImage(files.experienceCertificate[0].buffer, `FixOra/Provider/${name}`) : undefined;
-
-            // let plainFiles:FileData[] = [];
-            // for (let key in files) {
-            //     if (Array.isArray(files[key])) { // only process arrays, skip "length"
-            //         plainFiles = plainFiles.concat(
-            //             files[key].map(file => ({
-            //                 buffer: file.buffer,
-            //                 originalname: file.originalname
-            //             }))
-            //         );
-            //     }
-            // }
-
-
-            const { dob, gender, service, specialization, serviceCharge } = req.body;
-
-            const kycData: KYCInputDTO = {
+            console.log("dtoFiles",dtoFiles);
+            const result = await this._kycRequestUseCase.execute({
                 userId,
+                name: `${req.user?.fname}_${req.user?.lname}`,
                 dob,
                 gender,
                 serviceId: service,
                 specializationIds: specialization,
-                profileImage: profileImageId,
                 serviceCharge: Number(serviceCharge),
-                kyc: {
-                    idCard: idCardId,
-                    certificate: {
-                        education: educationCertificateId,
-                        experience: experienceCertificateId,
-                    },
-                },
-            };
-
-            const result = await this._kycRequestUseCase.execute(kycData);
+                files: dtoFiles,
+            });
 
             res.status(OK).json({
                 success: true,
@@ -211,7 +187,7 @@ export class UserController {
 
     async providerReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { id:providerId } = req.params;
+            const { id: providerId } = req.params;
 
             const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 6;
@@ -221,7 +197,7 @@ export class UserController {
             res.status(OK).json({
                 success: true,
                 providerReviewData: result.data,
-                totalPages : result.total,
+                totalPages: result.total,
             });
 
         } catch (error) {
@@ -279,9 +255,6 @@ export class UserController {
             const { bookingId } = req.body;
 
             const result = await this._walletPaymentUseCase.execute({ userId, bookingId });
-
-            // await this.sendBookingConfirmedNotificationUseCase.execute(result.bookingId);
-
 
             res.status(OK).json({
                 result

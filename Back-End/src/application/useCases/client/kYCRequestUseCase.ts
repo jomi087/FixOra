@@ -12,12 +12,14 @@ import { Messages } from "../../../shared/const/Messages";
 import { KYCInputDTO } from "../../DTOs/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/Client/IKYCRequestUseCase";
 import { NotificationType } from "../../../shared/enums/Notification";
+import { IImageUploaderService } from "../../../domain/interface/ServiceInterface/IImageUploaderService";
 
 const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
 const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED, INTERNAL_ERROR, USER_NOT_FOUND } = Messages;
 
 export class KYCRequestUseCase implements IKYCRequestUseCase {
     constructor(
+        private readonly _imageUploaderService: IImageUploaderService,
         private readonly _kycRequestRepository: IKYCRequestRepository,
         private readonly _userRepository: IUserRepository,
         private readonly _notificationRepository: INotificationRepository,
@@ -64,6 +66,20 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
 
     async execute(input: KYCInputDTO): Promise<"submitted" | "resubmitted"> {
         try {
+            const upload = async (key: string) => {
+                const file = input.files[key]?.[0];
+                if (!file) return undefined;
+                return await this._imageUploaderService.uploadImage(
+                    file.buffer,
+                    `FixOra/Provider/${input.name}/${key}`
+                );
+            };
+
+            const profileImageUrl = await upload("profileImage");
+            const idCardUrl = await upload("idCard");
+            const educationCertUrl = await upload("educationCertificate");
+            const experienceCertUrl = await upload("experienceCertificate");
+
             const existing = await this._kycRequestRepository.findByUserId(input.userId);
 
             const newRequest: KYCRequest = {
@@ -72,9 +88,15 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
                 gender: input.gender,
                 serviceId: input.serviceId,
                 specializationIds: input.specializationIds,
-                profileImage: input.profileImage,
+                profileImage: profileImageUrl!,
                 serviceCharge: input.serviceCharge,
-                kyc: input.kyc,
+                kyc: {
+                    idCard: idCardUrl!,
+                    certificate: {
+                        education: educationCertUrl!,
+                        experience: experienceCertUrl!,
+                    },
+                },
                 status: KYCStatus.Pending,
                 submittedAt: new Date(),
             };

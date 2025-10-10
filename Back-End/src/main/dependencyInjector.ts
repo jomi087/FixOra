@@ -100,7 +100,7 @@ import { GetActiveProvidersUseCase } from "../application/useCases/client/GetAct
 const getActiveProvidersUseCase = new GetActiveProvidersUseCase(userRepository);
 
 import { KYCRequestUseCase } from "../application/useCases/client/kYCRequestUseCase";
-const kycRequestUseCase = new KYCRequestUseCase(kycRequestRepository, userRepository, notificationRepository, notificationService);
+const kycRequestUseCase = new KYCRequestUseCase(imageUploaderService,kycRequestRepository, userRepository, notificationRepository, notificationService);
 
 import { ProviderInfoUseCase } from "../application/useCases/client/ProviderInfoUseCase";
 const providerInfoUseCase = new ProviderInfoUseCase(userRepository);
@@ -217,15 +217,15 @@ import { UserController } from "../interfaces/controllers/UserContoller";
 import { AdminController } from "../interfaces/controllers/AdminController";
 import { ProviderController } from "../interfaces/controllers/ProviderController";
 
-const publicController = new PublicController(loggerService, getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
+const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
-const authController = new AuthController(loggerService, signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase);
+const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase);
 
-const userController = new UserController(loggerService, activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, imageUploaderService, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase,verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
+const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase,verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
-const providerController = new ProviderController(loggerService, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
+const providerController = new ProviderController(updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
 
-const adminController = new AdminController(loggerService, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
+const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 
 export {
     publicController,

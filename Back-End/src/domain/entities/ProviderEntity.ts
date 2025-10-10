@@ -64,6 +64,4 @@ export interface ProviderWithDetails {
     };
   },
   isOnline: boolean;
-  averageRating?: number;  
-  totalRatings?: number; 
 }

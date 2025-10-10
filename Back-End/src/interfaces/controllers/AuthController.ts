@@ -5,7 +5,6 @@ import { SignupDTO } from "../../application/DTOs/AuthDTO/SignupDTO";
 import { SigninInputDTO } from "../../application/DTOs/AuthDTO/SigninDTO";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
-import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { IVerifySignupOtpUseCase } from "../../application/Interface/useCases/Auth/IVerifySignupOtpUseCase";
 import { IResendOtpUseCase } from "../../application/Interface/useCases/Auth/IResendOtpUseCase";
 import { ISigninUseCase } from "../../application/Interface/useCases/Auth/ISigninUseCase";
@@ -24,7 +23,6 @@ const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SU
 
 export class AuthController {
     constructor(
-        private _loggerService: ILoggerService,
         private _signupUseCase: ISignupUseCase, //"the value comming from constructor will be an instance of the class SignupUseCase."
         private _verifySignupOtpUseCase: IVerifySignupOtpUseCase,
         private _resendOtpUseCase: IResendOtpUseCase,
