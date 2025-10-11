@@ -16,13 +16,13 @@ export const CURRENT_YEAR = 2025;
 export const COPYRIGHT_NOTICE = `© ${CURRENT_YEAR} ${App_Name}. All rights reserved.`;
 
 /********************************************* Image Sections *******************************************************/
-export const BGImage_404: string = "url('/404_Bg_Image.jpg')";  //used in sign-in, sign-up, pagenot-found,
-export const HeroSectionImage: string = "/hero-removebg-preview.png";
-export const SingInThemeImage: string = "/signIn.png";
-export const ApprovedSeal: string = "/approved.png";
-export const RejectSeal: string = "/rejected.png";
-export const ConfirmSeal: string = "/completedStamp.png";
-export const CancelSeal: string = "/cancelledSeal.png";
+export const BGImage_404: string = "url('/images/404_Bg_Image.jpg')";  //used in sign-in, sign-up, pagenot-found,
+export const HeroSectionImage: string = "/images/hero-removebg-preview.png";
+export const SingInThemeImage: string = "/images/signIn.png";
+export const ApprovedSeal: string = "/images/approved.png";
+export const RejectSeal: string = "/images/rejected.png";
+export const ConfirmSeal: string = "/images/completedStamp.png";
+export const CancelSeal: string = "/images/cancelledSeal.png";
 
 /********************************************* Rules  *******************************************************/
 
@@ -167,7 +167,7 @@ export const adminSideBarOptions: SideBarOption[] = [
 ];
 
 /*********************************************************************************************************************************************************/
-export const providers: Array<string> = ["/provider1.jpg", "/provider1.jpg", "/provider1.jpg"];
+export const providers: Array<string> = ["/images/provider1.jpg", "/images/provider1.jpg", "/images/provider1.jpg"];
 
 interface BlogPost {
   title: string;
