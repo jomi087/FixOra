@@ -20,7 +20,6 @@ const appStore = configureStore({
     filter: filterReducer,
     providerInfo: providerInfoReducer,
 
-
     providerBookingInfo: providerBookingReducer,
     providerBookingRequest: providerBookingRequestReducer,
     availability: availabilityReducer,

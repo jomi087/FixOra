@@ -2,7 +2,7 @@ import { BookingStatus } from "@/shared/enums/BookingStatus";
 import type { ConfirmJobBookings } from "@/shared/types/booking";
 import { useAppSelector } from "@/store/hooks";
 import { TIME_SLOTS } from "@/utils/constant";
-import { dateTime, DayName, generateTimeSlots, splitDateTime } from "@/utils/helper/date&Time";
+import { dateTime, DayName, generateTimeSlots, splitDateTime } from "@/utils/helper/Date&Time";
 
 interface SlotsProps {
   selectedDate: Date;

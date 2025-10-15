@@ -3,7 +3,6 @@ import {
     NotificationPayload,
     ProviderBookingNotification, UserResponsNotificaton
 } from "../../domain/interface/ServiceInterface/INotificationService";
-
 import { getIO } from "../socket/config";
 
 export class NotificationService implements INotificationService {

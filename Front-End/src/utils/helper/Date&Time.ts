@@ -52,8 +52,6 @@ export const DayName = (date: string) => {
 
 };
 
-
-
 export const splitDateTime = (scheduledAt: string | Date) => {
   const dateObj = new Date(scheduledAt);
 

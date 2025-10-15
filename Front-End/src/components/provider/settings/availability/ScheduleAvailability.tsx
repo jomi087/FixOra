@@ -5,7 +5,7 @@ import type { Day, LeaveOption } from "@/shared/types/availability";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchAvailability, saveAvailability, toggleAvailability } from "@/store/provider/availabilitySlice";
-import { generateTimeSlots } from "@/utils/helper/date&Time";
+import { generateTimeSlots } from "@/utils/helper/Date&Time";
 import { TIME_SLOTS } from "@/utils/constant";
 import { toast } from "react-toastify";
 import ConfirmationBar from "@/components/common/ConfirmationBar";

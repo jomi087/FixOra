@@ -5,7 +5,6 @@ import AuthService from "../../../services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { fetchNotifications } from "@/store/common/notificationSlice";
 
-
 const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
   const dispatch = useAppDispatch();
 
@@ -17,8 +16,7 @@ const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
           dispatch(Userinfo({ user: response.data.user }));
           dispatch(fetchNotifications());
         }
-      } catch {
-        // console.log("not logged in")
+      } catch{
         dispatch(logout());
         //console.log("error",error);
       } finally {

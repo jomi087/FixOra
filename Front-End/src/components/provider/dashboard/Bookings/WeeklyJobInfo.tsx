@@ -4,7 +4,7 @@ import type { ConfirmJobBookings } from "@/shared/types/booking";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addConfirmedBooking, fetchProviderBookingsInfo, removeBooking } from "@/store/provider/bookingSlice";
 import { ONE_WEEK, TIME_SLOTS } from "@/utils/constant";
-import { dateTime, generateDateList, generateTimeSlots, splitDateTime } from "@/utils/helper/date&Time";
+import { dateTime, generateDateList, generateTimeSlots, splitDateTime } from "@/utils/helper/Date&Time";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
