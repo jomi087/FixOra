@@ -14,6 +14,7 @@ import { IResetPasswordUseCase } from "../../application/Interface/useCases/Auth
 import { IRefreshTokenUseCase } from "../../application/Interface/useCases/Auth/IRefreshTokenUseCase";
 import { ISignoutUseCase } from "../../application/Interface/useCases/Auth/ISignoutUseCase";
 import { ISignupUseCase } from "../../application/Interface/useCases/Auth/ISignupUseCase";
+import { IRegisterFcmTokenUseCase } from "../../application/Interface/useCases/Auth/IRegisterFcmTokenUseCase";
 
 const { OK, BAD_REQUEST, UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS, USER_NOT_FOUND,
@@ -30,6 +31,7 @@ export class AuthController {
         private _googleSigninUseCase: IGoogleSigninUseCase,
         private _forgotPasswordUseCase: IForgotPasswordUseCase,
         private _resetPasswordUseCase: IResetPasswordUseCase,
+        private _registerFcmTokenUseCase: IRegisterFcmTokenUseCase,
         private _refreshTokenUseCase: IRefreshTokenUseCase,
         private _signoutUseCase: ISignoutUseCase
     ) { }
@@ -185,6 +187,22 @@ export class AuthController {
 
     }
 
+    async registerFcmToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user?.userId;
+            if (!userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+
+            const { FcmToken, platform } = req.body;
+            await this._registerFcmTokenUseCase.execute({ userId, FcmToken, platform });
+
+            res.status(200).json({ message: "FCM token saved" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
     async checkAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 
@@ -192,11 +210,10 @@ export class AuthController {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
             }
 
-
             res.status(OK).json({
                 success: true,
                 user: {
-                    userid: req.user.userId,
+                    userId: req.user.userId,
                     fname: req.user.fname,
                     lname: req.user.lname,
                     email: req.user.email,
@@ -255,12 +272,11 @@ export class AuthController {
         try {
 
             const userId = req.user?.userId;   //req.user gives the userData  ( user: Omit<User, "password" | "refreshToken"> | null)
+            const role = req.user?.role;
+            const { fcmToken } = req.body as { fcmToken: string | null };
 
-            if (!userId) {
-                throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
-            }
-
-            await this._signoutUseCase.execute(userId);
+            if (!userId || !role) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
+            await this._signoutUseCase.execute({ userId, role, fcmToken });
 
             const options = {
                 httpOnly: true,

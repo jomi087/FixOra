@@ -2,16 +2,16 @@ import mongoose, { Document } from "mongoose";
 import { User } from "../../../domain/entities/UserEntity";
 import { RoleEnum } from "../../../shared/enums/Roles";
 
-export interface IUserModel extends Document, User {}
+export interface IUserModel extends Document, User { }
 
 const addressSchema = new mongoose.Schema({
-    houseinfo: { type: String,  trim: true, default: "" },
-    street: { type: String,  trim: true },
-    district: { type: String,  trim: true },
-    city: { type: String,  trim: true },
-    locality: { type: String,  trim: true },
-    state: { type: String,  trim: true },
-    postalCode: { type: String,  trim: true },
+    houseinfo: { type: String, trim: true, default: "" },
+    street: { type: String, trim: true },
+    district: { type: String, trim: true },
+    city: { type: String, trim: true },
+    locality: { type: String, trim: true },
+    state: { type: String, trim: true },
+    postalCode: { type: String, trim: true },
     coordinates: {
         latitude: { type: Number },
         longitude: { type: Number },
@@ -27,7 +27,7 @@ const addressSchema = new mongoose.Schema({
             default: [0, 0],
         },
     },
-},{ _id: false });
+}, { _id: false });
 
 const userSchema = new mongoose.Schema<IUserModel>({
     userId: {
@@ -72,21 +72,25 @@ const userSchema = new mongoose.Schema<IUserModel>({
         index: true
     },
     refreshToken: {
-        type : String
+        type: String
     },
     isBlocked: {
         type: Boolean,
         required: true,
-        default : false
+        default: false
     },
     location: {
         type: addressSchema,
         default: undefined
     },
-},
-{
-    timestamps: true,
-},
+    fcmTokens: [
+        {
+            token: { type: String, required: true },
+            platform: { type: String, required: true },
+            createdAt: { type: Date, default: () => new Date() }
+        }
+    ]
+}, { timestamps: true },
 );
 userSchema.index({ "location.geo": "2dsphere" });
 const UserModel = mongoose.model<IUserModel>("User", userSchema);

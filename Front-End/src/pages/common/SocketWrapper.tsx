@@ -1,24 +1,57 @@
 import socket from "@/services/soket";
 import type { BookingAutoRejectPayload, BookingRequestPayload, Notification } from "@/shared/types/booking";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import BookingApplicationDialouge from "../../components/provider/BookingApplicationDialouge";
 import { toast } from "react-toastify";
 import notificationMp3 from "@/assets/bookingnotification.mp3";
 import { addNotification } from "@/store/common/notificationSlice";
+import { generateToken } from "@/services/pushNotificationConfig";
+import AuthService from "@/services/AuthService";
+import { shortBookingId } from "@/utils/helper/utils";
+import { RoleEnum } from "@/shared/enums/roles";
+import type { AxiosError } from "axios";
+import { addBookingRequest, fetchPendingBookingRequests, removeBookingRequest } from "@/store/provider/bookingRequestSlice";
 
 const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const [bookingDialog, setBookingDialog] = useState<BookingRequestPayload[]>([]); //why arrey is because  to story multer booking request or else it will overide the privous request
+  const { bookingDialog } = useAppSelector((state) => state.providerBookingRequest);
   const firstBooking = bookingDialog[0];
 
   const isConnected = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+
+  useEffect(() => {
+    const registerFcmToken = async () => {
+      //Firebase Cloud Messaging Token
+      const FcmToken = await generateToken();
+      if (!FcmToken) return;
+
+      const storedToken = localStorage.getItem("fcm_token");
+      if (storedToken === FcmToken) return;
+
+      try {
+        await AuthService.registerToken(FcmToken, "web");
+        localStorage.setItem("fcm_token", FcmToken);
+        console.log("FCM Token registered successfully!");
+      } catch (err) {
+        const error = err as AxiosError<{ message: string }>;
+        const errorMsg = error?.response?.data?.message || "Something went wrong";
+        toast.error(errorMsg);
+      }
+    };
+    if (user && user.role === RoleEnum.PROVIDER) {
+      dispatch(fetchPendingBookingRequests(user));
+      registerFcmToken();
+    }
+  }, [user]);
+
   useEffect(() => {
     audioRef.current = new Audio(notificationMp3);
+    audioRef.current.volume = 0.5;
     audioRef.current.loop = true;
     return () => {
       audioRef.current?.pause();
@@ -35,7 +68,6 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       return;
     }
     // if (!user) return;
-
     if (!isConnected.current) { //We don't accidentally call socket.connect() again on every render useRef will not re-render
       socket.connect();
       isConnected.current = true;
@@ -45,18 +77,33 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       console.log("Socket connected:", socket.id);
     };
 
+    //notification
     const handleNotification = (payload: Notification) => {
       dispatch(addNotification(payload));
     };
 
+    //pop up booking request
     const handleBookingRequested = (payload: BookingRequestPayload) => {
-      setBookingDialog((prev) => [...prev, payload]);
+      dispatch(addBookingRequest(payload));
     };
 
     const handleBookingAutoReject = (payload: BookingAutoRejectPayload) => {
-      setBookingDialog((prev) => prev.filter((b) => b.bookingId !== payload.bookingId));
-      toast.warn(`Booking request of ${payload.bookingId} was a auto Rejected`);
-      toast.info(`Reason: ${payload.reason}`);
+      dispatch(removeBookingRequest({ bookingId: payload.bookingId }));
+
+      const toastMessage = (
+        <div className="w-full">
+          <p className="p-2 text-sm">{`Booking request of ${shortBookingId(payload.bookingId)} was a Auto Rejected`}</p>
+          <p className="text-end text-[11px] ">{`[Reason: ${payload.reason}]`}</p>
+        </div>
+      );
+
+      toast.success(toastMessage, {
+        position: "top-center",
+        autoClose: 2500,
+        className: "custom-toast",
+        closeOnClick: true,
+        pauseOnHover: false,
+      });
     };
 
     const handleConnectError = (err: any) => {
@@ -81,13 +128,13 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   useEffect(() => {
     if (!audioRef.current) return;
     if (bookingDialog.length > 0) {
-      audioRef.current.play().catch(() => { }); // play when we have bookings
+      audioRef.current.play().catch((e) => { console.log(e); });
+
     } else {
       audioRef.current.pause();
       audioRef.current.currentTime = 0; // reset when no bookings
     }
   }, [bookingDialog]);
-  //const firstBooking = requests[0];
 
   return (
     <>
@@ -96,11 +143,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         <BookingApplicationDialouge
           key={firstBooking.bookingId}
           data={firstBooking}
-          onClose={() =>
-            setBookingDialog((prev) =>
-              prev.filter((_, i) => i !== 0)
-            )
-          }
+          onClose={() => dispatch(removeBookingRequest({ bookingId: firstBooking.bookingId }))}
         />
       )}
     </>
@@ -110,14 +153,3 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 export default SocketWrapper;
 
 
-{/* { bookingDialog.map((booking) => (
-  <BookingApplicationDialouge
-    key={booking.bookingId}
-    data={booking}
-    onClose={() =>
-      setBookingDialog((prev) =>
-        prev.filter((b) => b.bookingId !== booking.bookingId)
-      )
-    }
-  />
-))} */}

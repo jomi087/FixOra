@@ -12,6 +12,12 @@ export interface IBookingRepository {
 
   findExistingBooking(providerId: string, scheduledAt: Date): Promise<Booking | null>;
 
+  findProviderPendingBookingRequestInDetails(providerUserId: string): Promise<{
+    userInfo: Pick<User, "fname" | "lname">
+    bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" >
+    subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
+  }[]>
+
   updateBookingStatus(bookingId: string, status: BookingStatus): Promise<void>;
 
   updateProviderResponseAndStatus(

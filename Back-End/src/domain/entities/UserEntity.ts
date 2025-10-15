@@ -33,4 +33,5 @@ export interface User {
   isBlocked: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  fcmTokens?: { token: string; platform: string; createdAt: Date }[];
 }

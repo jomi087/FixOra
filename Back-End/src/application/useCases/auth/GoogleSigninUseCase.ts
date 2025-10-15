@@ -54,7 +54,7 @@ export class GoogleSigninUseCase implements IGoogleSigninUseCase {
 
             let mappedupdatedUserData = {
                 userData: {
-                    userid: updatedUserData.userId,
+                    userId: updatedUserData.userId,
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,
                     email: updatedUserData.email,

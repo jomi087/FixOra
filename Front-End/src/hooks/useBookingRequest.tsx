@@ -121,8 +121,21 @@ export const useBookingRequest = () => {
         setIsWaiting(false);
 
         dispatch(removeBooking(payload.bookingId));
-        toast.warn("Your Booking was Rejected");
-        toast.info(`Reason: ${payload.reason}`);
+        
+        const toastMessage = (
+          <div className="w-full">
+            <p className="p-2 text-sm font-medium">Your Booking was Rejected</p>
+            <p className="text-end text-[10px] ">{`[Reason: ${payload.reason}]`}</p>
+          </div>
+        );
+
+        toast.success(toastMessage, {
+          position: "top-center",
+          autoClose: 2500,
+          className: "custom-toast",
+          closeOnClick: true,
+          pauseOnHover: false,
+        });
       }
     };
 

@@ -140,7 +140,7 @@ export class UserController {
                 return acc;
             }, {} as Record<string, { fieldName: string; originalName: string; buffer: Buffer }[]>);
 
-            console.log("dtoFiles",dtoFiles);
+            console.log("dtoFiles", dtoFiles);
             const result = await this._kycRequestUseCase.execute({
                 userId,
                 name: `${req.user?.fname}_${req.user?.lname}`,
@@ -265,7 +265,6 @@ export class UserController {
             next(error);
         }
     }
-
 
     async verifyPaymentViaWebHook(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {

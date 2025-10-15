@@ -73,7 +73,6 @@ const BookingDetails = () => {
         toast.error(errorMsg);
       }
     };
-
     fetchReviewStatus();
   }, [bookingInDetails]);
 

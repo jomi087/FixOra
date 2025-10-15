@@ -1,3 +1,5 @@
+import { SignOutInputDTO } from "../../../DTOs/AuthDTO/SingOutDTO";
+
 export interface ISignoutUseCase{
-    execute(userId : string):Promise<void>
+    execute(input:SignOutInputDTO):Promise<void>
 }

@@ -4,7 +4,7 @@ import type { AddressWithCoordinates } from "@/shared/types/location";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface info {
+export interface info {
   userId: string;
   fname: string;
   lname?: string;

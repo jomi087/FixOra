@@ -1,13 +1,15 @@
 import { RoleEnum } from "../../shared/enums/Roles";
 import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
 import { IHashService } from "../../domain/interface/ServiceInterface/IHashService";
-import { AuthStrategyFactory } from "../../application/strategies/auth/AuthStrategyFactory";
-import { CustomerAuthStrategy } from "../../application/strategies/auth/CustomerAuthStrategy";
-import { AdminAuthStrategy } from "../../application/strategies/auth/AdminAuthStrategy";
-import { ProviderAuthStrategy } from "../../application/strategies/auth/ProviderAuthStrategy";
+import { AuthStrategyFactory } from "../../application/strategies/auth/signIn/AuthStrategyFactory";
+import { CustomerAuthStrategy } from "../../application/strategies/auth/signIn/CustomerAuthStrategy";
+import { AdminAuthStrategy } from "../../application/strategies/auth/signIn/AdminAuthStrategy";
+import { ProviderAuthStrategy } from "../../application/strategies/auth/signIn/ProviderAuthStrategy";
 
 
-export function configureAuthStrategies( userRepository: IUserRepository, hashService: IHashService): AuthStrategyFactory {  
+export function configureAuthStrategies(
+    userRepository: IUserRepository,
+    hashService: IHashService): AuthStrategyFactory {  
     
     const authFactory = new AuthStrategyFactory();
 

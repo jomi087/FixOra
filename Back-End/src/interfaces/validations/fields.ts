@@ -3,7 +3,7 @@ import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { KYCStatus } from "../../shared/enums/KYCstatus";
 import { BookingStatus } from "../../shared/enums/BookingStatus";
-import { days, leaveOptions } from "../../shared/const/constants";
+import { DAYS, LEAVE_OPTIONS } from "../../shared/const/constants";
 
 export const optionalStringField = z.string().optional();
 
@@ -60,7 +60,7 @@ export const providerResponseStatusField = z
     .refine((val) => val !== ProviderResponseStatus.PENDING, { message: "Provider Response cannot be Pending" });
 
 export const workTimeSchemaField = z.record(
-    z.enum(days),
+    z.enum(DAYS),
     z.array(z
         .string()
         .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
@@ -69,8 +69,8 @@ export const workTimeSchemaField = z.record(
     ).nonempty({ message: "Each day must have at least one slot" })
 );
 
-export const daySchemaField = z.enum(days);
-export const leaveOptionField = z.enum(leaveOptions);
+export const daySchemaField = z.enum(DAYS);
+export const leaveOptionField = z.enum(LEAVE_OPTIONS);
 
 export const TimeSlotField = z
     .string()

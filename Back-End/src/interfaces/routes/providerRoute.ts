@@ -10,6 +10,7 @@ import { diagnoseSchema } from "../validations/diagnoseSchema";
 
 const router = express.Router();
 
+router.get("/booking-request",AuthMiddleware([RoleEnum.Provider]), providerController.PendingBookingRequest.bind(providerController));
 router.patch("/booking/:bookingId/status", validateRequest(bookingStatusSchema), AuthMiddleware([RoleEnum.Provider]), providerController.respondToBookingRequest.bind(providerController));
 router.get("/confirm-bookings", AuthMiddleware([RoleEnum.Provider]), providerController.confirmBookings.bind(providerController));
 router.get("/jobDetails/:bookingId", AuthMiddleware([RoleEnum.Provider]), providerController.jobDetails.bind(providerController));

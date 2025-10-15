@@ -12,7 +12,6 @@ export interface NotificationPayload {
     isRead: boolean;
 }
 
-
 export interface ProviderBookingNotification {
     bookingId: string;
     userName: string;
@@ -48,11 +47,7 @@ export interface INotificationService {
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void
     notifyBookingAutoRejectToProvider(providerUserId: string, payload: AutoRejectNotification): void
     autoRejectTimeOutPayment(userId: string, bookingId: string): void
-    
+
     notifyPaymentSuccessToUser(userId: string): void
     notifyPaymentFailureToUser(userId: string, reason: string): void
-
-    //notifyBookingConfirmation(providerUserId: string, payload: ConfirmBookingNotification): void
-    //notifyBookingCancellation(providerUserId: string, bookingId: string): void
-
 }   

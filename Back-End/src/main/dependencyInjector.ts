@@ -18,6 +18,7 @@ import { TokenService } from "../infrastructure/services/TokenService";
 import { GoogleOAuthService } from "../infrastructure/services/GoogleOAuthService";
 import { ImageUploaderService } from "../infrastructure/services/ImageUploaderService";
 import { NotificationService } from "../infrastructure/services/NotificationService";
+import { PushNotificationService } from "../infrastructure/services/PushNotificationService";
 import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService";
 import { PaymentService } from "../infrastructure/services/PaymentService";
 
@@ -40,6 +41,7 @@ const tokenService = new TokenService();
 const googleOAuthService = new GoogleOAuthService();
 const imageUploaderService = new ImageUploaderService();
 const notificationService = new NotificationService();
+const pushNotificationService = new PushNotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
 const paymentService = new PaymentService();
 
@@ -74,11 +76,16 @@ const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository, emailSer
 import { ResetPasswordUseCase } from "../application/useCases/auth/ResetPasswordUseCase";
 const resetPasswordUseCase = new ResetPasswordUseCase(hashService, userRepository);
 
+import { RegisterFcmTokenUseCase } from "../application/useCases/auth/RegisterFcmTokenUseCase"; 
+const registerFcmTokenUseCase = new RegisterFcmTokenUseCase(userRepository);
+
 import { RefreshTokenUseCase } from "../application/useCases/auth/RefreshTokenUseCase";
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService, userRepository);
 
+import { configureSignOutStrategies } from "../infrastructure/config/SignoutConfig";
+const signOutFactory = configureSignOutStrategies(userRepository);
 import { SignoutUseCase } from "../application/useCases/auth/SignoutUseCase";
-const signoutUseCase = new SignoutUseCase(userRepository);
+const signoutUseCase = new SignoutUseCase(signOutFactory);
 
 /***************************************************************************************************************************************************** */
 import { GetLandingDataUseCase } from "../application/useCases/public/GetLandingDataUseCase";
@@ -89,9 +96,8 @@ const getNotificationsUseCase = new GetNotificationsUseCase(notificationReposito
 
 import { NotificationAcknowledgmentUseCase } from "../application/useCases/public/NotificationAcknowledgmentUseCase";
 const notificationAcknowledgmentUseCase = new NotificationAcknowledgmentUseCase(notificationRepository);
-
 /******************************************************************************************************************************************************
-                                                        Customer Specific
+                                        Customer Specific
 ******************************************************************************************************************************************************/
 import { ActiveServiceUseCase } from "../application/useCases/client/ActiveServiceUseCase";
 const activeServiceUseCase = new ActiveServiceUseCase(categoryRepository);
@@ -109,7 +115,7 @@ import { GetProviderReviewsUseCase } from "../application/useCases/client/GetPro
 const getProviderReviewsUseCase = new GetProviderReviewsUseCase(ratingRepository);
 
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
-const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, bookingSchedulerService, userRepository, availabilityRepository);
+const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, pushNotificationService, bookingSchedulerService, userRepository, availabilityRepository);
 
 import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase";
 const createPaymentUseCase = new CreatePaymentUseCase(paymentService, bookingRepository);
@@ -151,8 +157,11 @@ import { WalletTopupUseCase } from "../application/useCases/client/WalletTopupUs
 const walletTopUpUseCase = new WalletTopupUseCase(paymentService, walletRepository);
 
 /******************************************************************************************************************************************************
-                                                        Provider Specific
+                                        Provider Specific
 ******************************************************************************************************************************************************/
+import { PendingBookingRequestUseCase } from "../application/useCases/providers/PendingBookingRequestUseCase";
+const pendingBookingRequestUseCase = new PendingBookingRequestUseCase(bookingRepository);
+
 import { UpdateBookingStatusUseCase } from "../application/useCases/providers/UpdateBookingStatusUseCase";
 const updateBookingStatusUseCase = new UpdateBookingStatusUseCase(bookingRepository, notificationService, bookingSchedulerService);
 
@@ -219,11 +228,11 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
-const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, refreshTokenUseCase, signoutUseCase);
+const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase, );
 
 const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase,verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
-const providerController = new ProviderController(updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
+const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
 
 const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 

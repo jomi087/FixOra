@@ -3,6 +3,7 @@ import {
     NotificationPayload,
     ProviderBookingNotification, UserResponsNotificaton
 } from "../../domain/interface/ServiceInterface/INotificationService";
+
 import { getIO } from "../socket/config";
 
 export class NotificationService implements INotificationService {
@@ -41,5 +42,4 @@ export class NotificationService implements INotificationService {
     notifyPaymentFailureToUser(userId: string, reason: string): void {
         getIO().to(userId).emit("payment:failure", reason);
     }
-
 }

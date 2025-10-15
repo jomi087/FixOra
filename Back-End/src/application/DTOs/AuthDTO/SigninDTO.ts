@@ -9,6 +9,7 @@ export type SigninInputDTO = {
 
 export type SignInOutputDTO  = {
     userData: {
+        userId: string;
         fname: string;
         lname?: string;
         email: string;

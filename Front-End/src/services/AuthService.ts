@@ -4,16 +4,17 @@ import type { ProfileEdit, Signin, Signup } from "@/shared/types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
 import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { API_ROUTES } from "@/utils/constant";
+import type { Platform } from "@/shared/types/others";
 
 class AuthService {
-  getBearerTokenConfig(token?: string) {
-    return {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token || ""}`
-      },
-    };
-  }
+  // getBearerTokenConfig(token?: string) { //jwt token
+  //   return {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token || ""}`
+  //     },
+  //   };
+  // }
 
   getJsonConfig() {
     return {
@@ -33,7 +34,6 @@ class AuthService {
 
   //#  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
   /*********************************************************************************************************************** */
-
   getLandingDataApi() {
     return axiosInstance.get(API_ROUTES.LANDING.GET_DATA);
   }
@@ -62,6 +62,13 @@ class AuthService {
 
   signinApi(Data: Signin) {
     return axiosInstance.post(API_ROUTES.AUTH.SIGNIN, Data, this.getJsonConfig());
+  }
+
+  registerToken(FcmToken: string, platform: Platform) {
+    return axiosInstance.post("/api/auth/register-fcm-token", {
+      FcmToken,
+      platform,
+    }, this.getJsonConfig());
   }
 
   googleSigninApi(data: { code: string, role: string }) {
@@ -158,7 +165,7 @@ class AuthService {
   }
 
   userWalletInfoApi(page: number, limit: number) {
-    return axiosInstance.get(API_ROUTES.CUSTOMER.WALLET_INFO(page,limit));
+    return axiosInstance.get(API_ROUTES.CUSTOMER.WALLET_INFO(page, limit));
   }
 
   addFundApi(amount: number) {
@@ -167,6 +174,10 @@ class AuthService {
 
   /*********************************************************************************************************************** */
   //Provider
+  pendingRequestApi() {
+    return axiosInstance.get(API_ROUTES.PROVIDER.PENDING_BOOKING_REQUEST);
+  }
+
   UpdateBookingStatusApi(bookingId: string, action: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>, reason: string) {
     return axiosInstance.patch(API_ROUTES.PROVIDER.UPDATE_BOOKING_STATUS(bookingId), {
       action,
@@ -255,10 +266,10 @@ class AuthService {
   }
 
   /*********************************************************************************************************************** */
-  signoutApi(token?: string) {
-    return axiosInstance.post(API_ROUTES.AUTH.SIGNOUT, {}, this.getBearerTokenConfig(token));
+  
+  signoutApi(fcmToken : string|null) {
+    return axiosInstance.post(API_ROUTES.AUTH.SIGNOUT, { fcmToken }, this.getJsonConfig());
   }
-
 
 }
 

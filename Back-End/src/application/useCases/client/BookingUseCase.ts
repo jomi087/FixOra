@@ -7,11 +7,12 @@ import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } f
 import { IBookingUseCase } from "../../Interface/useCases/Client/IBookingUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
-import { BOOKING_REQUEST_TIMEOUT_MS, days } from "../../../shared/const/constants";
+import { BOOKING_REQUEST_TIMEOUT_MS, DAYS } from "../../../shared/const/constants";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
 import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
+import { IPushNotificationService } from "../../../domain/interface/ServiceInterface/IPushNotificationService";
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { INTERNAL_ERROR, ALREDY_BOOKED, PENDING_BOOKING, NOT_FOUND_MSG,
@@ -21,6 +22,7 @@ export class BookingUseCase implements IBookingUseCase {
     constructor(
         private readonly _bookingRepository: IBookingRepository,
         private readonly _notificationService: INotificationService,
+        private readonly _pushNotificationService: IPushNotificationService,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
         private readonly _userRepository: IUserRepository,
         private readonly _availabilityRepository: IAvailabilityRepository
@@ -60,6 +62,15 @@ export class BookingUseCase implements IBookingUseCase {
         });
     }
 
+    private async pushNotifcation(userId: string, payload: { title: string, body: string, data?: Record<string, string> }) {
+        // fetch all FCM tokens for this user
+        const user = await this._userRepository.findByUserId(userId);
+        if (!user?.fcmTokens || user.fcmTokens.length === 0) return;
+
+        await this._pushNotificationService.sendPushNotificationToUser(user.fcmTokens, payload);
+        
+    }
+
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
             const scheduledAt: Date = new Date(input.scheduledAt);
@@ -75,7 +86,7 @@ export class BookingUseCase implements IBookingUseCase {
             let availability = await this._availabilityRepository.getProviderAvialability(input.providerId);
             if (!availability) throw { status: NOT_FOUND, message: "Availability not found" };
 
-            const dayName = days[scheduledAt.getDay()];
+            const dayName = DAYS[scheduledAt.getDay()];
 
             const hours = scheduledAt.getHours().toString().padStart(2, "0");
             const minutes = scheduledAt.getMinutes().toString().padStart(2, "0");
@@ -84,7 +95,7 @@ export class BookingUseCase implements IBookingUseCase {
             const daySchedule = availability.workTime.find(d => d.day === dayName && d.active);
             if (!daySchedule) throw { status: CONFLICT, message: "Provider not available on selected day" };
 
-            if(!daySchedule.slots.includes(timeStr)) throw { status: UNPROCESSABLE_ENTITY, message: "Selected time is outside provider’s working hours" };
+            if (!daySchedule.slots.includes(timeStr)) throw { status: UNPROCESSABLE_ENTITY, message: "Selected time is outside provider’s working hours" };
 
             let result = await this._userRepository.getServiceChargeWithDistanceFee(input.providerId, input.coordinates);
             if (!result) {
@@ -133,6 +144,12 @@ export class BookingUseCase implements IBookingUseCase {
                 issueType: `${subCategoryInfo.name}`,
                 scheduledAt: bookingInfo.scheduledAt,
                 issue: bookingInfo.issue
+            });
+
+            //Send push notification as fallback if provider is offline
+            await this.pushNotifcation(id, {
+                title: "New Booking Request",
+                body: `${userInfo.fname} ${userInfo.lname} wants to book a ${subCategoryInfo.name} at ${bookingInfo.scheduledAt.toLocaleString()}`
             });
 
             this.scheduleProviderResponseTimeout(bookingInfo.bookingId);

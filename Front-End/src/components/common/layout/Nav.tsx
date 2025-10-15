@@ -15,6 +15,7 @@ import type { Notification } from "@/shared/types/booking";
 import { splitDateTime } from "@/utils/helper/date&Time";
 import { clearNotifications, fetchNotifications, markAsRead } from "@/store/common/notificationSlice";
 import type { AxiosError } from "axios";
+import { generateToken } from "@/services/pushNotificationConfig";
 
 
 interface NavProps {
@@ -42,10 +43,21 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
 
   const handleSignout = async () => {
     try {
-      const res = await AuthService.signoutApi();
+      let fcmToken: string | null = null;
+
+      if (user?.role === RoleEnum.PROVIDER) {
+        fcmToken = localStorage.getItem("fcm_token") || (await generateToken());
+      }
+      const res = await AuthService.signoutApi(fcmToken);
+
       if (res.status === HttpStatusCode.OK) {
+        if (user?.role == RoleEnum.PROVIDER) {
+          localStorage.removeItem("fcm_token");
+          console.log("FCM token deleted locally");
+        }
         dispatch(clearNotifications());
         dispatch(logout());
+
         toast.success(res.data.message);
         setTimeout(() => {
           navigate("/");

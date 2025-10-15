@@ -15,12 +15,15 @@ import { IToggleAvailabilityUseCase } from "../../application/Interface/useCases
 import { allowedTypes, maxSizeMB } from "../../shared/const/constants";
 import validateFile from "../validations/fileValidation";
 import { IWorkCompletionUseCase } from "../../application/Interface/useCases/Provider/IWorkCompletionUseCase";
+import { IPendingBookingRequestUseCase } from "../../application/Interface/useCases/Provider/IPendingBookingRequestUseCase";
+import { RoleEnum } from "../../shared/enums/Roles";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
 
 export class ProviderController {
     constructor(
+        private _pendingBookingRequestUseCase: IPendingBookingRequestUseCase,
         private _updateBookingStatusUseCase: IUpdateBookingStatusUseCase,
         private _getConfirmBookingsUseCase: IGetConfirmBookingsUseCase,
         private _getJobDetailsUseCase: IGetJobDetailsUseCase,
@@ -32,6 +35,28 @@ export class ProviderController {
         private _setAvailabilityUseCase: ISetAvailabilityUseCase,
         private _toggleAvailabilityUseCase: IToggleAvailabilityUseCase,
     ) { }
+
+
+    async PendingBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            if (req.user.role != RoleEnum.Provider) throw { status: 404, message: UNAUTHORIZED_MSG };
+            
+            const providerUserId = req.user.userId;
+
+            const result = await this._pendingBookingRequestUseCase.execute(providerUserId);
+
+            res.status(OK).json({
+                success: true,
+                pendingBookingRequestData : result
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
 
     async respondToBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -181,7 +206,7 @@ export class ProviderController {
 
             const { bookingId, diagnose, parts: stringifyParts } = req.body;
 
-            let parts: { name: string; cost: string;}[] = [];
+            let parts: { name: string; cost: string; }[] = [];
             if (stringifyParts) {
                 parts = JSON.parse(stringifyParts);
             }

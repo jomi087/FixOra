@@ -14,6 +14,8 @@ import { PipelineStage } from "mongoose";
 //split the logic into indivijual
 
 export class UserRepository implements IUserRepository {
+
+
     async findByEmail(email: string, omitFields: Array<keyof User> = []): Promise<Partial<User> | null> {
         const omitSelect = omitFields.map(field => `-${field}`).join(" ");
         return await UserModel.findOne({ email }).select(omitSelect).lean<Partial<User>>();  //mongo db methods 
@@ -69,7 +71,6 @@ export class UserRepository implements IUserRepository {
         ).lean();
 
         if (!updatedUser) throw new Error("User not found");
-
         return updatedUser;
     }
 
@@ -98,6 +99,18 @@ export class UserRepository implements IUserRepository {
         return result.matchedCount > 0;
     }
 
+    async clearTokensById(userId: string, fcmToken: string): Promise<boolean> {
+        const result = await UserModel.findOneAndUpdate(
+            { userId },
+            {
+                $set: { refreshToken: "" },
+                $pull: { fcmTokens: { token: fcmToken } }
+            },
+            { new: true }
+        );
+        return result ? true : false;
+    }
+
     async resetPasswordByEmail(email: string, password: string): Promise<boolean> {
         const result = await UserModel.updateOne(
             { email },
@@ -112,7 +125,7 @@ export class UserRepository implements IUserRepository {
     ): Promise<{ data: Partial<User>[]; total: number }> {
 
         const { searchQuery, filter } = options;
-        const match: Record<string, unknown>  = { role: RoleEnum.Customer };
+        const match: Record<string, unknown> = { role: RoleEnum.Customer };
 
         if (searchQuery) {
             match.$or = [
@@ -245,7 +258,7 @@ export class UserRepository implements IUserRepository {
 
         }
 
-        const sortCondition: Record<string, 1|-1> = {};
+        const sortCondition: Record<string, 1 | -1> = {};
         switch (filter) {
         case "ascending":
             sortCondition["fname"] = 1;
@@ -258,7 +271,7 @@ export class UserRepository implements IUserRepository {
             break;
         }
 
-        const matchUserConditions: Record<string, unknown>  = {
+        const matchUserConditions: Record<string, unknown> = {
             role: "provider",
             isBlocked: false,
         };
@@ -271,14 +284,14 @@ export class UserRepository implements IUserRepository {
         }
 
         //filter via service(category)
-        const matchServiceCondition: Record<string, unknown>  = {};
+        const matchServiceCondition: Record<string, unknown> = {};
         matchServiceCondition["serviceDetails.isActive"] = true;
         if (extraFilter?.selectedService) {
             matchServiceCondition["serviceDetails.categoryId"] = extraFilter.selectedService;
         }
 
         // filter via rating
-        const matchRatingCondition: Record<string, unknown>  = {};
+        const matchRatingCondition: Record<string, unknown> = {};
         if (extraFilter?.ratingFilter) {
             matchRatingCondition["averageRating"] = { $eq: extraFilter.ratingFilter };
         }
@@ -424,7 +437,7 @@ export class UserRepository implements IUserRepository {
         availability: Pick<Availability, "workTime">
         distanceFee: number
     }> {
-        const matchConditions:  Record<string, unknown>  = {
+        const matchConditions: Record<string, unknown> = {
             role: "provider",
             isBlocked: false,
             "providerDetails.providerId": providerId,
@@ -583,7 +596,7 @@ export class UserRepository implements IUserRepository {
 
 
     async getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number; }): Promise<{ serviceCharge: number; distanceFee: number; } | null> {
-        const matchConditions: Record<string, unknown>  = {
+        const matchConditions: Record<string, unknown> = {
             role: "provider",
             isBlocked: false,
             "providerDetails.providerId": providerId
@@ -653,6 +666,21 @@ export class UserRepository implements IUserRepository {
 
     async findByRole(Role: RoleEnum): Promise<User[]> {
         return UserModel.find({ role: Role });
+    }
+
+    async addFcmToken(userId: string, FcmToken: string, platform?: string): Promise<void> {
+        await UserModel.updateOne(
+            { userId },
+            {
+                $addToSet: {
+                    fcmTokens: {
+                        token:FcmToken,
+                        platform,
+                        createdAt: new Date(),
+                    },
+                },
+            }
+        );
     }
 }
 

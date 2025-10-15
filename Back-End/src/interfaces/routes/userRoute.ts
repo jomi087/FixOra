@@ -34,6 +34,7 @@ router.get("/provider/bookings/:id", AuthMiddleware([RoleEnum.Customer]), (req, 
 router.get("/provider/:id/reviews", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerReview(req, res, next));
 
 router.post("/provider/booking", validateRequest(bookingRequestSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createBooking(req, res, next));
+
 router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateOnlinePayment(req, res, next));
 router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateWalletPayment(req, res, next));
 
@@ -41,6 +42,7 @@ router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware(
 router.patch("/editProfile", validateRequest(editProfileSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.editProfile(req, res, next));
 router.post("/verifyPassword", validateRequest(verifyPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.verifyPassword(req, res, next));
 router.patch("/change-password", validateRequest(resetPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.changePassword(req, res, next));
+
 
 router.get("/booking-history", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.getBookingHistory(req, res, next));
 router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.bookingDetails.bind(userController));

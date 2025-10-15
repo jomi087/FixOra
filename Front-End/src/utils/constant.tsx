@@ -226,6 +226,7 @@ export const API_ROUTES = {
   },
 
   PROVIDER: {
+    PENDING_BOOKING_REQUEST: "/api/provider/booking-request",
     UPDATE_BOOKING_STATUS: (id: string) => `/api/provider/booking/${id}/status`,
     CONFIRM_BOOKINGS: "/api/provider/confirm-bookings",
     JOB_DETAILS: (id: string) => `/api/provider/jobDetails/${id}`,

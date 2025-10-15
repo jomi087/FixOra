@@ -29,6 +29,76 @@ export class BookingRepository implements IBookingRepository {
         });
     }
 
+    async findProviderPendingBookingRequestInDetails(providerUserId: string): Promise<{
+        userInfo: Pick<User, "fname" | "lname" >
+        bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" >
+        subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
+    }[]> {
+        const pipeline: PipelineStage[] = [
+            {
+                $match: {
+                    providerUserId: providerUserId,
+                    status: BookingStatus.PENDING
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "userId",
+                    as: "userDetails"
+                },
+            },
+            { $unwind: "$userDetails" },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "issueTypeId",
+                    foreignField: "subcategories.subCategoryId",
+                    as: "serviceDetails"
+                }
+            }, { $unwind: "$serviceDetails" },
+            {
+                $project: {
+                    _id: 0,
+                    userInfo: {
+                        // userId: "$userDetails.userId",
+                        fname: "$userDetails.fname",
+                        lname: "$userDetails.lname",
+                    },
+                    bookingInfo: {
+                        bookingId: "$bookingId",
+                        scheduledAt: "$scheduledAt",
+                        issue: "$issue",
+                        // status: "$status",
+                    },
+                    subCategoryInfo: {
+                        $arrayElemAt: [
+                            {
+                                $filter: {
+                                    input: "$serviceDetails.subcategories",
+                                    as: "sub",
+                                    cond: { $eq: ["$$sub.subCategoryId", "$issueTypeId"] }
+                                }
+                            }, 0
+                        ]
+                    }
+
+                }
+            }
+        ];
+
+        interface AggregatedResult {
+            userInfo: Pick<User, "fname" | "lname">
+            bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" >
+            subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
+        }
+
+        const result = await BookingModel.aggregate<AggregatedResult>(pipeline);
+        return result;
+    }
+
+
     async updateBookingStatus(bookingId: string, status: BookingStatus): Promise<void> {
         await BookingModel.updateOne(
             { bookingId },
@@ -459,7 +529,8 @@ export class BookingRepository implements IBookingRepository {
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
             //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
-            booking: Partial<Booking>        }
+            booking: Partial<Booking>
+        }
 
         const [result] = await BookingModel.aggregate<AggregatedResult>(pipeline);
         return result ?? null;

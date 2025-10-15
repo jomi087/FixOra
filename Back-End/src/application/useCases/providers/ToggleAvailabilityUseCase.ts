@@ -5,7 +5,7 @@ import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInt
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
-import { days } from "../../../shared/const/constants";
+import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { toggleAvailabilityInputDTO } from "../../DTOs/AvailabilityDTO";
@@ -83,7 +83,7 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
                 let bookingsToCancel: Booking[] = [];
 
                 if (leaveOption == "every_week") {
-                    const dayIndex = days.indexOf(day);
+                    const dayIndex = DAYS.indexOf(day);
                     bookingsToCancel = await this._bookingRepository.findBookingsByWeekday(providerUserId, dayIndex);
                 } // else if (leaveOption == "this_week") {}
 

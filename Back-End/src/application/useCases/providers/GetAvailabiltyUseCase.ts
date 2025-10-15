@@ -1,6 +1,6 @@
 import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
-import { days } from "../../../shared/const/constants";
+import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
@@ -26,7 +26,7 @@ export class GetAvailabilityUseCase implements IGetAvailabilityUseCase {
             
             if (!availability) {
 
-                const workTime = days.map((day) => ({
+                const workTime = DAYS.map((day) => ({
                     day: day as Day,
                     slots: [],
                     active: false,

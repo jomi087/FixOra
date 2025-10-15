@@ -4,7 +4,7 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { SigninInputDTO, SignInOutputDTO } from "../../DTOs/AuthDTO/SigninDTO";
 import { ISigninUseCase } from "../../Interface/useCases/Auth/ISigninUseCase";
-import { AuthStrategyFactory } from "../../strategies/auth/AuthStrategyFactory";
+import { AuthStrategyFactory } from "../../strategies/auth/signIn/AuthStrategyFactory";
 
 const { NOT_FOUND,INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages;
@@ -20,7 +20,6 @@ export class SigninUseCase implements ISigninUseCase {
         try {
             // here i could had added if else way or switch way(show below ) but the issue is that then  i am violationg the OCP (open/close priciple  [must be open for extention and close for modification] in solid in fiture if there is more role comming then i dont need to modify signin logic jst d )
             // a Role Strategy Map — dynamic role-to-strategy resolution.
-            
             //from here
             const strategy = this._authFactory.getStrategy(credentials.role);
             const authenticatedUser = await strategy.authenticate(credentials);
@@ -43,7 +42,7 @@ export class SigninUseCase implements ISigninUseCase {
 
             let mappedupdatedUserData = {
                 userData: {
-                    userid: updatedUserData.userId,
+                    userId: updatedUserData.userId,
                     fname: updatedUserData.fname,
                     lname: updatedUserData.lname,
                     email: updatedUserData.email,

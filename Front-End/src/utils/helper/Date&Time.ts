@@ -16,7 +16,6 @@ export const generateDateList = (days: number = 7) => {
       fullDate: format(date, "dd-MM-yyyy"),//yyyy full year (2025) |->| yy year with later 2 digt (25)
     });
   }
-
   return dateList;
 };
 
