@@ -1,5 +1,5 @@
 import { DATE_RANGE_DAYS, Messages, TIME_SLOTS } from "@/utils/constant";
-import { dateTime, DayName, generateDateList, generateTimeSlots } from "@/utils/helper/date&Time";
+import { dateTime, DayName, generateDateList, generateTimeSlots } from "@/utils/helper/Date&Time";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
