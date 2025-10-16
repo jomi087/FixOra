@@ -5,7 +5,7 @@ import { getFormattedAddress } from "@/utils/helper/formatedAddress";
 import { useState } from "react";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
-import ChangePassowrdDialog from "./ChangePassowrdDialog";
+import ChangePassowrdDialog from "../../client/accountSection/profileSection/ChangePassowrdDialog";
 import { validatePassword } from "@/utils/validation/formValidation";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
@@ -23,7 +23,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { user } = useAppSelector((state) => state.auth);
-  console.log("user",user);
+  // console.log("user",user);
   if (user?.role === RoleEnum.CUSTOMER && !toggle) {
     throw new Error(" The 'toggle' prop is required ");
   }
@@ -99,6 +99,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
       </div>
 
       <div className="flex justify-end">
+        
         <ChangePassowrdDialog
           changePassword={handleChangePassword}
           errorMsg={errorMsg}

@@ -1,5 +1,5 @@
-import BookingDatesInfo from "@/components/common/BookingDatesInfo";
-import TimeSlotSelector from "@/components/common/TimeSlotSelector";
+import BookingDatesInfo from "@/components/common/Others/BookingDatesInfo";
+import TimeSlotSelector from "@/components/common/Others/TimeSlotSelector";
 import BookingDialog from "./BookingDialog";
 
 import Lottie from "lottie-react";

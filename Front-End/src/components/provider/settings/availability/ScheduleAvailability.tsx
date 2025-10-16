@@ -8,7 +8,7 @@ import { fetchAvailability, saveAvailability, toggleAvailability } from "@/store
 import { generateTimeSlots } from "@/utils/helper/Date&Time";
 import { TIME_SLOTS } from "@/utils/constant";
 import { toast } from "react-toastify";
-import ConfirmationBar from "@/components/common/ConfirmationBar";
+import ConfirmationBar from "@/components/common/Others/ConfirmationBar";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const timeSlots = generateTimeSlots(

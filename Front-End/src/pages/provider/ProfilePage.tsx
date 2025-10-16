@@ -1,4 +1,4 @@
-import Profile from "@/components/client/accountSection/profileSection/Profile";
+import Profile from "@/components/common/Others/Profile";
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/Others/SideBar";
 import { providerSideBarOptions } from "@/utils/constant";

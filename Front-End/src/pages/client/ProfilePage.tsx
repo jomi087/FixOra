@@ -3,7 +3,7 @@ import SideBar from "../../components/common/Others/SideBar";
 import Nav from "../../components/common/layout/Nav";
 import { userSideBarOptions } from "../../utils/constant";
 import { useState } from "react";
-import Profile from "@/components/client/accountSection/profileSection/Profile";
+import Profile from "@/components/common/Others/Profile";
 
 
 const ProfilePage = () => {
