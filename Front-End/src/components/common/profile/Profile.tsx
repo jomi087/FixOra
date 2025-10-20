@@ -27,7 +27,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
 
   const { user } = useAppSelector((state) => state.auth);
 
-  if (user?.role === RoleEnum.CUSTOMER && !toggle) return null;
+  if ((user?.role === RoleEnum.CUSTOMER || user?.role === RoleEnum.ADMIN) && !toggle) return null;
 
   const handleChangePassword = async (password: string) => {
     const error = validatePassword(password);
@@ -87,7 +87,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
 
           <h3 className="text-xl font-semibold mt-4 flex items-center gap-2">
             {`${toPascalCase(user?.fname ?? "")} ${user?.lname ?? ""}`}
-            {user?.role === RoleEnum.CUSTOMER && toggle && (
+            {user?.role !== RoleEnum.PROVIDER && toggle && (
               <CiEdit
                 size={20}
                 className="cursor-pointer text-gray-500 hover:text-primary transition-colors"

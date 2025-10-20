@@ -10,7 +10,7 @@ import ResetPasswordPage from "../pages/common/ResetPasswordPage.tsx";
 
 import LandingPage from "../pages/client/LandingPage";
 import ClientProfilePage from "../pages/client/ProfilePage.tsx";
-import ChangePasswordPage from "@/pages/client/ChangePassword.tsx";
+import ChangePasswordPage from "@/pages/common/ChangePasswordPage.tsx";
 
 import ProviderDashboardPage from "@/pages/provider/DashboardPage.tsx";
 import AdminDashboardPage from "../pages/admin/DashboardPage.tsx";
@@ -36,6 +36,9 @@ import ProviderWalletPage from "@/pages/provider/WalletPage.tsx";
 import UserWalletPage from "@/pages/client/WalletPage.tsx";
 import AvailabilityPage from "@/pages/provider/AvailabilityPage.tsx";
 import AdvanceProfilePage from "@/pages/provider/AdvanceProfilePage.tsx";
+import SettingsPage from "@/pages/admin/SettingsPage.tsx";
+import AdminProfilePage from "../pages/admin/ProfilePage.tsx";
+
 
 
 const router = createBrowserRouter([
@@ -77,7 +80,7 @@ const router = createBrowserRouter([
       { path: "providers/provider-booking/:providerId", element: <ProviderBookingPage /> },
       { path: "providers/provider-booking/payment/:bookingId", element: <PaymentPage /> },
       { path: "account/profile", element: <ClientProfilePage /> },
-      { path: "account/profile/change-password", element: <ChangePasswordPage /> },
+      { path: "change-password", element: <ChangePasswordPage /> },
       { path: "account/bookings", element: <BookingHistoryPage /> },
       { path: "booking-details/:bookingId", element: <BookingDetailsPage /> },
       { path: "account/wallet", element: <UserWalletPage /> },
@@ -100,9 +103,9 @@ const router = createBrowserRouter([
       { path: "booking-details/:bookingId", element: <JobDetailsPage /> },
       { path: "wallet", element: <ProviderWalletPage /> },
       { path: "settings/profile", element: <ProviderProfilePage /> },
+      { path: "change-password", element: <ChangePasswordPage /> },
       { path: "settings/advance-profile", element: <AdvanceProfilePage /> },
       { path: "settings/availability", element: <AvailabilityPage /> },
-
     ],
   },
   // Admin Routes
@@ -121,6 +124,9 @@ const router = createBrowserRouter([
       { path: "providers", element: <ProviderManagement /> },
       { path: "provider-request", element: <ProviderApplicationPage /> },
       { path: "services", element: <ServiceManagement /> },
+      { path: "settings", element: <SettingsPage /> },
+      { path: "settings/profile", element: <AdminProfilePage /> },
+      { path: "change-password", element: <ChangePasswordPage /> },
     ]
   },
   {

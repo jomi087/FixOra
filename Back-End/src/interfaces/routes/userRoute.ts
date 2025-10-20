@@ -38,9 +38,10 @@ router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMi
 router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateWalletPayment(req, res, next));
 
 //Profile Section
-router.patch("/editProfile", validateRequest(editProfileSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.editProfile(req, res, next));
-router.post("/verifyPassword", validateRequest(verifyPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.verifyPassword(req, res, next));
-router.patch("/change-password", validateRequest(resetPasswordSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.changePassword(req, res, next));
+router.patch("/editProfile", validateRequest(editProfileSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Admin]), (req, res, next) => userController.editProfile(req, res, next));
+router.post("/verifyPassword", validateRequest(verifyPasswordSchema), AuthMiddleware(), (req, res, next) => userController.verifyPassword(req, res, next));
+router.patch("/change-password", validateRequest(resetPasswordSchema), AuthMiddleware(), (req, res, next) => userController.changePassword(req, res, next));
+
 router.get("/booking-history", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.getBookingHistory(req, res, next));
 router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.bookingDetails.bind(userController));
 router.patch("/booking/retry-availability/:bookingId",AuthMiddleware([RoleEnum.Customer]), userController.retryAvailability.bind(userController));

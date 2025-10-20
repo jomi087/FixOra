@@ -5,9 +5,12 @@ import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
+import { useAppSelector } from "@/store/hooks";
+import { RoleEnum } from "@/shared/enums/roles";
 
 export const useChangePasswordLogic = () => {
   const [searchParams] = useSearchParams();
+  const { user } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -26,7 +29,7 @@ export const useChangePasswordLogic = () => {
   }, [searchParams, navigate]);
 
   const handleSubmit = async (password: string, cPassword: string): Promise<void> => {
-    if (!token) return;
+    if (!token || !user) return;
 
     setLoading(true);
     try {
@@ -34,7 +37,13 @@ export const useChangePasswordLogic = () => {
       if (res.status === HttpStatusCode.OK) {
         toast.success(res.data.message || Messages.PASSWORD_UPDATED_SUCCESS);
         setTimeout(() => {
-          navigate("/customer/account/profile");
+          if (user.role === RoleEnum.CUSTOMER) {
+            navigate(`/${user.role}/account/profile`);
+          } else if (user.role === RoleEnum.PROVIDER) {
+            navigate(`/${user.role}/settings/profile`);
+          } else if (user.role === RoleEnum.ADMIN) {
+            navigate(`/${user.role}/settings/profile`);
+          }
         });
       }
     } catch (err) {
@@ -43,7 +52,13 @@ export const useChangePasswordLogic = () => {
       const errorMsg = error?.response?.data?.message || Messages.PASSWORD_UPDATE_FAILED;
       toast.error(errorMsg);
       setTimeout(() => {
-        navigate("/customer/account/profile");
+        if (user.role === RoleEnum.CUSTOMER) {
+          navigate(`/${user.role}/account/profile`);
+        } else if (user.role === RoleEnum.PROVIDER) {
+          navigate(`/${user.role}/settings/profile`);
+        } else if (user.role === RoleEnum.ADMIN) {
+          navigate(`/${user.role}/settings/profile`);
+        }
       });
     } finally {
       setLoading(false);

@@ -1,7 +1,7 @@
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
-  LayoutDashboard, Settings, BarChartBig, Wrench, AlertTriangle,
+  LayoutDashboard, Settings, Wrench, AlertTriangle,
   MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined
 } from "lucide-react";
 
@@ -161,9 +161,15 @@ export const adminSideBarOptions: SideBarOption[] = [
   { icon: LayoutDashboard, section: "Dashboard", to: "/admin/dashboard" },
   { icon: Users, section: "Users", to: "/admin/users" },
   { icon: Users, section: "Providers", to: "/admin/providers" },
-  { icon: BarChartBig, section: "Sales", to: "/admin/sales" },
   { icon: Wrench, section: "Services", to: "/admin/services" },
   { icon: AlertTriangle, section: "Dispute", to: "/admin/dispute" },
+  { icon: Settings, section: "Settings", to: "/admin/settings" },
+];
+
+
+export const settingOptions: { section: string; to: string }[]  = [
+  { section: "Profile", to: "/admin/settings/profile" },
+  { section: "Platform Fee", to: "/admin/settings/platform-fee" },
 ];
 
 /*********************************************************************************************************************************************************/
