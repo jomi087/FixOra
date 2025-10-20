@@ -22,4 +22,13 @@ export interface CreateCategoryInputDTO
   subcategories: CreateSubCategoryInput[];
 }
 
-export interface ActiveCategoryOutputDTO extends CategoryDTO{}
+export interface ActiveCategoryOutputDTO extends CategoryDTO { }
+
+export interface ShortCategoryOutputDTO {
+  categoryId: string;
+  name: string;
+  subcategories: {
+    subCategoryId: string;
+    name: string;
+  }[];
+}

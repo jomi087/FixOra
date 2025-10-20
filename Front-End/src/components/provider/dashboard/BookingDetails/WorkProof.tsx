@@ -1,4 +1,4 @@
-import { ImageModal } from "@/components/common/Others/ImageModal";
+import { ImageModal } from "@/components/common/modal/ImageModal";
 import React from "react";
 
 

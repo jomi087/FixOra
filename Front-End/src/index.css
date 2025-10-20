@@ -45,6 +45,19 @@
   }
 }
 
+@layer utilities {
+  .no-spinner {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: textfield; /* standard property */
+  }
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
 :root{
     --navbackground : #fff;
     --navtext : #000 ;
@@ -212,6 +225,10 @@ html {
   padding: 20px !important;
 }
 
+* {
+    scrollbar-gutter: stable;
+}
+
 .thin-scrollbar::-webkit-scrollbar {
   width: 5px; /* thin */
   height: 8px;
@@ -223,3 +240,4 @@ html {
   background-color: #9ca3af; /* gray-400 */
   border-radius: 10px;
 }
+

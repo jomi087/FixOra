@@ -182,15 +182,15 @@ interface BlogPost {
 // constants/apiRoutes.ts
 export const API_ROUTES = {
   AUTH: {
-    SIGNUP: "/api/auth/signup", //
-    SIGNIN: "/api/auth/signin", //
-    GOOGLE_SIGNIN: "/api/auth/google-signin",//
-    VERIFY_OTP: "/api/auth/verify-otp",//
-    RESEND_OTP: "/api/auth/resend-otp",//
-    FORGOT_PASSWORD: "/api/auth/forgot-password",//
-    RESET_PASSWORD: "/api/auth/reset-password",//
-    CHECK_STATUS: "/api/auth/check",//
-    SIGNOUT: "/api/auth/signout",//
+    SIGNUP: "/api/auth/signup",
+    SIGNIN: "/api/auth/signin",
+    GOOGLE_SIGNIN: "/api/auth/google-signin",
+    VERIFY_OTP: "/api/auth/verify-otp",
+    RESEND_OTP: "/api/auth/resend-otp",
+    FORGOT_PASSWORD: "/api/auth/forgot-password",
+    RESET_PASSWORD: "/api/auth/reset-password",
+    CHECK_STATUS: "/api/auth/check",
+    SIGNOUT: "/api/auth/signout",
   },
 
   NOTIFICATIONS: {
@@ -199,9 +199,9 @@ export const API_ROUTES = {
   },
 
   CUSTOMER: {
-    SERVICES: "/api/customer/services",//
-    PROVIDERS: "/api/customer/providers", //
-    PROVIDER_KYC: "/api/customer/provider-kyc",//
+    SERVICES: "/api/customer/services",
+    PROVIDERS: "/api/customer/providers",
+    PROVIDER_KYC: "/api/customer/provider-kyc",
     PROVIDER_BOOKINGS: (id: string) => `/api/customer/provider/bookings/${id}`,
     PROVIDER_REVIEWS: (id: string) => `/api/customer/provider/${id}/reviews`,
     BOOKING_APPLICATION: "/api/customer/provider/booking",
@@ -234,6 +234,8 @@ export const API_ROUTES = {
     ARRIVAL_OTP: (id: string) => `/api/provider/arrival-otp/${id}`,
     VERIFY_ARRIVAL_OTP: "api/provider/verify-arrivalOtp",
     FINALIZE_BOOKING: "/api/provider/acknowledge-completion",
+    PROVIDER_DATA: "/api/provider/provider-data",
+    PROVIDERSERVICES: "/api/provider/provider-services",
     WORKING_TIME_INFO: "/api/provider/availability-time",
     SCHEDULE_WORK_TIME: "api/provider/schedule-availability-time",
     TOGGLE_AVAILABILITY: "api/provider/toggle-availability",

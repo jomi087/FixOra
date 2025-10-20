@@ -17,6 +17,9 @@ import validateFile from "../validations/fileValidation";
 import { IWorkCompletionUseCase } from "../../application/Interface/useCases/Provider/IWorkCompletionUseCase";
 import { IPendingBookingRequestUseCase } from "../../application/Interface/useCases/Provider/IPendingBookingRequestUseCase";
 import { RoleEnum } from "../../shared/enums/Roles";
+import { IProviderServiceInfoUseCase } from "../../application/Interface/useCases/Provider/IProviderServiceInfoUseCase";
+import { IProviderServiceUseCase } from "../../application/Interface/useCases/Provider/IProviderServiceUseCase";
+import { IProviderDataUpdateUseCase } from "../../application/Interface/useCases/Provider/IProviderDataUpdateUseCase";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
@@ -31,26 +34,29 @@ export class ProviderController {
         private _verifyArrivalUseCase: IVerifyArrivalUseCase,
         private _verifyArrivalOtpUseCase: IVerifyArrivalOtpUseCase,
         private _workCompletionUseCase: IWorkCompletionUseCase,
+        private _providerServiceUseCase: IProviderServiceUseCase,
+        private _providerServiceInfoUseCase: IProviderServiceInfoUseCase,
+        private _providerDataUpdateUseCase: IProviderDataUpdateUseCase,
         private _getAvailabilityUseCase: IGetAvailabilityUseCase,
         private _setAvailabilityUseCase: ISetAvailabilityUseCase,
         private _toggleAvailabilityUseCase: IToggleAvailabilityUseCase,
     ) { }
 
 
-    async PendingBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async pendingBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
                 throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
             }
             if (req.user.role != RoleEnum.Provider) throw { status: 404, message: UNAUTHORIZED_MSG };
-            
+
             const providerUserId = req.user.userId;
 
             const result = await this._pendingBookingRequestUseCase.execute(providerUserId);
 
             res.status(OK).json({
                 success: true,
-                pendingBookingRequestData : result
+                pendingBookingRequestData: result
             });
 
         } catch (error) {
@@ -234,6 +240,65 @@ export class ProviderController {
             next(error);
         }
     }
+
+    async providerServices(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const providerUserId = req.user.userId;
+            const data = await this._providerServiceUseCase.execute(providerUserId);
+
+            res.status(OK).json({
+                success: true,
+                serviceData: data
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async providerInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const providerUserId = req.user.userId;
+
+            const data = await this._providerServiceInfoUseCase.execute(providerUserId);
+
+            res.status(OK).json({
+                success: true,
+                providerData: data
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async updateProviderData(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const { serviceCharge, category } = req.body;
+            const providerUserId = req.user.userId;
+            const data = await this._providerDataUpdateUseCase.execute({ providerUserId, serviceCharge, category });
+
+            res.status(OK).json({
+                success: true,
+                updatedProviderData: data
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
 
     async getAvailabilityTime(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {

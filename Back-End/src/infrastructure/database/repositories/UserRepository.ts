@@ -441,7 +441,6 @@ export class UserRepository implements IUserRepository {
             role: "provider",
             isBlocked: false,
             "providerDetails.providerId": providerId,
-
         };
 
         const pipeline: PipelineStage[] = [

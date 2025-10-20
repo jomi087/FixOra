@@ -30,7 +30,7 @@ export interface ProviderInfoDTO {
     distanceFee: number;
 }
 
-export interface ProviderInfoInputDTO{
+export interface ProviderInfoInputDTO {
     id: string;
     coordinates: {
         latitude: number;
@@ -38,4 +38,26 @@ export interface ProviderInfoInputDTO{
     }
 }
 
-export interface ProviderInfoOutputDTO extends ProviderInfoDTO {}
+export interface ProviderInfoOutputDTO extends ProviderInfoDTO { }
+
+
+export interface ProviderServiceDTO {
+    serviceCharge: number;
+    category: {
+        categoryId: string,
+        name: string,
+        subcategories: {
+            subCategoryId: string;
+            name: string;
+        }[];
+    }
+}
+export interface ProviderServiceInfoInputDTO extends ProviderServiceDTO{
+    providerUserId:string
+}
+
+export interface ProviderServiceInfoOutputDTO extends ProviderServiceDTO{
+    providerId: string,
+
+}
+

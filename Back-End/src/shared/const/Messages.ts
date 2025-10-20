@@ -16,6 +16,7 @@ export const Messages = {
     WALLET_ID_NOT_FOUND: "Wallet Not Found",
     EMAIL_NOT_FOUND: "Email Not Found",
     PROVIDER_NOT_FOUND: "Provider Not Found",
+    CATEGORY_NOT_FOUND: "Category Not Found",
     NOTIFICATIONID_NOT_FOUND: "NotificatonId Not Found",
     NOT_FOUND_MSG: "Data Not Found",
 

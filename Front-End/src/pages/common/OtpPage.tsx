@@ -1,5 +1,5 @@
 import Header from "../../components/common/layout/Header"; 
-import Otp from "../../components/common/auth/Otp";
+import Otp from "../../components/auth/Otp";
 import { BGImage_404 } from "../../utils/constant";
 import { useOtpLogic } from "@/hooks/useOtpLogic";
 

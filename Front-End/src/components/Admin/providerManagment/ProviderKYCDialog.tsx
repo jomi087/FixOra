@@ -5,11 +5,11 @@ import { formatDOB, toPascalCase } from "@/utils/helper/utils";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "../../ui/button";
-import ReasonDialog from "../../common/Others/ReasonDialog";
+import ReasonDialog from "../../common/modal/ReasonDialog";
 import { KYCStatus } from "@/shared/enums/KycStatus";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { ApprovedSeal, Messages, RejectSeal } from "@/utils/constant";
-import { ImageModal } from "@/components/common/Others/ImageModal";
+import { ImageModal } from "@/components/common/modal/ImageModal";
 import type { AxiosError } from "axios";
 
 

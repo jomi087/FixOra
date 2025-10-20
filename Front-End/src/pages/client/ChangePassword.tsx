@@ -1,4 +1,4 @@
-import ResetPassword from "../../components/common/auth/ResetPassword";
+import ResetPassword from "../../components/auth/ResetPassword";
 import Nav from "@/components/common/layout/Nav";
 import { useChangePasswordLogic } from "@/hooks/useChangePasswordLogic ";
 

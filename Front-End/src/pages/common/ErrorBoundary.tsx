@@ -1,6 +1,6 @@
 import React  from "react";
 import { toast } from "react-toastify";
-import ErrorPage from "../../components/common/Others/ErrorPage";
+import ErrorPage from "../../components/common/others/ErrorPage";
 import Header from "../../components/common/layout/Header";
 
 interface Props {

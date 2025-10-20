@@ -1,6 +1,6 @@
 import { BGImage_404, SingInThemeImage } from "@/utils/constant";
 import Header from "@/components/common/layout/Header";
-import SignIn from "@/components/common/auth/SignIn";
+import SignIn from "@/components/auth/SignIn";
 import { RoleEnum } from "@/shared/enums/roles";
 import { useSignInLogic } from "@/hooks/useSignInLogic";
 

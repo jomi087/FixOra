@@ -17,9 +17,8 @@ export class CategoryRepository implements ICategoryRepository {
         }).lean<Category>();
     }
 
-    async findById(id: string): Promise<Category>{  
+    async findById(id: string): Promise<Category|null>{  
         const category = await CategoryModel.findOne({ categoryId : id }).lean<Category>();
-        if (!category) throw new Error("Category not found");
         return category;
     }
 

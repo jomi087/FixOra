@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BiShow, BiHide, BiCheckCircle, BiXCircle } from "react-icons/bi";
-import { constraints, shortInputLength } from "../../../utils/constant";
+import { constraints, shortInputLength } from "../../utils/constant";
 
 interface passwordResetProps {
     passwordResetbutton: (password: string, cPassword: string) => Promise<void>;

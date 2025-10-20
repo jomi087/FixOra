@@ -1,12 +1,12 @@
 import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/Others/SideBar";
-import Pagination from "@/components/common/Others/Pagination";
+import SideBar from "@/components/common/others/SideBar";
+import Pagination from "@/components/common/others/Pagination";
 import { adminSideBarOptions, Messages } from "@/utils/constant";
 import { Button } from "@/components/ui/button";
 import { useProviderManagement } from "@/hooks/useProviderManagement";
-import SearchInput from "@/components/common/Others/SearchInput";
-import FilterSelect from "@/components/common/Others/FilterSelect";
+import SearchInput from "@/components/common/others/SearchInput";
+import FilterSelect from "@/components/common/others/FilterSelect";
 import { useNavigate } from "react-router-dom";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";

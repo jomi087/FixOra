@@ -1,4 +1,4 @@
-import Pagination from "@/components/common/Others/Pagination";
+import Pagination from "@/components/common/others/Pagination";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchProviderReviews } from "@/store/user/providerInfoSlice";
 import { RLPP } from "@/utils/constant";

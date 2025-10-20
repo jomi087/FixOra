@@ -1,6 +1,6 @@
 import { BGImage_404 } from "../../utils/constant";
 import Header from "../../components/common/layout/Header";
-import ResetPassword from "../../components/common/auth/ResetPassword";
+import ResetPassword from "../../components/auth/ResetPassword";
 import { useResetPasswordLogic } from "@/hooks/useResetPasswordLogic";
 
 

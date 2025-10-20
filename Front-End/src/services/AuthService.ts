@@ -1,6 +1,6 @@
 import type { Day, LeaveOption } from "@/shared/types/availability";
 import axiosInstance from "./axiosConfig";
-import type { ProfileEdit, Signin, Signup } from "@/shared/types/user";
+import type { ProfileEdit, ServiceData, Signin, Signup } from "@/shared/types/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
 import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { API_ROUTES } from "@/utils/constant";
@@ -172,6 +172,7 @@ class AuthService {
     return axiosInstance.post(API_ROUTES.CUSTOMER.ADD_FUND, { amount }, this.getJsonConfig());
   }
 
+
   /*********************************************************************************************************************** */
   //Provider
   pendingRequestApi() {
@@ -211,6 +212,18 @@ class AuthService {
     return axiosInstance.post(API_ROUTES.PROVIDER.FINALIZE_BOOKING, data, this.getMultiPartConfig());
   }
 
+  getServiceApi() {
+    return axiosInstance.get(API_ROUTES.PROVIDER.PROVIDERSERVICES);
+  }
+
+  providerDataApi() {
+    return axiosInstance.get(API_ROUTES.PROVIDER.PROVIDER_DATA);
+  }
+
+  updateProviderDataApi(payload: Pick<ServiceData, "serviceCharge" | "category">) {
+    return axiosInstance.patch(API_ROUTES.PROVIDER.PROVIDER_DATA, payload );
+  }
+
   workingTimeInfoApi() {
     return axiosInstance.get(API_ROUTES.PROVIDER.WORKING_TIME_INFO);
   }
@@ -222,6 +235,8 @@ class AuthService {
   toggleAvailability(day: string, leaveOption?: LeaveOption) {
     return axiosInstance.patch(API_ROUTES.PROVIDER.TOGGLE_AVAILABILITY, { day, leaveOption });
   }
+
+
 
   /*********************************************************************************************************************** */
   //Admin
@@ -266,8 +281,8 @@ class AuthService {
   }
 
   /*********************************************************************************************************************** */
-  
-  signoutApi(fcmToken : string|null) {
+
+  signoutApi(fcmToken: string | null) {
     return axiosInstance.post(API_ROUTES.AUTH.SIGNOUT, { fcmToken }, this.getJsonConfig());
   }
 

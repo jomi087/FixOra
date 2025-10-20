@@ -1,14 +1,14 @@
 import { useState } from "react";
-import SkeletonInfoCard from "../../admin/SkeletonInfoCard";
-import FilterSelect from "../../common/Others/FilterSelect";
-import SearchInput from "../../common/Others/SearchInput";
-import { Button } from "../../ui/button";
+import SkeletonInfoCard from "../../../admin/SkeletonInfoCard";
+import FilterSelect from "../../../common/others/FilterSelect";
+import SearchInput from "../../../common/others/SearchInput";
+import { Button } from "../../../ui/button";
 
-import ProviderTandC from "./ProviderTandC";
+import ProviderTandC from "../providerApplication/ProviderTandC";
 import ProviderCard from "./ProviderCard";
 import MobileFilterSideBar from "./MobileFilterSideBar";
 import { useAuthProvider } from "@/hooks/useAuthProvider";
-import Pagination from "@/components/common/Others/Pagination";
+import Pagination from "@/components/common/others/Pagination";
 
 
 

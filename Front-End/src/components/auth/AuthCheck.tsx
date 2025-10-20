@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useAppDispatch } from "../../../store/hooks";
-import { logout, Userinfo } from "../../../store/common/userSlice";
-import AuthService from "../../../services/AuthService";
+import { useAppDispatch } from "../../store/hooks";
+import { logout, Userinfo } from "../../store/common/userSlice";
+import AuthService from "../../services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { fetchNotifications } from "@/store/common/notificationSlice";
 

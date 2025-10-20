@@ -76,7 +76,7 @@ const forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository, emailSer
 import { ResetPasswordUseCase } from "../application/useCases/auth/ResetPasswordUseCase";
 const resetPasswordUseCase = new ResetPasswordUseCase(hashService, userRepository);
 
-import { RegisterFcmTokenUseCase } from "../application/useCases/auth/RegisterFcmTokenUseCase"; 
+import { RegisterFcmTokenUseCase } from "../application/useCases/auth/RegisterFcmTokenUseCase";
 const registerFcmTokenUseCase = new RegisterFcmTokenUseCase(userRepository);
 
 import { RefreshTokenUseCase } from "../application/useCases/auth/RefreshTokenUseCase";
@@ -106,7 +106,7 @@ import { GetActiveProvidersUseCase } from "../application/useCases/client/GetAct
 const getActiveProvidersUseCase = new GetActiveProvidersUseCase(userRepository);
 
 import { KYCRequestUseCase } from "../application/useCases/client/kYCRequestUseCase";
-const kycRequestUseCase = new KYCRequestUseCase(imageUploaderService,kycRequestRepository, userRepository, notificationRepository, notificationService);
+const kycRequestUseCase = new KYCRequestUseCase(imageUploaderService, kycRequestRepository, userRepository, notificationRepository, notificationService);
 
 import { ProviderInfoUseCase } from "../application/useCases/client/ProviderInfoUseCase";
 const providerInfoUseCase = new ProviderInfoUseCase(userRepository);
@@ -183,6 +183,15 @@ const verifyArrivalOtpUseCase = new VerifyArrivalOtpUseCase(otpRepository, token
 import { WorkCompletionUseCase } from "../application/useCases/providers/WorkCompletionUseCase";
 const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository);
 
+import { ProviderServiceUseCase } from "../application/useCases/providers/ProviderServiceUseCase";
+const providerServiceUseCase = new ProviderServiceUseCase(providerRepository, categoryRepository);
+
+import { ProviderServiceInfoUseCase } from "../application/useCases/providers/ProviderServiceInfoUseCase";
+const providerServiceInfoUseCase = new ProviderServiceInfoUseCase(providerRepository);
+
+import { ProviderDataUpdateUseCase } from "../application/useCases/providers/ProviderDataUpdateUseCase";
+const providerDataUpdateUseCase = new ProviderDataUpdateUseCase(providerRepository);
+
 import { GetAvailabilityUseCase } from "../application/useCases/providers/GetAvailabiltyUseCase";
 const getAvailabilityUseCase = new GetAvailabilityUseCase(providerRepository, availabilityRepository);
 
@@ -193,7 +202,7 @@ import { ToggleAvailabilityUseCase } from "../application/useCases/providers/Tog
 const toggleAvailabilityUseCase = new ToggleAvailabilityUseCase(providerRepository, availabilityRepository, bookingRepository, walletRepository, notificationService, notificationRepository);
 
 /******************************************************************************************************************************************************
-                                                        Admin Specific
+                                        Admin Specific
 ******************************************************************************************************************************************************/
 import { GetCustomersUseCase } from "../application/useCases/admin/GetCustomersUseCase";
 const getCustomersUseCase = new GetCustomersUseCase(userRepository);
@@ -228,11 +237,12 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
-const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase, );
+const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase,);
 
-const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase,verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
+const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
-const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
+const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase,providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
+
 
 const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
 

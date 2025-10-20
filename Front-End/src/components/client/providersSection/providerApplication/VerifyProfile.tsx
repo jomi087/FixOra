@@ -19,11 +19,11 @@ import { validateFName, validateLName, validateMobileNo } from "@/utils/validati
 import { useNavigate } from "react-router-dom";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, shortInputLength } from "@/utils/constant";
-import AddressDialog from "@/components/common/Others/AddressDialog";
+import AddressDialog from "@/components/common/modal/AddressDialog";
 import type { AxiosError } from "axios";
 
 interface VerifyProfileProps {
-    toggle: (editMode: boolean) => void;
+  toggle: (editMode: boolean) => void;
 }
 
 const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
@@ -176,9 +176,9 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
 
     const isSame = (
       form.fname === user?.fname &&
-            form.lname === user?.lname &&
-            form.mobile === user?.mobileNo &&
-            JSON.stringify(form.location) === JSON.stringify(user?.location)
+      form.lname === user?.lname &&
+      form.mobile === user?.mobileNo &&
+      JSON.stringify(form.location) === JSON.stringify(user?.location)
     );
 
     if (isSame) {
@@ -220,7 +220,7 @@ const VerifyProfile: React.FC<VerifyProfileProps> = ({ toggle }) => {
             maxLength={shortInputLength}
           />
           <p className="text-[12px] font-extralight before:content-['*'] before:text-red-500 before:mr-1">
-                        Make sure your Name is exactly the same as in your ID card
+            Make sure your Name is exactly the same as in your ID card
           </p>
         </div>
 

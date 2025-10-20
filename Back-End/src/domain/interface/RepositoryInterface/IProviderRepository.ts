@@ -5,9 +5,6 @@ import { User } from "../../entities/UserEntity";
 export interface IProviderRepository {
     create(data: Provider): Promise<void>
     findByUserId(userId: string): Promise<Provider | null>
-    // findProvidersWithFilters(option: { searchQuery: string; filter: string }, currentPage: number, limit: number): Promise<{
-    //     data: ProviderWithDetails[]; total: number
-    // }>
     findProvidersWithFilters(option: { searchQuery: string; filter: string }, currentPage: number, limit: number): Promise<{
         data: {
             user: Pick<User, "userId" | "fname" | "lname" | "email" | "mobileNo" | "location">
@@ -16,4 +13,13 @@ export interface IProviderRepository {
         }[]
         total: number
     }>
+
+    findProviderServiceInfoById(userId: string): Promise<{
+        provider: Pick<Provider, "providerId" | "serviceCharge">,
+        category: Pick<Category, "categoryId" | "name" | "subcategories">
+    }>
+
+    updateProviderService(userId: string, data:Partial<Provider>): Promise<Provider | null>
+
+    findServiceId(userId: string): Promise<string | null>
 }

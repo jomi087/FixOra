@@ -1,4 +1,4 @@
-import SideBar from "../../components/common/Others/SideBar";
+import SideBar from "../../components/common/others/SideBar";
 import Nav from "../../components/common/layout/Nav";
 import { userSideBarOptions } from "@/utils/constant";
 import BookingHistoryTable from "@/components/client/accountSection/bookingsSection/history/BookingHistoryTable";

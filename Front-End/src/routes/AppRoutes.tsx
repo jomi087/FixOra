@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { RoleEnum } from "@/shared/enums/roles.ts";
 
 import ErrorBoundary from "../pages/common/ErrorBoundary.tsx";
-import PageNotFound from "../components/common/Others/PageNotFound";
+import PageNotFound from "../components/common/others/PageNotFound.tsx";
 import SignInPage from "../pages/common/SignInPage.tsx";
 import SignUpPage from "../pages/common/SignUpPage.tsx";
 import OtpPage from "../pages/common/OtpPage.tsx";
@@ -35,6 +35,7 @@ import JobDetailsPage from "@/pages/provider/JobDetailsPage.tsx";
 import ProviderWalletPage from "@/pages/provider/WalletPage.tsx";
 import UserWalletPage from "@/pages/client/WalletPage.tsx";
 import AvailabilityPage from "@/pages/provider/AvailabilityPage.tsx";
+import AdvanceProfilePage from "@/pages/provider/AdvanceProfilePage.tsx";
 
 
 const router = createBrowserRouter([
@@ -99,6 +100,7 @@ const router = createBrowserRouter([
       { path: "booking-details/:bookingId", element: <JobDetailsPage /> },
       { path: "wallet", element: <ProviderWalletPage /> },
       { path: "settings/profile", element: <ProviderProfilePage /> },
+      { path: "settings/advance-profile", element: <AdvanceProfilePage /> },
       { path: "settings/availability", element: <AvailabilityPage /> },
 
     ],

@@ -5,12 +5,12 @@ import { RoleEnum } from "@/shared/enums/roles";
 import { App_Name, shortInputLength } from "@/utils/constant";
 
 interface signInProps {
-    singInThemeImage: string;
-    signInSubmit: (email: string, password: string) => Promise<void>;
-    forgotPassword: (email: string) => Promise<void>;
-    googleSignin: () => void;
-    loading: boolean;
-    role: string;
+  singInThemeImage: string;
+  signInSubmit: (email: string, password: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
+  googleSignin: () => void;
+  loading: boolean;
+  role: string;
 }
 
 const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotPassword, googleSignin, loading, role }) => {
@@ -58,7 +58,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
               <span className="sr-only">Email address</span>
               <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden mt-8">
                 <span className="bg-black px-4 py-3 font-mono text-white select-none text-sm md:text-base whitespace-nowrap">
-                                    E-Mail
+                  E-Mail
                 </span>
                 <input
                   type="email"
@@ -79,28 +79,28 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
 
             {/* Password */}
             {isSignInForm &&
-                            <label htmlFor="password" className="block w-full">
-                              <span className="sr-only">Password</span>
-                              <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-blue-50">
-                                <span className="bg-black px-5 py-3 text-white select-none text-sm md:text-base whitespace-nowrap">
-                                        Password
-                                </span>
-                                <input
-                                  type="password"
-                                  name="password"
-                                  id="password"
-                                  aria-required="true"
-                                  className="flex-1 p-3 outline-none focus:ring-8 "
-                                  placeholder="Enter your password"
-                                  required
-                                  autoComplete="current-password"
-                                  value={password}
-                                  maxLength={shortInputLength}
-                                  onChange={(e) => setPassword(e.target.value)}
-                                  disabled={loading}
-                                />
-                              </div>
-                            </label>
+              <label htmlFor="password" className="block w-full">
+                <span className="sr-only">Password</span>
+                <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-blue-50">
+                  <span className="bg-black px-5 py-3 text-white select-none text-sm md:text-base whitespace-nowrap">
+                    Password
+                  </span>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    aria-required="true"
+                    className="flex-1 p-3 outline-none focus:ring-8 "
+                    placeholder="Enter your password"
+                    required
+                    autoComplete="current-password"
+                    value={password}
+                    maxLength={shortInputLength}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
+                  />
+                </div>
+              </label>
             }
 
             {/* Sign In Button */}
@@ -129,7 +129,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
                   : "bg-blue-800 hover:bg-blue-900"
                 }`}
               >
-                                Verify
+                Verify
               </button>
             )
             }
@@ -137,12 +137,12 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
           </form>
 
           {isSignInForm &&
-                        <p className="mt-6 text-center">
-                            Don't have an account?
-                          <Link to="/signup" className="underline text-blue-600 font-semibold ml-1">
-                                Sign up
-                          </Link>
-                        </p>
+            <p className="mt-6 text-center">
+              Don't have an account?
+              <Link to="/signup" className="underline text-blue-600 font-semibold ml-1">
+                Sign up
+              </Link>
+            </p>
           }
 
           {isSignInForm && (
@@ -152,7 +152,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
                 className="text-black font-medium text-sm cursor-pointer hover:underline"
                 onClick={() => setIsSignInForm(false)}
               >
-                                Forgot Password
+                Forgot Password
               </button>
             </div>
           )}
@@ -164,37 +164,37 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
           </div>
 
           {isSignInForm &&
-                        <div className="flex justify-center mt-4">
-                          <button
-                            type="button"
-                            className="text-black font-medium text-sm cursor-pointer "
-                            onClick={handleGoogleLogin}
-                          >
-                            <FcGoogle size={25} />
-                          </button>
-                        </div>
+            <div className="flex justify-center mt-4">
+              <button
+                type="button"
+                className="text-black font-medium text-sm cursor-pointer "
+                onClick={handleGoogleLogin}
+              >
+                <FcGoogle size={25} />
+              </button>
+            </div>
           }
 
           {!isSignInForm &&
-                        <Link to="/signup" className="font-semibold block text-center ">
-                            Create Account
-                        </Link>
+            <Link to="/signup" className="font-semibold block text-center ">
+              Create Account
+            </Link>
           }
 
           {!isSignInForm &&
-                        <button className=" w-full text-center mt-6 pt-2 text-black font-semibold cursor-pointer  "
-                          onClick={() => { setIsSignInForm(true); }}
-                        >
-                            Back to Login
-                        </button>
+            <button className=" w-full text-center mt-6 pt-2 text-black font-semibold cursor-pointer  "
+              onClick={() => { setIsSignInForm(true); }}
+            >
+              Back to Login
+            </button>
           }
 
           {isSignInForm &&
-                        <p className="mt-4 text-blue-100 text-center">
-                          <Link to={`/signIn/${RoleEnum.ADMIN}`} className="text-black font-semibold">
-                                Explore our app
-                          </Link>
-                        </p>
+            <p className="mt-4 text-blue-100 text-center">
+              <Link to={`/signIn/${RoleEnum.ADMIN}`} className="text-black font-semibold">
+                Explore our app
+              </Link>
+            </p>
           }
         </div>
       </section>

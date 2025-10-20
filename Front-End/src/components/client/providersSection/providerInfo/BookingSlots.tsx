@@ -1,11 +1,11 @@
-import BookingDatesInfo from "@/components/common/Others/BookingDatesInfo";
-import TimeSlotSelector from "@/components/common/Others/TimeSlotSelector";
+import BookingDatesInfo from "@/components/common/others/BookingDatesInfo";
+import TimeSlotSelector from "@/components/client/providersSection/providerInfo/TimeSlotSelector";
 import BookingDialog from "./BookingDialog";
 
 import Lottie from "lottie-react";
 import LodingAnimation from "@/assets/animations/BoxyLoading.json";
 import { useBookingRequest } from "@/hooks/useBookingRequest";
-import { ModeOfPayment } from "@/components/common/Others/ModeOfPayment";
+import { ModeOfPayment } from "@/components/common/others/ModeOfPayment";
 
 
 const BookingSlots: React.FC = () => {

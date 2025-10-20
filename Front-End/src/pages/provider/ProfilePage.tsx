@@ -1,6 +1,6 @@
-import Profile from "@/components/common/Others/Profile";
+import Profile from "@/components/common/profile/Profile";
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/Others/SideBar";
+import SideBar from "@/components/common/others/SideBar";
 import { providerSideBarOptions } from "@/utils/constant";
 
 const ProfilePage = () => {
@@ -15,4 +15,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage; 
+export default ProfilePage;

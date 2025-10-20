@@ -3,10 +3,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/Admin/IToggleCategoryStatusUseCase";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
+const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
+const { INTERNAL_ERROR, CATEGORY_NOT_FOUND } = Messages;
 
-export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase{
+export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase {
     constructor(
         private readonly _categoryRepository: ICategoryRepository
     ) { }
@@ -14,7 +14,7 @@ export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase
     async execute(categoryId: string): Promise<void> {
         try {
             const category = await this._categoryRepository.findById(categoryId);
-            // console.log("mainCategory", category);
+            if (!category) throw { status: NOT_FOUND, message: CATEGORY_NOT_FOUND };
 
             const newStatus = !category.isActive;
 
@@ -27,7 +27,7 @@ export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase
 
             //save
             await this._categoryRepository.save(category);
-    
+
         } catch (error) {
             if (error.status && error.message) {
                 throw error;

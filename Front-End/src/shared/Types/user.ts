@@ -166,6 +166,23 @@ export interface ProviderData {
   isOnline: boolean;
 }
 
+export interface Services {
+  categoryId: string
+  name: string;
+  subcategories: {
+    subCategoryId: string;
+    name: string
+  }[];
+};
+
+
+export interface ServiceData extends Services {
+  providerId: string,
+  serviceCharge: number;
+  category: Services;
+}
+
+
 //providerKYCApplicationList
 export interface ProviderList {
   id: string;

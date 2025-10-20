@@ -1,7 +1,7 @@
 import type { ProviderData } from "@/shared/types/user";
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";
 import { toPascalCase } from "@/utils/helper/utils";
-import { ImageModal } from "@/components/common/Others/ImageModal";
+import { ImageModal } from "@/components/common/modal/ImageModal";
 
 const ProviderBackSideInfoCard: React.FC<{ data: ProviderData }> = ({ data }) => {
 

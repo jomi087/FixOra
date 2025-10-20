@@ -1,4 +1,4 @@
-import Pagination from "@/components/common/Others/Pagination";
+import Pagination from "@/components/common/others/Pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AuthService from "@/services/AuthService";
 import { BHPP, Messages } from "@/utils/constant";

@@ -25,7 +25,7 @@ const SideBar: React.FC<SideBarProps> = ({ SideBar, className }) => {
           return (
             <li
               key={index}
-              className="group relative ml-5 sm:ml-10 pt-2 pb-1 mb-6 rounded-lg hover:ml-8 transition-transform"
+              className="group relative ml-5 sm:ml-8 pt-2 pb-1 mb-6 rounded-lg hover:ml-8 transition-transform"
             >
               {item.children ? (
                 <div className="">

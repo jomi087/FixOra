@@ -17,3 +17,4 @@ export const validateDescription = (description: string): string | null => {
 export const validateCategoryImage = (file: File | null , imageSize : number ): string | null => {
   return validateImage(file,imageSize);
 };
+

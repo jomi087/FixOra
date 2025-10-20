@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import type { Transaction } from "@/shared/types/wallet";
 import { TransactionStatus, TransactionType } from "@/shared/enums/Transaction";
-import Pagination from "@/components/common/Others/Pagination";
+import Pagination from "@/components/common/others/Pagination";
 
 
 const statusConfig: Record<

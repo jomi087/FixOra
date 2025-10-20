@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LogIn, LogOut, Menu, X } from "lucide-react";
-import ThemeToggle from "../Others/ThemeToggle";
+import ThemeToggle from "../others/ThemeToggle";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { App_Name, Messages, navItems } from "../../../utils/constant";

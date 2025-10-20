@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import BookingHistoryShimmer from "@/components/provider/history/BookingHistoryShimmer";
-import Pagination from "@/components/common/Others/Pagination";
+import Pagination from "@/components/common/others/Pagination";
 
 const BookingHistoryTable = () => {
   const [currentPage, setCurrentPage] = useState(1);

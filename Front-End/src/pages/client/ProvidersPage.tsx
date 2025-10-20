@@ -1,5 +1,5 @@
-import FilterSideBar from "@/components/client/providersSection/FilterSideBar";
-import ProviderList from "@/components/client/providersSection/ProviderList";
+import FilterSideBar from "@/components/client/providersSection/ProviderList/FilterSideBar";
+import ProviderList from "@/components/client/providersSection/ProviderList/ProviderList";
 import Nav from "@/components/common/layout/Nav";
 import useFetchCategories from "@/hooks/useFetchCategories";
 

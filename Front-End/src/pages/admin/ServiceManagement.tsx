@@ -1,13 +1,13 @@
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/Others/SideBar";
+import SideBar from "@/components/common/others/SideBar";
 import { adminSideBarOptions, Messages } from "@/utils/constant";
 import { useState } from "react";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import SearchInput from "@/components/common/Others/SearchInput";
-import FilterSelect from "@/components/common/Others/FilterSelect";
+import SearchInput from "@/components/common/others/SearchInput";
+import FilterSelect from "@/components/common/others/FilterSelect";
 import AddCategoryDialoge from "@/components/admin/userManagment/AddCategoryDialoge";
 import ServiceTable from "@/components/admin/userManagment/ServiceTable";
-import Pagination from "@/components/common/Others/Pagination";
+import Pagination from "@/components/common/others/Pagination";
 import { useServiceManagement } from "@/hooks/useServiceManagement";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";

@@ -1,5 +1,5 @@
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/Others/SideBar";
+import SideBar from "@/components/common/others/SideBar";
 import JobInfo from "@/components/provider/dashboard/Bookings/JobInfo";
 import { providerSideBarOptions } from "@/utils/constant";
 

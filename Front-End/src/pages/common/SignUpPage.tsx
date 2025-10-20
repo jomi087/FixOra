@@ -1,6 +1,6 @@
 import { BGImage_404 } from "../../utils/constant";
 import Header from "../../components/common/layout/Header";
-import SignUp from "../../components/common/auth/SignUp";
+import SignUp from "../../components/auth/SignUp";
 import { useSignUpLogic } from "@/hooks/useSignUpLogic";
 
 

@@ -1,4 +1,4 @@
-import Otp from "@/components/common/auth/Otp";
+import Otp from "@/components/auth/Otp";
 import { Button } from "@/components/ui/button";
 import { useOtpLogic } from "@/hooks/useOtpLogic";
 import AuthService from "@/services/AuthService";

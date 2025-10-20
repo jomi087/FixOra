@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Dialog,DialogClose,DialogContent,DialogDescription,DialogFooter,DialogHeader,DialogTitle,DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { shortInputLength } from "@/utils/constant";
 import { useState } from "react";
 
 interface ChangePasswordProps {
-    changePassword: (password: string) => Promise<void>;
-    errorMsg: string
-    setErrorMsg: (errorMsg: string) => void;
-    open: boolean;
-    setOpen: (value: boolean) => void;
-    loading : boolean
+  changePassword: (password: string) => Promise<void>;
+  errorMsg: string
+  setErrorMsg: (errorMsg: string) => void;
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  loading: boolean
 }
 
 
@@ -37,21 +37,21 @@ const ChangePassowrdDialog: React.FC<ChangePasswordProps> = ({ changePassword, e
                 id="Password"
                 name="Password"
                 value={password}
-                onChange = {(e)=>{setPassword(e.target.value);}}  
+                onChange={(e) => { setPassword(e.target.value); }}
                 maxLength={shortInputLength}
               />
               {errorMsg && (
-                <p className="text-sm text-red-500 mt-1">{errorMsg}</p>
+                <p className="text-sm text-red-500 mt-1">{ errorMsg }</p>
               )}
             </div>
-          </div> 
+          </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button
                 variant="outline"
-                onClick={()=>{setErrorMsg("");}}
+                onClick={() => { setErrorMsg(""); }}
               >
-                            Cancel
+                Cancel
               </Button>
             </DialogClose>
             <Button
@@ -61,7 +61,7 @@ const ChangePassowrdDialog: React.FC<ChangePasswordProps> = ({ changePassword, e
                 changePassword(password);
               }}
             >
-              { loading ? "loading..." : "done"}
+              {loading ? "loading..." : "done"}
             </Button>
           </DialogFooter>
         </DialogContent>

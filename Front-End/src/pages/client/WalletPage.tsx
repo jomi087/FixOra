@@ -1,6 +1,6 @@
 import Wallet from "@/components/client/accountSection/walletSection/Wallet";
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/Others/SideBar";
+import SideBar from "@/components/common/others/SideBar";
 import { userSideBarOptions } from "@/utils/constant";
 
 const WalletPage = () => {

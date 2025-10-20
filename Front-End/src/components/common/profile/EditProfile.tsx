@@ -17,7 +17,7 @@ import { Userinfo } from "@/store/common/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, shortInputLength } from "@/utils/constant";
-import AddressDialog from "@/components/common/Others/AddressDialog";
+import AddressDialog from "@/components/common/modal/AddressDialog";
 import type { AxiosError } from "axios";
 
 
