@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { KYCImageSize, Messages } from "../constant";
-import { imageValidator } from "./imageValidation";
+import { imageValidatorField } from "./imageValidation";
 
 
 export const providerKYCSchema = z.object({
@@ -24,23 +24,13 @@ export const providerKYCSchema = z.object({
     message: Messages.GENDER_REQUIRED
   }),
 
-  profileImage: imageValidator(KYCImageSize,"Profile image"),           
+  profileImage: imageValidatorField(KYCImageSize,"Profile image"),           
     
-  idCard: imageValidator(KYCImageSize,"ID card"),                 
+  idCard: imageValidatorField(KYCImageSize,"ID card"),                 
     
-  educationCertificate: imageValidator(KYCImageSize, "Education certificate"),   
+  educationCertificate: imageValidatorField(KYCImageSize, "Education certificate"),   
 
-  experienceCertificate: z.any().optional().refine(
-    (file) => {
-      if (!file) return true; // optional
-      const validTypes = ["image/jpeg", "image/png", "image/jpg"];
-      const maxSizeInBytes = KYCImageSize * 1024 * 1024;
-      return validTypes.includes(file.type) && file.size <= maxSizeInBytes;
-    },
-    {
-      message: Messages.EXPERIENCE_CERT_INVALID,
-    }
-  ),
+  experienceCertificate: imageValidatorField(KYCImageSize, "Experience certificate"),   
 });
 
 export type ProviderKYCType = z.infer<typeof providerKYCSchema>; // zod its self create  

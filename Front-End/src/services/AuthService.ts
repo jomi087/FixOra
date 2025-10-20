@@ -24,13 +24,13 @@ class AuthService {
     };
   }
 
-  getMultiPartConfig() {
-    return {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      }
-    };
-  }
+  // getMultiPartConfig() {
+  //   return {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     }
+  //   };
+  // }
 
   //#  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
   /*********************************************************************************************************************** */
@@ -97,7 +97,7 @@ class AuthService {
   }
 
   providerKYCApi(data: FormData) {
-    return axiosInstance.post(API_ROUTES.CUSTOMER.PROVIDER_KYC, data, this.getMultiPartConfig());
+    return axiosInstance.post(API_ROUTES.CUSTOMER.PROVIDER_KYC, data);
   }
 
   providerInfoApi(id: string) {
@@ -209,7 +209,7 @@ class AuthService {
   }
 
   finalizeBookingApi(data: FormData) {
-    return axiosInstance.post(API_ROUTES.PROVIDER.FINALIZE_BOOKING, data, this.getMultiPartConfig());
+    return axiosInstance.post(API_ROUTES.PROVIDER.FINALIZE_BOOKING, data);
   }
 
   getServiceApi() {
@@ -221,7 +221,7 @@ class AuthService {
   }
 
   updateProviderDataApi(payload: Pick<ServiceData, "serviceCharge" | "category">) {
-    return axiosInstance.patch(API_ROUTES.PROVIDER.PROVIDER_DATA, payload );
+    return axiosInstance.patch(API_ROUTES.PROVIDER.PROVIDER_DATA, payload);
   }
 
   workingTimeInfoApi() {
@@ -273,7 +273,7 @@ class AuthService {
   }
 
   addCategoryApi(data: FormData) {
-    return axiosInstance.post(API_ROUTES.ADMIN.CATEGORY_MANAGEMENT, data, this.getMultiPartConfig());
+    return axiosInstance.post(API_ROUTES.ADMIN.CATEGORY_MANAGEMENT, data);
   }
 
   toggleCategoryStatusApi(categoryId: string) {

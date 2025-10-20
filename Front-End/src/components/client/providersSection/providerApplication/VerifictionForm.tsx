@@ -101,7 +101,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
                       .find((opt) => opt.value === field.value) || null
                   }
                   onChange={(selected) => field.onChange(selected?.value)}
-                  className="basic-single"
+                  className="basic-single text-black"
                   classNamePrefix="select"
                   placeholder="Select a service"
                 />
@@ -134,7 +134,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
                     onChange={(selectedOptions) => {
                       field.onChange(selectedOptions.map(opt => opt.value));
                     }}
-                    className="basic-multi-select"
+                    className="basic-multi-select text-black"
                     classNamePrefix="select"
                     placeholder={
                       selectedCategory ? "Select specializations" : "Select a service first"
@@ -285,7 +285,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
           name="experienceCertificate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Experience Certificate (optional)</FormLabel>
+              <FormLabel>Experience Certificate</FormLabel>
               <FormControl>
                 <Input
                   type="file"

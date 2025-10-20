@@ -199,6 +199,7 @@
 html {
   scroll-padding-top: 90px; /* Adjust to your navbar height (e.g., 64px for h-16) */
   scroll-behavior: smooth;  /* Smooth scrolling */
+  /* scrollbar-gutter: stable; */
 }
 
 .center-box-toast {
@@ -225,9 +226,6 @@ html {
   padding: 20px !important;
 }
 
-* {
-    scrollbar-gutter: stable;
-}
 
 .thin-scrollbar::-webkit-scrollbar {
   width: 5px; /* thin */
