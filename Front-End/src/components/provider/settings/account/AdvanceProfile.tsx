@@ -19,7 +19,6 @@ const AdvanceProfile = () => {
 
   const [loadingStates, setLoadingStates] = useState({
     initial: false,
-    editService: false,
     update: false,
   });
 
@@ -33,6 +32,7 @@ const AdvanceProfile = () => {
   });
 
   const [initialData, setInitialData] = useState<ServiceData | null>(null);
+  const [allCategory, setAllCategory] = useState<Services | null>(null);
   const [serviceCharge, setServiceCharge] = useState<number | null>(null);
   const [services, setServices] = useState<Services | null>(null);
 
@@ -81,7 +81,7 @@ const AdvanceProfile = () => {
   };
 
   useEffect(() => {
-    setLoadingStates((prev) => ({ ...prev, initial: true, editService: false }));
+    setLoadingStates((prev) => ({ ...prev, initial: true }));
     const fetchProviderData = async () => {
       try {
         const res = await AuthService.providerDataApi();
@@ -100,10 +100,25 @@ const AdvanceProfile = () => {
         setLoadingStates((prev) => ({ ...prev, initial: false }));
       }
     };
+
+    const fetchService = async () => {
+      try {
+        setLoadingStates((prev) => ({ ...prev, initial: true }));
+        const res = await AuthService.getServiceApi();
+        setAllCategory(res.data.serviceData as Services);
+      } catch (error) {
+        const err = error as AxiosError<{ message: string }>;
+        toast.error(err?.response?.data?.message || "Failed to update ProviderData");
+      } finally {
+        setLoadingStates((prev) => ({ ...prev, initial: false }));
+      }
+    };;
+
     fetchProviderData();
+    fetchService();
   }, []);
 
-  
+
 
   return (
     <div className="flex-1 px-6 pt-6 max-w-4xl mx-auto text-nav-text">
@@ -158,6 +173,7 @@ const AdvanceProfile = () => {
             <ServiceList
               edit={edit.services}
               setEdit={(bool) => setEdit(prev => ({ ...prev, services: bool }))}
+              allCategory={allCategory}
               actualServices={initialData.category ?? null}
               services={services}
               setServices={setServices}

@@ -1,15 +1,12 @@
-import AuthService from "@/services/AuthService";
-import type { ServiceData, Services } from "@/shared/types/user";
+import type { Services } from "@/shared/types/user";
 import { toPascalCase } from "@/utils/helper/utils";
-import type { AxiosError } from "axios";
 import { Undo2 } from "lucide-react";
-import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
-import { toast } from "react-toastify";
 
 interface ServiceListProps {
   edit: boolean;
   setEdit: (edit: boolean) => void;
+  allCategory: Services | null
   actualServices: Services | null;
   services: Services | null
   setServices: React.Dispatch<React.SetStateAction<Services | null>>;
@@ -17,24 +14,7 @@ interface ServiceListProps {
   setError: (error: string) => void;
 }
 
-const ServiceList: React.FC<ServiceListProps> = ({ edit, setEdit, actualServices, services, setServices, error, setError }) => {
-
-  //move to useEffect to parrent dependeicy as initailData
-  const [loading, setLoading] = useState(false);
-  const [allCategory, setAllCategory] = useState<ServiceData | null>(null);
-  const handleServiceEdit = async () => {
-    try {
-      setLoading(true);
-      const res = await AuthService.getServiceApi();
-      setAllCategory(res.data.serviceData as ServiceData);
-      setEdit(true);
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toast.error(err?.response?.data?.message || "Failed to update ProviderData");
-    } finally {
-      setLoading(false);
-    }
-  };
+const ServiceList: React.FC<ServiceListProps> = ({ edit, setEdit, allCategory, actualServices, services, setServices, error, setError }) => {
 
   return (
     <div className="flex justify-between items-start">
@@ -114,13 +94,11 @@ const ServiceList: React.FC<ServiceListProps> = ({ edit, setEdit, actualServices
           }}
         />
       ) : (
-        (!loading) && (
-          <CiEdit
-            size={22}
-            className="cursor-pointer text-gray-500 hover:text-primary transition-colors"
-            onClick={handleServiceEdit}
-          />
-        )
+        <CiEdit
+          size={22}
+          className="cursor-pointer text-gray-500 hover:text-primary transition-colors"
+          onClick={() => setEdit(true)}
+        />
       )}
     </div>
   );
