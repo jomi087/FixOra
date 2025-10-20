@@ -13,7 +13,7 @@ const SettingsPage = () => {
         <div className="w-full text-base md:text-lg font-mono mt-10 cursor-pointer">
           {settingOptions.map(({ section, to }) => (
             <div
-              className="border p-4  mx-3  rounded-lg  active:scale-99 hover:border-primary hover:shadow-md shadow-primary/20 "
+              className="border p-4  mx-3  rounded-sm  active:scale-99 hover:border-primary hover:shadow-md shadow-primary/20 "
               onClick={() => navigate(to)}
             >
               {section}

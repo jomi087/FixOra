@@ -38,6 +38,7 @@ import AvailabilityPage from "@/pages/provider/AvailabilityPage.tsx";
 import AdvanceProfilePage from "@/pages/provider/AdvanceProfilePage.tsx";
 import SettingsPage from "@/pages/admin/SettingsPage.tsx";
 import AdminProfilePage from "../pages/admin/ProfilePage.tsx";
+import PlatformFeePage from "@/pages/admin/PlatformFeePage.tsx";
 
 
 
@@ -127,6 +128,7 @@ const router = createBrowserRouter([
       { path: "settings", element: <SettingsPage /> },
       { path: "settings/profile", element: <AdminProfilePage /> },
       { path: "change-password", element: <ChangePasswordPage /> },
+      { path: "settings/platform-fee", element: <PlatformFeePage/> },
     ]
   },
   {
