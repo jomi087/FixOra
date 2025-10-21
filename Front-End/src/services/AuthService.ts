@@ -212,6 +212,14 @@ class AuthService {
     return axiosInstance.post(API_ROUTES.PROVIDER.FINALIZE_BOOKING, data);
   }
 
+  // verifyPasswordApi(password: string) {
+  //   return axiosInstance.post(API_ROUTES.ADMIN.VERIFY_PASSWORD, { password }, this.getJsonConfig());
+  // }
+
+  // changePasswordApi(token: string, password: string, cPassword: string) {
+  //   return axiosInstance.patch(API_ROUTES.ADMIN.CHANGE_PASSWORD, { token, password, cPassword, }, this.getJsonConfig());
+  // }
+
   getServiceApi() {
     return axiosInstance.get(API_ROUTES.PROVIDER.PROVIDERSERVICES);
   }
@@ -279,6 +287,19 @@ class AuthService {
   toggleCategoryStatusApi(categoryId: string) {
     return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CATEGORY_STATUS(categoryId));
   }
+
+  // editProfileApi(form: ProfileEdit) {
+  //   return axiosInstance.patch(API_ROUTES.ADMIN.EDIT_PROFILE, form, this.getJsonConfig());
+  // }
+
+  // verifyPasswordApi(password: string) {
+  //   return axiosInstance.post(API_ROUTES.ADMIN.VERIFY_PASSWORD, { password }, this.getJsonConfig());
+  // }
+
+  // changePasswordApi(token: string, password: string, cPassword: string) {
+  //   return axiosInstance.patch(API_ROUTES.ADMIN.CHANGE_PASSWORD, { token, password, cPassword, }, this.getJsonConfig());
+  // }
+
 
   /*********************************************************************************************************************** */
 
