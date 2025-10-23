@@ -12,9 +12,11 @@ import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/A
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
 import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase";
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase";
+import { IPlatformFeeUseCase } from "../../application/Interface/useCases/Admin/IPlatformFeeUseCase";
+import { IUpdatePlatformFeeUseCase } from "../../application/Interface/useCases/Admin/IUpdatePlatformFeeUseCase";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
-const {  UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
+const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
 
 export class AdminController {
     constructor(
@@ -22,11 +24,13 @@ export class AdminController {
         private _toggleUserStatusUseCase: IToggleUserStatusUseCase,
         private _getProvidersUseCase: IGetProvidersUseCase,
         private _providerApplicationUseCase: IProviderApplicationUseCase,
-        private _updateKYCStatusUseCase : IUpdateKYCStatusUseCase,
+        private _updateKYCStatusUseCase: IUpdateKYCStatusUseCase,
         private _getServiceUseCase: IGetServiceUseCase,
         private _createServiceCategoryUseCase: ICreateServiceCategoryUseCase,
         private _imageUploaderService: IImageUploaderService,
         private _toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
+        private _platformFeeUseCase: IPlatformFeeUseCase,
+        private _updatePlatformFeeUseCase: IUpdatePlatformFeeUseCase,
     ) { }
 
     async getCustomers(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -44,7 +48,7 @@ export class AdminController {
                 customersData: result.data,
                 total: result.total
             });
-            
+
         } catch (error) {
             next(error);
         }
@@ -60,7 +64,7 @@ export class AdminController {
             next(error);
         }
     }
-    
+
     async getProviders(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 
@@ -76,24 +80,24 @@ export class AdminController {
                 providerData: result.data,
                 total: result.total
             });
-            
+
         } catch (error) {
             next(error);
         }
     }
 
-    async getProviderApplications(req: Request, res: Response, next: NextFunction): Promise<void>{
+    async getProviderApplications(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const searchQuery = req.query.searchQuery as string || "";
-            const filter = req.query.filter as string|| "Pending";
+            const filter = req.query.filter as string || "Pending";
             const currentPage = parseInt(req.query.currentPage as string) || 1;
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
-            
+
             const result = await this._providerApplicationUseCase.execute({ searchQuery, filter, currentPage, limit });
 
             res.status(OK).json({
                 success: true,
-                ApplicationData : result.data,
+                ApplicationData: result.data,
                 total: result.total
             });
 
@@ -108,16 +112,16 @@ export class AdminController {
             const { action, reason } = req.body;
 
             if (!req.user || req.user.role !== RoleEnum.Admin || !req.user.userId) {
-                throw { status: FORBIDDEN , message: UNAUTHORIZED_MSG };
+                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
             }
 
             const adminId = req.user.userId;
-            const result = await this._updateKYCStatusUseCase.execute({ id,action,reason,adminId });
+            const result = await this._updateKYCStatusUseCase.execute({ id, action, reason, adminId });
 
             res.status(OK).json({
                 success: true,
                 message: result.message,
-                id : result.id
+                id: result.id
             });
 
         } catch (error) {
@@ -130,14 +134,14 @@ export class AdminController {
             const searchQuery = req.query.searchQuery as string || "";
             const filter = req.query.filter as string || "all";
             const currentPage = parseInt(req.query.currentPage as string) || 1;
-            const limit = parseInt(req.query.itemsPerPage as string) || 8; 
+            const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
             const result = await this._getServiceUseCase.execute({ searchQuery, filter, currentPage, limit });
 
             res.status(OK).json({
-                success: true,               
+                success: true,
                 catogoriesData: result.data,
-                total : result.total
+                total: result.total
             });
 
         } catch (error) {
@@ -153,8 +157,8 @@ export class AdminController {
 
             const mainImageFile = files.find(file => file.fieldname === "image");
 
-            if (!mainImageFile) throw { status: BAD_REQUEST, message: MAIN_CATEGORY_IMAGE_MISSING  };
-            
+            if (!mainImageFile) throw { status: BAD_REQUEST, message: MAIN_CATEGORY_IMAGE_MISSING };
+
             const mainImageUrl = await this._imageUploaderService.uploadImage(mainImageFile.buffer, "FixOra/Services");
 
             const subcategoriesWithUrls = await Promise.all(
@@ -174,7 +178,7 @@ export class AdminController {
             const input = {
                 name,
                 description,
-                subcategories: subcategoriesWithUrls ,
+                subcategories: subcategoriesWithUrls,
                 image: mainImageUrl,
             };
 
@@ -190,7 +194,7 @@ export class AdminController {
         }
     }
 
-    async toggleCategoryStatus(req: Request, res: Response, next: NextFunction): Promise<void>{
+    async toggleCategoryStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { categoryId } = req.params;
             await this._toggleCategoryStatusUseCase.execute(categoryId);
@@ -200,5 +204,41 @@ export class AdminController {
             next(error);
         }
     }
+
+    async platformFee(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
+            }
+
+            const data = await this._platformFeeUseCase.execute();
+
+            res.status(OK).json({
+                success: true,
+                platformFeeData: data
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async updatePlatformFee(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
+            }
+            const { platformFee } = req.body;
+
+            const data = await this._updatePlatformFeeUseCase.execute(platformFee);
+
+            res.status(OK).json({
+                success: true,
+                updatedPlatformFeeData: data
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
 
 }

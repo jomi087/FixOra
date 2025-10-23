@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
-import { FULL_REFUND_WINDOW_MINUTES, PARTIAL_REFUND_PERCENTAGE, PLATFORM_FEE } from "../../../shared/const/constants";
+import { FULL_REFUND_WINDOW_MINUTES, PARTIAL_REFUND_PERCENTAGE } from "../../../shared/const/constants";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/enums/Payment";
@@ -15,6 +15,7 @@ import { SendBookingCancelledInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { IPlatformFeeRepository } from "../../../domain/interface/RepositoryInterface/IPlatformFeeRepository";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
@@ -26,8 +27,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
         private readonly _notificationRepository: INotificationRepository,
-        // private readonly _sendBookingCancelledNotificationUseCase: ISendBookingCancelledNotificationUseCase,
-
+        private readonly _platformFeeRepository: IPlatformFeeRepository,
     ) { }
 
     private async sendBookingCancelledNotification(input: SendBookingCancelledInput): Promise<void> {
@@ -152,7 +152,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 const numAmount = Number(bookingData.esCrowAmout);
 
                 const halfRefund = Math.round(numAmount * PARTIAL_REFUND_PERCENTAGE);
-                const providerAmount = halfRefund - PLATFORM_FEE;
+                const platformFeeData = await this._platformFeeRepository.findPlatformFeeData();
+                const providerAmount = halfRefund - ( platformFeeData?.fee ?? 0 );
 
                 //updating user wallet will partial refund (50%)
                 await this._walletRepository.updateWalletOnTransaction({

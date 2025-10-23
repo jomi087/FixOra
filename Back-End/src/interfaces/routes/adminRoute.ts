@@ -15,5 +15,6 @@ router.patch("/provider-kyc/:id",validateRequest(kycStatus), AuthMiddleware([Rol
 router.get("/service-management",  AuthMiddleware([RoleEnum.Admin]), adminController.getServices.bind(adminController));
 router.post("/service-management", AuthMiddleware([RoleEnum.Admin]), upload.any(), validateCategory, adminController.addService.bind(adminController));
 router.patch("/service-management/:categoryId", AuthMiddleware([RoleEnum.Admin]), adminController.toggleCategoryStatus.bind(adminController));
-
+router.get("/platform-fee", AuthMiddleware([RoleEnum.Admin]), adminController.platformFee.bind(adminController));
+router.patch("/platform-fee", AuthMiddleware([RoleEnum.Admin]), adminController.updatePlatformFee.bind(adminController));
 export default router;

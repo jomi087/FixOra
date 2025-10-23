@@ -8,7 +8,7 @@ import { WalletRepository } from "../infrastructure/database/repositories/Wallet
 import { NotificationRepository } from "../infrastructure/database/repositories/NotificationRepository";
 import { AvailabilityRepository } from "../infrastructure/database/repositories/AvailabilityRepository";
 import { RatingRepository } from "../infrastructure/database/repositories/RatingRepository";
-
+import { PlatformFeeRepository } from "../infrastructure/database/repositories/PlatformFeeRepository";
 
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
 import { EmailService } from "../infrastructure/services/EmailService";
@@ -32,6 +32,7 @@ const walletRepository = new WalletRepository();
 const notificationRepository = new NotificationRepository();
 const availabilityRepository = new AvailabilityRepository();
 const ratingRepository = new RatingRepository();
+const platformFeeRepository = new PlatformFeeRepository();
 
 const loggerService = new WinstonLogger();
 const emailService = new EmailService();
@@ -45,6 +46,10 @@ const pushNotificationService = new PushNotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
 const paymentService = new PaymentService();
 
+/********************************************************************************************************************************************************* */
+// import { InitializePlatformFeeUseCase } from "../application/useCases/public/InitializePlatformFeeUseCase";
+// const initializePlatformFeeUseCase = new InitializePlatformFeeUseCase(platformFeeRepository);
+// initializePlatformFeeUseCase.execute();
 /******************************************************************************************************************************************************/
 import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware";
 const AuthMiddleware = createAuthMiddleware(tokenService, userRepository);
@@ -145,7 +150,7 @@ import { ReviewStatusUseCase } from "../application/useCases/client/ReviewStatus
 const reviewStatusUseCase = new ReviewStatusUseCase(ratingRepository);
 
 import { CancelBookingUseCase } from "../application/useCases/client/CancelBookingUseCase";
-const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository);
+const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository, platformFeeRepository);
 
 import { AddFeedbackUseCase } from "../application/useCases/client/AddFeedbackUseCase";
 const addFeedbackUseCase = new AddFeedbackUseCase(ratingRepository, bookingRepository);
@@ -181,7 +186,7 @@ import { VerifyArrivalOtpUseCase } from "../application/useCases/providers/Verif
 const verifyArrivalOtpUseCase = new VerifyArrivalOtpUseCase(otpRepository, tokenService, bookingRepository);
 
 import { WorkCompletionUseCase } from "../application/useCases/providers/WorkCompletionUseCase";
-const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository);
+const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository, platformFeeRepository);
 
 import { ProviderServiceUseCase } from "../application/useCases/providers/ProviderServiceUseCase";
 const providerServiceUseCase = new ProviderServiceUseCase(providerRepository, categoryRepository);
@@ -228,6 +233,11 @@ const createServiceCategoryUseCase = new CreateServiceCategoryUseCase(categoryRe
 import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase";
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository);
 
+import { PlatformFeeUseCase } from "../application/useCases/admin/PlatformFeeUseCase";
+const platformFeeUseCase = new PlatformFeeUseCase(platformFeeRepository);
+
+import { UpdatePlatformFeeUseCase } from "../application/useCases/admin/UpdatePlatformFeeUseCase";
+const updatePlatformFeeUseCase = new UpdatePlatformFeeUseCase(platformFeeRepository);
 /******************************************************************************************************************************************************/
 import { PublicController } from "../interfaces/controllers/PublicController";
 import { AuthController } from "../interfaces/controllers/AuthController";
@@ -235,16 +245,16 @@ import { UserController } from "../interfaces/controllers/UserContoller";
 import { AdminController } from "../interfaces/controllers/AdminController";
 import { ProviderController } from "../interfaces/controllers/ProviderController";
 
+
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase,);
 
 const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
-const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase,providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
+const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
 
-
-const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase,);
+const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, platformFeeUseCase, updatePlatformFeeUseCase );
 
 export {
     publicController,

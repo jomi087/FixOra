@@ -19,7 +19,7 @@ export class SigninUseCase implements ISigninUseCase {
     async execute(credentials: SigninInputDTO): Promise<SignInOutputDTO>{
         try {
             // here i could had added if else way or switch way(show below ) but the issue is that then  i am violationg the OCP (open/close priciple  [must be open for extention and close for modification] in solid in fiture if there is more role comming then i dont need to modify signin logic jst d )
-            // a Role Strategy Map — dynamic role-to-strategy resolution.
+            // a Role Strategy Map (another way we can do it be polymorphism) — dynamic role-to-strategy resolution.
             //from here
             const strategy = this._authFactory.getStrategy(credentials.role);
             const authenticatedUser = await strategy.authenticate(credentials);
@@ -69,7 +69,7 @@ export class SigninUseCase implements ISigninUseCase {
 // if (credentials.role == 'customer') {
 //     check
 //     userdata is there in  user collection db
-//     user is  bloked or not 
+//     user is  bloked or not
 //     userData. role === customer
 //     check pasword
 // } else if (credentials.role == 'provider') {
@@ -85,3 +85,5 @@ export class SigninUseCase implements ISigninUseCase {
 //     admindata.role === admin
 //     check pasword
 // }
+
+

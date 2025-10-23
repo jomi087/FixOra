@@ -8,13 +8,13 @@ import { Messages } from "../../../shared/const/Messages";
 import { WorkCompletionInputDTO, WorkCompletionOutputDTO } from "../../DTOs/WorkCompletionDTO";
 import { IWorkCompletionUseCase } from "../../Interface/useCases/Provider/IWorkCompletionUseCase";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
-import { PLATFORM_FEE } from "../../../shared/const/constants";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { SendWorkFinsihedInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { IPlatformFeeRepository } from "../../../domain/interface/RepositoryInterface/IPlatformFeeRepository";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
@@ -29,6 +29,7 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
         private readonly _notificationRepository: INotificationRepository,
+        private readonly _platformFeeRepository: IPlatformFeeRepository,
     ) { }
 
     private async sendCompletedWorkNotification(input: SendWorkFinsihedInput): Promise<void> {
@@ -80,7 +81,8 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
 
             const transactionId = `Wlt_${uuidv4()}`;
             const numAmount = Number(bookingData.esCrowAmout);
-            const providerAmount = numAmount - PLATFORM_FEE;
+            const platformFeeData = await this._platformFeeRepository.findPlatformFeeData();
+            const providerAmount = numAmount - (platformFeeData?.fee ?? 0);
 
             await this._walletRepository.updateWalletOnTransaction({
                 userId: bookingData.providerUserId,

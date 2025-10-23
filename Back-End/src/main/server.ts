@@ -23,6 +23,7 @@ import { initializeSocket } from "../infrastructure/socket/config";
 
 import { errorHandler } from "./dependencyInjector";
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
+import { initializePlatformFee } from "../infrastructure/startup/Initializer";
 const logger = new WinstonLogger();
 
 const app: Express = express();
@@ -43,6 +44,7 @@ const corsOptions = {
 
 // // Connect to MongoDB
 mongoConnect(logger);
+initializePlatformFee();
 
 app.use("/api", rawRoutes); //instead of parsing buffer to json we are passing as buffer it self
 
@@ -69,6 +71,7 @@ process.on("unhandledRejection", (reason) => {
     console.error("Unhandled Rejection", reason);
     process.exit(1);
 });
+
 process.on("uncaughtException", (err) => {
     console.error("Uncaught Exception", err);
     process.exit(1);

@@ -257,8 +257,8 @@ export const API_ROUTES = {
     PROVIDER_KYC: (id: string) => `/api/admin/provider-kyc/${id}`,
 
     CATEGORY_MANAGEMENT: "/api/admin/service-management",
-    TOGGLE_CATEGORY_STATUS: (id: string) =>
-      `/api/admin/service-management/${id}`,
+    TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/service-management/${id}`,
+    PLATFORM_FEE : "/api/admin/platform-fee",
   },
 
   LANDING: {
