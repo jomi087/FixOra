@@ -100,6 +100,7 @@ export type ProviderInfo = {
 
 export interface providerReviews {
   ratingData: {
+    ratingId: string;
     rating: number;
     feedback: string;
     createdAt: string;

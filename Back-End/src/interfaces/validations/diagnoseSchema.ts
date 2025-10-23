@@ -8,8 +8,19 @@ export const diagnoseSchema = z.object({
         .trim()
         .min(3, "Diagnosis must be at least 3 characters long"),
 
-    parts: z
-        .array(
+
+    parts: z.preprocess(
+        (val) => {
+            if (typeof val === "string") {
+                try {
+                    return JSON.parse(val);
+                } catch {
+                    return val; // Let Zod fail later if it's not valid JSON
+                }
+            }
+            return val;
+        },
+        z.array(
             z.object({
                 name: z.string().nonempty("Part name is required"),
                 cost: z.preprocess(
@@ -21,6 +32,7 @@ export const diagnoseSchema = z.object({
                     z.number().positive("Price must be positive")
                 ),
             })
-        )
-        .optional()
+        ).default([]) // <-- If missing, default to empty array
+    )
 });
+

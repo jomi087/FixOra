@@ -4,6 +4,8 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { AddFeedbackInputDTO } from "../../DTOs/FeedbackDTO";
 import { IAddFeedbackUseCase } from "../../Interface/useCases/Client/IAddFeedbackUseCase";
+import { v4 as uuidv4 } from "uuid";
+
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND } = HttpStatusCode;
 const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND } = Messages;
@@ -26,6 +28,7 @@ export class AddFeedbackUseCase implements IAddFeedbackUseCase {
             if (!bookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
 
             await this._ratingRepository.create({
+                ratingId: uuidv4(),
                 bookingId,
                 providerId : bookingData.provider.id,
                 userId : bookingData.userId,

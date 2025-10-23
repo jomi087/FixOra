@@ -28,6 +28,7 @@ interface BookingActionProps {
 const BookingAction: React.FC<BookingActionProps> = ({ id, status, paymentInfo, scheduledAt, setBookingInDetails }) => {
   const [otp, setOtp] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { resendOtp } = useOtpLogic();
 
@@ -51,15 +52,17 @@ const BookingAction: React.FC<BookingActionProps> = ({ id, status, paymentInfo, 
 
   const handleVerifyProviderArrival = async (bookingId: string) => {
     try {
+      setLoading(true);
       const res = await AuthService.arrivalOtpApi(bookingId);
       toast.success(res.data.message || "An OTP send to User");
       setOtp(true);
-
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       const errorMsg =
         err.response?.data?.message || "Something went wrong";
       toast.error(errorMsg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,6 +74,7 @@ const BookingAction: React.FC<BookingActionProps> = ({ id, status, paymentInfo, 
             className={`cursor-pointer active:scale-95 w-44 dark:bg-yellow-500 hover:dark:bg-yellow-400   
               ${new Date() >= new Date(scheduledAt) ? "" : "hidden"}`}
             onClick={() => handleVerifyProviderArrival(id)}
+            disabled={loading}
           >
             Verify Arrival
           </Button>
@@ -108,7 +112,7 @@ const BookingAction: React.FC<BookingActionProps> = ({ id, status, paymentInfo, 
             />
           </p>
         </div>
-        
+
       }
 
 

@@ -25,6 +25,7 @@ export class GetProviderReviewsUseCase implements IGetProviderReviewsUseCase {
 
             const mappedData = reviewData.data.map((item) => ({
                 ratingData: {
+                    ratingId : item.rating.ratingId ,
                     rating: item.rating.rating,
                     feedback: item.rating.feedback,
                     createdAt: item.rating.createdAt,

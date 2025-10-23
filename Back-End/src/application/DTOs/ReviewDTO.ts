@@ -7,6 +7,6 @@ export interface ReviewInputDTO extends Omit<PaginationInputDTO, "searchQuery" |
 }
 
 export interface ReviewOutputDTO extends PaginationOutputDTO<{
-    ratingData: Pick<Rating, "rating" | "feedback" | "createdAt">;
+    ratingData: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
     userData: Pick<User, "userId" | "fname" | "lname">;
 }> {}

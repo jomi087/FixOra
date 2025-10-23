@@ -27,7 +27,7 @@ const PartSchema = z.object({
 const UploadWorkProofSchema = z.object({
   images: z
     .array(imageValidatorField(ImageSize, "workProofImage"))
-    .min(1, "At least one image is required")
+    .min(2, "At least one image is required")
     .max(3, "You can upload up to 3 images"),
   diagnose: z.string().min(3, "Please provide a short diagnosis description"),
   parts: z.array(PartSchema).optional(),

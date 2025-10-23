@@ -194,11 +194,10 @@ export class ProviderController {
         try {
             // console.log(req.body);
             // console.log(req.files);
-
             const files = req.files as Express.Multer.File[];
 
-            if (!files || files.length === 0) {
-                throw new Error("At least one work proof image is required");
+            if (!files || files.length < 2) {
+                throw new Error("At least two work proof image is required");
             }
             if (files.length > 3) {
                 throw new Error("You can upload up to 3 images only");
@@ -210,12 +209,8 @@ export class ProviderController {
                 }
             }
 
-            const { bookingId, diagnose, parts: stringifyParts } = req.body;
+            const { bookingId, diagnose, parts } = req.body;
 
-            let parts: { name: string; cost: string; }[] = [];
-            if (stringifyParts) {
-                parts = JSON.parse(stringifyParts);
-            }
             const plainFiles = files.map(file => ({
                 buffer: file.buffer,
                 originalname: file.originalname,

@@ -33,7 +33,6 @@ export class VerifyArrivalOtpUseCase implements IVerifyArrivalOtpUseCase {
             await this._bookingRepository.updateBookingStatus(decodeUserData.bookingId, BookingStatus.INITIATED);
 
         } catch (error) {
-            console.log(error);
             if (error.status && error.message) {
                 throw error;
             }

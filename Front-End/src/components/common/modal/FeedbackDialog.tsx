@@ -1,35 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
 import { Star } from "lucide-react";
 import { longInputLength } from "@/utils/constant";
 import { DialogDescription } from "@radix-ui/react-dialog";
 
+
 interface FeedbackDialogProps {
-  openFeedBack: boolean
-  setOpenFeedBack: (openFeedBack: boolean) => void
-  handleFeedBack: (data: { rating: number, feedback: string }) => Promise<void>
+	openFeedback: boolean
+	setOpenFeedback: (openFeedback: boolean) => void
+	handleSubmit: () => void
+	rating: number;
+	setRating: (rating: number) => void
+	feedback: string;
+	setFeedback: (feedback: string) => void
+	title: string;
+	description: string
+	saveButtonNmme: string
 }
 
-const FeedbackDialog: React.FC<FeedbackDialogProps> = ({ openFeedBack, setOpenFeedBack, handleFeedBack }) => {
-
-  const [rating, setRating] = useState(0);
-  const [feedback, setFeedback] = useState("");
-
-  const handleSubmit = () => {
-    handleFeedBack({ rating, feedback });
-  };
-
+const FeedbackDialog: React.FC<FeedbackDialogProps> = ({ openFeedback, setOpenFeedback, handleSubmit, rating, setRating, feedback, setFeedback, title, description, saveButtonNmme }) => {
   return (
-    <Dialog open={openFeedBack} onOpenChange={setOpenFeedBack}>
+    <Dialog open={openFeedback} onOpenChange={setOpenFeedback}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="font-roboto text-lg">
-            Send us your Feedback
+            {title}
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-500">
-            We’d love to hear your thoughts! Please rate your experience and share suggestions to help us improve.
+            {description}
           </DialogDescription>
         </DialogHeader>
 
@@ -69,14 +68,14 @@ const FeedbackDialog: React.FC<FeedbackDialogProps> = ({ openFeedBack, setOpenFe
             className="cursor-pointer active:scale-95"
             onClick={handleSubmit}
           >
-            Send Feedback
+            {saveButtonNmme}
           </Button>
           <Button
             variant="outline"
             className="cursor-pointer active:scale-95"
-            onClick={() => setOpenFeedBack(false)}
+            onClick={() => setOpenFeedback(false)}
           >
-            Cancel
+			Cancel
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -15,7 +15,7 @@ export class RatingRepository implements IRatingRepository {
 
     async findProviderReviews(providerId: string, currentPage: number, limit: number): Promise<{
         data: {
-            rating: Pick<Rating, "rating" | "feedback" | "createdAt">;
+            rating: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
             user: Pick<User, "userId" | "fname" | "lname">;
         }[];
         total: number;
@@ -46,7 +46,7 @@ export class RatingRepository implements IRatingRepository {
                         { $limit: limit },
                         {
                             $project: {
-                                rating: { rating: "$rating", feedback: "$feedback", createdAt: "$createdAt" },
+                                rating: { ratingId: "$ratingId", rating: "$rating", feedback: "$feedback", createdAt: "$createdAt" },
                                 user: {
                                     userId: "$userDetails.userId",
                                     fname: "$userDetails.fname",

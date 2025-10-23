@@ -7,7 +7,7 @@ export interface IRatingRepository {
 
     findProviderReviews(providerId: string, currentPage: number, limit: number): Promise<{
         data: {
-            rating: Pick<Rating, "rating" | "feedback" | "createdAt">;
+            rating: Pick<Rating,"ratingId" | "rating" | "feedback" | "createdAt">;
             user: Pick<User, "userId" | "fname" | "lname">;
         }[]
         total: number

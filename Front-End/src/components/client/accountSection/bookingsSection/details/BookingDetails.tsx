@@ -19,11 +19,11 @@ import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import { useAppSelector } from "@/store/hooks";
 import Diagnosed from "@/components/common/others/Diagnosed";
-import FeedbackDialog from "./dialoge/FeedbackDialog";
 import CancelDialoge from "./dialoge/CancelDialoge";
 import { InvoicePDF } from "./invoice/InvoicePDF";
 import { pdf } from "@react-pdf/renderer";
 import axios from "axios";
+import Feedback from "./Feedback";
 
 
 const BookingDetails = () => {
@@ -274,7 +274,6 @@ const BookingDetails = () => {
   };
 
   //handleFeedback
-
   const handleFeedBack = async (data: { rating: number, feedback: string }) => {
     try {
       if (!bookingInDetails) return;
@@ -373,7 +372,7 @@ const BookingDetails = () => {
             }
 
             {openFeedBack &&
-              <FeedbackDialog
+              <Feedback
                 openFeedBack={openFeedBack}
                 setOpenFeedBack={setOpenFeedBack}
                 handleFeedBack={handleFeedBack}

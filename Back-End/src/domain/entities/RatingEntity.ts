@@ -1,4 +1,5 @@
 export interface Rating {
+    ratingId :string
     bookingId:string
     providerId: string;    
     userId: string;      

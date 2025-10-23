@@ -85,7 +85,7 @@ const Otp: React.FC<otpProps>= ({ otpTime , otpLength , otpSubmit , resendOtp })
             <input
               key={index}
               type="text"
-              className="otp_input w-10 h-12 border border-gray-300 rounded-md text-center text-lg  focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="otp_input w-10 h-12 border text-black border-gray-300 rounded-md text-center text-lg  focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={value}
               aria-label={`Digit ${index + 1} of 6 for OTP`}
                              
