@@ -39,6 +39,7 @@ import AdvanceProfilePage from "@/pages/provider/AdvanceProfilePage.tsx";
 import SettingsPage from "@/pages/admin/SettingsPage.tsx";
 import AdminProfilePage from "../pages/admin/ProfilePage.tsx";
 import PlatformFeePage from "@/pages/admin/PlatformFeePage.tsx";
+import PublicRoute from "./PublicRoute.tsx";
 
 
 
@@ -49,21 +50,43 @@ const router = createBrowserRouter([
   },
   {
     path: "/signIn/:role",
-    element: <ErrorBoundary>
-      <SignInPage />
-    </ErrorBoundary>
+    element: (
+      <ErrorBoundary>
+        <PublicRoute>
+          <SignInPage />
+        </PublicRoute>
+      </ErrorBoundary>
+    )
   },
   {
     path: "/signUp",
-    element: <ErrorBoundary><SignUpPage /></ErrorBoundary>
+    element: (
+      <ErrorBoundary>
+        <PublicRoute>
+          <SignUpPage />
+        </PublicRoute>
+      </ErrorBoundary>
+    )
   },
   {
     path: "/otp",
-    element: <ErrorBoundary><OtpPage /></ErrorBoundary>
+    element: (
+      <ErrorBoundary>
+        <PublicRoute>
+          <OtpPage />
+        </PublicRoute>
+      </ErrorBoundary>
+    )
   },
   {
     path: "/reset-Password",
-    element: <ErrorBoundary><ResetPasswordPage /></ErrorBoundary>
+    element: (
+      <ErrorBoundary>
+        <PublicRoute>
+          <ResetPasswordPage />
+        </PublicRoute>
+      </ErrorBoundary>
+    )
   },
   //client Routes
   {
@@ -128,7 +151,7 @@ const router = createBrowserRouter([
       { path: "settings", element: <SettingsPage /> },
       { path: "settings/profile", element: <AdminProfilePage /> },
       { path: "change-password", element: <ChangePasswordPage /> },
-      { path: "settings/platform-fee", element: <PlatformFeePage/> },
+      { path: "settings/platform-fee", element: <PlatformFeePage /> },
     ]
   },
   {

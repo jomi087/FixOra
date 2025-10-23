@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children, allowedRoles } : ProtectedRouteProps) => {
   if (!allowedRoles.includes(user.role as RoleEnum)) {
     return <PageNotFound />;
   }
- 
+  
   return <>{children}</>;
 };
 

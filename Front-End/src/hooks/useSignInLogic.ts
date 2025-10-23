@@ -60,7 +60,7 @@ export const useSignInLogic = () => {
         dispatch(Userinfo({ user: userData }));
         dispatch(fetchNotifications());
         toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
-        navigateByRole(userData.role);
+        //navigateByRole(userData.role);
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
