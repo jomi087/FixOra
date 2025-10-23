@@ -139,7 +139,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   return (
     <>
       {children}
-      {firstBooking && (
+      {firstBooking  && (
         <BookingApplicationDialouge
           key={firstBooking.bookingId}
           data={firstBooking}

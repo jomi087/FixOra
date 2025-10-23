@@ -26,15 +26,12 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
   const [errorMsg, setErrorMsg] = useState("");
   const { date, time } = splitDateTime(data.scheduledAt);
 
-
-
   const askConfirmation = (type: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>) => {
     setActionType(type);
     setConfirmOpen(true);
   };
 
   const handleConfirm = async () => {
-
 
     if (!actionType) return;
     if (actionType === ProviderResponseStatus.REJECTED && !reason.trim()) {
@@ -71,7 +68,7 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
                   New Booking Request
                 </DialogTitle>
                 <DialogDescription className="text-xs text-muted-foreground">
-                  Please accept to confirm this booking or reject to decline it.
+                  Please acknowledge your booking.
                 </DialogDescription>
               </div>
             </div>
@@ -90,24 +87,32 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
               <p>
                 <span className="font-medium">Time:</span> {time}
               </p>
-              <p>
-                <span className="font-medium">Description:</span> {data.issue}
+              <p className="font-medium">
+                Description:
+                <span className="font-normal text-base"> {data.issue} </span>
               </p>
             </div>
-
-            <DialogFooter className="flex justify-end gap-3">
-              <button
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition"
-                onClick={() => askConfirmation(ProviderResponseStatus.REJECTED)}
-              >
-                Reject
-              </button>
-              <button
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition"
-                onClick={() => askConfirmation(ProviderResponseStatus.ACCEPTED)}
-              >
-                Accept
-              </button>
+            <button
+              className=" w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition"
+              onClick={() => askConfirmation(ProviderResponseStatus.ACCEPTED)}
+            >
+              Acknowledge
+            </button>
+            <DialogFooter className="!justify-start mt-3" >
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  Please reject a booking only if absolutely necessary
+                </p>
+                <p className="text-xs text-muted-foreground ">
+                  Frequent rejections may impact your service reliability and visibility
+                  <button
+                    className="text-[11px] pl-1 text-blue-200 hover:underline cursor-pointer"
+                    onClick={() => askConfirmation(ProviderResponseStatus.REJECTED)}
+                  >
+                    Reject
+                  </button>
+                </p>
+              </div>
             </DialogFooter>
           </div>
         </DialogContent>
