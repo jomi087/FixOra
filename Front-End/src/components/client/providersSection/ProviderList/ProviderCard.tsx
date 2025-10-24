@@ -84,12 +84,11 @@ const ProviderCard: React.FC<ProvderCardProps> = ({ datas }) => {
               </p>
             </div>
 
-            
             <div className="flex justify-between items-center mb-2 px-2">
               <p className="text-sm font-semibold font-mono">Rating:</p>
               {data.totalRatings >= 0 ? (
                 <div className="flex items-center space-x-1">
-                  <div className="flex">{data.averageRating}</div>
+                  <div className="flex">{ Math.floor(data.averageRating * 2) / 2 }</div>
                   <div className="flex">{renderStars(data.averageRating ?? 0)}</div>
                   <span className="text-xs text-gray-500">
                     ({data.totalRatings})
