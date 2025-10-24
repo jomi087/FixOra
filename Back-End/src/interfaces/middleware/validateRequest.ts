@@ -8,7 +8,6 @@ type Location = "body" | "query" | "params";
 export const validateRequest = (schema: ZodType<any>, location: Location = "body") =>
     (req: Request, res: Response, next: NextFunction) => {
         const target = req[location];
-
         const result = schema.safeParse(target);
         if (!result.success) {
             const errorMessages = result.error.issues.map((err) => err.message);

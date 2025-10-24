@@ -59,7 +59,7 @@ export const fetchProviderReviews = createAsyncThunk<
       };
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
-      const errorMsg = error?.response?.data?.message ||error.message|| Messages.FAILED_TO_FETCH_DATA;
+      const errorMsg = error?.response?.data?.message || error.message || Messages.FAILED_TO_FETCH_DATA;
       toast.error(errorMsg);
       return rejectWithValue(errorMsg);
     }
@@ -95,6 +95,18 @@ const providerInfoSlice = createSlice({
       state.subCategories = [];
       state.isLoadingProvider = false;
     },
+    updateReview: (state, action) => {
+      console.log("action",action);
+      if (state.reviews) {
+        const review = state.reviews.find((data) => data.ratingData.ratingId === action.payload.ratingId);
+        console.log("review",review);
+        if (review) {
+          review.ratingData.feedback = action.payload.feedback;
+          review.ratingData.rating = action.payload.rating;
+        }
+      }
+
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -130,5 +142,5 @@ const providerInfoSlice = createSlice({
   }
 });
 
-export const { addBooking, updateBookingStatus, removeBooking, clearProviderInfo } = providerInfoSlice.actions;
+export const { addBooking, updateBookingStatus, removeBooking, clearProviderInfo, updateReview } = providerInfoSlice.actions;
 export default providerInfoSlice.reducer;

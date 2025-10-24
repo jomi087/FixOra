@@ -1,5 +1,5 @@
-import { updateFeedbackInputDTO } from "../../../DTOs/FeedbackDTO";
+import { updateFeedbackInputDTO, updateFeedbackOutputDTO } from "../../../DTOs/ReviewDTO";
 
 export interface IUpdateFeedbackUseCase  {
-    execute(input: updateFeedbackInputDTO):Promise<void>
+    execute(input: updateFeedbackInputDTO):Promise<updateFeedbackOutputDTO>
 }

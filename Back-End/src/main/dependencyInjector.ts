@@ -119,6 +119,9 @@ const providerInfoUseCase = new ProviderInfoUseCase(userRepository);
 import { GetProviderReviewsUseCase } from "../application/useCases/client/GetProviderReviewsUseCase";
 const getProviderReviewsUseCase = new GetProviderReviewsUseCase(ratingRepository);
 
+import { UpdateFeedbackUseCase } from "../application/useCases/client/UpdateFeedbackUseCase";
+const updateFeedbackUseCase = new UpdateFeedbackUseCase(ratingRepository);
+
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
 const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, pushNotificationService, bookingSchedulerService, userRepository, availabilityRepository);
 
@@ -250,7 +253,7 @@ const publicController = new PublicController(getLandingDataUseCase, getNotifica
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase,);
 
-const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
+const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateFeedbackUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase );
 
 const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
 

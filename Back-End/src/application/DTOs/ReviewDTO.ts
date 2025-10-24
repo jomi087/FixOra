@@ -9,4 +9,22 @@ export interface ReviewInputDTO extends Omit<PaginationInputDTO, "searchQuery" |
 export interface ReviewOutputDTO extends PaginationOutputDTO<{
     ratingData: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
     userData: Pick<User, "userId" | "fname" | "lname">;
-}> {}
+}> { }
+
+export interface AddFeedbackInputDTO {
+    bookingId: string;
+    rating: number;
+    feedback: string;
+}
+
+export interface updateFeedbackInputDTO {
+    ratingId: string;
+    rating?: number;
+    feedback?: string;
+}
+
+export interface updateFeedbackOutputDTO {
+    ratingId: string;
+    rating: number;
+    feedback: string;
+}

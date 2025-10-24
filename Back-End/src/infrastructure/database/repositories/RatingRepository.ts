@@ -65,4 +65,15 @@ export class RatingRepository implements IRatingRepository {
         const total = result[0]?.total[0]?.count ?? 0;
         return { data, total };
     }
+
+    async updateRating(ratingId: string,
+        updateData: Partial<{ rating: number; feedback: string }>
+    ): Promise<Rating | null> {
+
+        return await RatingModel.findOneAndUpdate(
+            { ratingId: ratingId },
+            { $set: updateData },
+            { new: true }
+        ).lean();
+    }
 }

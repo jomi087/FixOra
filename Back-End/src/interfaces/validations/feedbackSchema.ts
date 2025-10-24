@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-export const FeedbackSchema = z.object({
+export const addFeedbackSchema = z.object({
     bookingId: z
         .string()
-        .uuid("Invalid booking ID format"),
+        .uuid("Invalid BI-format"),
     rating: z
         .number()
         .min(1, "Rating must be at least 1")
@@ -14,7 +14,10 @@ export const FeedbackSchema = z.object({
         .max(500, "Comment too long")
 });
 
-export const updateFeedbackSchema =  z.object({
+export const updateFeedbackSchema = z.object({
+    ratingId: z
+        .string()
+        .uuid("Invalid RI-format"),
     rating: z
         .number()
         .min(1, "Rating must be at least 1")

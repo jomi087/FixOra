@@ -20,7 +20,6 @@ router.post("/forgot-password", validateRequest(forgotPasswordSchema), (req, res
 router.patch("/reset-password", validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next));
 
 router.post("/register-fcm-token", validateRequest(FcmSchema), AuthMiddleware([RoleEnum.Provider]), (req, res, next) => authController.registerFcmToken(req, res, next));
-//remove-fcm-token
 
 router.get("/check", AuthMiddleware(), (req, res, next) => authController.checkAuth(req, res, next));
 router.post("/refresh-token", (req, res, next) => authController.refreshToken(req, res, next));

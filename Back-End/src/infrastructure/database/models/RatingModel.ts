@@ -1,10 +1,11 @@
 import { Schema, model, Document } from "mongoose";
 import { Rating } from "../../../domain/entities/RatingEntity";
 
-export interface IRatingModel extends Rating, Document {}
+export interface IRatingModel extends Rating, Document { }
 
 const RatingSchema = new Schema<IRatingModel>(
     {
+        ratingId: { type: String, required: true, uniqueu: true },
         bookingId: { type: String, required: true, uniqueu: true },
         providerId: { type: String, required: true },
         userId: { type: String, required: true },

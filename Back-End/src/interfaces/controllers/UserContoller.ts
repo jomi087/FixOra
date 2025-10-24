@@ -23,6 +23,7 @@ import { allowedTypes, maxSizeMB } from "../../shared/const/constants";
 import { IAddFeedbackUseCase } from "../../application/Interface/useCases/Client/IAddFeedbackUseCase";
 import { IReviewStatusUseCase } from "../../application/Interface/useCases/Client/IReviewStatusUseCase";
 import { IGetProviderReviewsUseCase } from "../../application/Interface/useCases/Client/IGetProviderReviewsUseCase";
+import { IUpdateFeedbackUseCase } from "../../application/Interface/useCases/Client/IUpdateFeedbackUseCase";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -37,6 +38,7 @@ export class UserController {
         private _kycRequestUseCase: IKYCRequestUseCase,
         private _providerInfoUseCase: IProviderInfoUseCase,
         private _getProviderReviewsUseCase: IGetProviderReviewsUseCase,
+        private _updateFeedbackUseCase: IUpdateFeedbackUseCase,
         private _bookingUseCase: IBookingUseCase,
         private _createPaymentUseCase: ICreatePaymentUseCase,
         private _walletPaymentUseCase: IWalletPaymentUseCase,
@@ -50,7 +52,6 @@ export class UserController {
         private _reviewStatusUseCase: IReviewStatusUseCase,
         private _cancelBookingUseCase: ICancelBookingUseCase,
         private _addFeedbackUseCase: IAddFeedbackUseCase,
-        // private _updateFeedbackUseCase: IUpdateFeedbackUseCase,
         private _getUserwalletInfoUseCase: IGetUserwalletInfoUseCase,
         private _walletTopUpUseCase: IWalletTopUpUseCase,
     ) { }
@@ -63,6 +64,7 @@ export class UserController {
                 success: true,
                 servicesData
             });
+
         } catch (error) {
             next(error);
         }
@@ -199,6 +201,22 @@ export class UserController {
                 success: true,
                 providerReviewData: result.data,
                 totalPages: result.total,
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async updatedFeedback(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            //console.log(req.body);
+            const { ratingId, rating, feedback } = req.body;
+            let data = await this._updateFeedbackUseCase.execute({ ratingId, rating, feedback });
+            res.status(OK).json({
+                success: true,
+                updatedFeedbackData: data
             });
 
         } catch (error) {
@@ -487,23 +505,6 @@ export class UserController {
             next(error);
         }
     }
-
-    async updatedFeedback(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            //console.log(req.body);
-            // const { rating, feedback } = req.body;
-            // await this._updateFeedbackUseCase.execute({  rating, feedback });
-
-            res.status(OK).json({
-                success: true,
-                //data
-            });
-
-        } catch (error) {
-            next(error);
-        }
-    }
-
 
 
     async walletInfo(req: Request, res: Response, next: NextFunction): Promise<void> {

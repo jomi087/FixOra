@@ -110,6 +110,10 @@ class AuthService {
     });
   }
 
+  updateFeedbackApi(payload: { ratingId: string, rating: number, feedback: string }) {
+    return axiosInstance.patch(API_ROUTES.CUSTOMER.FEEDBACK, payload, this.getJsonConfig());
+  }
+
   bookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
     return axiosInstance.post(API_ROUTES.CUSTOMER.BOOKING_APPLICATION, payload, this.getJsonConfig());
   }
@@ -171,11 +175,6 @@ class AuthService {
   addFundApi(amount: number) {
     return axiosInstance.post(API_ROUTES.CUSTOMER.ADD_FUND, { amount }, this.getJsonConfig());
   }
-
-  updateFeedbackApi(payload: { rating: number, feedback: string }) {
-    return axiosInstance.put(API_ROUTES.CUSTOMER.FEEDBACK, payload, this.getJsonConfig());
-  }
-
 
   /*********************************************************************************************************************** */
   //Provider

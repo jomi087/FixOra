@@ -2,7 +2,7 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { AddFeedbackInputDTO } from "../../DTOs/FeedbackDTO";
+import { AddFeedbackInputDTO } from "../../DTOs/ReviewDTO";
 import { IAddFeedbackUseCase } from "../../Interface/useCases/Client/IAddFeedbackUseCase";
 import { v4 as uuidv4 } from "uuid";
 

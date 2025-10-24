@@ -9,7 +9,7 @@ import { editProfileSchema } from "../validations/profileSchema";
 import upload from "../middleware/upload";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { addFundsSchema } from "../validations/walletSchema";
-import { FeedbackSchema, updateFeedbackSchema } from "../validations/feedbackSchema";
+import { addFeedbackSchema, updateFeedbackSchema } from "../validations/feedbackSchema";
 
 const router = express.Router();
 
@@ -32,6 +32,7 @@ router.post(
 );
 router.get("/provider/bookings/:id", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerInfo(req, res, next));
 router.get("/provider/:id/reviews", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerReview(req, res, next));
+router.patch("/booking/feedback",  validateRequest(updateFeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.updatedFeedback.bind(userController));
 
 router.post("/provider/booking", validateRequest(bookingRequestSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createBooking(req, res, next));
 router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateOnlinePayment(req, res, next));
@@ -48,8 +49,7 @@ router.patch("/booking/retry-availability/:bookingId",AuthMiddleware([RoleEnum.C
 router.patch("/booking/cancel-booking/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.cancelBooking.bind(userController));
 
 router.get("/booking/review-status/:bookingId", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.reviewStatus(req, res, next));
-router.post("/booking/feedback", validateRequest(FeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.addFeedback.bind(userController));
-router.put("/booking/feedback",  validateRequest(updateFeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.updatedFeedback.bind(userController));
+router.post("/booking/feedback", validateRequest(addFeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.addFeedback.bind(userController));
 
 router.get("/wallet", AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), userController.walletInfo.bind(userController));
 router.post("/wallet/add-fund", validateRequest(addFundsSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), (req, res, next) => userController.addFund(req, res, next));
