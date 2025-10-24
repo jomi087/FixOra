@@ -160,7 +160,7 @@ class AuthService {
     return axiosInstance.get(API_ROUTES.CUSTOMER.REVIEW_STATUS(bookingId));
   }
 
-  updateFeedbackApi(payload: { bookingId: string, rating: number, feedback: string }) {
+  addFeedbackApi(payload: { bookingId: string, rating: number, feedback: string }) {
     return axiosInstance.post(API_ROUTES.CUSTOMER.FEEDBACK, payload, this.getJsonConfig());
   }
 
@@ -170,6 +170,10 @@ class AuthService {
 
   addFundApi(amount: number) {
     return axiosInstance.post(API_ROUTES.CUSTOMER.ADD_FUND, { amount }, this.getJsonConfig());
+  }
+
+  updateFeedbackApi(payload: { rating: number, feedback: string }) {
+    return axiosInstance.put(API_ROUTES.CUSTOMER.FEEDBACK, payload, this.getJsonConfig());
   }
 
 

@@ -1,5 +1,5 @@
 import FeedbackDialog from "@/components/common/modal/FeedbackDialog";
-import { Messages } from "@/utils/constant";
+import AuthService from "@/services/AuthService";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
@@ -21,14 +21,17 @@ const EditReview: React.FC<EditReviewProps> = ({ rating }) => {
 
   const handleFeedBack = async () => {
     try {
-
-      // await AuthService.updateFeedbackApi();
-      toast.success("Thank you for your valuable feedback");
+      const previousFeedback = rating.feedback;
+      if (previousFeedback === feedback && rating.rating === ratingStart) {
+        toast.info("No change Made");
+        return;
+      }
+      await AuthService.updateFeedbackApi({ rating: ratingStart, feedback: feedback });
       setOpenFeedback(false);
 
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
-      const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
+      const errorMsg = error?.response?.data?.message || "Failed to update";
       toast.error(errorMsg);
     }
   };

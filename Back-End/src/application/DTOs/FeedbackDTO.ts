@@ -3,3 +3,8 @@ export interface AddFeedbackInputDTO {
     rating: number;
     feedback: string;
 }
+
+export interface updateFeedbackInputDTO {
+    rating: number;
+    feedback: string;
+}

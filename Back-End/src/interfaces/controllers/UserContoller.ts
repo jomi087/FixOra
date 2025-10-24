@@ -50,6 +50,7 @@ export class UserController {
         private _reviewStatusUseCase: IReviewStatusUseCase,
         private _cancelBookingUseCase: ICancelBookingUseCase,
         private _addFeedbackUseCase: IAddFeedbackUseCase,
+        // private _updateFeedbackUseCase: IUpdateFeedbackUseCase,
         private _getUserwalletInfoUseCase: IGetUserwalletInfoUseCase,
         private _walletTopUpUseCase: IWalletTopUpUseCase,
     ) { }
@@ -486,6 +487,24 @@ export class UserController {
             next(error);
         }
     }
+
+    async updatedFeedback(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            //console.log(req.body);
+            // const { rating, feedback } = req.body;
+            // await this._updateFeedbackUseCase.execute({  rating, feedback });
+
+            res.status(OK).json({
+                success: true,
+                //data
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
 
     async walletInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {

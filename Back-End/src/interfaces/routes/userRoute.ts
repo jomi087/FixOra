@@ -9,7 +9,7 @@ import { editProfileSchema } from "../validations/profileSchema";
 import upload from "../middleware/upload";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { addFundsSchema } from "../validations/walletSchema";
-import { FeedbackSchema } from "../validations/feedbackSchema";
+import { FeedbackSchema, updateFeedbackSchema } from "../validations/feedbackSchema";
 
 const router = express.Router();
 
@@ -49,6 +49,7 @@ router.patch("/booking/cancel-booking/:bookingId", AuthMiddleware([RoleEnum.Cust
 
 router.get("/booking/review-status/:bookingId", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.reviewStatus(req, res, next));
 router.post("/booking/feedback", validateRequest(FeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.addFeedback.bind(userController));
+router.put("/booking/feedback",  validateRequest(updateFeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.updatedFeedback.bind(userController));
 
 router.get("/wallet", AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), userController.walletInfo.bind(userController));
 router.post("/wallet/add-fund", validateRequest(addFundsSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), (req, res, next) => userController.addFund(req, res, next));

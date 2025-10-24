@@ -281,7 +281,7 @@ const BookingDetails = () => {
         bookingId: bookingInDetails.bookingId,
         ...data,
       };
-      await AuthService.updateFeedbackApi(payload);
+      await AuthService.addFeedbackApi(payload);
       toast.success("Thank you for your valuable feedback");
       setHasUserReviewed(true);
       setOpenFeedBack(false);
