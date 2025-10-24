@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import BookingHistoryShimmer from "@/components/provider/history/BookingHistoryShimmer";
 import Pagination from "@/components/common/others/Pagination";
+import { shortBookingId } from "@/utils/helper/utils";
 
 const BookingHistoryTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -90,7 +91,7 @@ const BookingHistoryTable = () => {
                     onClick={() => handleBookingDetails(d)}
                   >
                     <TableCell className="text-center py-4 font-medium">{idx + 1}</TableCell>
-                    <TableCell className="text-center py-4 md:w-80 truncate">{d.bookingId}</TableCell>
+                    <TableCell className="text-center py-4 md:w-80 truncate">{shortBookingId(d.bookingId)}</TableCell>
                     <TableCell className="text-center py-4">
                       {new Date(d.scheduledAt).toLocaleDateString("en-GB", {
                         day: "2-digit",

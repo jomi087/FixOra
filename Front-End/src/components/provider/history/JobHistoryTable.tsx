@@ -9,6 +9,7 @@ import type { jobHistory } from "@/shared/types/booking";
 import BookingHistoryShimmer from "./BookingHistoryShimmer";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { useNavigate } from "react-router-dom";
+import { shortBookingId } from "@/utils/helper/utils";
 
 
 const JobHistoryTable = () => {
@@ -93,7 +94,7 @@ const JobHistoryTable = () => {
                     onClick={() => handleBookingDetails(d)}
                   >
                     <TableCell className="text-center py-4 font-medium">{idx + 1}</TableCell>
-                    <TableCell className="text-center py-4 md:w-80 truncate">{d.bookingId}</TableCell>
+                    <TableCell className="text-center py-4 md:w-80 truncate">{shortBookingId(d.bookingId)}</TableCell>
                     <TableCell className="text-center py-4">
                       {new Date(d.scheduledAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
