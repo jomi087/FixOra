@@ -10,10 +10,9 @@ const { INTERNAL_ERROR } = Messages;
 
 export class PaymentService implements IPaymentService {
 
-    private stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2025-07-30.basil" });
-
-    constructor(
-    ) { }
+    private stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: "2025-08-27.basil" //previous -> "2025-07-30.basil" 
+    });
 
     async createPaymentIntent(bookingId: string, totalAmount: number): Promise<string> {
         try {

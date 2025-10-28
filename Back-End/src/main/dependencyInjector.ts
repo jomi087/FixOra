@@ -46,10 +46,7 @@ const pushNotificationService = new PushNotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
 const paymentService = new PaymentService();
 
-/********************************************************************************************************************************************************* */
-// import { InitializePlatformFeeUseCase } from "../application/useCases/public/InitializePlatformFeeUseCase";
-// const initializePlatformFeeUseCase = new InitializePlatformFeeUseCase(platformFeeRepository);
-// initializePlatformFeeUseCase.execute();
+
 /******************************************************************************************************************************************************/
 import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware";
 const AuthMiddleware = createAuthMiddleware(tokenService, userRepository);
@@ -96,11 +93,12 @@ const signoutUseCase = new SignoutUseCase(signOutFactory);
 import { GetLandingDataUseCase } from "../application/useCases/public/GetLandingDataUseCase";
 const getLandingDataUseCase = new GetLandingDataUseCase(categoryRepository);
 
-import { GetNotificationsUseCase } from "../application/useCases/public/GetNotificationsUseCase,";
+import { GetNotificationsUseCase } from "../application/useCases/public/GetNotificationsUseCase";
 const getNotificationsUseCase = new GetNotificationsUseCase(notificationRepository);
 
 import { NotificationAcknowledgmentUseCase } from "../application/useCases/public/NotificationAcknowledgmentUseCase";
 const notificationAcknowledgmentUseCase = new NotificationAcknowledgmentUseCase(notificationRepository);
+
 /******************************************************************************************************************************************************
                                         Customer Specific
 ******************************************************************************************************************************************************/
@@ -200,7 +198,7 @@ const providerServiceInfoUseCase = new ProviderServiceInfoUseCase(providerReposi
 import { ProviderDataUpdateUseCase } from "../application/useCases/providers/ProviderDataUpdateUseCase";
 const providerDataUpdateUseCase = new ProviderDataUpdateUseCase(providerRepository);
 
-import { GetAvailabilityUseCase } from "../application/useCases/providers/GetAvailabiltyUseCase";
+import { GetAvailabilityUseCase } from "../application/useCases/providers/GetAvailabilityUseCase";
 const getAvailabilityUseCase = new GetAvailabilityUseCase(providerRepository, availabilityRepository);
 
 import { SetAvailabilityUseCase } from "../application/useCases/providers/SetAvailabilityUseCase";
@@ -251,7 +249,7 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
-const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase,);
+const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase);
 
 const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateFeedbackUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase );
 
