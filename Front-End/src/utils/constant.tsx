@@ -258,7 +258,7 @@ export const API_ROUTES = {
 
     CATEGORY_MANAGEMENT: "/api/admin/service-management",
     TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/service-management/${id}`,
-    COMMISSION_FEE : "/api/admin/commision-fee",
+    COMMISSION_FEE : "/api/admin/commission-fee",
   },
 
   LANDING: {

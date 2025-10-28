@@ -307,8 +307,8 @@ class AuthService {
     return axiosInstance.get(API_ROUTES.ADMIN.COMMISSION_FEE);
   }
 
-  updateCommissionFee(commisionFee: number) {
-    return axiosInstance.patch(API_ROUTES.ADMIN.COMMISSION_FEE, { commisionFee });
+  updateCommissionFee(commissionFee: number) {
+    return axiosInstance.patch(API_ROUTES.ADMIN.COMMISSION_FEE, { commissionFee });
   }
 
   /*********************************************************************************************************************** */
