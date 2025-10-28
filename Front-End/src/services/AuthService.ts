@@ -5,6 +5,7 @@ import type { KYCStatus } from "@/shared/enums/KycStatus";
 import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { API_ROUTES } from "@/utils/constant";
 import type { Platform } from "@/shared/types/others";
+import type { SalesPreset } from "@/shared/types/salesReport";
 
 class AuthService {
   // getBearerTokenConfig(token?: string) { //jwt token
@@ -247,7 +248,9 @@ class AuthService {
     return axiosInstance.patch(API_ROUTES.PROVIDER.TOGGLE_AVAILABILITY, { day, leaveOption });
   }
 
-
+  salesReport(filter: SalesPreset | null , startDate: string | null , endDate: string | null ) {
+    return axiosInstance.get(API_ROUTES.PROVIDER.SALES_REPORT(filter,startDate,endDate));
+  }
 
   /*********************************************************************************************************************** */
   //Admin

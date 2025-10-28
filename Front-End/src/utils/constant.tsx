@@ -1,3 +1,4 @@
+import type { SalesPreset } from "@/shared/types/salesReport";
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
@@ -167,7 +168,7 @@ export const adminSideBarOptions: SideBarOption[] = [
 ];
 
 
-export const settingOptions: { section: string; to: string }[]  = [
+export const settingOptions: { section: string; to: string }[] = [
   { section: "Profile", to: "/admin/settings/profile" },
   { section: "Commission Fee", to: "/admin/settings/commission-fee" },
 ];
@@ -245,6 +246,15 @@ export const API_ROUTES = {
     WORKING_TIME_INFO: "/api/provider/availability-time",
     SCHEDULE_WORK_TIME: "api/provider/schedule-availability-time",
     TOGGLE_AVAILABILITY: "api/provider/toggle-availability",
+    SALES_REPORT: (filter: SalesPreset | null, startDate: string | null, endDate: string | null) => {
+      let url = "/api/provider/generate-salesReport";
+      if (filter) {
+        url += `?filter=${filter}`;
+      } else if (startDate && endDate) {
+        url += `?startDate=${startDate}&endDate=${endDate}`;
+      }
+      return url;
+    },
   },
 
   ADMIN: {
@@ -258,7 +268,7 @@ export const API_ROUTES = {
 
     CATEGORY_MANAGEMENT: "/api/admin/service-management",
     TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/service-management/${id}`,
-    COMMISSION_FEE : "/api/admin/commission-fee",
+    COMMISSION_FEE: "/api/admin/commission-fee",
   },
 
   LANDING: {

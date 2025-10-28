@@ -40,6 +40,7 @@ import SettingsPage from "@/pages/admin/SettingsPage.tsx";
 import AdminProfilePage from "../pages/admin/ProfilePage.tsx";
 import CommissionFeePage from "@/pages/admin/CommissionFeePage.tsx";
 import PublicRoute from "./PublicRoute.tsx";
+import SalesPage from "@/pages/provider/SalesPage.tsx";
 
 
 
@@ -130,6 +131,8 @@ const router = createBrowserRouter([
       { path: "change-password", element: <ChangePasswordPage /> },
       { path: "settings/advance-profile", element: <AdvanceProfilePage /> },
       { path: "settings/availability", element: <AvailabilityPage /> },
+      { path: "settings/sales", element: <SalesPage /> },
+
     ],
   },
   // Admin Routes
@@ -151,7 +154,7 @@ const router = createBrowserRouter([
       { path: "settings", element: <SettingsPage /> },
       { path: "settings/profile", element: <AdminProfilePage /> },
       { path: "change-password", element: <ChangePasswordPage /> },
-      { path: "settings/commission-fee", element: <CommissionFeePage/> },
+      { path: "settings/commission-fee", element: <CommissionFeePage /> },
     ]
   },
   {
