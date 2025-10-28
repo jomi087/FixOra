@@ -18,7 +18,7 @@ export const FULL_REFUND_WINDOW_MINUTES = 15;
 export const PARTIAL_REFUND_PERCENTAGE = 0.5;
 
 //intial fee
-export const PLATFORM_FEE = 30;
+export const COMMISSION_FEE = 30;
 
 export const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] as const;
 export const LEAVE_OPTIONS = ["this_week", "every_week"];

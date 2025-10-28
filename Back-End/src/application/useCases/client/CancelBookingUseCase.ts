@@ -15,7 +15,7 @@ import { SendBookingCancelledInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
-import { IPlatformFeeRepository } from "../../../domain/interface/RepositoryInterface/IPlatformFeeRepository";
+import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
@@ -27,7 +27,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
         private readonly _notificationRepository: INotificationRepository,
-        private readonly _platformFeeRepository: IPlatformFeeRepository,
+        private readonly _commissionFeeRepository: ICommissionFeeRepository,
     ) { }
 
     private async sendBookingCancelledNotification(input: SendBookingCancelledInput): Promise<void> {
@@ -152,8 +152,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 const numAmount = Number(bookingData.esCrowAmout);
 
                 const halfRefund = Math.round(numAmount * PARTIAL_REFUND_PERCENTAGE);
-                const platformFeeData = await this._platformFeeRepository.findPlatformFeeData();
-                const providerAmount = halfRefund - ( platformFeeData?.fee ?? 0 );
+                const commissionFeeData = await this._commissionFeeRepository.findCommissionFeeData();
+                const providerAmount = halfRefund - ( commissionFeeData?.fee ?? 0 );
 
                 //updating user wallet will partial refund (50%)
                 await this._walletRepository.updateWalletOnTransaction({
@@ -165,7 +165,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                     reason: `Booking cancellation refund for booking ${bookingData.bookingId}`
                 });
 
-                //updating provider wallet will partial refund (50% -  platform fee)
+                //updating provider wallet will partial refund (50% -  commission fee)
                 await this._walletRepository.updateWalletOnTransaction({
                     userId: bookingData.providerUserId,
                     transactionId: `prvdr50${transactionId}`,

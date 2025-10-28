@@ -1,18 +1,18 @@
-import PlatformFee from "@/components/admin/settings/platformFee";
+import CommissionFee from "@/components/admin/settings/CommissionFee";
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/others/SideBar";
 import { adminSideBarOptions } from "@/utils/constant";
 
-const PlatformFeePage = () => {
+const CommissionFeePage = () => {
   return (
     <>
       <Nav className='bg-nav-background text-nav-text' />
       <div className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
         <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-8 " />
-        <PlatformFee/>
+        <CommissionFee/>
       </div>
     </>
   );
 };
 
-export default PlatformFeePage;
+export default CommissionFeePage;

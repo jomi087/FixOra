@@ -1,3 +1,16 @@
+//were to add these
+/**********************************************************************************************
+ * GLOBAL ERROR HANDLERS — Catch unhandled exceptions/rejections early
+ **********************************************************************************************/
+process.on("unhandledRejection", (reason) => {
+    console.error("Unhandled Rejection", reason);
+    process.exit(1);
+});
+
+process.on("uncaughtException", (err) => {
+    console.error("Uncaught Exception", err);
+    process.exit(1);
+});
 /**********************************************************************************************
  * MODULE IMPORTS & INITIALIZATION
  **********************************************************************************************/
@@ -13,7 +26,7 @@ dotenv.config();
 //From Local files
 import mongoConnect from "../infrastructure/database/connection";
 import { initializeSocket } from "../infrastructure/socket/config";
-import { initializePlatformFee } from "../infrastructure/startup/Initializer";
+import { initializeCommissionFee } from "../infrastructure/startup/Initializer";
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
 import { errorHandler } from "./dependencyInjector";
 import { BodyParserLimits } from "../shared/const/constants";
@@ -47,7 +60,7 @@ const corsOptions = {
  * DATABASE INITIALIZATION
  **********************************************************************************************/
 mongoConnect(logger);
-initializePlatformFee();
+initializeCommissionFee();
 /**********************************************************************************************
  * MIDDLEWARES
 **********************************************************************************************/
@@ -82,16 +95,3 @@ server.listen(port, () => {
 });
 
 
-//were to add these
-/**********************************************************************************************
- * GLOBAL ERROR HANDLERS — Catch unhandled exceptions/rejections early
- **********************************************************************************************/
-process.on("unhandledRejection", (reason) => {
-    console.error("Unhandled Rejection", reason);
-    process.exit(1);
-});
-
-process.on("uncaughtException", (err) => {
-    console.error("Uncaught Exception", err);
-    process.exit(1);
-});

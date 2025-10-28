@@ -1,9 +1,9 @@
 import { Schema, Document, model } from "mongoose";
-import { PlatformFee } from "../../../domain/entities/PlatfromFeeEntity";
+import { CommissionFee } from "../../../domain/entities/CommissionFeeEntity";
 
-export interface IPlatformFeeModel extends Document, PlatformFee { }
+export interface ICommissionFeeModel extends Document, CommissionFee { }
 
-const platformFeeSchema = new Schema<IPlatformFeeModel>({
+const commissionFeeSchema = new Schema<ICommissionFeeModel>({
     fee: {
         type: Number,
         required: true,
@@ -23,5 +23,5 @@ const platformFeeSchema = new Schema<IPlatformFeeModel>({
     timestamps: true
 });
 
-const PlatformFeeModel = model<IPlatformFeeModel>("PlatformFee", platformFeeSchema);
-export default PlatformFeeModel;
+const CommissionFeeModel = model<ICommissionFeeModel>("CommissionFee", commissionFeeSchema);
+export default CommissionFeeModel;

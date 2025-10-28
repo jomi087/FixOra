@@ -8,7 +8,7 @@ import { WalletRepository } from "../infrastructure/database/repositories/Wallet
 import { NotificationRepository } from "../infrastructure/database/repositories/NotificationRepository";
 import { AvailabilityRepository } from "../infrastructure/database/repositories/AvailabilityRepository";
 import { RatingRepository } from "../infrastructure/database/repositories/RatingRepository";
-import { PlatformFeeRepository } from "../infrastructure/database/repositories/PlatformFeeRepository";
+import { CommissionFeeRepository } from "../infrastructure/database/repositories/CommissionFeeRepository";
 
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
 import { EmailService } from "../infrastructure/services/EmailService";
@@ -32,7 +32,7 @@ const walletRepository = new WalletRepository();
 const notificationRepository = new NotificationRepository();
 const availabilityRepository = new AvailabilityRepository();
 const ratingRepository = new RatingRepository();
-const platformFeeRepository = new PlatformFeeRepository();
+const commissionFeeRepository = new CommissionFeeRepository();
 
 const loggerService = new WinstonLogger();
 const emailService = new EmailService();
@@ -151,7 +151,7 @@ import { ReviewStatusUseCase } from "../application/useCases/client/ReviewStatus
 const reviewStatusUseCase = new ReviewStatusUseCase(ratingRepository);
 
 import { CancelBookingUseCase } from "../application/useCases/client/CancelBookingUseCase";
-const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository, platformFeeRepository);
+const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository, commissionFeeRepository);
 
 import { AddFeedbackUseCase } from "../application/useCases/client/AddFeedbackUseCase";
 const addFeedbackUseCase = new AddFeedbackUseCase(ratingRepository, bookingRepository);
@@ -187,7 +187,7 @@ import { VerifyArrivalOtpUseCase } from "../application/useCases/providers/Verif
 const verifyArrivalOtpUseCase = new VerifyArrivalOtpUseCase(otpRepository, tokenService, bookingRepository);
 
 import { WorkCompletionUseCase } from "../application/useCases/providers/WorkCompletionUseCase";
-const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository, platformFeeRepository);
+const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository, commissionFeeRepository);
 
 import { ProviderServiceUseCase } from "../application/useCases/providers/ProviderServiceUseCase";
 const providerServiceUseCase = new ProviderServiceUseCase(providerRepository, categoryRepository);
@@ -198,7 +198,7 @@ const providerServiceInfoUseCase = new ProviderServiceInfoUseCase(providerReposi
 import { ProviderDataUpdateUseCase } from "../application/useCases/providers/ProviderDataUpdateUseCase";
 const providerDataUpdateUseCase = new ProviderDataUpdateUseCase(providerRepository);
 
-import { GetAvailabilityUseCase } from "../application/useCases/providers/GetAvailabilityUseCase";
+import { GetAvailabilityUseCase } from "../application/useCases/providers/GetAvailabiltyUseCase";
 const getAvailabilityUseCase = new GetAvailabilityUseCase(providerRepository, availabilityRepository);
 
 import { SetAvailabilityUseCase } from "../application/useCases/providers/SetAvailabilityUseCase";
@@ -234,11 +234,11 @@ const createServiceCategoryUseCase = new CreateServiceCategoryUseCase(categoryRe
 import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase";
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository);
 
-import { PlatformFeeUseCase } from "../application/useCases/admin/PlatformFeeUseCase";
-const platformFeeUseCase = new PlatformFeeUseCase(platformFeeRepository);
+import { CommissionFeeUseCase } from "../application/useCases/admin/CommissionFeeUseCase";
+const commissionFeeUseCase = new CommissionFeeUseCase(commissionFeeRepository);
 
-import { UpdatePlatformFeeUseCase } from "../application/useCases/admin/UpdatePlatformFeeUseCase";
-const updatePlatformFeeUseCase = new UpdatePlatformFeeUseCase(platformFeeRepository);
+import { UpdateCommissionFeeUseCase } from "../application/useCases/admin/UpdateCommissionFeeUseCase";
+const updateCommissionFeeUseCase = new UpdateCommissionFeeUseCase(commissionFeeRepository);
 /******************************************************************************************************************************************************/
 import { PublicController } from "../interfaces/controllers/PublicController";
 import { AuthController } from "../interfaces/controllers/AuthController";
@@ -255,7 +255,7 @@ const userController = new UserController(activeServiceUseCase, getActiveProvide
 
 const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
 
-const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, platformFeeUseCase, updatePlatformFeeUseCase );
+const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, commissionFeeUseCase, updateCommissionFeeUseCase );
 
 export {
     publicController,

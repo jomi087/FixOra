@@ -303,12 +303,12 @@ class AuthService {
   //   return axiosInstance.patch(API_ROUTES.ADMIN.CHANGE_PASSWORD, { token, password, cPassword, }, this.getJsonConfig());
   // }
 
-  platformFee() {
-    return axiosInstance.get(API_ROUTES.ADMIN.PLATFORM_FEE);
+  commissionFee() {
+    return axiosInstance.get(API_ROUTES.ADMIN.COMMISSION_FEE);
   }
 
-  updatePlatformFee(platformFee: number) {
-    return axiosInstance.patch(API_ROUTES.ADMIN.PLATFORM_FEE, { platformFee });
+  updateCommissionFee(commisionFee: number) {
+    return axiosInstance.patch(API_ROUTES.ADMIN.COMMISSION_FEE, { commisionFee });
   }
 
   /*********************************************************************************************************************** */

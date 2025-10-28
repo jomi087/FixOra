@@ -169,7 +169,7 @@ export const adminSideBarOptions: SideBarOption[] = [
 
 export const settingOptions: { section: string; to: string }[]  = [
   { section: "Profile", to: "/admin/settings/profile" },
-  { section: "Platform Fee", to: "/admin/settings/platform-fee" },
+  { section: "Commission Fee", to: "/admin/settings/commission-fee" },
 ];
 
 /*********************************************************************************************************************************************************/
@@ -258,7 +258,7 @@ export const API_ROUTES = {
 
     CATEGORY_MANAGEMENT: "/api/admin/service-management",
     TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/service-management/${id}`,
-    PLATFORM_FEE : "/api/admin/platform-fee",
+    COMMISSION_FEE : "/api/admin/commision-fee",
   },
 
   LANDING: {

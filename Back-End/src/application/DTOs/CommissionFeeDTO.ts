@@ -1,5 +1,5 @@
 
-export interface PlatformFeeDTO {
+export interface CommissionFeeDTO {
 	fee: number;
 	feeHistory: {
 		amount: number;

@@ -147,8 +147,7 @@ export class ProviderRepository implements IProviderRepository {
         }
 
         const result = await ProviderModel.aggregate<AggregatedFacetResult>(pipeline);
-        console.log("result look specializaton id", result[0].data);
-
+        
         return {
             data: result[0].data || [],
             total: result[0].totalCount[0]?.total || 0

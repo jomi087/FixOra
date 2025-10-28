@@ -12,8 +12,8 @@ import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/A
 import { IImageUploaderService } from "../../domain/interface/ServiceInterface/IImageUploaderService";
 import { IProviderApplicationUseCase } from "../../application/Interface/useCases/Admin/IProviderApplicationUseCase";
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase";
-import { IPlatformFeeUseCase } from "../../application/Interface/useCases/Admin/IPlatformFeeUseCase";
-import { IUpdatePlatformFeeUseCase } from "../../application/Interface/useCases/Admin/IUpdatePlatformFeeUseCase";
+import { ICommissionFeeUseCase } from "../../application/Interface/useCases/Admin/ICommissionFeeUseCase";
+import { IUpdateCommissionFeeUseCase } from "../../application/Interface/useCases/Admin/IUpdateCommissionFeeUseCase";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
@@ -29,8 +29,8 @@ export class AdminController {
         private _createServiceCategoryUseCase: ICreateServiceCategoryUseCase,
         private _imageUploaderService: IImageUploaderService,
         private _toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
-        private _platformFeeUseCase: IPlatformFeeUseCase,
-        private _updatePlatformFeeUseCase: IUpdatePlatformFeeUseCase,
+        private _commissionFeeUseCase: ICommissionFeeUseCase,
+        private _updateCommissionFeeUseCase: IUpdateCommissionFeeUseCase,
     ) { }
 
     async getCustomers(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -205,35 +205,35 @@ export class AdminController {
         }
     }
 
-    async platformFee(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async commissionFee(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
                 throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
             }
 
-            const data = await this._platformFeeUseCase.execute();
+            const data = await this._commissionFeeUseCase.execute();
 
             res.status(OK).json({
                 success: true,
-                platformFeeData: data
+                commissionFeeData: data
             });
         } catch (error) {
             next(error);
         }
     }
 
-    async updatePlatformFee(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async updateCommissionFee(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
                 throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
             }
-            const { platformFee } = req.body;
+            const { commissionFee } = req.body;
 
-            const data = await this._updatePlatformFeeUseCase.execute(platformFee);
+            const data = await this._updateCommissionFeeUseCase.execute(commissionFee);
 
             res.status(OK).json({
                 success: true,
-                updatedPlatformFeeData: data
+                updatedCommissionFeeData: data
             });
         } catch (error) {
             next(error);

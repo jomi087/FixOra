@@ -14,7 +14,7 @@ import { NotificationType } from "../../../shared/enums/Notification";
 import { SendWorkFinsihedInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
-import { IPlatformFeeRepository } from "../../../domain/interface/RepositoryInterface/IPlatformFeeRepository";
+import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
@@ -29,7 +29,7 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
         private readonly _notificationRepository: INotificationRepository,
-        private readonly _platformFeeRepository: IPlatformFeeRepository,
+        private readonly _commissionFeeRepository: ICommissionFeeRepository,
     ) { }
 
     private async sendCompletedWorkNotification(input: SendWorkFinsihedInput): Promise<void> {
@@ -81,8 +81,8 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
 
             const transactionId = `Wlt_${uuidv4()}`;
             const numAmount = Number(bookingData.esCrowAmout);
-            const platformFeeData = await this._platformFeeRepository.findPlatformFeeData();
-            const providerAmount = numAmount - (platformFeeData?.fee ?? 0);
+            const commissionFeeData = await this._commissionFeeRepository.findCommissionFeeData();
+            const providerAmount = numAmount - (commissionFeeData?.fee ?? 0);
 
             await this._walletRepository.updateWalletOnTransaction({
                 userId: bookingData.providerUserId,

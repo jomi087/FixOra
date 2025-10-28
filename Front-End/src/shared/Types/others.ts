@@ -1,7 +1,7 @@
 export type Platform = "web" | "app"  
 
 
-export interface PlatformFee {
+export interface CommissionFee {
 	fee: number;
 	feeHistory: {
 		amount: number;
