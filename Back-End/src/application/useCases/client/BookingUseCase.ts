@@ -13,6 +13,7 @@ import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
 import { IPushNotificationService } from "../../../domain/interface/ServiceInterface/IPushNotificationService";
+import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY } = HttpStatusCode;
 const { INTERNAL_ERROR, ALREDY_BOOKED, PENDING_BOOKING, NOT_FOUND_MSG,
@@ -25,7 +26,8 @@ export class BookingUseCase implements IBookingUseCase {
         private readonly _pushNotificationService: IPushNotificationService,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
         private readonly _userRepository: IUserRepository,
-        private readonly _availabilityRepository: IAvailabilityRepository
+        private readonly _availabilityRepository: IAvailabilityRepository,
+        private readonly _commissionFeeRepository: ICommissionFeeRepository,
     ) { }
 
     private scheduleProviderResponseTimeout(bookingId: string): void {
@@ -68,7 +70,7 @@ export class BookingUseCase implements IBookingUseCase {
         if (!user?.fcmTokens || user.fcmTokens.length === 0) return;
 
         await this._pushNotificationService.sendPushNotificationToUser(user.fcmTokens, payload);
-        
+
     }
 
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
@@ -105,7 +107,13 @@ export class BookingUseCase implements IBookingUseCase {
             const { serviceCharge, distanceFee } = result;
 
             if (isNaN(serviceCharge) || isNaN(distanceFee)) {
-                throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+                throw { status: INTERNAL_SERVER_ERROR, message: "ServiceCharge/DistanceFee is NaN " };
+            }
+
+            const commissionFeeData = await this._commissionFeeRepository.findCommissionFeeData();
+            const commissionFee = commissionFeeData?.fee;
+            if (!commissionFeeData || !commissionFee || isNaN(commissionFee)) {
+                throw { status: INTERNAL_SERVER_ERROR, message: "Issue Found in CommissionFeeData" };
             }
 
             const newBooking: Booking = {
@@ -124,6 +132,7 @@ export class BookingUseCase implements IBookingUseCase {
                     baseCost: serviceCharge,
                     distanceFee: distanceFee,
                 },
+                commission: commissionFee
             };
 
             let bookingId = await this._bookingRepository.create(newBooking);

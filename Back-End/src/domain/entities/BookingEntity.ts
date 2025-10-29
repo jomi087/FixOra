@@ -18,7 +18,8 @@ export interface Booking {
     pricing: {
         baseCost: number;
         distanceFee: number;
-    }
+    };
+    commission: number;
     paymentInfo?: {
         mop: PaymentMode; 
         status: PaymentStatus;

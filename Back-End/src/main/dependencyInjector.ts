@@ -121,7 +121,7 @@ import { UpdateFeedbackUseCase } from "../application/useCases/client/UpdateFeed
 const updateFeedbackUseCase = new UpdateFeedbackUseCase(ratingRepository);
 
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
-const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, pushNotificationService, bookingSchedulerService, userRepository, availabilityRepository);
+const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, pushNotificationService, bookingSchedulerService, userRepository, availabilityRepository, commissionFeeRepository);
 
 import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase";
 const createPaymentUseCase = new CreatePaymentUseCase(paymentService, bookingRepository);
@@ -151,7 +151,7 @@ import { ReviewStatusUseCase } from "../application/useCases/client/ReviewStatus
 const reviewStatusUseCase = new ReviewStatusUseCase(ratingRepository);
 
 import { CancelBookingUseCase } from "../application/useCases/client/CancelBookingUseCase";
-const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository, commissionFeeRepository);
+const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository);
 
 import { AddFeedbackUseCase } from "../application/useCases/client/AddFeedbackUseCase";
 const addFeedbackUseCase = new AddFeedbackUseCase(ratingRepository, bookingRepository);
@@ -187,7 +187,7 @@ import { VerifyArrivalOtpUseCase } from "../application/useCases/providers/Verif
 const verifyArrivalOtpUseCase = new VerifyArrivalOtpUseCase(otpRepository, tokenService, bookingRepository);
 
 import { WorkCompletionUseCase } from "../application/useCases/providers/WorkCompletionUseCase";
-const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository, commissionFeeRepository);
+const workCompletionUseCase = new WorkCompletionUseCase(imageUploaderService, bookingRepository, walletRepository, notificationService, notificationRepository);
 
 import { ProviderServiceUseCase } from "../application/useCases/providers/ProviderServiceUseCase";
 const providerServiceUseCase = new ProviderServiceUseCase(providerRepository, categoryRepository);

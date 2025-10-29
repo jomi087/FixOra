@@ -51,6 +51,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
                     baseCost: booking.pricing!.baseCost,
                     distanceFee: booking.pricing!.distanceFee
                 },
+                commission: booking.commission!,
                 paymentInfo: {
                     mop: booking.paymentInfo.mop,
                     status: booking.paymentInfo.status,

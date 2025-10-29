@@ -10,12 +10,10 @@ import { TransactionStatus, TransactionType } from "../../../shared/enums/Transa
 import { Messages } from "../../../shared/const/Messages";
 import { CancelBookingInputDTO, CancelBookingOutputDTO } from "../../DTOs/BookingDTO/BookingInfoDTO";
 import { ICancelBookingUseCase } from "../../Interface/useCases/Client/ICancelBookingUseCase";
-// import { ISendBookingCancelledNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingCancelledNotificationUseCase";
 import { SendBookingCancelledInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
-import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
@@ -27,7 +25,6 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
         private readonly _walletRepository: IWalletRepository,
         private readonly _notificationService: INotificationService,
         private readonly _notificationRepository: INotificationRepository,
-        private readonly _commissionFeeRepository: ICommissionFeeRepository,
     ) { }
 
     private async sendBookingCancelledNotification(input: SendBookingCancelledInput): Promise<void> {
@@ -56,7 +53,6 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 createdAt: notification.createdAt,
                 isRead: notification.isRead,
             });
-
         } catch (error) {
             if (error.status && error.message) throw error;
             throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
@@ -65,9 +61,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
 
     async execute(input: CancelBookingInputDTO): Promise<CancelBookingOutputDTO> {
         try {
-
             const { userId, bookingId } = input;
-
+            
             const bookingData = await this._bookingRepository.findByBookingId(bookingId);
             if (!bookingData) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
@@ -152,8 +147,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 const numAmount = Number(bookingData.esCrowAmout);
 
                 const halfRefund = Math.round(numAmount * PARTIAL_REFUND_PERCENTAGE);
-                const commissionFeeData = await this._commissionFeeRepository.findCommissionFeeData();
-                const providerAmount = halfRefund - ( commissionFeeData?.fee ?? 0 );
+                const providerAmount = halfRefund - bookingData.commission;
 
                 //updating user wallet will partial refund (50%)
                 await this._walletRepository.updateWalletOnTransaction({

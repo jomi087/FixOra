@@ -156,7 +156,7 @@ const VerifictionForm: React.FC<VerifictionFormProps> = ({ toggle }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Service Charge</FormLabel>
-                <FormDescription className="text-[12px] font-extralight before:content-['*'] before:text-red-500 before:mr-1 before:text-sm before:font-extrabold">20₹ Commision will deductud of on your every service</FormDescription>
+                <FormDescription className="text-[12px] font-extralight before:content-['*'] before:text-red-500 before:mr-1 before:text-sm before:font-extrabold">Commission will deductud of on your every service</FormDescription>
                 <FormControl>
                   <Input
                     placeholder="300Rs - 500Rs"

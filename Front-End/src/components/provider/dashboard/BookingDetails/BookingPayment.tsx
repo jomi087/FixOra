@@ -3,18 +3,18 @@ interface BookingPaymentProps {
     baseCost: number;
     distanceFee: number;
   };
-
+  commission: number
 }
 
 
-const BookingPayment: React.FC<BookingPaymentProps> = ({ pricing }) => {
+const BookingPayment: React.FC<BookingPaymentProps> = ({ pricing, commission }) => {
   return (
     <div className="relative">
       <div className="flex items-center gap-1 text-lg font-bold mb-2 text-nav-text underline underline-offset-4 font-serif">
         <h3>Payment</h3>
       </div>
 
-      <div className="space-y-1 text-sm text-body-text">
+      <div className="space-y-2 text-sm text-body-text">
         <div className="flex justify-between">
           <span className="font-medium">Service Charge:</span>
           <span>{pricing.baseCost}</span>
@@ -43,6 +43,10 @@ const BookingPayment: React.FC<BookingPaymentProps> = ({ pricing }) => {
         <p>
           * Additional charges (if ny) should be collected after diagnosing the
           issue with bill.
+        </p>
+        <p>
+          * A service commission of ₹{commission} will be deducted from the total amount and will reflect in your wallet.
+          This policy also applies to partial refunds.
         </p>
       </div>
     </div>

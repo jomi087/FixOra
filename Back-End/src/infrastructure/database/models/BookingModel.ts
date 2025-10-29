@@ -61,6 +61,10 @@ const BookingSchema = new Schema<IBookingModel>({
             default: 0,
         },
     },
+    commission: {
+        type: Number,
+        required: true,
+    },
     paymentInfo: {
         mop: {
             type: String,

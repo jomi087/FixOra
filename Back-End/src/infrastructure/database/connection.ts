@@ -6,7 +6,7 @@ const mongoConnect = async (logger: ILoggerService): Promise<void> => {
 
     try {
         await mongoose.connect(mongoUrl, {
-            serverSelectionTimeoutMS: 5000, // wait max 8s for server selection
+            serverSelectionTimeoutMS: 5000, // wait max 5s for server selection
         });
         logger.info("Connected to MongoDB");
     } catch (error) {

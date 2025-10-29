@@ -91,9 +91,10 @@ const JobDetails = () => {
               issue={bookingInDetails.issue}
             />
 
-            <div className="flex justify-between flex-wrap  border-primary/70 border-b-1 pb-8">
+            <div className="flex justify-between flex-wrap  border-primary/70 border-b-1 pb-4">
               <BookingPayment
                 pricing={bookingInDetails.pricing}
+                commission={bookingInDetails.commission}
               />
 
               <BookingAction

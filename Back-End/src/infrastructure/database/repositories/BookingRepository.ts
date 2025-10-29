@@ -343,6 +343,7 @@ export class BookingRepository implements IBookingRepository {
                             baseCost: "$pricing.baseCost",
                             distanceFee: "$pricing.distanceFee",
                         },
+                        commission: "$commission",
                         paymentInfo: {
                             mop: "$paymentInfo.mop",
                             status: "$paymentInfo.status",

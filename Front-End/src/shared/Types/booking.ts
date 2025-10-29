@@ -115,6 +115,7 @@ export interface JobInfoDetails {
     baseCost: number;
     distanceFee: number;
   };
+  commission:number;
   paymentInfo: {
     mop: PaymentMode;
     status: PaymentStatus;
