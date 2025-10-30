@@ -19,8 +19,8 @@ const filterOptions= [
   { label: "All", value: "all" },
   { label: "Blocked", value: "blocked" },
   { label: "Unblocked", value: "unblocked" },
-  { label: "Online", value: "online" },
-  { label: "Offline", value: "offline" },
+  // { label: "Online", value: "online" },
+  // { label: "Offline", value: "offline" },
 ];
 
 const ProviderManagement: React.FC = () => {

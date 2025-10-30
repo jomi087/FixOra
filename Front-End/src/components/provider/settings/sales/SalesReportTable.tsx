@@ -61,7 +61,7 @@ const SalesReportTable: React.FC<SalesReportTableProps> = ({ data, loading }) =>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-600 py-4 animate-pulse font-mono text-lg font-semibold ">
+                <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-600 animate-pulse font-mono text-lg font-semibold ">
                   loading...
                 </td>
               </tr>

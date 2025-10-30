@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import { Download } from "lucide-react";
 import type { SalesPreset, SalesSummary } from "@/shared/types/salesReport";
 import SalesReportTable from "./SalesReportTable";
+import { pdf } from "@react-pdf/renderer";
+import { SalesReportPDF } from "./SalesReportPDF";
 
 
 const Sales = () => {
@@ -24,10 +26,7 @@ const Sales = () => {
   }, [activePreset]);
 
   const fetchSalesReport = async (filter: SalesPreset | null = null, startDate: string | null = null, endDate: string | null = null) => {
-    if (loading) {
-      toast.success("wait dude");
-      return;
-    }
+    if (loading) return;
     setLoading(true);
     try {
       let res = await AuthService.salesReport(filter, startDate, endDate);
@@ -64,6 +63,30 @@ const Sales = () => {
     fetchSalesReport(null, startDate, endDate);
   };
 
+  const handleDownloadPDF = async () => {
+    if (!salesReport) {
+      toast.error("Something went wrong");
+      return;
+    }
+
+    if (salesReport.completeHistory.length === 0) {
+      toast.warn("No data to export");
+      return;
+    }
+
+    const blob = await pdf(<SalesReportPDF salesReport={salesReport} />).toBlob();
+    const url = URL.createObjectURL(blob);
+
+    // Trigger a download
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `SaleReport-${new Date().toLocaleString()}.pdf`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
+
+
   return (
     <div className="w-full p-6">
       <div className="flex gap-2 justify-between">
@@ -90,14 +113,6 @@ const Sales = () => {
                 className="w-full text-start font-mono text-black border-b border-primary py-1 pl-1 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
               >
                 🔻PDF
-              </button>
-              <button
-                onClick={() => {
-                  setShowDownloadMenu(false);
-                  // downloadCSV();
-                }} className="w-full text-start font-mono text-black border-primary py-1 pl-1 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
-              >
-                🔻CSV
               </button>
             </div>
           )}
@@ -147,19 +162,11 @@ const Sales = () => {
               <button
                 onClick={() => {
                   setShowDownloadMenu(false);
-                  // downloadPDF();
+                  handleDownloadPDF();
                 }}
                 className="w-full text-center text-black border-primary px-4 py-3 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
               >
                 🔻Download as PDF
-              </button>
-              <button
-                onClick={() => {
-                  setShowDownloadMenu(false);
-                  // downloadCSV();
-                }} className="w-full text-center text-black border-t border-primary px-4 py-3 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
-              >
-                🔻Downlaod as CSV
               </button>
             </div>
           )}
