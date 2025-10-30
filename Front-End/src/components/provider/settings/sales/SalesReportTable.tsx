@@ -6,22 +6,42 @@ interface SalesReportTableProps {
   loading: boolean;
 }
 
+const columns = ["bookingId", "serviceCharge", "distanceFee", "commission", "Date", "Total"];
+
 const SalesReportTable: React.FC<SalesReportTableProps> = ({ data, loading }) => {
   return (
     <div className="rounded-lg shadow bg-white w-full text-black">
       {/* Mobile View */}
       <div className="flex flex-col gap-3 w-full md:hidden">
-        { loading ? (
+        {loading ? (
           <div className="text-center text-gray-600 py-4 animate-pulse font-roboto">loading...</div>
         ) : data.length > 0 ? (
           data.map((item) => (
             <div key={item.bookingId} className="border rounded-lg p-4 shadow w-full">
-              {Object.entries(item).map(([key, value]) => (
-                <div key={key} className="flex justify-between py-1">
-                  <span className="font-medium text-gray-600">{key}</span>
-                  <span className="text-gray-800">{value}</span>
-                </div>
-              ))}
+              <div className="">
+                <p className="text-gray-800 text-xs font-semibold underline underline-offset-6 text-center">{new Date(item.Date).toLocaleDateString()}</p>
+              </div>
+              <div className="flex justify-between py-1">
+                <span className="font-medium text-gray-600">BookingId</span>
+                <span className="text-gray-800">{shortBookingId(item.bookingId)}</span>
+              </div>
+              <div className="flex justify-between py-1">
+                <span className="font-medium text-gray-600">ServiceCharge</span>
+                <span className="text-gray-800">₹{item.serviceCharge}</span>
+              </div>
+              <div className="flex justify-between py-1">
+                <span className="font-medium text-gray-600">DistanceFee</span>
+                <span className="text-gray-800">₹{item.distanceFee}</span>
+              </div>
+              <div className="flex justify-between py-1">
+                <span className="font-medium text-gray-600">Commission</span>
+                <span className="text-gray-800">-₹{item.commission}</span>
+              </div>
+
+              <div className="flex justify-between py-1 border-t-2">
+                <span className="font-medium text-gray-600">Total</span>
+                <span className="text-gray-800">₹{(item.serviceCharge + item.distanceFee) - item.commission}</span>
+              </div>
             </div>
           ))
         ) : (
@@ -33,16 +53,18 @@ const SalesReportTable: React.FC<SalesReportTableProps> = ({ data, loading }) =>
         <table className="min-w-full table-auto divide-y divide-gray-200 bg-white">
           <thead style={{ background: "linear-gradient(135deg,#d4af37,#82C3C7)" }}>
             <tr className="text-left">
-              {Object.keys(data[0] ?? ({} as CompleteHistory)).map((key) => (
+              {columns.map((key) => (
                 <th key={key} className="px-4 py-2 text-center">{key.toUpperCase()}</th>
               ))}
-              <th className="px-4 py-2 text-center">Total</th>
-
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <div className="text-center text-gray-600 py-4 animate-pulse font-mono text-lg font-semibold ">loading...</div>
+              <tr>
+                <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-600 py-4 animate-pulse font-mono text-lg font-semibold ">
+                  loading...
+                </td>
+              </tr>
             ) :
               data.length > 0 ? (
                 data.map((item) => (
@@ -57,7 +79,7 @@ const SalesReportTable: React.FC<SalesReportTableProps> = ({ data, loading }) =>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={Object.keys(data[0] ?? {}).length || 1} className="px-4 py-6 text-center text-gray-600">
+                  <td colSpan={columns.length} className="px-4 py-6 text-center text-gray-600">
                     No Order Found
                   </td>
                 </tr>
