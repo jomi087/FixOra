@@ -31,6 +31,7 @@ router.patch("/provider-data", validateRequest(UpdateProviderDataSchema), AuthMi
 router.get("/availability-time", AuthMiddleware([RoleEnum.Provider]), providerController.getAvailabilityTime.bind(providerController));
 router.post("/schedule-availability-time", validateRequest(workTimeSchema), AuthMiddleware([RoleEnum.Provider]), providerController.scheduleAvailabilityTime.bind(providerController));
 router.patch("/toggle-availability", validateRequest(daySchema), AuthMiddleware([RoleEnum.Provider]), providerController.toggleAvailability.bind(providerController));
+router.get("/generate-salesReport", AuthMiddleware([RoleEnum.Provider]), providerController.generateSalesReport.bind(providerController));
 export default router;
 
 

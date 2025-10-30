@@ -20,6 +20,8 @@ import { RoleEnum } from "../../shared/enums/Roles";
 import { IProviderServiceInfoUseCase } from "../../application/Interface/useCases/Provider/IProviderServiceInfoUseCase";
 import { IProviderServiceUseCase } from "../../application/Interface/useCases/Provider/IProviderServiceUseCase";
 import { IProviderDataUpdateUseCase } from "../../application/Interface/useCases/Provider/IProviderDataUpdateUseCase";
+import { SalesPreset } from "../../shared/types/salesReport";
+import { IGetSalesReportUseCase } from "../../application/Interface/useCases/Provider/IGetSalesReportUseCase";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
@@ -40,6 +42,7 @@ export class ProviderController {
         private _getAvailabilityUseCase: IGetAvailabilityUseCase,
         private _setAvailabilityUseCase: ISetAvailabilityUseCase,
         private _toggleAvailabilityUseCase: IToggleAvailabilityUseCase,
+        private _getSalesReportUseCase : IGetSalesReportUseCase,
     ) { }
 
 
@@ -350,6 +353,34 @@ export class ProviderController {
             res.status(OK).json({
                 success: true,
                 message: "status updated",
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async generateSalesReport(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { filter:preset, startDate, endDate } = req.query as {
+                filter?: SalesPreset;
+                startDate?: string;
+                endDate?: string;
+            };
+
+            console.log(req.query);
+
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const providerUserId = req.user.userId;
+
+            let data = await this._getSalesReportUseCase.execute({ providerUserId, preset, startDate, endDate });
+
+            res.status(OK).json({
+                success: true,
+                message: "status updated",
+                salesReport: data
             });
 
         } catch (error) {

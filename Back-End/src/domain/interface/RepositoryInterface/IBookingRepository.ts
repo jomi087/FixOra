@@ -14,7 +14,7 @@ export interface IBookingRepository {
 
   findProviderPendingBookingRequestInDetails(providerUserId: string): Promise<{
     userInfo: Pick<User, "fname" | "lname">
-    bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" >
+    bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue">
     subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
   }[]>
 
@@ -75,6 +75,15 @@ export interface IBookingRepository {
 
   findBookingsByWeekday(providerUserId: string, dayIndex: number): Promise<Booking[]>
 
+  findProviderSalesByDateRange(providerUserId: string, start: Date, end: Date): Promise<{
+    total: number;
+    completed: number;
+    cancelled: number;
+    pendingWork: number;
+    totalCompletedSaleAmount: number;
+    refundAmount: number;
+    history: Booking[];
+  }>;
 }
 
 

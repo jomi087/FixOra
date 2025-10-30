@@ -207,6 +207,8 @@ const setAvailabilityUseCase = new SetAvailabilityUseCase(providerRepository, av
 import { ToggleAvailabilityUseCase } from "../application/useCases/providers/ToggleAvailabilityUseCase";
 const toggleAvailabilityUseCase = new ToggleAvailabilityUseCase(providerRepository, availabilityRepository, bookingRepository, walletRepository, notificationService, notificationRepository);
 
+import { GetSalesReportUseCase } from "../application/useCases/providers/GetSalesReportUseCase";
+const getSalesReportUseCase  = new GetSalesReportUseCase(bookingRepository);
 /******************************************************************************************************************************************************
                                         Admin Specific
 ******************************************************************************************************************************************************/
@@ -253,7 +255,7 @@ const authController = new AuthController(signupUseCase, verifySignupOtpUseCase,
 
 const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateFeedbackUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase );
 
-const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase);
+const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase );
 
 const adminController = new AdminController(getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, commissionFeeUseCase, updateCommissionFeeUseCase );
 

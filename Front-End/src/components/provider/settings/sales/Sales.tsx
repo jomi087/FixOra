@@ -6,22 +6,8 @@ import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Download } from "lucide-react";
-import type { SalesPreset, SalesReport } from "@/shared/types/salesReport";
+import type { SalesPreset, SalesSummary } from "@/shared/types/salesReport";
 import SalesReportTable from "./SalesReportTable";
-
-// sampleData.js
-export const mockBookings: SalesReport[] = [
-  { id: "BKG-1001", serviceCharge: "₹150", distanceFee: "₹50", commission: "₹25", bookingDate: "2025-10-20", totalAmount: "₹225", },
-  {
-    id: "BKG-1002",
-    serviceCharge: "₹120",
-    distanceFee: "₹45",
-    commission: "₹20",
-    bookingDate: "2025-10-22",
-    totalAmount: "₹185",
-  },
-];
-
 
 
 const Sales = () => {
@@ -30,24 +16,32 @@ const Sales = () => {
   const [endDate, setEndDate] = useState("");
   const [error, setError] = useState("");
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
-
-
-  const fetchSalesReport = async (filter: SalesPreset | null = null, startDate: string | null = null, endDate: string | null = null) => {
-    try {
-      await AuthService.salesReport(filter, startDate, endDate);
-      toast.success("done");
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      const msg =
-                err?.response?.data?.message ||
-                Messages.FAILED_TO_FETCH_DATA;
-      toast.error(msg);
-    }
-  };
+  const [salesReport, setSalesReport] = useState<SalesSummary | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchSalesReport(activePreset);
   }, [activePreset]);
+
+  const fetchSalesReport = async (filter: SalesPreset | null = null, startDate: string | null = null, endDate: string | null = null) => {
+    if (loading) {
+      toast.success("wait dude");
+      return;
+    }
+    setLoading(true);
+    try {
+      let res = await AuthService.salesReport(filter, startDate, endDate);
+      setSalesReport(res.data.salesReport as SalesSummary);
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      const msg =
+        err?.response?.data?.message ||
+        Messages.FAILED_TO_FETCH_DATA;
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePreset = (filter: SalesPreset) => {
     setActivePreset((prev) => prev == filter ? prev : filter);
@@ -67,10 +61,8 @@ const Sales = () => {
       setError("Start date cannot be after end date");
       return;
     }
-
     fetchSalesReport(null, startDate, endDate);
   };
-
 
   return (
     <div className="w-full p-6">
@@ -97,7 +89,7 @@ const Sales = () => {
                 }}
                 className="w-full text-start font-mono text-black border-b border-primary py-1 pl-1 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
               >
-                                🔻PDF
+                🔻PDF
               </button>
               <button
                 onClick={() => {
@@ -105,7 +97,7 @@ const Sales = () => {
                   // downloadCSV();
                 }} className="w-full text-start font-mono text-black border-primary py-1 pl-1 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
               >
-                                🔻CSV
+                🔻CSV
               </button>
             </div>
           )}
@@ -120,21 +112,21 @@ const Sales = () => {
             className="w-14 sm:w-auto text-xs sm:text-base"
             variant={`${activePreset === "today" ? "success" : "default"}`}
           >
-                        Today
+            Today
           </Button>
           <Button
             onClick={() => handlePreset("thisWeek")}
             className="w-20 sm:w-auto text-xs sm:text-base"
             variant={`${activePreset === "thisWeek" ? "success" : "default"}`}
           >
-                        This Week
+            This Week
           </Button>
           <Button
             onClick={() => handlePreset("thisMonth")}
             className="w-20 sm:w-auto text-xs sm:text-base"
             variant={`${activePreset === "thisMonth" ? "success" : "default"}`}
           >
-                        This Month
+            This Month
           </Button>
         </div>
 
@@ -159,7 +151,7 @@ const Sales = () => {
                 }}
                 className="w-full text-center text-black border-primary px-4 py-3 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
               >
-                                🔻Download as PDF
+                🔻Download as PDF
               </button>
               <button
                 onClick={() => {
@@ -167,7 +159,7 @@ const Sales = () => {
                   // downloadCSV();
                 }} className="w-full text-center text-black border-t border-primary px-4 py-3 text-sm font-semibold hover:bg-gray-100 hover:text-red-600"
               >
-                                🔻Downlaod as CSV
+                🔻Downlaod as CSV
               </button>
             </div>
           )}
@@ -241,22 +233,56 @@ const Sales = () => {
             <svg className="w-6 h-6 text-sky-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             <h5 className="font-semibold underline underline-offset-4">Sales Summary</h5>
           </div>
-          <div className="flex justify-between">
-            <div>
-              <p className="my-3 font-roboto">Total Sales: <strong className="text-emerald-600 text-lg">{500}</strong></p>
-              <p className="my-3 font-roboto">Total Bookings: <strong className="text-lg">{10}</strong></p>
+          <div className="flex gap-5">
+            <div className="border-r-1 w-full p-2 flex flex-col gap-2">
+              {[
+                { label: "Total Sales", color: "text-emerald-600", value: salesReport && !loading ? salesReport.totalCompletedSaleAmount + salesReport.refundAmount : null, },
+                { label: "Earning's", color: "text-green-500", value: salesReport?.totalCompletedSaleAmount },
+                { label: "Penality-Fee", color: "text-red-500", value: salesReport?.refundAmount },
+              ].map((item, idx) => (
+                <div key={idx} className="flex justify-between items-center border-b pb-1">
+                  <p className="font-serif">{item.label}:</p>
+                  {loading ? (
+                    <span className={`animate-pulse text-sm pl-2 ${item.color}`}>
+                      loading...
+                    </span>
+                  ) : (
+                    <strong className={`${item.color} text-lg font-mono`}>
+                      {item.value ?? "N/A"}
+                    </strong>
+                  )}
+                </div>
+              ))}
             </div>
-            <div>
-              <p className="my-2 font-roboto">Pending: <strong className="text-lg pl-5">{3}</strong></p>
-              <p className="my-2 font-roboto">Canceled: <strong className="text-red-600 text-lg pl-4">{2}</strong></p>
-              <p className="my-2 font-roboto">Completed: <strong className="text-green-500 text-lg pl-1">{5}</strong></p>
+
+            <div className="border-l-1 w-full p-2 flex flex-col gap-2">
+              {[
+                { label: "Total Bookings", color: "text-gray-800", value: salesReport?.summaryCount.total },
+                { label: "Pending", color: "text-cyan-700", value: salesReport?.summaryCount.pendingWork },
+                { label: "Canceled", color: "text-red-600", value: salesReport?.summaryCount.cancelled },
+                { label: "Completed", color: "text-green-500", value: salesReport?.summaryCount.completed },
+              ].map((item, idx) => (
+                <div key={idx} className="flex justify-between items-center border-b pb-1">
+                  <p className="font-serif">{item.label}:</p>
+                  {loading ? (
+                    <span className={`animate-pulse text-sm pl-5 ${item.color}`}>
+                      loading...
+                    </span>
+                  ) : (
+                    <strong className={`${item.color} text-lg font-mono `}>
+                      {item.value ?? "N/A"}
+                    </strong>
+                  )}
+                </div>
+              ))}
             </div>
+
           </div>
         </div>
       </div >
 
       {/* Orders Table */}
-      <SalesReportTable data={mockBookings} />
+      <SalesReportTable data={salesReport?.completeHistory ?? []} loading={loading} />
     </div >
   );
 };

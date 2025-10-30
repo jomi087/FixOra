@@ -30,8 +30,8 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async findProviderPendingBookingRequestInDetails(providerUserId: string): Promise<{
-        userInfo: Pick<User, "fname" | "lname" >
-        bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" >
+        userInfo: Pick<User, "fname" | "lname">
+        bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue">
         subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
     }[]> {
         const pipeline: PipelineStage[] = [
@@ -90,7 +90,7 @@ export class BookingRepository implements IBookingRepository {
 
         interface AggregatedResult {
             userInfo: Pick<User, "fname" | "lname">
-            bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue" >
+            bookingInfo: Pick<Booking, "bookingId" | "scheduledAt" | "issue">
             subCategoryInfo: Pick<Subcategory, "subCategoryId" | "name">
         }
 
@@ -545,4 +545,127 @@ export class BookingRepository implements IBookingRepository {
         });
     }
 
+    async findProviderSalesByDateRange(providerUserId: string, start: Date, end: Date): Promise<{
+        total: number;
+        completed: number;
+        cancelled: number;
+        pendingWork: number;
+        totalCompletedSaleAmount: number;
+        refundAmount: number;
+        history: Booking[];
+    }> {
+        const result = await BookingModel.aggregate([
+            {
+                $match: {
+                    providerUserId: providerUserId,
+                    "paymentInfo.paidAt": { $gte: start, $lte: end },
+                    "provider.response": ProviderResponseStatus.ACCEPTED,
+                    status: { $nin: [BookingStatus.PENDING] },
+                },
+            },
+            {
+                $facet: {
+                    summary: [
+                        {
+                            $group: {
+                                _id: null,
+                                total: { $sum: 1 },
+                                completed: {
+                                    $sum: {
+                                        $cond: [{ $eq: ["$status", BookingStatus.COMPLETED] }, 1, 0],
+                                    },
+                                },
+                                cancelled: {
+                                    $sum: {
+                                        $cond: [{ $eq: ["$status", BookingStatus.CANCELLED] }, 1, 0],
+                                    },
+                                },
+                                pendingWork: {
+                                    $sum: {
+                                        $cond: [{ $in: ["$status", [BookingStatus.CONFIRMED, BookingStatus.INITIATED]] }, 1, 0,],
+                                    },
+                                },
+                                totalCompletedSaleAmount: {
+                                    $sum: {
+                                        $cond: [
+                                            { $eq: ["$status", BookingStatus.COMPLETED] },
+                                            {
+                                                $subtract: [
+                                                    {
+                                                        $add: [
+                                                            { $ifNull: ["$pricing.baseCost", 0] },
+                                                            { $ifNull: ["$pricing.distanceFee", 0] }
+                                                        ]
+                                                    },
+                                                    { $ifNull: ["$commission", 0] }
+                                                ]
+                                            },
+                                            0
+                                        ]
+                                    }
+                                },
+                                refundAmount: {
+                                    $sum: {
+                                        $cond: [
+                                            {
+                                                $and: [
+                                                    { $eq: ["$status", BookingStatus.CANCELLED] },
+                                                    { $eq: ["$paymentInfo.status", PaymentStatus.PARTIAL_REFUNDED] },
+                                                ],
+                                            },
+                                            {
+                                                $subtract: [
+                                                    {
+                                                        $multiply: [
+                                                            {
+                                                                $add: [
+                                                                    { $ifNull: ["$pricing.baseCost", 0] },
+                                                                    { $ifNull: ["$pricing.distanceFee", 0] },
+                                                                ],
+                                                            },
+                                                            0.5, // 50% refund portion
+                                                        ],
+                                                    },
+                                                    { $ifNull: ["$commission", 0] }, // remove commission
+                                                ],
+                                            },
+                                            0,
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                    history: [
+                        { $match: { status: BookingStatus.COMPLETED } },
+                        { $sort: { scheduledAt: -1 } },
+                    ],
+                },
+            },
+            {
+                $project: {
+                    summary: { $arrayElemAt: ["$summary", 0] },
+                    history: 1,
+                },
+            },
+        ]);
+        const { summary, history } = result[0] || {};
+        
+        return {
+            total: summary?.total || 0,
+            completed: summary?.completed || 0,
+            cancelled: summary?.cancelled || 0,
+            pendingWork: summary?.pendingWork || 0,
+            totalCompletedSaleAmount: summary?.totalCompletedSaleAmount || 0,
+            refundAmount: summary?.refundAmount || 0,
+            history: history || [],
+        };
+    }
 }
+
+
+// return BookingModel.find({
+//     providerUserId: providerUserId,
+//     "paymentInfo.paidAt": { $gte: start, $lte: end },
+//     status: { $nin: [BookingStatus.PENDING] },
+// });

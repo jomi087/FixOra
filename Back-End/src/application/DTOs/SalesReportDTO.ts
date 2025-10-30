@@ -1,22 +1,30 @@
-export type SalesPreset = "today" | "thisWeek" | "thisMonth"
+import { SalesPreset } from "../../shared/types/salesReport";
+
+export interface SalesReportInputDTO {
+  providerUserId: string;
+  preset?: SalesPreset;
+  startDate?: string;
+  endDate?: string;
+}
 
 interface SummaryCount {
+
   total: number;
   completed: number;
   cancelled: number;
   pendingWork: number;
 }
 
-export interface CompleteHistory {
+interface CompleteHistory {
   bookingId: string;
   serviceCharge: number;
   distanceFee: number;
   commission: number;
-  Date: string;
+  Date: Date | string; // "N/A" or a Date
 }
 
 
-export interface SalesSummary {
+export interface SalesReportOutputDTO {
   totalCompletedSaleAmount: number;
   refundAmount: number;
   summaryCount: SummaryCount;
