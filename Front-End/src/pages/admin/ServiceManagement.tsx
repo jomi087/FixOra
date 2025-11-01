@@ -57,7 +57,7 @@ const ServiceManagement: React.FC = () => {
     <>
       <Nav className="bg-nav-background text-nav-text fixed top-0 left-0 right-0 z-50" />
       <div className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
-        <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-8" />
+        <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-3" />
         <div className="flex-1 bg-footer-background text-body-text">
           <div className="w-full h-full">
             <ResizablePanelGroup

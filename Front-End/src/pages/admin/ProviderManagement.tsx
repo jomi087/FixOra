@@ -71,7 +71,7 @@ const ProviderManagement: React.FC = () => {
 
       <div className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
 
-        <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-8 " />
+        <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-3 " />
 
         <div className="flex-1  bg-footer-background text-body-text w-full px-4 md:px-6 py-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">

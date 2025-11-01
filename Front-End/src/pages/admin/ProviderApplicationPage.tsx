@@ -10,7 +10,7 @@ const ProviderApplicationPage = () => {
     <>
       <Nav className="bg-nav-background text-nav-text" />
       <div className="flex pt-16 min-h-screen text-nav-text bg-nav-background">
-        <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-8 " />
+        <SideBar SideBar={adminSideBarOptions} className="border-r-1 my-3 " />
         <ProviderApplicationList/>
       </div>
     </>

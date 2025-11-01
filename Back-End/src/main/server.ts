@@ -1,16 +1,3 @@
-//were to add these
-/**********************************************************************************************
- * GLOBAL ERROR HANDLERS — Catch unhandled exceptions/rejections early
- **********************************************************************************************/
-process.on("unhandledRejection", (reason) => {
-    console.error("Unhandled Rejection", reason);
-    process.exit(1);
-});
-
-process.on("uncaughtException", (err) => {
-    console.error("Uncaught Exception", err);
-    process.exit(1);
-});
 /**********************************************************************************************
  * MODULE IMPORTS & INITIALIZATION
  **********************************************************************************************/
@@ -75,7 +62,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 /**********************************************************************************************
  * ROUTES
- **********************************************************************************************/
+**********************************************************************************************/
 app.use("/api",publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/customer", userRoutes);
@@ -95,3 +82,15 @@ server.listen(port, () => {
 });
 
 
+/**********************************************************************************************
+ * GLOBAL ERROR HANDLERS — Catch unhandled exceptions/rejections early
+ **********************************************************************************************/
+// process.on("unhandledRejection", (reason) => {
+//     console.error("Unhandled Rejection", reason);
+//     process.exit(1);
+// });
+
+// process.on("uncaughtException", (err) => {
+//     console.error("Uncaught Exception", err);
+//     process.exit(1);
+// });
