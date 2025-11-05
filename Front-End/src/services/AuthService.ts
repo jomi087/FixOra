@@ -6,6 +6,7 @@ import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStat
 import { API_ROUTES } from "@/utils/constant";
 import type { Platform } from "@/shared/types/others";
 import type { SalesPreset } from "@/shared/types/salesReport";
+import type { TimeRange } from "@/shared/types/dashboard";
 
 class AuthService {
   // getBearerTokenConfig(token?: string) { //jwt token
@@ -254,6 +255,10 @@ class AuthService {
 
   /*********************************************************************************************************************** */
   //Admin
+  DashboardData(timeRange:TimeRange) {
+    return axiosInstance.get(API_ROUTES.ADMIN.DASHBOARD(timeRange));
+  }
+  
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
     return axiosInstance.get(API_ROUTES.ADMIN.CUSTOMER_MANAGEMENT, {
       params: { searchQuery, filter, currentPage, itemsPerPage }

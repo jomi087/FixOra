@@ -1,5 +1,3 @@
-/*  You can see another version Using class  */
-
 import { RoleEnum } from "../../shared/enums/Roles";
 export interface Address {
   houseinfo?: string;
@@ -35,3 +33,6 @@ export interface User {
   updatedAt?: Date;
   fcmTokens?: { token: string; platform: string; createdAt: Date }[];
 }
+
+
+/* You can see another version Using class  */

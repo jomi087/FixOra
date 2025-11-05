@@ -673,13 +673,53 @@ export class UserRepository implements IUserRepository {
             {
                 $addToSet: {
                     fcmTokens: {
-                        token:FcmToken,
+                        token: FcmToken,
                         platform,
                         createdAt: new Date(),
                     },
                 },
             }
         );
+    }
+
+    async dashboardUserStats(start: Date, end: Date): Promise<{
+        totalCustomers: number;
+        blockedCustomers: number;
+        newCustomers: number;
+        totalProviders: number;
+        blockedProviders: number;
+        newProviders: number;
+    }> {
+        const [
+            totalCustomers,
+            blockedCustomers,
+            newCustomers,
+            totalProviders,
+            blockedProviders,
+            newProviders,
+        ] = await Promise.all([
+            UserModel.countDocuments({ role: RoleEnum.Customer }),
+            UserModel.countDocuments({ role: RoleEnum.Customer, isBlocked: true }),
+            UserModel.countDocuments({
+                role: RoleEnum.Customer,
+                createdAt: { $gte: start, $lte: end },
+            }),
+            UserModel.countDocuments({ role: RoleEnum.Provider }),
+            UserModel.countDocuments({ role: RoleEnum.Provider, isBlocked: true }),
+            UserModel.countDocuments({
+                role: RoleEnum.Provider,
+                createdAt: { $gte: start, $lte: end }, // instead of this create a roleUpdated field with date value and filter on this 
+            }),
+        ]);
+
+        return {
+            totalCustomers,
+            blockedCustomers,
+            newCustomers,
+            totalProviders,
+            blockedProviders,
+            newProviders,
+        };
     }
 }
 

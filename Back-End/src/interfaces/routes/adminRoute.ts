@@ -7,6 +7,7 @@ import { kycStatus } from "../validations/kycSchema";
 import { RoleEnum } from "../../shared/enums/Roles";
 
 const router = express.Router();
+router.get("/dashboard", AuthMiddleware([RoleEnum.Admin]),adminController.dashBoardReport.bind(adminController));
 router.get("/customer-management", AuthMiddleware([RoleEnum.Admin]), adminController.getCustomers.bind(adminController));
 router.patch("/customer-management/:userId",AuthMiddleware([RoleEnum.Admin]),adminController.toggleUserStatus.bind(adminController));
 router.get("/provider-management", AuthMiddleware([RoleEnum.Admin]), adminController.getProviders.bind(adminController));

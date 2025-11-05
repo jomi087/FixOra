@@ -5,7 +5,7 @@ import { FilterQuery } from "mongoose";
 
 export class CategoryRepository implements ICategoryRepository {
 
-    async create(category: Category): Promise < Category > {
+    async create(category: Category): Promise<Category> {
         const newCategory = new CategoryModel(category);
         await newCategory.save();
         return newCategory.toObject() as Category;
@@ -17,35 +17,35 @@ export class CategoryRepository implements ICategoryRepository {
         }).lean<Category>();
     }
 
-    async findById(id: string): Promise<Category|null>{  
-        const category = await CategoryModel.findOne({ categoryId : id }).lean<Category>();
+    async findById(id: string): Promise<Category | null> {
+        const category = await CategoryModel.findOne({ categoryId: id }).lean<Category>();
         return category;
     }
 
     async save(category: Category): Promise<Category> {
-        const categoryDoc = await CategoryModel.findOne({ categoryId : category.categoryId });
+        const categoryDoc = await CategoryModel.findOne({ categoryId: category.categoryId });
         if (!categoryDoc) throw new Error("Category not found");
 
         categoryDoc.set(category); // overwrite fields
         const saved = await categoryDoc.save();
         return saved.toObject() as Category;
     }
-    
 
-    async findActiveCategories(omitFields: Array<keyof Category>=[]): Promise<Partial<Category>[]>{
+
+    async findActiveCategories(omitFields: Array<keyof Category> = []): Promise<Partial<Category>[]> {
         const omitSelect = omitFields?.map(field => `-${field}`).join(" ");
-        return await CategoryModel.find({ isActive : true }, { _id: 0, __v: 0 } ).select(omitSelect).lean<Partial<Category>[]>();
+        return await CategoryModel.find({ isActive: true }, { _id: 0, __v: 0 }).select(omitSelect).lean<Partial<Category>[]>();
     }
 
 
-    async findActiveCategoriesWithActiveSubcategories(): Promise<Category[]>{
+    async findActiveCategoriesWithActiveSubcategories(): Promise<Category[]> {
         const categories = await CategoryModel.aggregate([
             {
                 $match: { isActive: true }
             },
             {
                 $project: {
-                    _id : 0,
+                    _id: 0,
                     categoryId: 1, name: 1, description: 1, image: 1, isActive: 1, createdAt: 1, updatedAt: 1,
                     subcategories: {
                         $filter: {
@@ -61,9 +61,9 @@ export class CategoryRepository implements ICategoryRepository {
     }
 
 
-    async findServicesWithFilters (
+    async findServicesWithFilters(
         options: { searchQuery: string; filter: string },
-        currentPage: number,limit: number,
+        currentPage: number, limit: number,
         omitFields: Array<keyof Category> = []
     ): Promise<{ data: Partial<Category>[]; total: number }> {
         const { searchQuery, filter } = options;
@@ -73,7 +73,7 @@ export class CategoryRepository implements ICategoryRepository {
         if (searchQuery.trim()) {
             query.$or = [
                 { name: { $regex: searchQuery, $options: "i" } },
-                { "subcategories.name" : { $regex: searchQuery, $options: "i" } },
+                { "subcategories.name": { $regex: searchQuery, $options: "i" } },
             ];
         }
 
@@ -85,13 +85,30 @@ export class CategoryRepository implements ICategoryRepository {
         const omitSelect = omitFields.map(field => `-${field}`).join(" ");
 
         const total = await CategoryModel.countDocuments(query);
-        const cartegories = await CategoryModel.find(query,{ _id:0,__v:0 })
+        const cartegories = await CategoryModel.find(query, { _id: 0, __v: 0 })
             .select(omitSelect)
             .skip((currentPage - 1) * limit)
             .limit(limit)
             .lean<Partial<Category>[]>();
-    
-        return { data : cartegories, total };
+
+        return { data: cartegories, total };
     }
-    
+
+    async dashboardServiceStats(start: Date, end: Date): Promise<{
+        totalServices: number;
+        blockedServices: number;
+        newServices: number;
+    }> {
+        const [totalServices,blockedServices,newServices] = await Promise.all([
+            CategoryModel.countDocuments({}),
+            CategoryModel.countDocuments({ isActive : false }),
+            CategoryModel.countDocuments({ createdAt: { $gte: start, $lte: end } })
+        ]);
+
+        return {
+            totalServices,
+            blockedServices,
+            newServices,
+        };
+    }
 }

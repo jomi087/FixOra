@@ -12,7 +12,7 @@ export interface Booking {
         reason?: string;
     },
     scheduledAt: Date;
-    issueTypeId: string;
+    issueTypeId: string; //subcategoryId
     issue: string;
     status: BookingStatus;
     pricing: {

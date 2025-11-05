@@ -111,6 +111,11 @@ const BookingSchema = new Schema<IBookingModel>({
     }
 }, { timestamps: true });
 
+BookingSchema.index({
+    "provider.response": 1,
+    status: 1,
+});
+
 const BookingModel = model<IBookingModel>("Booking", BookingSchema);
 
 export default BookingModel;

@@ -1,5 +1,4 @@
 export type SalesPreset = "today" | "thisWeek" | "thisMonth"
-
 interface SummaryCount {
   total: number;
   completed: number;

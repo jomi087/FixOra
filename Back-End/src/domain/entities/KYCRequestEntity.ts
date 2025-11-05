@@ -6,7 +6,7 @@ export interface KYCRequest {
     dob: Date;
     gender: Gender;
     serviceId: string;
-    specializationIds: string[]; //subvategory id
+    specializationIds: string[]; //subcategory id
     profileImage: string;
     serviceCharge: number;
     kyc : {
@@ -21,54 +21,4 @@ export interface KYCRequest {
     submittedAt: Date;
     reviewedAt?: Date;
     reviewedBy?: string;
-
 }
-
-
-// export interface KYCRequestWithDetails {
-//     id: string;
-//     user: {
-//         userId: string,
-//         fname: string;
-//         lname: string;
-//         email: string;
-//         mobileNo: string;
-//         location: {
-//             houseinfo?: string;
-//             street?: string;
-//             district: string;
-//             city: string;
-//             locality: string;
-//             state: string;
-//             postalCode: string;
-//             coordinates: {
-//                 latitude: number;
-//                 longitude: number
-//             };
-//         };
-//     };
-//     dob: Date;
-//     gender: Gender;
-//     service: {
-//         categoryId: string
-//         name: string;
-//         subcategories: {
-//             subCategoryId: string;
-//             name: string
-//         }[];
-//     };
-//     profileImage: string;
-//     serviceCharge: number;
-//     kyc : {
-//         idCard: string;
-//         certificate: {
-//             education: string;
-//             experience?: string;
-//         };
-//     }
-//     status: KYCStatus;
-//     submittedAt: Date;
-//     reason?: string
-//     reviewedAt?: Date;
-//     reviewedBy?: string
-// }

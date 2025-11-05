@@ -14,12 +14,14 @@ import { IProviderApplicationUseCase } from "../../application/Interface/useCase
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Admin/IUpdateKYCStatusUseCase";
 import { ICommissionFeeUseCase } from "../../application/Interface/useCases/Admin/ICommissionFeeUseCase";
 import { IUpdateCommissionFeeUseCase } from "../../application/Interface/useCases/Admin/IUpdateCommissionFeeUseCase";
+import { IDashboardReportUseCase } from "../../application/Interface/useCases/Admin/IDashboardReportUseCase";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
 
 export class AdminController {
     constructor(
+        private _dashboardReportUseCase: IDashboardReportUseCase,
         private _getCustomersUseCase: IGetCustomersUseCase,
         private _toggleUserStatusUseCase: IToggleUserStatusUseCase,
         private _getProvidersUseCase: IGetProvidersUseCase,
@@ -33,6 +35,26 @@ export class AdminController {
         private _updateCommissionFeeUseCase: IUpdateCommissionFeeUseCase,
     ) { }
 
+    async dashBoardReport(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            const range = req.query.range as "yearly" | "monthly" | "weekly" | "daily";
+            const { overview, growth, bookingsOverTime, bookingsByService, topProviders } = await this._dashboardReportUseCase.execute(range);
+
+            res.status(OK).json({
+                success: true,
+                overview,
+                growth,
+                bookingsOverTime,
+                bookingsByService,
+                topProviders
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
     async getCustomers(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 
@@ -42,13 +64,11 @@ export class AdminController {
             const limit = parseInt(req.query.itemsPerPage as string) || 8;
 
             const result = await this._getCustomersUseCase.execute({ searchQuery, filter, currentPage, limit });
-
             res.status(OK).json({
                 success: true,
                 customersData: result.data,
                 total: result.total
             });
-
         } catch (error) {
             next(error);
         }

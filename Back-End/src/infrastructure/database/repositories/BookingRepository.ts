@@ -545,6 +545,7 @@ export class BookingRepository implements IBookingRepository {
         });
     }
 
+
     async findProviderSalesByDateRange(providerUserId: string, start: Date, end: Date): Promise<{
         total: number;
         completed: number;
@@ -557,10 +558,10 @@ export class BookingRepository implements IBookingRepository {
         const result = await BookingModel.aggregate([
             {
                 $match: {
-                    providerUserId: providerUserId,
-                    "paymentInfo.paidAt": { $gte: start, $lte: end },
                     "provider.response": ProviderResponseStatus.ACCEPTED,
                     status: { $nin: [BookingStatus.PENDING] },
+                    providerUserId: providerUserId,
+                    "paymentInfo.paidAt": { $gte: start, $lte: end },
                 },
             },
             {
@@ -650,7 +651,7 @@ export class BookingRepository implements IBookingRepository {
             },
         ]);
         const { summary, history } = result[0] || {};
-        
+
         return {
             total: summary?.total || 0,
             completed: summary?.completed || 0,
@@ -661,11 +662,218 @@ export class BookingRepository implements IBookingRepository {
             history: history || [],
         };
     }
+
+    async dashboardBookingStats(start: Date, end: Date): Promise<{
+        totalRevenue: number;
+        penalityRevenue: number;
+        bookingStatsByDate: { date: string; totalBookings: number; totalRevenue: number }[];
+        bookingCountByService: { serviceName: string; count: number }[];
+        topProviders: { providerUserId: string; providerName: string; jobCount: number }[];
+    }> {
+        const result = await BookingModel.aggregate([
+            {
+                $match: {
+                    "provider.response": ProviderResponseStatus.ACCEPTED,
+                    status: { $nin: [BookingStatus.PENDING] },
+                    // "paymentInfo.paidAt": { $exists: true, $gte: start, $lte: end },
+                },
+            },
+            {
+                $facet: {
+                    totalRevenue: [
+                        {
+                            $group: {
+                                _id: null,
+                                total: {
+                                    $sum: {
+                                        $cond: [{ $eq: ["$status", BookingStatus.COMPLETED] }, "$commission", 0],
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                    penalityRevenue: [
+                        {
+                            $group: {
+                                _id: null,
+                                total: {
+                                    $sum: {
+                                        $cond: [
+                                            {
+                                                $and: [
+                                                    { $eq: ["$status", BookingStatus.CANCELLED] },
+                                                    { $eq: ["$paymentInfo.status", PaymentStatus.PARTIAL_REFUNDED] },
+                                                ],
+                                            },
+                                            "$commission",0
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                    bookingStats: [
+                        {
+                            $match: {
+                                "paymentInfo.paidAt": { $gte: start, $lte: end },
+                            },
+                        },
+                        {
+                            $group: {
+                                _id: {
+                                    $dateToString: {
+                                        format: "%Y-%m-%d",
+                                        date: "$paymentInfo.paidAt",
+                                    },
+                                },
+                                bookingCount: {
+                                    $sum: {
+                                        $cond: [
+                                            { $eq: ["$status", BookingStatus.COMPLETED] },
+                                            1,
+                                            0
+                                        ]
+                                    }
+                                },
+                                revenue: {
+                                    $sum: {
+                                        $cond: [
+                                            { $eq: ["$status", BookingStatus.COMPLETED] },
+                                            "$commission",
+                                            0,
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                        { $sort: { _id: 1 } },
+                        {
+                            $project: {
+                                _id: 0,
+                                date: "$_id",
+                                totalBookings: "$bookingCount",
+                                totalRevenue: "$revenue",
+                            },
+                        },
+                    ],
+                    bookingCountByService: [
+                        {
+                            $match: {
+                                "paymentInfo.paidAt": { $gte: start, $lte: end },
+                                status: BookingStatus.COMPLETED
+                            }
+                        },
+
+                        //  count bookings per subcategory (issueTypeId)
+                        { $group: { _id: "$issueTypeId", count: { $sum: 1 } } },
+
+                        // lookup main category that contains this subcategory
+                        {
+                            $lookup: {
+                                from: "categories",
+                                let: { issueTypeId: "$_id" },
+                                pipeline: [
+                                    { $unwind: "$subcategories" },
+                                    { $match: { $expr: { $eq: ["$subcategories.subCategoryId", "$$issueTypeId"] } } },
+                                    { $project: { _id: 0, mainCategoryName: "$name" } } // only take main category name
+                                ],
+                                as: "serviceDetails"
+                            }
+                        },
+
+                        // unwind the lookup result to get object (if no match, preserveNull... depends on your preference)
+                        { $unwind: { path: "$serviceDetails", preserveNullAndEmptyArrays: true } },
+
+                        // now group by the main category name to accumulate counts across subcategories
+                        {
+                            $group: {
+                                _id: "$serviceDetails.mainCategoryName", // this becomes the main category key
+                                totalCount: { $sum: "$count" }
+                            }
+                        },
+
+                        // project to friendly shape and sort
+                        {
+                            $project: {
+                                _id: 0,
+                                serviceName: { $ifNull: ["$_id", "Unknown"] }, // handle missing category
+                                count: "$totalCount"
+                            }
+                        },
+                        { $sort: { count: -1 } }
+                    ],
+                    topProviders: [
+                        {
+                            $match: {
+                                status: BookingStatus.COMPLETED,
+                                "paymentInfo.paidAt": { $gte: start, $lte: end },
+                            },
+                        },
+                        { $group: { _id: "$providerUserId", jobCount: { $sum: 1 } } },
+                        { $sort: { jobCount: -1 } },
+                        { $limit: 3 },
+                        {
+                            $lookup: {
+                                from: "users",
+                                localField: "_id",  //_id = providerUserId after grouping
+                                foreignField: "userId",
+                                as: "providerDetails",
+                            },
+                        },
+                        {
+                            $project: {
+                                providerUserId: "$_id",
+                                providerName: {
+                                    $concat: [
+                                        { $arrayElemAt: ["$providerDetails.fname", 0] },
+                                        " ",
+                                        { $arrayElemAt: ["$providerDetails.lname", 0] },
+                                    ],
+                                },
+                                jobCount: 1,
+                            },
+                        },
+                    ],
+                },
+            },
+        ]);
+
+        const data = {
+            totalRevenue: result[0]?.totalRevenue?.[0]?.total || 0,
+            penalityRevenue: result[0]?.penalityRevenue?.[0]?.total || 0,
+            bookingStatsByDate: result[0]?.bookingStats || [],
+            bookingCountByService: result[0]?.bookingCountByService || [],
+            topProviders: result[0]?.topProviders || [],
+        };
+
+        return data;
+    }
+
 }
 
 
-// return BookingModel.find({
-//     providerUserId: providerUserId,
-//     "paymentInfo.paidAt": { $gte: start, $lte: end },
-//     status: { $nin: [BookingStatus.PENDING] },
-// });
+/*
+{
+            totalRevenue: number;
+        bookingStatsByDate: { date: Date; totalBookings: number; totalRevenue:number }[];
+        bookingCountByService: { serviceName: string; count: number }[];
+        topProviders: { providerName: string; jobCount: number }[];
+}
+
+penalityRevenue: {
+    $sum: {
+        $cond: [
+            {
+                $and: [
+                    { $eq: ["$status", BookingStatus.CANCELLED] },
+                    { $eq: ["$paymentInfo.status", PaymentStatus.PARTIAL_REFUNDED] },
+                ],
+            },
+            { $ifNull: ["$commission", 0] },
+            0,
+        ],
+    },
+},
+*/
+
+

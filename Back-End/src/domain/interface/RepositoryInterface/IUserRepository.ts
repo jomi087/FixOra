@@ -29,7 +29,7 @@ export interface IUserRepository {
     resetRefreshTokenById(userId: string, refreshToken?: string): Promise<boolean>;
 
     clearTokensById(userId: string, fcmToken: string): Promise<boolean>;
-    
+
     resetPasswordByEmail(email: string, password: string): Promise<boolean>;
 
     findUsersWithFilters(
@@ -69,15 +69,23 @@ export interface IUserRepository {
         provider: Pick<Provider, "providerId" | "gender" | "profileImage" | "isOnline" | "serviceCharge">,
         category: Pick<Category, "categoryId" | "name" | "subcategories">
         booking: Pick<Booking, "bookingId" | "scheduledAt" | "status">[]
-        availability : Pick<Availability, "workTime">
+        availability: Pick<Availability, "workTime">
         distanceFee: number
     }>
 
     getServiceChargeWithDistanceFee(providerId: string, coordinates: { latitude: number; longitude: number }): Promise<{ serviceCharge: number, distanceFee: number } | null>
 
     findByRole(Role: RoleEnum): Promise<User[]>
-    
+
     //removeFcmToken
     addFcmToken(userId: string, FcmToken: string, platform?: string): Promise<any>
 
+    dashboardUserStats(start: Date, end: Date): Promise<{
+        totalCustomers: number;
+        blockedCustomers: number;
+        newCustomers: number;
+        totalProviders: number;
+        blockedProviders: number;
+        newProviders: number;
+    }>
 }

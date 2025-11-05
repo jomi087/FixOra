@@ -1,3 +1,4 @@
+import type { TimeRange } from "@/shared/types/dashboard";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
@@ -269,6 +270,7 @@ export const API_ROUTES = {
     CATEGORY_MANAGEMENT: "/api/admin/service-management",
     TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/service-management/${id}`,
     COMMISSION_FEE: "/api/admin/commission-fee",
+    DASHBOARD: (timeRange: TimeRange) => `/api/admin/dashboard?range=${timeRange}`
   },
 
   LANDING: {
@@ -276,6 +278,29 @@ export const API_ROUTES = {
   },
 };
 
+//Pie Chart Colour
+const baseColors = [
+  "#3b82f6", //  (Blue)
+  "#10b981", //  (Green)
+  "#f59e0b", //  (Amber)
+  "#ef4444", //  (Red)
+  "#8b5cf6", //  (Violet)
+  "#14b8a6", //  (Teal)
+  "#e11d48", //  (Rose)
+
+  "#6366f1", // Future Service (Indigo)
+  "#22c55e", // Future Service (Emerald)
+  "#ec4899", // Future Service (Pink)
+  "#f97316", // Future Service (Orange)
+  "#0ea5e9", // Future Service (Sky Blue)
+  "#84cc16", // Future Service (Lime)
+  "#a855f7", // Future Service (Purple)
+  "#f43f5e", // Future Service (Crimson)
+  "#06b6d4", // Future Service (Cyan)
+  "#d946ef", // Future Service (Fuchsia)
+  "#eab308", // Future Service (Yellow)
+];
+export const getServiceColor = (index: number) => baseColors[index % baseColors.length];
 /********************************************************************************************************************************************************** */
 
 export const blogPosts: Array<BlogPost> = [

@@ -84,6 +84,15 @@ export interface IBookingRepository {
     refundAmount: number;
     history: Booking[];
   }>;
+
+  dashboardBookingStats(start: Date, end: Date): Promise<{
+    totalRevenue: number;
+    penalityRevenue: number;
+    bookingStatsByDate: { date: string; totalBookings: number; totalRevenue: number }[];
+    bookingCountByService: { serviceName: string; count: number }[];
+    topProviders: { providerUserId: string; providerName: string; jobCount: number }[];
+  }>;
+
 }
 
 
