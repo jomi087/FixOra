@@ -34,6 +34,7 @@ export class AddFeedbackUseCase implements IAddFeedbackUseCase {
                 userId : bookingData.userId,
                 rating,
                 feedback,
+                active: true,
                 createdAt: new Date()
             });
 

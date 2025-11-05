@@ -4,7 +4,8 @@ export interface Rating {
     providerId: string;    
     userId: string;      
     rating: number;      
-    feedback: string;       
+    feedback: string;
+    active: boolean;
     createdAt: Date;
     updatedAt?: Date;
 }

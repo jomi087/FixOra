@@ -17,7 +17,7 @@ export class GetProviderReviewsUseCase implements IGetProviderReviewsUseCase {
 
             const { providerId, currentPage, limit } = input;
 
-            const reviewData = await this._ratingRepository.findProviderReviews(
+            const reviewData = await this._ratingRepository.findActiveProviderReviews(
                 providerId,
                 currentPage,
                 limit

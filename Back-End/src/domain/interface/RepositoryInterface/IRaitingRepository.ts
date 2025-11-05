@@ -5,7 +5,7 @@ export interface IRatingRepository {
     findByBookingID(bookingId: string): Promise<Rating | null>;
     create(rating: Rating): Promise<void>
 
-    findProviderReviews(providerId: string, currentPage: number, limit: number): Promise<{
+    findActiveProviderReviews(providerId: string, currentPage: number, limit: number): Promise<{
         data: {
             rating: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
             user: Pick<User, "userId" | "fname" | "lname">;

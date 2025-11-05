@@ -13,7 +13,7 @@ export class RatingRepository implements IRatingRepository {
         await new RatingModel(rating).save();
     }
 
-    async findProviderReviews(providerId: string, currentPage: number, limit: number): Promise<{
+    async findActiveProviderReviews(providerId: string, currentPage: number, limit: number): Promise<{
         data: {
             rating: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
             user: Pick<User, "userId" | "fname" | "lname">;
@@ -24,7 +24,8 @@ export class RatingRepository implements IRatingRepository {
         const pipeline: PipelineStage[] = [
             {
                 $match: {
-                    providerId: providerId
+                    providerId: providerId,
+                    active:true
                 }
             },
             {

@@ -11,6 +11,7 @@ const RatingSchema = new Schema<IRatingModel>(
         userId: { type: String, required: true },
         rating: { type: Number, required: true, min: 1, max: 5 },
         feedback: { type: String, required: true },
+        active: { type: Boolean, default: true },
     },
     { timestamps: { createdAt: true, updatedAt: false } }
 );
