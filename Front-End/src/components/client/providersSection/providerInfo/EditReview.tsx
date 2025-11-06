@@ -42,7 +42,7 @@ const EditReview: React.FC<EditReviewProps> = ({ ratingData }) => {
   return (
     <div>
       <div
-        className="flex gap-2 justify-start items-center border p-1 cursor-pointer"
+        className="flex gap-2 justify-start items-center border p-1 cursor-pointer hover:shadow-md"
         onClick={() => setOpenFeedback(true)}
       >
         <SquarePen
