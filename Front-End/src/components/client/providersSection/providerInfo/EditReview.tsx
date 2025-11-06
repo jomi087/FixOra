@@ -3,33 +3,31 @@ import AuthService from "@/services/AuthService";
 import { useAppDispatch } from "@/store/hooks";
 import { updateReview } from "@/store/user/providerInfoSlice";
 import type { AxiosError } from "axios";
+import { SquarePen } from "lucide-react";
 import { useState } from "react";
-import { CiEdit } from "react-icons/ci";
 import { toast } from "react-toastify";
 
 interface EditReviewProps {
-  rating: {
+  ratingData: {
     ratingId: string;
     rating: number;
     feedback: string;
     createdAt: string;
   };
 }
-const EditReview: React.FC<EditReviewProps> = ({ rating }) => {
+const EditReview: React.FC<EditReviewProps> = ({ ratingData }) => {
   const [openFeedback, setOpenFeedback] = useState(false);
-  const [ratingStart, setRatingStar] = useState(rating.rating);
-  const [feedback, setFeedback] = useState(rating.feedback);
-
+  const [ratingStart, setRatingStar] = useState(ratingData.rating);
+  const [feedback, setFeedback] = useState(ratingData.feedback);
   const dispatch = useAppDispatch();
-
   const handleFeedBack = async () => {
     try {
-      const previousFeedback = rating.feedback;
-      if (previousFeedback === feedback && rating.rating === ratingStart) {
+      const previousFeedback = ratingData.feedback;
+      if (previousFeedback === feedback && ratingData.rating === ratingStart) {
         toast.info("No change Made");
         return;
       }
-      const res = await AuthService.updateFeedbackApi({ ratingId: rating.ratingId, rating: ratingStart, feedback: feedback });
+      const res = await AuthService.updateFeedbackApi({ ratingId: ratingData.ratingId, rating: ratingStart, feedback: feedback });
       console.log(res.data.updatedFeedbackData); //{ratingId: 'd677b00c-b78c-447f-b840-1b940e4020f7', rating: 2, feedback: 'proffesional doggggg'}
       dispatch(updateReview(res.data.updatedFeedbackData));
       setOpenFeedback(false);
@@ -43,13 +41,16 @@ const EditReview: React.FC<EditReviewProps> = ({ rating }) => {
 
   return (
     <div>
-      <CiEdit
-        size={20}
-        className="cursor-pointer text-gray-500 hover:text-primary transition-colors"
-        onClick={() => {
-          setOpenFeedback(true);
-        }}
-      />
+      <div
+        className="flex gap-2 justify-start items-center border p-1 cursor-pointer"
+        onClick={() => setOpenFeedback(true)}
+      >
+        <SquarePen
+          size={16}
+          className="cursor-pointer text-gray-500 hover:text-primary transition-colors"
+        />
+        <p className="font-sans text-sm">Edit</p>
+      </div>
       <FeedbackDialog
         openFeedback={openFeedback}
         setOpenFeedback={setOpenFeedback}

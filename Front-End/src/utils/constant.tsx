@@ -30,7 +30,7 @@ export const CancelSeal: string = "/images/cancelledSeal.png";
 
 export const searchInputLength: number = 30; //50
 export const shortInputLength: number = 50; //50
-export const longInputLength: number = 100;  //200
+export const longInputLength: number = 200;  //200
 
 export const categoryImageSize: number = 1;                                 //default set  to 2 mb
 export const providerImageSize: number = 1;                                 //default set  to 2 mb
@@ -228,6 +228,7 @@ export const API_ROUTES = {
     REVIEW_STATUS: (id: string) =>
       `/api/customer/booking/review-status/${id}`,
     FEEDBACK: "/api/customer/booking/feedback",
+    REPORT_FEEDBACK: "/api/customer/booking/report-feedback",
     WALLET_INFO: (page: number, limit: number) =>
       `/api/customer/wallet?page=${page}&limit=${limit}`,
     ADD_FUND: "/api/customer/wallet/add-fund",

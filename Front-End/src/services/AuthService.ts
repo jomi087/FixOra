@@ -116,6 +116,10 @@ class AuthService {
     return axiosInstance.patch(API_ROUTES.CUSTOMER.FEEDBACK, payload, this.getJsonConfig());
   }
 
+  reportReview(payload: { ratingId: string, reason: string }) {
+    return axiosInstance.post(API_ROUTES.CUSTOMER.REPORT_FEEDBACK, payload, this.getJsonConfig());
+  }
+
   bookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
     return axiosInstance.post(API_ROUTES.CUSTOMER.BOOKING_APPLICATION, payload, this.getJsonConfig());
   }
@@ -177,6 +181,8 @@ class AuthService {
   addFundApi(amount: number) {
     return axiosInstance.post(API_ROUTES.CUSTOMER.ADD_FUND, { amount }, this.getJsonConfig());
   }
+
+
 
   /*********************************************************************************************************************** */
   //Provider
@@ -249,16 +255,16 @@ class AuthService {
     return axiosInstance.patch(API_ROUTES.PROVIDER.TOGGLE_AVAILABILITY, { day, leaveOption });
   }
 
-  salesReport(filter: SalesPreset | null , startDate: string | null , endDate: string | null ) {
-    return axiosInstance.get(API_ROUTES.PROVIDER.SALES_REPORT(filter,startDate,endDate));
+  salesReport(filter: SalesPreset | null, startDate: string | null, endDate: string | null) {
+    return axiosInstance.get(API_ROUTES.PROVIDER.SALES_REPORT(filter, startDate, endDate));
   }
 
   /*********************************************************************************************************************** */
   //Admin
-  DashboardData(timeRange:TimeRange) {
+  DashboardData(timeRange: TimeRange) {
     return axiosInstance.get(API_ROUTES.ADMIN.DASHBOARD(timeRange));
   }
-  
+
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
     return axiosInstance.get(API_ROUTES.ADMIN.CUSTOMER_MANAGEMENT, {
       params: { searchQuery, filter, currentPage, itemsPerPage }
