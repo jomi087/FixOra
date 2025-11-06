@@ -1,46 +1,39 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog,DialogClose, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
 import { longInputLength } from "@/utils/constant";
 
 interface ReasonDialogProps {
-  handleRejectOnConfirm: (reason: string) => void;
+  onConfirm: (reason: string) => void;
   loading: boolean
-  open : boolean
-  setOpen: (open:boolean)=>void
-  triggerLabel?: string;             
-  variantStyle?:  "default" | "link" | "destructive" | "outline" | "secondary" | "ghost" | "success" | null | undefined
-  triggerStyle?: string;    
+  open: boolean
+  setOpen: (open: boolean) => void
+  tittle?: string;
+  discription?: string
+  placeholder?: string
 }
 
-const ReasonDialog: React.FC<ReasonDialogProps> = ({ handleRejectOnConfirm, loading, open, setOpen, triggerLabel = "Reject",variantStyle = "destructive",triggerStyle }) => {
-  const [reason, setReason] = useState("");
-
-
+const ReasonDialog: React.FC<ReasonDialogProps> = ({ onConfirm, loading, open, setOpen, tittle = "Reason", discription = "", placeholder = "" }) => {
+  const [reason, setReason] = useState(""); // suggestion move the state to parent cz i am not able to control setReason from partent
+  const [error, setError] = useState("");
   const handleConfirm = () => {
-    if (reason.trim().length === 0) return;
-    handleRejectOnConfirm(reason);
-    setReason(""); 
+    if (reason.trim().length <= 3) {
+      setError("Please add few more words for better understanding");
+      return;
+    }
+    onConfirm(reason);
+    setTimeout(() => setReason(""), 500);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          className={triggerStyle}
-          variant={variantStyle}
-          disabled = {loading} 
-        >
-          {triggerLabel}
-        </Button>
-      </DialogTrigger>
 
       {/* Reason Dialog */}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="">Reason</DialogTitle>
-          <DialogDescription className="">Please provide good and understandable reason.</DialogDescription>
+          <DialogTitle className="">{tittle}</DialogTitle>
+          <DialogDescription className="text-xs mt-2">{discription}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-2">
           <div className="grid flex-1 gap-2">
@@ -48,27 +41,39 @@ const ReasonDialog: React.FC<ReasonDialogProps> = ({ handleRejectOnConfirm, load
             <textarea
               autoFocus
               value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="Enter reason..."
+              onChange={(e) => {
+                let value = e.target.value;
+                setReason(value);
+                if (error && value.trim().length > 3) {
+                  setError("");
+                }
+              }}
+              placeholder={placeholder}
               className="p-2 border rounded-md text-sm"
               rows={2}
               maxLength={longInputLength}
             />
+            <p className="text-red-400 text-xs px-1">{error}</p>
           </div>
         </div>
 
-        <DialogFooter className="mt-4 flex justify-end gap-2">
+        <DialogFooter className="mt-0 flex justify-end gap-2">
           <DialogClose asChild>
-            <Button type="button" variant="secondary" disabled={loading}>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={loading}
+              onClick={()=>setError("")}
+            >
               Close
             </Button>
           </DialogClose>
           <Button
             variant='destructive'
-            disabled={!reason.trim() || loading}  
+            disabled={!reason.trim() || loading}
             onClick={handleConfirm}
           >
-            { loading ? "Processing" : "Confirm" } 
+            {loading ? "Processing" : "Confirm"}
           </Button>
         </DialogFooter>
       </DialogContent>

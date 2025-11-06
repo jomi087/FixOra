@@ -235,11 +235,28 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
                   onClick={handleApprove}
                   variant="success"
                   disabled={loading}
+                  className="w-28"
                 >
                   Approve
                 </Button>
                 {/*Reject with reason diolouge*/}
-                <ReasonDialog handleRejectOnConfirm={handleReject} loading={loading} open={rejectDialogOpen} setOpen={setRejectDialogOpen} />
+                <Button
+                  variant={"destructive"}
+                  disabled={loading}
+                  onClick={() => setRejectDialogOpen(true)}
+                  className="w-28"
+                >
+                  Reject
+                </Button>
+                <ReasonDialog
+                  onConfirm={handleReject}
+                  loading={loading}
+                  open={rejectDialogOpen}
+                  setOpen={setRejectDialogOpen}
+                  tittle="Reason"
+                  discription="Please provide good and understandable reason"
+                  placeholder="Enter reason..."
+                />
               </div>
             }
           </div>
