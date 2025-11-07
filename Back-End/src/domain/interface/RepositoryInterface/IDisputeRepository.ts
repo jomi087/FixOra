@@ -1,4 +1,4 @@
-import { Dispute } from "../../entities/DIsputeEntity";
+import { Dispute } from "../../entities/DisputeEntity";
 
 export interface IDisputeRepository {
     /**

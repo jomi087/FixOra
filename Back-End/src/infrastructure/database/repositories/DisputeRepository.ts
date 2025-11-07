@@ -1,4 +1,4 @@
-import { Dispute } from "../../../domain/entities/DIsputeEntity";
+import { Dispute } from "../../../domain/entities/DisputeEntity";
 import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
 import { DisputeModel } from "../models/DisputeModel";
 
