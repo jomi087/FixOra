@@ -37,6 +37,7 @@ export class AuthMiddleware {  //verify Jwt
 
                 const decode = this._tokenService.verifyAccessToken(token) as { id: string, email: string, role: RoleEnum };
             
+                //my understanding no need to pass whole data userId is enouf (if still required the role and id) 
                 const user = await this._userRepository.findByUserId(decode.id, ["password", "refreshToken"]);
                 
                 if (!user || !user.userId) {

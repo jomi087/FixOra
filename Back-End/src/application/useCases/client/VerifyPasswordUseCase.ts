@@ -7,42 +7,36 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase";
+import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
+import { BRAND } from "../../../shared/const/constants";
 
-const { FORBIDDEN,INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { FORBIDDEN, INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages;
 
 export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
     constructor(
-        private readonly _userRepository : IUserRepository,
-        private readonly _hashService : IHashService,
+        private readonly _userRepository: IUserRepository,
+        private readonly _hashService: IHashService,
         private readonly _emailService: IEmailService
     ) { }
-    
-    async execute(password: string, userId : string): Promise<void> {
+
+    async execute(password: string, userId: string): Promise<void> {
         try {
-            const user = await this._userRepository.findByUserId(userId,["refreshToken"]) as User; 
+            const user = await this._userRepository.findByUserId(userId, ["refreshToken"]) as User;
             const isMatch = await this._hashService.compare(password, user.password as string);
             if (!isMatch) throw { status: FORBIDDEN, message: INVALID_PASSWORD };
-            
-            const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
+
+            const expiryTime = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
             const resetToken = jwt.sign({ email: user.email }, process.env.JWT_RESET_PASSWORD_SECRET as string, { expiresIn: expiryTime });
 
-            const url = process.env.FRONTEND_URL || "http://localhost:5001";
-            
+            const url = BRAND.FRONTEND_URL;
+
             const resetUrl = `${url}/${user.role}/change-password?token=${resetToken}`;
             // const resetUrl = `${url}/customer/account/profile/change-password?token=${resetToken}`;
 
-            const html = `
-                <h1>FixOra Password Reset Request</h1>
-                <p>You have requested to reset your password. If you did not make this._request, please ignore this._email — no action will be taken.</p>
-                <br />
-                <p>To reset your password, please click the link below:</p>
-                <p>${resetUrl}</p>
-                <br />
-                <p><strong>Note:</strong> This link is valid for a limited time. Please complete the reset process before it expires.</p>
-            `;
-            
-            await this._emailService.sendEmail(user.email, "FixOra Reset Password", html); 
+            const html = buildResetPasswordEmail({ resetUrl });
+
+            await this._emailService.sendEmail(user.email, "FixOra Reset Password", html);
 
         } catch (error) {
             if (error.status && error.message) {

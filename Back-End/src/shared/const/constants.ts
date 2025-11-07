@@ -1,4 +1,9 @@
-//export const APP_NAME = 'FixOra';
+export const BRAND = {
+    NAME: "FixOra",
+    FRONTEND_URL: process.env.FRONTEND_URL || "http://localhost:5001",
+    LOGO_URL: `${process.env.FRONTEND_URL?.replace(/\/$/, "")}/images/fixoraLogo.png`,
+};
+
 export const BodyParserLimits = {
     JSON_LIMIT: "1mb",
     URLENCODED_LIMIT: "1mb",
@@ -22,6 +27,6 @@ export const COMMISSION_FEE = 30;
 
 export const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] as const;
 export const LEAVE_OPTIONS = ["this_week", "every_week"];
-export const PLATFORMS  = ["web", "app"] as const;
+export const PLATFORMS = ["web", "app"] as const;
 
 

@@ -7,6 +7,7 @@ import { ITokenService } from "../../../domain/interface/ServiceInterface/IToken
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyArrivalUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalUseCase";
+import { buildArrivalOtpEmail } from "../../services/emailTemplates/arrivalOtpTemplate";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { BOOKING_ID_NOT_FOUND, USER_NOT_FOUND, INTERNAL_ERROR } = Messages;
@@ -47,20 +48,12 @@ export class VerifyArrivalUseCase implements IVerifyArrivalUseCase {
                 createdAt: new Date()
             });
 
-            const html =
-                `<h1>FixOra Arrival OTP</h1>
-                <p>
-                    Your service provider has indicated that they are at your location. 
-                    Please provide the OTP below to the provider <strong>only after they have actually arrived</strong>. 
-                    This OTP confirms their arrival and allows them to start the work.
-                </p>
-                <p><strong>Your OTP code is: ${otp}</strong></p>
-                <p>For security, do not share this OTP with anyone else or before the provider reaches your home.</p>`;
+            const html = buildArrivalOtpEmail({ otp });
 
             await this._emailService.sendEmail(userData.email, "FixOra OTP", html);
 
             return token;
-            
+
         } catch (error) {
             if (error.status && error.message) {
                 throw error;

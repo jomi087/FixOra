@@ -8,39 +8,33 @@ import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmail
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase";
+import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
+import { BRAND } from "../../../shared/const/constants";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, EMAIL_NOT_FOUND  } = Messages;
+const { INTERNAL_ERROR, EMAIL_NOT_FOUND } = Messages;
 
-export class ForgotPasswordUseCase implements IForgotPasswordUseCase{
+export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
     constructor(
         private readonly _userRepository: IUserRepository,
         private readonly _emailService: IEmailService
     ) { }
-    
-    async execute(email: string): Promise<void>{
+
+    async execute(email: string): Promise<void> {
         try {
             if (!(await this._userRepository.findByEmail(email, ["password", "refreshToken",]))) {
-                throw { status : NOT_FOUND , message : EMAIL_NOT_FOUND };
+                throw { status: NOT_FOUND, message: EMAIL_NOT_FOUND };
             }
 
-            const expiryTime  = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
-            const resetToken = jwt.sign({ email : email }, process.env.JWT_RESET_PASSWORD_SECRET  as string, { expiresIn: expiryTime });
+            const expiryTime = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
+            const resetToken = jwt.sign({ email: email }, process.env.JWT_RESET_PASSWORD_SECRET as string, { expiresIn: expiryTime });
 
-            const url = process.env.FRONTEND_URL || "http://localhost:5001";
-            
+            const url = BRAND.FRONTEND_URL;
+
             const resetUrl = `${url}/reset-password?token=${resetToken}`;
 
-            const html = `
-                <h1>FixOra Password Reset Request</h1>
-                <p>You have requested to reset your password. If you did not make this request, please ignore this email — no action will be taken.</p>
-                <br />
-                <p>To reset your password, please click the link below:</p>
-                <p>${resetUrl}</p>
-                <br />
-                <p><strong>Note:</strong> This link is valid for a limited time. Please complete the reset process before it expires.</p>
-            `;
-            
+            const html = buildResetPasswordEmail({ resetUrl });
+
             await this._emailService.sendEmail(email, "FixOra Reset Password", html);
 
         } catch (error) {
