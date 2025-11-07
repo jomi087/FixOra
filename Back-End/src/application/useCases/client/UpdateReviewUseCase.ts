@@ -1,19 +1,19 @@
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { updateFeedbackInputDTO, updateFeedbackOutputDTO } from "../../DTOs/ReviewDTO";
-import { IUpdateFeedbackUseCase } from "../../Interface/useCases/Client/IUpdateFeedbackUseCase";
+import { UpdateReviewInputDTO, UpdateReviewOutputDTO } from "../../DTOs/ReviewDTO";
+import { IUpdateReviewUseCase } from "../../Interface/useCases/Client/IUpdateReviewUseCase";
 
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
 const { INTERNAL_ERROR } = Messages;
 
-export class UpdateFeedbackUseCase implements IUpdateFeedbackUseCase {
+export class UpdateReviewUseCase implements IUpdateReviewUseCase {
     constructor(
         private readonly _ratingRepository: IRatingRepository,
     ) { }
 
-    async execute(input: updateFeedbackInputDTO): Promise<updateFeedbackOutputDTO> {
+    async execute(input: UpdateReviewInputDTO): Promise<UpdateReviewOutputDTO> {
 
         try {
             const { feedback, rating, ratingId } = input;

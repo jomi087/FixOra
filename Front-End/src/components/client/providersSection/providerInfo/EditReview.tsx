@@ -28,8 +28,8 @@ const EditReview: React.FC<EditReviewProps> = ({ ratingData }) => {
         return;
       }
       const res = await AuthService.updateFeedbackApi({ ratingId: ratingData.ratingId, rating: ratingStart, feedback: feedback });
-      console.log(res.data.updatedFeedbackData); //{ratingId: 'd677b00c-b78c-447f-b840-1b940e4020f7', rating: 2, feedback: 'proffesional doggggg'}
-      dispatch(updateReview(res.data.updatedFeedbackData));
+      //console.log(res.data.updatedReviewData); //{ratingId: 'd677b00c-b78c-447f-b840-1b940e4020f7', rating: 2, feedback: 'proffesional doggggg'}
+      dispatch(updateReview(res.data.updatedReviewData));
       setOpenFeedback(false);
 
     } catch (err) {

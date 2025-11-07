@@ -11,19 +11,19 @@ export interface ReviewOutputDTO extends PaginationOutputDTO<{
     userData: Pick<User, "userId" | "fname" | "lname">;
 }> { }
 
-export interface AddFeedbackInputDTO {
+export interface AddReviewInputDTO {
     bookingId: string;
     rating: number;
     feedback: string;
 }
 
-export interface updateFeedbackInputDTO {
+export interface UpdateReviewInputDTO {
     ratingId: string;
     rating?: number;
     feedback?: string;
 }
 
-export interface updateFeedbackOutputDTO {
+export interface UpdateReviewOutputDTO {
     ratingId: string;
     rating: number;
     feedback: string;

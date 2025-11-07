@@ -7,9 +7,6 @@ import {
   MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined
 } from "lucide-react";
 
-
-
-
 /******************************************************************************************************* */
 export const App_Name: string = "FixOra";
 export const Support_Mail: string = `support@${App_Name.toLocaleLowerCase()}.com`;
@@ -208,27 +205,29 @@ export const API_ROUTES = {
 
   CUSTOMER: {
     SERVICES: "/api/customer/services",
+
     PROVIDERS: "/api/customer/providers",
     PROVIDER_KYC: "/api/customer/provider-kyc",
+
     PROVIDER_BOOKINGS: (id: string) => `/api/customer/provider/bookings/${id}`,
+
     PROVIDER_REVIEWS: (id: string) => `/api/customer/provider/${id}/reviews`,
+    FEEDBACK: "/api/customer/booking/review",
+    REPORT_FEEDBACK: "/api/customer/review/dispute",
+    REVIEW_STATUS: (id: string) => `/api/customer/booking/review-status/${id}`,
+    
     BOOKING_APPLICATION: "/api/customer/provider/booking",
     ONLINE_PAYMENT: "/api/customer/create-checkout-session",
     WALLET_PAYMENT: "/api/customer/wallet-payment",
-    PAYMENT_STATUS: (bookingId: string) =>
-      `/api/customer/booking/notify-paymentStatus/${bookingId}`,
+    PAYMENT_STATUS: (bookingId: string) => `/api/customer/booking/notify-paymentStatus/${bookingId}`,
     EDIT_PROFILE: "/api/customer/editProfile",
     VERIFY_PASSWORD: "/api/customer/verifyPassword",
     CHANGE_PASSWORD: "/api/customer/change-password",
     BOOKING_HISTORY: "/api/customer/booking-history",
     BOOKING_DETAILS: (id: string) => `/api/customer/bookingDetails/${id}`,
-    RETRY_AVAILABILITY: (id: string) =>
-      `/api/customer/booking/retry-availability/${id}`,
+    RETRY_AVAILABILITY: (id: string) => `/api/customer/booking/retry-availability/${id}`,
     CANCEL_BOOKING: (id: string) => `/api/customer/booking/cancel-booking/${id}`,
-    REVIEW_STATUS: (id: string) =>
-      `/api/customer/booking/review-status/${id}`,
-    FEEDBACK: "/api/customer/booking/feedback",
-    REPORT_FEEDBACK: "/api/customer/booking/report-feedback",
+
     WALLET_INFO: (page: number, limit: number) =>
       `/api/customer/wallet?page=${page}&limit=${limit}`,
     ADD_FUND: "/api/customer/wallet/add-fund",

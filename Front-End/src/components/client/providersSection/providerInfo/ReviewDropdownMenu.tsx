@@ -26,7 +26,9 @@ const ReviewDropdownMenu: React.FC<ReviewDropdownMenuProps> = ({ feedbackData })
         <DropdownMenuContent className="w-40" align="end">
           <DropdownMenuLabel className="sr-only">Review Options</DropdownMenuLabel>
           <DropdownMenuGroup>
-            <ReportReview ratingId={feedbackData.ratingData.ratingId} />
+            {user && (user.userId != feedbackData.userData.userId) &&
+              <ReportReview ratingId={feedbackData.ratingData.ratingId} />
+            }
             {user && (user.userId === feedbackData.userData.userId) &&
               <EditReview ratingData={feedbackData.ratingData} />
             }

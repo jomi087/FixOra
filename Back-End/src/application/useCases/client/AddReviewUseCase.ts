@@ -2,21 +2,21 @@ import { IBookingRepository } from "../../../domain/interface/RepositoryInterfac
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { AddFeedbackInputDTO } from "../../DTOs/ReviewDTO";
-import { IAddFeedbackUseCase } from "../../Interface/useCases/Client/IAddFeedbackUseCase";
+import { AddReviewInputDTO } from "../../DTOs/ReviewDTO";
+import { IAddReviewUseCase } from "../../Interface/useCases/Client/IAddReviewUseCase";
 import { v4 as uuidv4 } from "uuid";
 
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND } = HttpStatusCode;
 const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND } = Messages;
 
-export class AddFeedbackUseCase implements IAddFeedbackUseCase {
+export class AddReviewUseCase implements IAddReviewUseCase {
     constructor(
         private readonly _ratingRepository: IRatingRepository,
         private readonly _bookingRepository: IBookingRepository,
     ) { }
 
-    async execute(input: AddFeedbackInputDTO): Promise<void> {
+    async execute(input: AddReviewInputDTO): Promise<void> {
         try {
 
             const { bookingId, rating, feedback } = input;
@@ -37,7 +37,7 @@ export class AddFeedbackUseCase implements IAddFeedbackUseCase {
                 active: true,
                 createdAt: new Date()
             });
-
+            
         } catch (error) {
             if (error.status && error.message) {
                 throw error;

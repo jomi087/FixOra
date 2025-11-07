@@ -1,3 +1,5 @@
+//Anemic entity (for advance version you can go with rich entiy behavioral entity also instead of interface we can use class )
+
 import { RoleEnum } from "../../shared/enums/Roles";
 export interface Address {
   houseinfo?: string;

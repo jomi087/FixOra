@@ -36,6 +36,11 @@ export class UserRepository implements IUserRepository {
         return await UserModel.findOne({ userId }).select(omitSelect).lean<Partial<User>>();
     }
 
+    async findUserEmail(userId: string): Promise<string | null> {
+        const user = await UserModel.findOne({ userId }, { email: 1, _id: 0 }).lean();
+        return user ? user.email : null;
+    }
+
     async findByUserGoogleId(googleId: string): Promise<User | null> {
         return await UserModel.findOne({ googleId }).lean<User>();
     }

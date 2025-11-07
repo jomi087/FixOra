@@ -16,6 +16,8 @@ export interface IUserRepository {
 
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
 
+    findUserEmail(userId:string):Promise<string|null>
+
     findByUserGoogleId(googleId: string): Promise<User | null>;
 
     updateRole(userId: string, role: RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;

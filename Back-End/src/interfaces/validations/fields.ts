@@ -5,7 +5,27 @@ import { KYCStatus } from "../../shared/enums/KYCstatus";
 import { BookingStatus } from "../../shared/enums/BookingStatus";
 import { DAYS, LEAVE_OPTIONS } from "../../shared/const/constants";
 
+export const stringField = z.string();
+export const numberField = z.number();
+
 export const optionalStringField = z.string().optional();
+export const uuidField = (idName = "") => z
+    .string()
+    .regex(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+        { message: `Invalid ${idName ? `${idName} ID` : "ID"} format`, }
+    );
+
+export const numberMinMax = (mini: number, miniMsg: string, maxi: number, maxiMsg: string) => z
+    .number()
+    .min(mini, miniMsg)
+    .max(maxi, maxiMsg);
+
+export const stringMinMax = (mini: number, miniMsg: string, maxi: number, maxiMsg: string) => z
+    .string()
+    .min(mini, miniMsg)
+    .max(maxi, maxiMsg);
+
 
 export const firstNameField = z.string().trim().min(3, "First name is required, minimum 4 Characters");
 export const lastNameField = z.string().trim().min(2, "Last name is required, minimum 2 Characters");

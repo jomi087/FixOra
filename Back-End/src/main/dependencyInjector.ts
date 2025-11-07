@@ -9,6 +9,7 @@ import { NotificationRepository } from "../infrastructure/database/repositories/
 import { AvailabilityRepository } from "../infrastructure/database/repositories/AvailabilityRepository";
 import { RatingRepository } from "../infrastructure/database/repositories/RatingRepository";
 import { CommissionFeeRepository } from "../infrastructure/database/repositories/CommissionFeeRepository";
+import { DisputeRepository } from "../infrastructure/database/repositories/DisputeRepository";
 
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
 import { EmailService } from "../infrastructure/services/EmailService";
@@ -33,6 +34,7 @@ const notificationRepository = new NotificationRepository();
 const availabilityRepository = new AvailabilityRepository();
 const ratingRepository = new RatingRepository();
 const commissionFeeRepository = new CommissionFeeRepository();
+const disputeRepository = new DisputeRepository();
 
 const loggerService = new WinstonLogger();
 const emailService = new EmailService();
@@ -117,8 +119,11 @@ const providerInfoUseCase = new ProviderInfoUseCase(userRepository);
 import { GetProviderReviewsUseCase } from "../application/useCases/client/GetProviderReviewsUseCase";
 const getProviderReviewsUseCase = new GetProviderReviewsUseCase(ratingRepository);
 
-import { UpdateFeedbackUseCase } from "../application/useCases/client/UpdateFeedbackUseCase";
-const updateFeedbackUseCase = new UpdateFeedbackUseCase(ratingRepository);
+import { UpdateReviewUseCase } from "../application/useCases/client/UpdateReviewUseCase";
+const updateReviewUseCase = new UpdateReviewUseCase(ratingRepository);
+
+import { CreateDisputeAndNotifyUseCase } from "../application/useCases/client/CreateDisputeAndNotifyUseCase";
+const createDisputeAndNotifyUseCase = new CreateDisputeAndNotifyUseCase(disputeRepository, userRepository, emailService);
 
 import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
 const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, pushNotificationService, bookingSchedulerService, userRepository, availabilityRepository, commissionFeeRepository);
@@ -153,8 +158,8 @@ const reviewStatusUseCase = new ReviewStatusUseCase(ratingRepository);
 import { CancelBookingUseCase } from "../application/useCases/client/CancelBookingUseCase";
 const cancelBookingUseCase = new CancelBookingUseCase(bookingRepository, walletRepository, notificationService, notificationRepository);
 
-import { AddFeedbackUseCase } from "../application/useCases/client/AddFeedbackUseCase";
-const addFeedbackUseCase = new AddFeedbackUseCase(ratingRepository, bookingRepository);
+import { AddReviewUseCase } from "../application/useCases/client/AddReviewUseCase";
+const addReviewUseCase = new AddReviewUseCase(ratingRepository, bookingRepository);
 
 import { GetUserwalletInfoUseCase } from "../application/useCases/client/GetUserwalletInfoUseCase";
 const getUserwalletInfoUseCase = new GetUserwalletInfoUseCase(walletRepository);
@@ -255,7 +260,7 @@ const publicController = new PublicController(getLandingDataUseCase, getNotifica
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase);
 
-const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateFeedbackUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addFeedbackUseCase, getUserwalletInfoUseCase, walletTopUpUseCase );
+const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateReviewUseCase, createDisputeAndNotifyUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addReviewUseCase, getUserwalletInfoUseCase, walletTopUpUseCase );
 
 const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase );
 

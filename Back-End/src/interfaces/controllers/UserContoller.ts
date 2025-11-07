@@ -20,10 +20,12 @@ import { IWalletPaymentUseCase } from "../../application/Interface/useCases/Clie
 import { ICancelBookingUseCase } from "../../application/Interface/useCases/Client/ICancelBookingUseCase";
 import { IRetryAvailabilityUseCase } from "../../application/Interface/useCases/Client/IRetryAvailabilityUseCase";
 import { allowedTypes, maxSizeMB } from "../../shared/const/constants";
-import { IAddFeedbackUseCase } from "../../application/Interface/useCases/Client/IAddFeedbackUseCase";
+import { IAddReviewUseCase } from "../../application/Interface/useCases/Client/IAddReviewUseCase";
 import { IReviewStatusUseCase } from "../../application/Interface/useCases/Client/IReviewStatusUseCase";
 import { IGetProviderReviewsUseCase } from "../../application/Interface/useCases/Client/IGetProviderReviewsUseCase";
-import { IUpdateFeedbackUseCase } from "../../application/Interface/useCases/Client/IUpdateFeedbackUseCase";
+import { IUpdateReviewUseCase } from "../../application/Interface/useCases/Client/IUpdateReviewUseCase";
+import { ICreateDisputeAndNotifyUseCase } from "../../application/Interface/useCases/Client/ICreateDisputeAndNotifyUseCase";
+import { DisputeType } from "../../shared/enums/Dispute";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -38,7 +40,8 @@ export class UserController {
         private _kycRequestUseCase: IKYCRequestUseCase,
         private _providerInfoUseCase: IProviderInfoUseCase,
         private _getProviderReviewsUseCase: IGetProviderReviewsUseCase,
-        private _updateFeedbackUseCase: IUpdateFeedbackUseCase,
+        private _updateReviewUseCase: IUpdateReviewUseCase,
+        private _createDisputeAndNotifyUseCase : ICreateDisputeAndNotifyUseCase,
         private _bookingUseCase: IBookingUseCase,
         private _createPaymentUseCase: ICreatePaymentUseCase,
         private _walletPaymentUseCase: IWalletPaymentUseCase,
@@ -51,7 +54,7 @@ export class UserController {
         private _retryAvailabilityUseCase: IRetryAvailabilityUseCase,
         private _reviewStatusUseCase: IReviewStatusUseCase,
         private _cancelBookingUseCase: ICancelBookingUseCase,
-        private _addFeedbackUseCase: IAddFeedbackUseCase,
+        private _addReviewUseCase: IAddReviewUseCase,
         private _getUserwalletInfoUseCase: IGetUserwalletInfoUseCase,
         private _walletTopUpUseCase: IWalletTopUpUseCase,
     ) { }
@@ -209,14 +212,33 @@ export class UserController {
     }
 
 
-    async updatedFeedback(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async updatedReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             //console.log(req.body);
             const { ratingId, rating, feedback } = req.body;
-            let data = await this._updateFeedbackUseCase.execute({ ratingId, rating, feedback });
+            let data = await this._updateReviewUseCase.execute({ ratingId, rating, feedback });
             res.status(OK).json({
                 success: true,
-                updatedFeedbackData: data
+                updatedReviewData: data
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async createReviewDispute(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const userId = req.user.userId;
+            const disputeType = DisputeType.REVIEW;
+            const { ratingId:contextId, reason } = req.body;
+            await this._createDisputeAndNotifyUseCase.execute({ userId, disputeType ,contextId, reason });
+
+            res.status(OK).json({
+                success: true,
             });
 
         } catch (error) {
@@ -489,12 +511,11 @@ export class UserController {
         }
     };
 
-    async addFeedback(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async addReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            //console.log(req.body);
             const { bookingId, rating, feedback } = req.body;
 
-            await this._addFeedbackUseCase.execute({ bookingId, rating, feedback });
+            await this._addReviewUseCase.execute({ bookingId, rating, feedback });
 
             res.status(OK).json({
                 success: true,

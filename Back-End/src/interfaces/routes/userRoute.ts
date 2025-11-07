@@ -9,7 +9,7 @@ import { editProfileSchema } from "../validations/profileSchema";
 import upload from "../middleware/upload";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { addFundsSchema } from "../validations/walletSchema";
-import { addFeedbackSchema, updateFeedbackSchema } from "../validations/feedbackSchema";
+import { addReviewSchema, reportReviewSchema, updateReviewSchema } from "../validations/reviewSchema";
 
 const router = express.Router();
 
@@ -18,8 +18,7 @@ router.get("/services", AuthMiddleware([RoleEnum.Customer]), (req, res, next) =>
 
 //Providers  Section
 router.get("/providers", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.activeProviders(req, res, next));
-router.post(
-    "/provider-kyc",
+router.post("/provider-kyc",
     AuthMiddleware([RoleEnum.Customer]),
     upload.fields([
         { name: "profileImage", maxCount: 1 },
@@ -30,9 +29,14 @@ router.post(
     validateKYCRequest,
     (req, res, next) => userController.kycApplication(req, res, next)
 );
+
 router.get("/provider/bookings/:id", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerInfo(req, res, next));
+
 router.get("/provider/:id/reviews", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.providerReview(req, res, next));
-router.patch("/booking/feedback",  validateRequest(updateFeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.updatedFeedback.bind(userController));
+router.post("/booking/review", validateRequest(addReviewSchema), AuthMiddleware([RoleEnum.Customer]), userController.addReview.bind(userController));
+router.patch("/booking/review", validateRequest(updateReviewSchema), AuthMiddleware([RoleEnum.Customer]), userController.updatedReview.bind(userController));
+router.post("/review/dispute", validateRequest(reportReviewSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createReviewDispute(req, res, next));
+router.get("/booking/review-status/:bookingId", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.reviewStatus(req, res, next));
 
 router.post("/provider/booking", validateRequest(bookingRequestSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createBooking(req, res, next));
 router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateOnlinePayment(req, res, next));
@@ -47,9 +51,6 @@ router.get("/booking-history", AuthMiddleware([RoleEnum.Customer]), (req, res, n
 router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.bookingDetails.bind(userController));
 router.patch("/booking/retry-availability/:bookingId",AuthMiddleware([RoleEnum.Customer]), userController.retryAvailability.bind(userController));
 router.patch("/booking/cancel-booking/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.cancelBooking.bind(userController));
-
-router.get("/booking/review-status/:bookingId", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.reviewStatus(req, res, next));
-router.post("/booking/feedback", validateRequest(addFeedbackSchema), AuthMiddleware([RoleEnum.Customer]), userController.addFeedback.bind(userController));
 
 router.get("/wallet", AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), userController.walletInfo.bind(userController));
 router.post("/wallet/add-fund", validateRequest(addFundsSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), (req, res, next) => userController.addFund(req, res, next));
