@@ -7,11 +7,12 @@ interface SearchInputProps {
   value: string;
   onChange: (val: string) => void;
   placeholder?: string;
+  className?: string
 }
 
-const SearchInput: React.FC<SearchInputProps> = React.memo(({ value, onChange, placeholder = "Search...", }) => {
+const SearchInput: React.FC<SearchInputProps> = React.memo(({ value, onChange, placeholder = "Search...",className = "w-full" }) => {
   return (
-    <div className="w-full">
+    <div className={`${className}`}>
       <Label className="sr-only">Search</Label>
       <Input
         maxLength={searchInputLength} 

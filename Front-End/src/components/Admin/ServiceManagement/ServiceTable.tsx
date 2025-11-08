@@ -1,7 +1,7 @@
 import { Table,TableBody,TableCell,TableHead,TableHeader,TableRow, } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import type { Category, Subcategory } from "@/shared/types/category";
-import EditCategoryDialoge from "./EditCategoryDialoge";
+import EditCategoryDialoge from "../userManagment/EditCategoryDialoge";
 
 interface TableColumn {
   label: string;
