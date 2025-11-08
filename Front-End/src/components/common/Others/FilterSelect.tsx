@@ -16,10 +16,10 @@ interface FilterSelectProps {
 
 const FilterSelect: React.FC<FilterSelectProps> = ({ filter,onChange,options,placeholder="Sort",className }) => {
   return (
-    <div className={`${className}`}>
+    <div >
       <Label className="sr-only">Filter</Label>
       <Select value={filter} onValueChange={onChange}>
-        <SelectTrigger>
+        <SelectTrigger  className={`${className}`}>
           <SelectValue placeholder={placeholder} /> 
         </SelectTrigger>
         <SelectContent>

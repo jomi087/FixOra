@@ -305,6 +305,12 @@ class AuthService {
     return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CATEGORY_STATUS(categoryId));
   }
 
+  getDispute(payload : { searchQuery: string, FilterType: string; FilterStatus: string, page: number, limit: number }) {
+    return axiosInstance.get(API_ROUTES.ADMIN.DISPUTE_MANAGEMENT, {
+      params: { ...payload },
+    });
+  }
+  
   // editProfileApi(form: ProfileEdit) {
   //   return axiosInstance.patch(API_ROUTES.ADMIN.EDIT_PROFILE, form, this.getJsonConfig());
   // }

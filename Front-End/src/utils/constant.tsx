@@ -1,4 +1,6 @@
+import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
 import type { TimeRange } from "@/shared/types/dashboard";
+import type { Dispute } from "@/shared/types/dispute";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
@@ -42,6 +44,7 @@ export const SLPP = 7;                                                  //SLPP =
 export const BHPP = 7;                                                  //BHPP => Booking History Per Page  -> default set to 10
 export const TLPP = 5;                                                  //TLPP => Transaction List Per Page -> default set to 10
 export const RLPP = 5;                                                  //RLPP => Review List Per Page
+export const DLPP = 10;                                                 //DLPP => Dispure List Per Page
 export const DATE_RANGE_DAYS = 365;
 export const ONE_WEEK = 7;
 export const TIME_SLOTS = {
@@ -215,7 +218,7 @@ export const API_ROUTES = {
     FEEDBACK: "/api/customer/booking/review",
     REPORT_FEEDBACK: "/api/customer/review/dispute",
     REVIEW_STATUS: (id: string) => `/api/customer/booking/review-status/${id}`,
-    
+
     BOOKING_APPLICATION: "/api/customer/provider/booking",
     ONLINE_PAYMENT: "/api/customer/create-checkout-session",
     WALLET_PAYMENT: "/api/customer/wallet-payment",
@@ -259,6 +262,8 @@ export const API_ROUTES = {
   },
 
   ADMIN: {
+    DASHBOARD: (timeRange: TimeRange) => `/api/admin/dashboard?range=${timeRange}`,
+
     CUSTOMER_MANAGEMENT: "/api/admin/customer-management",
     TOGGLE_CUSTOMER_STATUS: (userId: string) =>
       `/api/admin/customer-management/${userId}`,
@@ -269,8 +274,10 @@ export const API_ROUTES = {
 
     CATEGORY_MANAGEMENT: "/api/admin/service-management",
     TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/service-management/${id}`,
+
+    DISPUTE_MANAGEMENT: "/api/admin/dispute-management",
+
     COMMISSION_FEE: "/api/admin/commission-fee",
-    DASHBOARD: (timeRange: TimeRange) => `/api/admin/dashboard?range=${timeRange}`
   },
 
   LANDING: {
@@ -335,5 +342,73 @@ export const blogPosts: Array<BlogPost> = [
     image: "https://placehold.co/400",
     author: "Provider A",
     date: "2025-05-07",
+  },
+];
+/*************************************************************************************** */
+export const dummyDisputes: Dispute[] = [
+  {
+    disputeId: "DISP-3a4b1c9e-f21a",
+    disputeType: DisputeType.REVIEW,
+    contentId: "REV-001",
+    reportedBy: "USR-1001",
+    reason: "Inappropriate language in the review comments.",
+    status: DisputeStatus.PENDING,
+    createdAt: new Date("2025-10-25T10:32:00Z"),
+  },
+  {
+    disputeId: "DISP-9d12e0a8-f48f",
+    disputeType: DisputeType.CHAT,
+    contentId: "CHAT-204",
+    reportedBy: "USR-1020",
+    reason: "User reported harassment during chat with provider.",
+    status: DisputeStatus.PENDING,
+    createdAt: new Date("2025-10-28T14:10:00Z"),
+    updatedAt: new Date("2025-10-29T09:45:00Z"),
+  },
+  {
+    disputeId: "DISP-0a5c9b71-d912",
+    disputeType: DisputeType.REVIEW,
+    contentId: "REV-087",
+    reportedBy: "USR-1078",
+    reason: "Fake review suspected from competitor account.",
+    status: DisputeStatus.RESOLVED,
+    adminNote: {
+      adminId: "ADMIN-001",
+      action: "Review removed; verified false report.",
+    },
+    createdAt: new Date("2025-09-22T08:00:00Z"),
+    resolvedAt: new Date("2025-09-25T10:15:00Z"),
+  },
+  {
+    disputeId: "DISP-7b9d5c30-ff31",
+    disputeType: DisputeType.CHAT,
+    contentId: "CHAT-332",
+    reportedBy: "USR-1089",
+    reason: "Provider was rude and unprofessional during chat.",
+    status: DisputeStatus.REJECTED,
+    adminNote: {
+      adminId: "ADMIN-003",
+      action: "Rejected — evidence not sufficient.",
+    },
+    createdAt: new Date("2025-10-10T11:25:00Z"),
+    updatedAt: new Date("2025-10-12T08:20:00Z"),
+  },
+  {
+    disputeId: "DISP-9e4a0f1b-b762",
+    disputeType: DisputeType.REVIEW,
+    contentId: "REV-231",
+    reportedBy: "USR-1125",
+    reason: "User falsely claimed the service was incomplete.",
+    status: DisputeStatus.RESOLVED,
+    createdAt: new Date("2025-11-03T17:40:00Z"),
+  },
+  {
+    disputeId: "DISP-1a5f2d8e-a4f3",
+    disputeType: DisputeType.CHAT,
+    contentId: "CHAT-540",
+    reportedBy: "USR-1099",
+    reason: "Chat message included inappropriate offers.",
+    status: DisputeStatus.PENDING,
+    createdAt: new Date("2025-11-06T09:05:00Z"),
   },
 ];
