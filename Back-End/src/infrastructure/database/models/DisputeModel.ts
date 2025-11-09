@@ -30,7 +30,6 @@ const DisputeSchema = new Schema<DisputeDocument>(
             type: String,
             enum: Object.values(DisputeType),
             required: true,
-            unique: true
         },
         contentId: {
             type: String,

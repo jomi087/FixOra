@@ -166,7 +166,6 @@ const getUserwalletInfoUseCase = new GetUserwalletInfoUseCase(walletRepository);
 
 import { WalletTopupUseCase } from "../application/useCases/client/WalletTopupUseCase";
 const walletTopUpUseCase = new WalletTopupUseCase(paymentService, walletRepository);
-
 /******************************************************************************************************************************************************
                                         Provider Specific
 ******************************************************************************************************************************************************/
@@ -244,6 +243,9 @@ const createServiceCategoryUseCase = new CreateServiceCategoryUseCase(categoryRe
 import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase";
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository);
 
+import { GetDisputesUseCase } from "../application/useCases/admin/GetDisputesUseCase";
+const getDisputesUseCase = new GetDisputesUseCase(disputeRepository);
+
 import { CommissionFeeUseCase } from "../application/useCases/admin/CommissionFeeUseCase";
 const commissionFeeUseCase = new CommissionFeeUseCase(commissionFeeRepository);
 
@@ -264,7 +266,7 @@ const userController = new UserController(activeServiceUseCase, getActiveProvide
 
 const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase );
 
-const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, commissionFeeUseCase, updateCommissionFeeUseCase );
+const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, commissionFeeUseCase, updateCommissionFeeUseCase );
 
 export {
     publicController,

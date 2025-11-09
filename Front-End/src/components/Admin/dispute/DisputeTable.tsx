@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import type { Dispute } from "@/shared/types/dispute";
+import { toPascalCase } from "@/utils/helper/utils";
 
 interface Props {
 	disputes: Dispute[];
@@ -34,8 +35,8 @@ export const DisputeTable: React.FC<Props> = ({ disputes }) => {
               <TableRow key={d.disputeId}>
                 <TableCell className="py-3">{d.disputeId.split("-")[0] }</TableCell>
                 <TableCell className="py-3 text-center">{d.disputeType}</TableCell>
-                <TableCell className="py-3 text-center font-semibold font-roboto">{d.reason}</TableCell>
-                <TableCell className="py-3 text-center">{d.reportedBy}</TableCell>
+                <TableCell className="py-3 text-center font-semibold font-roboto">{toPascalCase(d.reason)}</TableCell>
+                <TableCell className="py-3 text-center">{d.reportedBy.toUpperCase()}</TableCell>
                 <TableCell className="py-3 text-center">
                   <Badge
                     variant="secondary"

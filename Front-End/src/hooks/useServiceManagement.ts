@@ -19,8 +19,6 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
   const itemsPerPage = SLPP || 10;
 
   const totalPages = Math.ceil(totalCateogories / itemsPerPage);
-    
-
       
   useEffect(() => {
     const fetchCategory = async () => {
@@ -30,7 +28,6 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
         if (res.status === HttpStatusCode.OK) {
           setCategories(res.data.catogoriesData);
           setTotalCateogories(res.data.total);
-
         }
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;

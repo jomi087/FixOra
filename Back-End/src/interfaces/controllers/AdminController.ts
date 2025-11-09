@@ -15,6 +15,8 @@ import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/Ad
 import { ICommissionFeeUseCase } from "../../application/Interface/useCases/Admin/ICommissionFeeUseCase";
 import { IUpdateCommissionFeeUseCase } from "../../application/Interface/useCases/Admin/IUpdateCommissionFeeUseCase";
 import { IDashboardReportUseCase } from "../../application/Interface/useCases/Admin/IDashboardReportUseCase";
+import { IGetDisputesUseCase } from "../../application/Interface/useCases/Admin/IGetDisputesUseCase";
+import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
@@ -31,6 +33,7 @@ export class AdminController {
         private _createServiceCategoryUseCase: ICreateServiceCategoryUseCase,
         private _imageUploaderService: IImageUploaderService,
         private _toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
+        private _getDisputesUseCase: IGetDisputesUseCase,
         private _commissionFeeUseCase: ICommissionFeeUseCase,
         private _updateCommissionFeeUseCase: IUpdateCommissionFeeUseCase,
     ) { }
@@ -220,6 +223,29 @@ export class AdminController {
             await this._toggleCategoryStatusUseCase.execute(categoryId);
 
             res.status(OK).json({ success: true });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getDispute(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { searchQuery = "", filterType = "", filterStatus = "", page = 1, limit = 10 } = req.query; 
+
+            const result = await this._getDisputesUseCase.execute({
+                searchQuery: String(searchQuery),
+                filterType: String(filterType) as  "" | DisputeType,
+                filterStatus: String(filterStatus) as "" | DisputeStatus,
+                page: Number(page),
+                limit: Number(limit),
+            });
+
+            res.status(OK).json({
+                success: true,
+                disputeData: result.disputeData,
+                total: result.total
+            });
+
         } catch (error) {
             next(error);
         }

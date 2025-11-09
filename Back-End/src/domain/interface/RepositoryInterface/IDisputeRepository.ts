@@ -1,17 +1,16 @@
 import { Dispute } from "../../entities/DisputeEntity";
+import { User } from "../../entities/UserEntity";
 
 export interface IDisputeRepository {
     /**
      * Persists a new Dispute entity to the database.
      * @param dispute - The Dispute entity containing all required details.
-     * @returns The created Dispute entity.
      */
     create(dispute: Dispute): Promise<Dispute>;
 
     /**
      * Finds a dispute by its unique disputeId.
      * @param disputeId - The unique identifier of the dispute.
-     * @returns The Dispute if found, otherwise null.
      */
     findById(disputeId: string): Promise<Dispute | null>;
 
@@ -23,18 +22,39 @@ export interface IDisputeRepository {
     findExistingDispute(userId: string, contentId: string): Promise<boolean>;
 
     /**
+     * Fetches a paginated list of disputes based on search and filter criteria.
+     * Performs text search, filtering by type and status, and applies pagination.
+     * @param options - Contains search and filter (Filtering options for dispute type and status) parameters for the query 
+     * @param currentPage  
+     * @param limit
+    */
+    findDisputeWithFilters(
+        searchQuery: string,
+        filterType: string,
+        filterStatus: string,
+        page: number,
+        limit: number
+    ): Promise<{
+        data: {
+            dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt">
+            user: Pick<User, "fname" | "lname">,
+        }[]; total: number;
+    }>
+
+    /**
      * Updates the status and optional admin note of a dispute.
      * @param disputeId - The ID of the dispute to update.
      * @param status - The new dispute status.
      * @param adminNote - Optional admin note with action details.
-     * @returns The updated Dispute if found, otherwise null.
-     */
+    */
     updateStatus(disputeId: string, status: string, adminNote?: { adminId: string; action: string }): Promise<Dispute | null>;
 
-    /**
-     * Retrieves all disputes matching optional filter conditions.
-     * @param filters - Partial filter criteria.
-     * @returns An array of Dispute entities.
-     */
-    findAll(filters?: Partial<Dispute>): Promise<Dispute[]>;
 }
+
+/**
+ * Retrieves all disputes matching optional filter conditions.
+ * @param filters - Partial filter criteria.
+ * @returns An array of Dispute entities.
+ * findAll(filters?: Partial<Dispute>): Promise<Dispute[]>;
+ * 
+ */

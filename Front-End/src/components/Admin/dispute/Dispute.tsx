@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DisputeTable } from "./DisputeTable";
-import type { Dispute } from "@/shared/types/dispute";
+import type { Dispute, DisputeListPayload } from "@/shared/types/dispute";
 import { DLPP } from "@/utils/constant";
 import SearchInput from "@/components/common/others/SearchInput";
 import FilterSelect from "@/components/common/others/FilterSelect";
@@ -8,28 +8,35 @@ import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
 import Pagination from "@/components/common/others/Pagination";
 import AuthService from "@/services/AuthService";
 import { useDebounce } from "use-debounce";
+import { Loader2 } from "lucide-react";
 
 // import { dummyDisputes } from "@/utils/constant";
+type Option<T> = { label: string; value: T };
 
-const typeOptions = [
+const typeOptions: Option<"All" | DisputeType>[] = [
   { label: "All", value: "All" },
   { label: DisputeType.CHAT, value: DisputeType.CHAT },
   { label: DisputeType.REVIEW, value: DisputeType.REVIEW },
 ];
 
-const statusOptions = [
+const statusOptions:  Option<"All" | DisputeStatus>[] = [
   { label: "All", value: "All" },
   { label: DisputeStatus.PENDING, value: DisputeStatus.PENDING },
   { label: DisputeStatus.RESOLVED, value: DisputeStatus.RESOLVED },
   { label: DisputeStatus.REJECTED, value: DisputeStatus.REJECTED },
 ];
 
+interface FilterState {
+  type: DisputeType | "All";
+  status: DisputeStatus | "All";
+}
+
 const DisputeSection = () => {
   const [disputes, setDisputes] = useState<Dispute[]>([]);
   const [loading, setLoading] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState({ type: "All", status: "All" });
+  const [filters, setFilters] = useState<FilterState>({ type: "All", status: "All" });
   const [debouncedQuery] = useDebounce(searchQuery, 500);
 
   const [totalDisputes, setTotalDisputes] = useState(0);
@@ -40,17 +47,18 @@ const DisputeSection = () => {
   useEffect(() => {
     const loadDisputes = async () => {
       setLoading(true);
-      const payload = {
+      const payload:DisputeListPayload = {
         searchQuery: debouncedQuery,
-        FilterType: filters.type,
-        FilterStatus: filters.status,
-        page: page,
+        filterType: filters.type === "All" ? "" : filters.type,
+        filterStatus: filters.status === "All" ? "" : filters.status,
+        page,
         limit: itemsPerPage,
       };
+
       try {
         const res = await AuthService.getDispute(payload);
-        setDisputes(res.data.disputeData);
-        setTotalDisputes(res.data.total);
+        setDisputes(res.data.disputeData ?? []);
+        setTotalDisputes(res.data.total ?? 1);
       } finally {
         setLoading(false);
       }
@@ -67,19 +75,23 @@ const DisputeSection = () => {
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search disputes..."
+            placeholder="Search disputes by Name / Id / Reason"
           />
         </div>
         <div className="flex flex-row border-0 justify-end gap-3 sm:gap-4 w-full sm:w-auto">
           <FilterSelect
             filter={filters.type}
-            onChange={(val) => setFilters((prev) => ({ ...prev, type: val }))}
+            onChange={(val) =>
+              setFilters((prev) => ({ ...prev, type: val as FilterState["type"] }))
+            }
             options={typeOptions}
             className="w-full sm:w-[160px]"
           />
           <FilterSelect
             filter={filters.status}
-            onChange={(val) => setFilters((prev) => ({ ...prev, status: val }))}
+            onChange={(val) =>
+              setFilters((prev) => ({ ...prev, status: val as FilterState["status"] }))
+            }
             options={statusOptions}
             className="w-full sm:w-[160px]"
           />
@@ -88,13 +100,15 @@ const DisputeSection = () => {
 
       {/* Table */}
       {loading ? (
+        <div className="flex justify-center items-center py-10">
+          <Loader2 className="animate-spin mr-2" /> Loading disputes...
+        </div>
+      ) : disputes.length === 0 ? (
         <div className="flex justify-center items-center py-10 text-muted-foreground">
-          Loading disputes...
+          No disputes found.
         </div>
       ) : (
-        <div className="mt-4">
-          <DisputeTable disputes={disputes} />
-        </div>
+        <DisputeTable disputes={disputes} />
       )}
 
       {totalPages > 1 && (

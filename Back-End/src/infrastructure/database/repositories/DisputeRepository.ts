@@ -1,6 +1,8 @@
+import { PipelineStage } from "mongoose";
 import { Dispute } from "../../../domain/entities/DisputeEntity";
 import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
 import { DisputeModel } from "../models/DisputeModel";
+import { User } from "../../../domain/entities/UserEntity";
 
 
 export class DisputeRepository implements IDisputeRepository {
@@ -21,8 +23,8 @@ export class DisputeRepository implements IDisputeRepository {
             reportedBy: userId,
             contentId: contentId
         }).lean();
-        
-        return existing  ? true : false;
+
+        return existing ? true : false;
     }
 
     /** @inheritdoc */
@@ -43,7 +45,99 @@ export class DisputeRepository implements IDisputeRepository {
     }
 
     /** @inheritdoc */
-    async findAll(filters?: Partial<Dispute>): Promise<Dispute[]> {
-        return DisputeModel.find(filters || {}).lean();
+    async findDisputeWithFilters(
+        searchQuery: string,
+        filterType: string, filterStatus: string,
+        page: number, limit: number
+    ): Promise<{
+        data: {
+            dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt">
+            user: Pick<User, "fname" | "lname">,
+        }[]; total: number;
+    }> {
+
+        console.log(
+            `repo - 1,
+                searchQuery: ${searchQuery}, 
+                filterType: ${filterType},
+                filterStatus: ${filterStatus},
+                page: ${page},
+                limit: ${limit}`
+        );
+
+        const search: Record<string, unknown> = {};
+        if (searchQuery.trim()) {
+            search.$or = [
+                { reason: { $regex: searchQuery, $options: "i" } },
+                { disputeId: { $regex: searchQuery, $options: "i" } },
+                { "userDetails.fname": { $regex: searchQuery, $options: "i" } },
+                { "userDetails.lname": { $regex: searchQuery, $options: "i" } },
+            ];
+        }
+        const query: Record<string, unknown> = {};
+        if (filterType) query.disputeType = filterType;
+        if (filterStatus) query.status = filterStatus;
+
+        const pipeline: PipelineStage[] = [
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "reportedBy",
+                    foreignField: "userId",
+                    as: "userDetails",
+                    pipeline: [
+                        {
+                            $project: { fname: 1, lname: 1, _id: 0 },
+                        },
+                    ],
+                },
+            },
+            { $unwind: { path: "$userDetails", preserveNullAndEmptyArrays: true } },
+            {
+                $match: {
+                    ...query,
+                    ...(searchQuery.trim() ? search : {}) 
+                }
+            },
+            { $sort: { createdAt: -1 } },
+            {
+                $project: {
+                    _id: 0,
+                    dispute: {
+                        disputeId: "$disputeId",
+                        disputeType: "$disputeType",
+                        reason: "$reason",
+                        status: "$status",
+                        createdAt: "$createdAt",
+                    },
+                    user: {
+                        fname: { $ifNull: ["$userDetails.fname", "[Deleted]"] },
+                        lname: { $ifNull: ["$userDetails.lname", "User"] },
+                    },
+                },
+            },
+            {
+                $facet: {
+                    data: [{ $skip: (page - 1) * limit }, { $limit: limit }],
+                    total: [{ $count: "count" }],
+                },
+            },
+        ];
+
+        const result = await DisputeModel.aggregate(pipeline);
+        const data = result[0]?.data ?? [];
+        const total = result[0]?.total ?? 0;
+
+        return { data, total };
     }
 }
+
+
+// async findAll(filters?: Partial<Dispute>): Promise<Dispute[]> {
+//     return DisputeModel.find(filters || {}).lean();
+// }
+/*
+            {
+                $match: { ...query, ...search },
+            },
+            */

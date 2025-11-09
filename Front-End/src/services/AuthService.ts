@@ -7,6 +7,8 @@ import { API_ROUTES } from "@/utils/constant";
 import type { Platform } from "@/shared/types/others";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import type { TimeRange } from "@/shared/types/dashboard";
+import type { DisputeListPayload, DisputeListResponse } from "@/shared/types/dispute";
+import type { AxiosResponse } from "axios";
 
 class AuthService {
   // getBearerTokenConfig(token?: string) { //jwt token
@@ -305,10 +307,8 @@ class AuthService {
     return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CATEGORY_STATUS(categoryId));
   }
 
-  getDispute(payload : { searchQuery: string, FilterType: string; FilterStatus: string, page: number, limit: number }) {
-    return axiosInstance.get(API_ROUTES.ADMIN.DISPUTE_MANAGEMENT, {
-      params: { ...payload },
-    });
+  getDispute(payload : DisputeListPayload ):Promise<AxiosResponse<DisputeListResponse>> {
+    return axiosInstance.get(API_ROUTES.ADMIN.DISPUTE_MANAGEMENT, { params: { ...payload } });
   }
   
   // editProfileApi(form: ProfileEdit) {
