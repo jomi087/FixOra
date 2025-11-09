@@ -32,7 +32,7 @@ export class GetDisputesUseCase implements IGetDisputesUseCase {
             }));
 
             return {
-                disputeData: mappedData,
+                data: mappedData,
                 total,
             };
 

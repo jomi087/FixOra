@@ -242,7 +242,7 @@ export class AdminController {
 
             res.status(OK).json({
                 success: true,
-                disputeData: result.disputeData,
+                disputeData: result.data,
                 total: result.total
             });
 
