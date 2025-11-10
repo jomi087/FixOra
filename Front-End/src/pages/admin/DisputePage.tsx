@@ -1,7 +1,7 @@
 import SideBar from "@/components/common/others/SideBar";
 import Nav from "../../components/common/layout/Nav";
 import { adminSideBarOptions } from "@/utils/constant";
-import DisputeSection from "@/components/admin/dispute/Dispute";
+import DisputeSection from "@/components/admin/dispute/DisputeSection";
 
 const DisputePage = () => {
   return (

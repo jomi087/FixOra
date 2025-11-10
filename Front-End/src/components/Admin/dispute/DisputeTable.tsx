@@ -1,6 +1,4 @@
-"use client";
-
-import * as React from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,12 +6,35 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 import type { Dispute } from "@/shared/types/dispute";
 import { toPascalCase } from "@/utils/helper/utils";
+import { Loader2 } from "lucide-react";
+import DisputeDetailsModal from "./DisputeDetailsModal";
+import { dummyDisputeDetails } from "@/utils/constant";
 
 interface Props {
 	disputes: Dispute[];
 }
 
 export const DisputeTable: React.FC<Props> = ({ disputes }) => {
+  const [selectedDispute, setSelectedDispute] = useState<any | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [loadingId, setLoadingId] = useState<string | null>(null);
+
+  const fetchDisputeDetails = async (disputeId: string) => {
+    try {
+      setLoadingId(disputeId);
+      // const res = await fetch(`/api/disputes/${disputeId}`);
+      // if (!res.ok) throw new Error("Failed to fetch dispute details");
+      // const data = await res.json();
+      setSelectedDispute(dummyDisputeDetails);
+      setIsModalOpen(true);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
   return (
     <div className="rounded-md text-nav">
       <Table>
@@ -33,7 +54,7 @@ export const DisputeTable: React.FC<Props> = ({ disputes }) => {
           {disputes.length > 0 ? (
             disputes.map((d) => (
               <TableRow key={d.disputeId}>
-                <TableCell className="py-3">{d.disputeId.split("-")[0] }</TableCell>
+                <TableCell className="py-3">{d.disputeId.split("-")[0]}</TableCell>
                 <TableCell className="py-3 text-center">{d.disputeType}</TableCell>
                 <TableCell className="py-3 text-center font-semibold font-roboto">{toPascalCase(d.reason)}</TableCell>
                 <TableCell className="py-3 text-center">{d.reportedBy.toUpperCase()}</TableCell>
@@ -53,8 +74,18 @@ export const DisputeTable: React.FC<Props> = ({ disputes }) => {
                 </TableCell>
                 <TableCell className="py-3 text-center">{format(new Date(d.createdAt), "dd MMM yyyy")}</TableCell>
                 <TableCell className="text-center py-3 ">
-                  <Button variant="outline" size="sm" className="cursor-pointer active:scale-93">
-										View
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer active:scale-95"
+                    onClick={() => fetchDisputeDetails(d.disputeId)}
+                    disabled={loadingId === d.disputeId}
+                  >
+                    {loadingId === d.disputeId ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      "View"
+                    )}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -65,12 +96,26 @@ export const DisputeTable: React.FC<Props> = ({ disputes }) => {
                 colSpan={7}
                 className="h-[calc(100vh-34vh)] text-center text-muted-foreground italic font-mono text-lg"
               >
-								No disputes found
+                No disputes found
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+
+      {selectedDispute && (
+        <DisputeDetailsModal
+          open={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedDispute(null);
+          }}
+          disputeInfo={selectedDispute}
+          onDismiss={() => console.log("Dismissed")}
+          onBlock={() => console.log("Blocked")}
+          onDeleteReview={() => console.log("Deleted")}
+        />
+      )}
     </div >
   );
 };

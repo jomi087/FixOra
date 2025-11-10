@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DisputeTable } from "./DisputeTable";
 import type { Dispute, DisputeListPayload } from "@/shared/types/dispute";
-import { DLPP } from "@/utils/constant";
+import { DLPP, dummyDisputes } from "@/utils/constant";
 import SearchInput from "@/components/common/others/SearchInput";
 import FilterSelect from "@/components/common/others/FilterSelect";
 import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
@@ -57,7 +57,7 @@ const DisputeSection = () => {
 
       try {
         const res = await AuthService.getDispute(payload);
-        setDisputes(res.data.disputeData ?? []);
+        setDisputes(dummyDisputes);
         setTotalDisputes(res.data.total ?? 1);
       } finally {
         setLoading(false);
