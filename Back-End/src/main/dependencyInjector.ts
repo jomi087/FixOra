@@ -1,3 +1,5 @@
+import { DisputeType } from "../shared/enums/Dispute";
+
 import { UserRepository } from "../infrastructure/database/repositories/UserRepository";
 import { OtpRepository } from "../infrastructure/database/repositories/OtpRepository";
 import { CategoryRepository } from "../infrastructure/database/repositories/CategoryRepository";
@@ -212,12 +214,12 @@ import { ToggleAvailabilityUseCase } from "../application/useCases/providers/Tog
 const toggleAvailabilityUseCase = new ToggleAvailabilityUseCase(providerRepository, availabilityRepository, bookingRepository, walletRepository, notificationService, notificationRepository);
 
 import { GetSalesReportUseCase } from "../application/useCases/providers/GetSalesReportUseCase";
-const getSalesReportUseCase  = new GetSalesReportUseCase(bookingRepository);
+const getSalesReportUseCase = new GetSalesReportUseCase(bookingRepository);
 /******************************************************************************************************************************************************
                                         Admin Specific
 ******************************************************************************************************************************************************/
 import { DashboardReportUseCase } from "../application/useCases/admin/DashboardReportUseCase";
-const dashboardReportUseCase = new DashboardReportUseCase(userRepository,categoryRepository,bookingRepository);
+const dashboardReportUseCase = new DashboardReportUseCase(userRepository, categoryRepository, bookingRepository);
 
 import { GetCustomersUseCase } from "../application/useCases/admin/GetCustomersUseCase";
 const getCustomersUseCase = new GetCustomersUseCase(userRepository);
@@ -246,6 +248,11 @@ const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepo
 import { GetDisputesUseCase } from "../application/useCases/admin/GetDisputesUseCase";
 const getDisputesUseCase = new GetDisputesUseCase(disputeRepository);
 
+import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
+const reviewHandler = new ReviewDisputeContentHandler(ratingRepository);
+import { DisputeContentInfoUseCase } from "../application/useCases/admin/DisputeContentInfoUseCase";
+const disputeContentInfoUseCase = new DisputeContentInfoUseCase(disputeRepository, { [DisputeType.REVIEW]: reviewHandler, });
+
 import { CommissionFeeUseCase } from "../application/useCases/admin/CommissionFeeUseCase";
 const commissionFeeUseCase = new CommissionFeeUseCase(commissionFeeRepository);
 
@@ -258,15 +265,16 @@ import { UserController } from "../interfaces/controllers/UserContoller";
 import { AdminController } from "../interfaces/controllers/AdminController";
 import { ProviderController } from "../interfaces/controllers/ProviderController";
 
+
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase);
 
-const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateReviewUseCase, createDisputeAndNotifyUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addReviewUseCase, getUserwalletInfoUseCase, walletTopUpUseCase );
+const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateReviewUseCase, createDisputeAndNotifyUseCase, bookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addReviewUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
-const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase );
+const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase);
 
-const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, commissionFeeUseCase, updateCommissionFeeUseCase );
+const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, disputeContentInfoUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
 
 export {
     publicController,

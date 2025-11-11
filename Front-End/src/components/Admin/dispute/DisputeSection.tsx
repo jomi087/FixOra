@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DisputeTable } from "./DisputeTable";
 import type { Dispute, DisputeListPayload } from "@/shared/types/dispute";
-import { DLPP, dummyDisputes } from "@/utils/constant";
+import { DLPP } from "@/utils/constant";
 import SearchInput from "@/components/common/others/SearchInput";
 import FilterSelect from "@/components/common/others/FilterSelect";
 import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
@@ -10,16 +10,15 @@ import AuthService from "@/services/AuthService";
 import { useDebounce } from "use-debounce";
 import { Loader2 } from "lucide-react";
 
-// import { dummyDisputes } from "@/utils/constant";
 type Option<T> = { label: string; value: T };
 
-const typeOptions: Option<"All" | DisputeType>[] = [
+const typeOptions: Option< "All" | DisputeType >[] = [
   { label: "All", value: "All" },
   { label: DisputeType.CHAT, value: DisputeType.CHAT },
   { label: DisputeType.REVIEW, value: DisputeType.REVIEW },
 ];
 
-const statusOptions:  Option<"All" | DisputeStatus>[] = [
+const statusOptions: Option< "All" | DisputeStatus >[] = [
   { label: "All", value: "All" },
   { label: DisputeStatus.PENDING, value: DisputeStatus.PENDING },
   { label: DisputeStatus.RESOLVED, value: DisputeStatus.RESOLVED },
@@ -47,7 +46,7 @@ const DisputeSection = () => {
   useEffect(() => {
     const loadDisputes = async () => {
       setLoading(true);
-      const payload:DisputeListPayload = {
+      const payload: DisputeListPayload = {
         searchQuery: debouncedQuery,
         filterType: filters.type === "All" ? "" : filters.type,
         filterStatus: filters.status === "All" ? "" : filters.status,
@@ -57,7 +56,7 @@ const DisputeSection = () => {
 
       try {
         const res = await AuthService.getDispute(payload);
-        setDisputes(dummyDisputes);
+        setDisputes(res.data.disputeData);
         setTotalDisputes(res.data.total ?? 1);
       } finally {
         setLoading(false);

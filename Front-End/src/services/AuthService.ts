@@ -7,7 +7,7 @@ import { API_ROUTES } from "@/utils/constant";
 import type { Platform } from "@/shared/types/others";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import type { TimeRange } from "@/shared/types/dashboard";
-import type { DisputeListPayload, DisputeListResponse } from "@/shared/types/dispute";
+import type { DisputeContentResponse, DisputeListPayload, DisputeListResponse } from "@/shared/types/dispute";
 import type { AxiosResponse } from "axios";
 
 class AuthService {
@@ -274,7 +274,7 @@ class AuthService {
   }
 
   toggleUserStatusApi(userId: string) {
-    return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CUSTOMER_STATUS(userId));
+    return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_USER_STATUS(userId));
   }
 
   getAllProviderApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {
@@ -307,10 +307,14 @@ class AuthService {
     return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CATEGORY_STATUS(categoryId));
   }
 
-  getDispute(payload : DisputeListPayload ):Promise<AxiosResponse<DisputeListResponse>> {
+  getDispute(payload: DisputeListPayload): Promise<AxiosResponse<DisputeListResponse>> {
     return axiosInstance.get(API_ROUTES.ADMIN.DISPUTE_MANAGEMENT, { params: { ...payload } });
   }
-  
+
+  getDisputeContentById(disputeId: string): Promise<AxiosResponse<DisputeContentResponse>>{
+    return axiosInstance.get(API_ROUTES.ADMIN.DISPUTE_CONTENT_INFO(disputeId));
+  }
+
   // editProfileApi(form: ProfileEdit) {
   //   return axiosInstance.patch(API_ROUTES.ADMIN.EDIT_PROFILE, form, this.getJsonConfig());
   // }

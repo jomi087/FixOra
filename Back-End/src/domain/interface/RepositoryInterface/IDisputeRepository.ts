@@ -37,7 +37,7 @@ export interface IDisputeRepository {
     ): Promise<{
         data: {
             dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt">
-            user: Pick<User, "fname" | "lname">,
+            user: Pick<User, "userId" | "fname" | "lname" | "email" | "role">,
         }[]; total: number;
     }>
 
@@ -47,14 +47,8 @@ export interface IDisputeRepository {
      * @param status - The new dispute status.
      * @param adminNote - Optional admin note with action details.
     */
-    updateStatus(disputeId: string, status: string, adminNote?: { adminId: string; action: string }): Promise<Dispute | null>;
+    updateStatus(disputeId: string, status: string, adminNote ?: { adminId: string; action: string }): Promise<Dispute | null>;
 
 }
 
-/**
- * Retrieves all disputes matching optional filter conditions.
- * @param filters - Partial filter criteria.
- * @returns An array of Dispute entities.
- * findAll(filters?: Partial<Dispute>): Promise<Dispute[]>;
- * 
- */
+

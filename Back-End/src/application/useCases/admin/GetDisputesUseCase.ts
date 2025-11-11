@@ -25,7 +25,12 @@ export class GetDisputesUseCase implements IGetDisputesUseCase {
             const mappedData: DisputeListItemDTO[] = data.map(({ dispute, user }) => ({
                 disputeId: dispute.disputeId,
                 disputeType: dispute.disputeType,
-                reportedBy: `${user.fname} ${user.lname ?? "" } `,
+                reportedBy: {
+                    userId: user.userId,
+                    name: `${user.fname} ${user.lname ?? ""} `,
+                    email: user.email,
+                    role: user.role
+                },
                 reason : dispute.reason,
                 status : dispute.status,
                 createdAt : dispute.createdAt,

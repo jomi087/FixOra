@@ -17,6 +17,7 @@ import { IUpdateCommissionFeeUseCase } from "../../application/Interface/useCase
 import { IDashboardReportUseCase } from "../../application/Interface/useCases/Admin/IDashboardReportUseCase";
 import { IGetDisputesUseCase } from "../../application/Interface/useCases/Admin/IGetDisputesUseCase";
 import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
+import { IDisputeContentInfoUseCase } from "../../application/Interface/useCases/Admin/IDisputeContentInfoUseCase";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
@@ -34,6 +35,7 @@ export class AdminController {
         private _imageUploaderService: IImageUploaderService,
         private _toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
         private _getDisputesUseCase: IGetDisputesUseCase,
+        private _disputeContentInfoUseCase: IDisputeContentInfoUseCase,
         private _commissionFeeUseCase: ICommissionFeeUseCase,
         private _updateCommissionFeeUseCase: IUpdateCommissionFeeUseCase,
     ) { }
@@ -230,11 +232,11 @@ export class AdminController {
 
     async getDispute(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { searchQuery = "", filterType = "", filterStatus = "", page = 1, limit = 10 } = req.query; 
+            const { searchQuery = "", filterType = "", filterStatus = "", page = 1, limit = 10 } = req.query;
 
             const result = await this._getDisputesUseCase.execute({
                 searchQuery: String(searchQuery),
-                filterType: String(filterType) as  "" | DisputeType,
+                filterType: String(filterType) as "" | DisputeType,
                 filterStatus: String(filterStatus) as "" | DisputeStatus,
                 page: Number(page),
                 limit: Number(limit),
@@ -244,6 +246,22 @@ export class AdminController {
                 success: true,
                 disputeData: result.data,
                 total: result.total
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async disputeContentInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            const { disputeId } = req.params;
+            const result = await this._disputeContentInfoUseCase.execute(disputeId);
+
+            res.status(OK).json({
+                success: true,
+                contentData: result,
             });
 
         } catch (error) {

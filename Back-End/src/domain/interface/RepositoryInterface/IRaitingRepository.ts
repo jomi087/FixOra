@@ -13,6 +13,11 @@ export interface IRatingRepository {
         total: number
     }>
 
+    findReviewById(ratingId: string): Promise<{
+        rating: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
+        user: Pick<User, "userId" | "fname" | "lname" | "email" | "role">;
+    }>
+
     updateRating(ratingId: string,
         updateData: Partial<{ rating: number; feedback: string }>
     ): Promise<Rating | null>;

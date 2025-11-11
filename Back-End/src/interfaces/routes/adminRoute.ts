@@ -8,15 +8,22 @@ import { RoleEnum } from "../../shared/enums/Roles";
 
 const router = express.Router();
 router.get("/dashboard", AuthMiddleware([RoleEnum.Admin]),adminController.dashBoardReport.bind(adminController));
-router.get("/customer-management", AuthMiddleware([RoleEnum.Admin]), adminController.getCustomers.bind(adminController));
-router.patch("/customer-management/:userId",AuthMiddleware([RoleEnum.Admin]),adminController.toggleUserStatus.bind(adminController));
-router.get("/provider-management", AuthMiddleware([RoleEnum.Admin]), adminController.getProviders.bind(adminController));
+
+router.get("/customers", AuthMiddleware([RoleEnum.Admin]), adminController.getCustomers.bind(adminController));
+
+router.get("/providers", AuthMiddleware([RoleEnum.Admin]), adminController.getProviders.bind(adminController));
 router.get("/provider-applicationList", AuthMiddleware([RoleEnum.Admin]), adminController.getProviderApplications.bind(adminController));
 router.patch("/provider-kyc/:id",validateRequest(kycStatus), AuthMiddleware([RoleEnum.Admin]), adminController.updateKYCStatus.bind(adminController));
-router.get("/service-management",  AuthMiddleware([RoleEnum.Admin]), adminController.getServices.bind(adminController));
-router.post("/service-management", AuthMiddleware([RoleEnum.Admin]), upload.any(), validateCategory, adminController.addService.bind(adminController));
-router.patch("/service-management/:categoryId", AuthMiddleware([RoleEnum.Admin]), adminController.toggleCategoryStatus.bind(adminController));
-router.get("/dispute-management", AuthMiddleware([RoleEnum.Admin]), adminController.getDispute.bind(adminController));
+
+router.patch("/users/:userId/status",AuthMiddleware([RoleEnum.Admin]),adminController.toggleUserStatus.bind(adminController));
+
+router.get("/services", AuthMiddleware([RoleEnum.Admin]), adminController.getServices.bind(adminController));
+router.post("/services", AuthMiddleware([RoleEnum.Admin]), upload.any(), validateCategory, adminController.addService.bind(adminController));
+router.patch("/services/:categoryId/status", AuthMiddleware([RoleEnum.Admin]), adminController.toggleCategoryStatus.bind(adminController));
+
+router.get("/disputes", AuthMiddleware([RoleEnum.Admin]), adminController.getDispute.bind(adminController));
+router.get("/disputes/:disputeId/content", AuthMiddleware([RoleEnum.Admin]), adminController.disputeContentInfo.bind(adminController));
+
 router.get("/commission-fee", AuthMiddleware([RoleEnum.Admin]), adminController.commissionFee.bind(adminController));
 router.patch("/commission-fee", AuthMiddleware([RoleEnum.Admin]), adminController.updateCommissionFee.bind(adminController));
 export default router;

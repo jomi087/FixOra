@@ -1,13 +1,5 @@
 import type { DisputeStatus, DisputeType } from "../enums/Dispute";
-
-export interface Dispute {
-    disputeId: string;
-    disputeType: DisputeType;
-    reportedBy: string;
-    reason: string;
-    status: DisputeStatus;
-    createdAt: string;
-}
+import type { RoleEnum } from "../enums/roles";
 
 
 export interface DisputeListPayload {
@@ -18,7 +10,44 @@ export interface DisputeListPayload {
   limit: number;
 }
 
+export interface Dispute {
+  disputeId: string;
+  disputeType: DisputeType;
+  reportedBy: {
+    userId: string;
+    name: string;
+    email: string;
+    role: RoleEnum;
+    avatar?: string
+  },
+  reason: string;
+  status: DisputeStatus;
+  createdAt: string;
+}
+
+export interface DisputeContent {
+  id: string;
+  rating?: number;
+  description: string;
+  date: string;
+  user: {
+    userId: string
+    name: string;
+    email: string;
+    role: RoleEnum;
+    avatar?: string
+  },
+}
+
+export interface DisputeContentResponse {
+  success: boolean;
+  contentData: DisputeContent
+}
+
 export interface DisputeListResponse {
+  success: boolean;
   disputeData: Dispute[];
   total: number;
 }
+
+

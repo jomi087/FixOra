@@ -28,23 +28,6 @@ export class DisputeRepository implements IDisputeRepository {
     }
 
     /** @inheritdoc */
-    async updateStatus(
-        disputeId: string,
-        status: string,
-        adminNote?: { adminId: string; action: string }
-    ): Promise<Dispute | null> {
-        return DisputeModel.findOneAndUpdate(
-            { disputeId },
-            {
-                status,
-                adminNote,
-                resolvedAt: status === "RESOLVED" ? new Date() : undefined,
-            },
-            { new: true }
-        ).lean();
-    }
-
-    /** @inheritdoc */
     async findDisputeWithFilters(
         searchQuery: string,
         filterType: string, filterStatus: string,
@@ -52,18 +35,9 @@ export class DisputeRepository implements IDisputeRepository {
     ): Promise<{
         data: {
             dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt">
-            user: Pick<User, "fname" | "lname">,
+            user: Pick<User, "userId" |"fname" | "lname" | "email" | "role">,
         }[]; total: number;
     }> {
-
-        console.log(
-            `repo - 1,
-                searchQuery: ${searchQuery}, 
-                filterType: ${filterType},
-                filterStatus: ${filterStatus},
-                page: ${page},
-                limit: ${limit}`
-        );
 
         const search: Record<string, unknown> = {};
         if (searchQuery.trim()) {
@@ -87,7 +61,7 @@ export class DisputeRepository implements IDisputeRepository {
                     as: "userDetails",
                     pipeline: [
                         {
-                            $project: { fname: 1, lname: 1, _id: 0 },
+                            $project: { userId: 1, fname: 1, lname: 1, email: 1, role: 1, _id: 0 },
                         },
                     ],
                 },
@@ -96,7 +70,7 @@ export class DisputeRepository implements IDisputeRepository {
             {
                 $match: {
                     ...query,
-                    ...(searchQuery.trim() ? search : {}) 
+                    ...(searchQuery.trim() ? search : {})
                 }
             },
             { $sort: { createdAt: -1 } },
@@ -111,8 +85,11 @@ export class DisputeRepository implements IDisputeRepository {
                         createdAt: "$createdAt",
                     },
                     user: {
-                        fname: { $ifNull: ["$userDetails.fname", "[Deleted]"] },
-                        lname: { $ifNull: ["$userDetails.lname", "User"] },
+                        userId: { $ifNull: ["$userDetails.userId", "N/A"] },
+                        fname: { $ifNull: ["$userDetails.fname", "N/A"] },
+                        lname: { $ifNull: ["$userDetails.lname", "N/A"] },
+                        email: { $ifNull: ["$userDetails.email", "N/A"] },
+                        role: { $ifNull: ["$userDetails.role", "N/A"] },
                     },
                 },
             },
@@ -130,14 +107,22 @@ export class DisputeRepository implements IDisputeRepository {
 
         return { data, total };
     }
-}
 
-
-// async findAll(filters?: Partial<Dispute>): Promise<Dispute[]> {
-//     return DisputeModel.find(filters || {}).lean();
-// }
-/*
+    /** @inheritdoc */
+    async updateStatus(
+        disputeId: string,
+        status: string,
+        adminNote?: { adminId: string; action: string }
+    ): Promise<Dispute | null> {
+        return DisputeModel.findOneAndUpdate(
+            { disputeId },
             {
-                $match: { ...query, ...search },
+                status,
+                adminNote,
+                resolvedAt: status === "RESOLVED" ? new Date() : undefined,
             },
-            */
+            { new: true }
+        ).lean();
+    }
+
+}

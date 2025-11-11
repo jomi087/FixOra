@@ -6,5 +6,5 @@ export enum DisputeStatus {
 
 export enum DisputeType {
   REVIEW = "Review",
-  CHAT = "Chat",
+  // CHAT = "Chat",
 }

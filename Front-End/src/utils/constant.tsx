@@ -1,6 +1,7 @@
 import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
+import { RoleEnum } from "@/shared/enums/roles";
 import type { TimeRange } from "@/shared/types/dashboard";
-import type { Dispute } from "@/shared/types/dispute";
+import type { Dispute, DisputeContent } from "@/shared/types/dispute";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
@@ -264,18 +265,19 @@ export const API_ROUTES = {
   ADMIN: {
     DASHBOARD: (timeRange: TimeRange) => `/api/admin/dashboard?range=${timeRange}`,
 
-    CUSTOMER_MANAGEMENT: "/api/admin/customer-management",
-    TOGGLE_CUSTOMER_STATUS: (userId: string) =>
-      `/api/admin/customer-management/${userId}`,
+    CUSTOMER_MANAGEMENT: "/api/admin/customers",
 
-    PROVIDER_MANAGEMENT: "/api/admin/provider-management",
+    PROVIDER_MANAGEMENT: "/api/admin/providers",
     PROVIDER_APPLICATION_LIST: "/api/admin/provider-applicationList",
     PROVIDER_KYC: (id: string) => `/api/admin/provider-kyc/${id}`,
 
-    CATEGORY_MANAGEMENT: "/api/admin/service-management",
-    TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/service-management/${id}`,
+    TOGGLE_USER_STATUS: (userId: string) => `/api/admin/users/${userId}/status`,
 
-    DISPUTE_MANAGEMENT: "/api/admin/dispute-management",
+    CATEGORY_MANAGEMENT: "/api/admin/services",
+    TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/services/${id}/status`,
+
+    DISPUTE_MANAGEMENT: "/api/admin/disputes",
+    DISPUTE_CONTENT_INFO: (id: string) => `/api/admin/disputes/${id}/content`,
 
     COMMISSION_FEE: "/api/admin/commission-fee",
   },
@@ -345,70 +347,58 @@ export const blogPosts: Array<BlogPost> = [
   },
 ];
 /*************************************************************************************** */
+
 export const dummyDisputes: Dispute[] = [
   {
-    disputeId: "DISP-3a4b1c9e-f21a",
+    disputeId: "DSP-1001",
     disputeType: DisputeType.REVIEW,
-    contentId: "REV-001",
-    reportedBy: "USR-1001",
-    reason: "Inappropriate language in the review comments.",
-    status: DisputeStatus.PENDING,
-    createdAt: new Date("2025-10-25T10:32:00Z"),
-  },
-  {
-    disputeId: "DISP-9d12e0a8-f48f",
-    disputeType: DisputeType.CHAT,
-    contentId: "CHAT-204",
-    reportedBy: "USR-1020",
-    reason: "User reported harassment during chat with provider.",
-    status: DisputeStatus.PENDING,
-    createdAt: new Date("2025-10-28T14:10:00Z"),
-    updatedAt: new Date("2025-10-29T09:45:00Z"),
-  },
-  {
-    disputeId: "DISP-0a5c9b71-d912",
-    disputeType: DisputeType.REVIEW,
-    contentId: "REV-087",
-    reportedBy: "USR-1078",
-    reason: "Fake review suspected from competitor account.",
-    status: DisputeStatus.RESOLVED,
-    adminNote: {
-      adminId: "ADMIN-001",
-      action: "Review removed; verified false report.",
+    reportedBy: {
+      userId: "23",
+      name: "customerA",
+      email: "customerA@gmail.com",
+      role: RoleEnum.CUSTOMER
     },
-    createdAt: new Date("2025-09-22T08:00:00Z"),
-    resolvedAt: new Date("2025-09-25T10:15:00Z"),
+    reason: "Fake review content",
+    status: DisputeStatus.PENDING,
+    createdAt: "2025-11-05T12:45:00Z",
   },
   {
-    disputeId: "DISP-7b9d5c30-ff31",
+    disputeId: "DSP-1002",
     disputeType: DisputeType.CHAT,
-    contentId: "CHAT-332",
-    reportedBy: "USR-1089",
-    reason: "Provider was rude and unprofessional during chat.",
+    reportedBy: {
+      userId: "123",
+      name: "custoerB",
+      email: "custoerB@gmail.com",
+      role: RoleEnum.CUSTOMER
+    },
+    reason: "Harassment during chat",
+    status: DisputeStatus.RESOLVED,
+    createdAt: "2025-11-03T09:30:00Z",
+  },
+  {
+    disputeId: "DSP-1003",
+    disputeType: DisputeType.REVIEW,
+    reportedBy: {
+      userId: "12",
+      name: "customerC",
+      email: "customerC@gmail.com",
+      role: RoleEnum.CUSTOMER
+    },
+    reason: "Spam content",
     status: DisputeStatus.REJECTED,
-    adminNote: {
-      adminId: "ADMIN-003",
-      action: "Rejected — evidence not sufficient.",
-    },
-    createdAt: new Date("2025-10-10T11:25:00Z"),
-    updatedAt: new Date("2025-10-12T08:20:00Z"),
-  },
-  {
-    disputeId: "DISP-9e4a0f1b-b762",
-    disputeType: DisputeType.REVIEW,
-    contentId: "REV-231",
-    reportedBy: "USR-1125",
-    reason: "User falsely claimed the service was incomplete.",
-    status: DisputeStatus.RESOLVED,
-    createdAt: new Date("2025-11-03T17:40:00Z"),
-  },
-  {
-    disputeId: "DISP-1a5f2d8e-a4f3",
-    disputeType: DisputeType.CHAT,
-    contentId: "CHAT-540",
-    reportedBy: "USR-1099",
-    reason: "Chat message included inappropriate offers.",
-    status: DisputeStatus.PENDING,
-    createdAt: new Date("2025-11-06T09:05:00Z"),
+    createdAt: "2025-11-01T18:00:00Z",
   },
 ];
+
+export const Contentinfo: DisputeContent = {
+  id: "123",
+  description: "Provider arrived 2 hours late and was unprofessional during the session.",
+  rating: 1,
+  date: "2025-11-04",
+  user: {
+    userId: "1",
+    name: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    role: RoleEnum.CUSTOMER,
+  }
+};

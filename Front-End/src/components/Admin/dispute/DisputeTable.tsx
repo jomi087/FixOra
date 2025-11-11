@@ -1,32 +1,32 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import type { Dispute } from "@/shared/types/dispute";
+import type { Dispute, DisputeContent } from "@/shared/types/dispute";
 import { toPascalCase } from "@/utils/helper/utils";
 import { Loader2 } from "lucide-react";
 import DisputeDetailsModal from "./DisputeDetailsModal";
-import { dummyDisputeDetails } from "@/utils/constant";
+// import { Contentinfo } from "@/utils/constant";
+import AuthService from "@/services/AuthService";
 
-interface Props {
-	disputes: Dispute[];
+interface DisputeTableProps {
+  disputes: Dispute[];
 }
 
-export const DisputeTable: React.FC<Props> = ({ disputes }) => {
-  const [selectedDispute, setSelectedDispute] = useState<any | null>(null);
+export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
+  const [selectedDispute, setSelectedDispute] = useState<Dispute | null>(null);
+  const [contentInfo, setContentInfo] = useState<DisputeContent | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
-  const fetchDisputeDetails = async (disputeId: string) => {
+  const fetchDisputeDetails = async (dispute: Dispute) => {
     try {
-      setLoadingId(disputeId);
-      // const res = await fetch(`/api/disputes/${disputeId}`);
-      // if (!res.ok) throw new Error("Failed to fetch dispute details");
-      // const data = await res.json();
-      setSelectedDispute(dummyDisputeDetails);
+      setLoadingId(dispute.disputeId);
+      const res = await AuthService.getDisputeContentById(dispute.disputeId);
+      setSelectedDispute(dispute);
+      setContentInfo(res.data.contentData); 
       setIsModalOpen(true);
     } catch (err) {
       console.error(err);
@@ -49,36 +49,25 @@ export const DisputeTable: React.FC<Props> = ({ disputes }) => {
             <TableHead className="text-primary text-center font-bold">Action</TableHead>
           </TableRow>
         </TableHeader>
-
         <TableBody className="text-primary">
           {disputes.length > 0 ? (
             disputes.map((d) => (
               <TableRow key={d.disputeId}>
-                <TableCell className="py-3">{d.disputeId.split("-")[0]}</TableCell>
-                <TableCell className="py-3 text-center">{d.disputeType}</TableCell>
-                <TableCell className="py-3 text-center font-semibold font-roboto">{toPascalCase(d.reason)}</TableCell>
-                <TableCell className="py-3 text-center">{d.reportedBy.toUpperCase()}</TableCell>
-                <TableCell className="py-3 text-center">
-                  <Badge
-                    variant="secondary"
-                    className={
-                      d.status === "Resolved"
-                        ? "bg-green-500 text-white hover:bg-green-600"
-                        : d.status === "Rejected"
-                          ? "bg-red-500 text-white hover:bg-red-600"
-                          : "bg-orange-500 text-white hover:bg-orange-600"
-                    }
-                  >
-                    {d.status}
-                  </Badge>
+                <TableCell>{d.disputeId.split("-")[0]}</TableCell>
+                <TableCell className="text-center">{d.disputeType}</TableCell>
+                <TableCell className="text-center">{toPascalCase(d.reason)}</TableCell>
+                <TableCell className="text-center">{d.reportedBy.name}</TableCell>
+                <TableCell className="text-center">
+                  <Badge variant="secondary">{d.status}</Badge>
                 </TableCell>
-                <TableCell className="py-3 text-center">{format(new Date(d.createdAt), "dd MMM yyyy")}</TableCell>
-                <TableCell className="text-center py-3 ">
+                <TableCell className="text-center">
+                  {format(new Date(d.createdAt), "dd MMM yyyy")}
+                </TableCell>
+                <TableCell className="text-center">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="cursor-pointer active:scale-95"
-                    onClick={() => fetchDisputeDetails(d.disputeId)}
+                    onClick={() => fetchDisputeDetails(d)}
                     disabled={loadingId === d.disputeId}
                   >
                     {loadingId === d.disputeId ? (
@@ -92,10 +81,7 @@ export const DisputeTable: React.FC<Props> = ({ disputes }) => {
             ))
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={7}
-                className="h-[calc(100vh-34vh)] text-center text-muted-foreground italic font-mono text-lg"
-              >
+              <TableCell colSpan={7} className="text-center italic">
                 No disputes found
               </TableCell>
             </TableRow>
@@ -103,19 +89,23 @@ export const DisputeTable: React.FC<Props> = ({ disputes }) => {
         </TableBody>
       </Table>
 
-      {selectedDispute && (
+      {selectedDispute && contentInfo && (
         <DisputeDetailsModal
           open={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);
             setSelectedDispute(null);
+            setContentInfo(null);
           }}
-          disputeInfo={selectedDispute}
+          dispute={selectedDispute}
+          contentInfo={contentInfo}
           onDismiss={() => console.log("Dismissed")}
           onBlock={() => console.log("Blocked")}
           onDeleteReview={() => console.log("Deleted")}
         />
       )}
-    </div >
+    </div>
   );
 };
+
+

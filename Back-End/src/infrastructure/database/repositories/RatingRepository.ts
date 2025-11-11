@@ -25,7 +25,7 @@ export class RatingRepository implements IRatingRepository {
             {
                 $match: {
                     providerId: providerId,
-                    active:true
+                    active: true
                 }
             },
             {
@@ -65,6 +65,45 @@ export class RatingRepository implements IRatingRepository {
         const data = result[0]?.data ?? [];
         const total = result[0]?.total[0]?.count ?? 0;
         return { data, total };
+    }
+
+    async findReviewById(ratingId: string): Promise<{
+        rating: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
+        user: Pick<User, "userId" | "fname" | "lname" | "email" | "role">;
+    }> {
+        const result = await RatingModel.aggregate([
+            {
+                $match: { ratingId: ratingId }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "userId",
+                    as: "userDetails"
+                }
+            },
+            { $unwind: "$userDetails" },
+            {
+                $project: {
+                    _id: 0,
+                    rating: {
+                        ratingId: "$ratingId",
+                        rating: "$rating",
+                        feedback: "$feedback",
+                        createdAt: "$createdAt"
+                    },
+                    user: {
+                        userId: "$userDetails.userId",
+                        fname: "$userDetails.fname",
+                        lname: "$userDetails.lname",
+                        email: "$userDetails.email",
+                        role: "$userDetails.role"
+                    }
+                }
+            }
+        ]);
+        return result[0];
     }
 
     async updateRating(ratingId: string,

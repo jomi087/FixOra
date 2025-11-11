@@ -1,4 +1,5 @@
 import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
+import { RoleEnum } from "../../shared/enums/Roles";
 import { PaginationOutputDTO } from "./Common/PaginationDTO";
 
 export interface DisputeInputDTO {
@@ -19,11 +20,29 @@ export interface FilterDisputeInputDTO {
 export interface DisputeListItemDTO {
     disputeId: string;
     disputeType: DisputeType;
-    reportedBy: string;
+    reportedBy: {
+        userId: string;
+        name: string;
+        email: string;
+        role: RoleEnum;
+    },
     reason: string;
     status: DisputeStatus;
     createdAt: Date;
 }
 
+export interface DisputeContentOutput {
+    id: string;
+    rating?: number;
+    description: string;
+    date: Date;
+    user: {
+        userId: string;
+        name: string;
+        email: string;
+        role: string;
+    };
+};
 
 export interface DisputeListResponseDTO extends PaginationOutputDTO<DisputeListItemDTO> { }
+
