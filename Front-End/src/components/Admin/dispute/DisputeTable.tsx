@@ -26,7 +26,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
       setLoadingId(dispute.disputeId);
       const res = await AuthService.getDisputeContentById(dispute.disputeId);
       setSelectedDispute(dispute);
-      setContentInfo(res.data.contentData); 
+      setContentInfo(res.data.contentData);
       setIsModalOpen(true);
     } catch (err) {
       console.error(err);
@@ -56,9 +56,19 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
                 <TableCell>{shortId(d.disputeId)}</TableCell>
                 <TableCell className="text-center">{d.disputeType}</TableCell>
                 <TableCell className="text-center">{toPascalCase(d.reason)}</TableCell>
-                <TableCell className="text-center">{d.reportedBy.name}</TableCell>
+                <TableCell className="text-center">{toPascalCase(d.reportedBy.name)}</TableCell>
                 <TableCell className="text-center">
-                  <Badge variant="secondary">{d.status}</Badge>
+                  <Badge
+                    variant="secondary"
+                    className={`${d.status === "Pending"
+                      ? "bg-yellow-500/20 text-yellow-400"
+                      : d.status === "Resolved"
+                        ? "bg-green-500/20 text-green-400"
+                        : "bg-gray-700 text-gray-400"
+                    }`}
+                  >
+                    {d.status}
+                  </Badge>
                 </TableCell>
                 <TableCell className="text-center">
                   {format(new Date(d.createdAt), "dd MMM yyyy")}
