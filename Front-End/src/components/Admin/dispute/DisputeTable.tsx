@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import type { Dispute, DisputeContent } from "@/shared/types/dispute";
-import { toPascalCase } from "@/utils/helper/utils";
+import { shortId, toPascalCase } from "@/utils/helper/utils";
 import { Loader2 } from "lucide-react";
 import DisputeDetailsModal from "./DisputeDetailsModal";
 // import { Contentinfo } from "@/utils/constant";
@@ -53,7 +53,7 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
           {disputes.length > 0 ? (
             disputes.map((d) => (
               <TableRow key={d.disputeId}>
-                <TableCell>{d.disputeId.split("-")[0]}</TableCell>
+                <TableCell>{shortId(d.disputeId)}</TableCell>
                 <TableCell className="text-center">{d.disputeType}</TableCell>
                 <TableCell className="text-center">{toPascalCase(d.reason)}</TableCell>
                 <TableCell className="text-center">{d.reportedBy.name}</TableCell>

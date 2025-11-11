@@ -22,8 +22,13 @@ export const shortBookingId = (bookingId: string): string => {
   return `Bk_${shortUUID}`;
 };
 
+export const shortId = (id: string): string => {
+  const shortUUID = id.split("-")[0]?.toLocaleUpperCase();
+  return `${shortUUID}`;
+};
+
 export const formatINRCurrency = (amount?: number | null): string => {
-  if (amount == undefined || amount == null ) return "N/A";
+  if (amount == undefined || amount == null) return "N/A";
   return amount.toLocaleString("en-IN", {
     style: "currency",
     currency: "INR",
