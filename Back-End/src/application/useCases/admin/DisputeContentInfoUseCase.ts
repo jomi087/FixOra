@@ -12,7 +12,7 @@ const { INTERNAL_ERROR, } = Messages;
 export class DisputeContentInfoUseCase implements IDisputeContentInfoUseCase {
     constructor(
         private readonly _disputeRepository: IDisputeRepository,
-        private readonly handlers: Record<DisputeType, IDisputeContentHandler>
+        private readonly _handlers: Record<DisputeType, IDisputeContentHandler>
     ) { }
 
     async execute(disputeId: string): Promise<DisputeContentOutput> {
@@ -20,7 +20,7 @@ export class DisputeContentInfoUseCase implements IDisputeContentInfoUseCase {
             const disputeData = await this._disputeRepository.findById(disputeId);
             if (!disputeData) throw { status: NOT_FOUND, message: "DisputeId Not Found" };
 
-            const handler = this.handlers[disputeData.disputeType];
+            const handler = this._handlers[disputeData.disputeType];
             if (!handler) throw { status: NOT_FOUND, message: "Unsupported dispute type" };
 
             return await handler.getContent(disputeData.contentId);

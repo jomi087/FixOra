@@ -1,39 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
-import type { Dispute, DisputeContent } from "@/shared/types/dispute";
+import type { Dispute } from "@/shared/types/dispute";
 import { shortId, toPascalCase } from "@/utils/helper/utils";
-import { Loader2 } from "lucide-react";
-import DisputeDetailsModal from "./DisputeDetailsModal";
-// import { Contentinfo } from "@/utils/constant";
-import AuthService from "@/services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 interface DisputeTableProps {
   disputes: Dispute[];
 }
 
 export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
-  const [selectedDispute, setSelectedDispute] = useState<Dispute | null>(null);
-  const [contentInfo, setContentInfo] = useState<DisputeContent | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loadingId, setLoadingId] = useState<string | null>(null);
-
-  const fetchDisputeDetails = async (dispute: Dispute) => {
-    try {
-      setLoadingId(dispute.disputeId);
-      const res = await AuthService.getDisputeContentById(dispute.disputeId);
-      setSelectedDispute(dispute);
-      setContentInfo(res.data.contentData);
-      setIsModalOpen(true);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoadingId(null);
-    }
-  };
+  const navigate = useNavigate();
 
   return (
     <div className="rounded-md text-nav">
@@ -60,11 +39,11 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
                 <TableCell className="text-center">
                   <Badge
                     variant="secondary"
-                    className={`${d.status === "Pending"
-                      ? "bg-yellow-500/20 text-yellow-400"
+                    className={`px-2 py-1.5 ${d.status === "Pending"
+                      ? "bg-yellow-500/10 text-yellow-400"
                       : d.status === "Resolved"
-                        ? "bg-green-500/20 text-green-400"
-                        : "bg-gray-700 text-gray-400"
+                        ? "bg-gray-500/30 text-green-400"
+                        : "bg-gray-500/30 text-primary-400/50"
                     }`}
                   >
                     {d.status}
@@ -77,14 +56,9 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => fetchDisputeDetails(d)}
-                    disabled={loadingId === d.disputeId}
+                    onClick={() => navigate(`/admin/disputes/${d.disputeId}`)}
                   >
-                    {loadingId === d.disputeId ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      "View"
-                    )}
+                    View
                   </Button>
                 </TableCell>
               </TableRow>
@@ -98,24 +72,6 @@ export const DisputeTable: React.FC<DisputeTableProps> = ({ disputes }) => {
           )}
         </TableBody>
       </Table>
-
-      {selectedDispute && contentInfo && (
-        <DisputeDetailsModal
-          open={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedDispute(null);
-            setContentInfo(null);
-          }}
-          dispute={selectedDispute}
-          contentInfo={contentInfo}
-          onDismiss={() => console.log("Dismissed")}
-          onBlock={() => console.log("Blocked")}
-          onDeleteReview={() => console.log("Deleted")}
-        />
-      )}
     </div>
   );
 };
-
-

@@ -1,8 +1,11 @@
 import { PipelineStage } from "mongoose";
+import { DisputeStatus } from "../../../shared/enums/Dispute";
+import { DisputeModel } from "../models/DisputeModel";
+
 import { Dispute } from "../../../domain/entities/DisputeEntity";
 import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
-import { DisputeModel } from "../models/DisputeModel";
 import { User } from "../../../domain/entities/UserEntity";
+// import { ITransactionSession } from "../../../domain/interface/DatabaseInterface/ITransactionManager";
 
 
 export class DisputeRepository implements IDisputeRepository {
@@ -34,8 +37,9 @@ export class DisputeRepository implements IDisputeRepository {
         page: number, limit: number
     ): Promise<{
         data: {
-            dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt">
-            user: Pick<User, "userId" |"fname" | "lname" | "email" | "role">,
+            dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt" | "adminNote">
+            user: Pick<User, "userId" | "fname" | "lname" | "email" | "role">,
+            admin: Pick<User, "fname" | "lname">
         }[]; total: number;
     }> {
 
@@ -68,6 +72,20 @@ export class DisputeRepository implements IDisputeRepository {
             },
             { $unwind: { path: "$userDetails", preserveNullAndEmptyArrays: true } },
             {
+                $lookup: {
+                    from: "users",
+                    localField: "adminNote.adminId",
+                    foreignField: "userId",
+                    as: "adminDetails",
+                    pipeline: [
+                        {
+                            $project: { fname: 1, lname: 1, _id: 0 },
+                        },
+                    ],
+                },
+            },
+            { $unwind: { path: "$adminDetails", preserveNullAndEmptyArrays: true } },
+            {
                 $match: {
                     ...query,
                     ...(searchQuery.trim() ? search : {})
@@ -83,6 +101,7 @@ export class DisputeRepository implements IDisputeRepository {
                         reason: "$reason",
                         status: "$status",
                         createdAt: "$createdAt",
+                        adminNote: "$adminNote"
                     },
                     user: {
                         userId: { $ifNull: ["$userDetails.userId", "N/A"] },
@@ -91,6 +110,10 @@ export class DisputeRepository implements IDisputeRepository {
                         email: { $ifNull: ["$userDetails.email", "N/A"] },
                         role: { $ifNull: ["$userDetails.role", "N/A"] },
                     },
+                    admin: {
+                        fname: { $ifNull: ["$adminDetails.fname", "N/A"] },
+                        lname: { $ifNull: ["$adminDetails.lname", ""] },
+                    }
                 },
             },
             {
@@ -109,20 +132,24 @@ export class DisputeRepository implements IDisputeRepository {
     }
 
     /** @inheritdoc */
-    async updateStatus(
+    async updateDispute(
         disputeId: string,
-        status: string,
-        adminNote?: { adminId: string; action: string }
+        status: DisputeStatus,
+        adminNote: { adminId: string; action: string },
+        // txSession?: ITransactionSession
     ): Promise<Dispute | null> {
-        return DisputeModel.findOneAndUpdate(
+
+        // const session = (txSession as any)?.nativeSession;
+        const updatedDispute = await DisputeModel.findOneAndUpdate(
             { disputeId },
             {
-                status,
-                adminNote,
-                resolvedAt: status === "RESOLVED" ? new Date() : undefined,
-            },
-            { new: true }
+                $set: {
+                    status,
+                    adminNote,
+                    resolvedAt: new Date(),
+                },
+            }, { new: true } // { new: true, session }
         ).lean();
+        return updatedDispute || null;
     }
-
 }

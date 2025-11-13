@@ -7,7 +7,14 @@ export interface DisputeInputDTO {
     disputeType: DisputeType;
     contextId: string;  // disputype related id (like rating id or chat id) 
     reason: string;
-}
+};
+
+export interface DisputeActionInputDTO {
+    disputeId: string;
+    userId: string;
+    reason: string;
+    status: DisputeStatus;
+};
 
 export interface FilterDisputeInputDTO {
     searchQuery: string;
@@ -15,7 +22,7 @@ export interface FilterDisputeInputDTO {
     filterStatus: "" | DisputeStatus;
     page: number;
     limit: number;
-}
+};
 
 export interface DisputeListItemDTO {
     disputeId: string;
@@ -28,8 +35,13 @@ export interface DisputeListItemDTO {
     },
     reason: string;
     status: DisputeStatus;
+    adminNote?: {
+        name: string;
+        action: string;
+    };
     createdAt: Date;
-}
+
+};
 
 export interface DisputeContentOutput {
     id: string;
@@ -44,5 +56,12 @@ export interface DisputeContentOutput {
     };
 };
 
-export interface DisputeListResponseDTO extends PaginationOutputDTO<DisputeListItemDTO> { }
+export interface DisputeListResponseDTO extends PaginationOutputDTO<DisputeListItemDTO> { };
 
+export interface DisputeActionOutputDTO {
+    status: string;
+    adminNote: {
+        name: string;
+        action: string;
+    };
+}

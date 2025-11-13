@@ -26,6 +26,7 @@ export const stringMinMax = (mini: number, miniMsg: string, maxi: number, maxiMs
     .min(mini, miniMsg)
     .max(maxi, maxiMsg);
 
+export const disputeStatus = ["Pending", "Resolved", "Rejected"];
 
 export const firstNameField = z.string().trim().min(3, "First name is required, minimum 4 Characters");
 export const lastNameField = z.string().trim().min(2, "Last name is required, minimum 2 Characters");

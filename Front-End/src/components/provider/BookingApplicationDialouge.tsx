@@ -35,7 +35,7 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
 
     if (!actionType) return;
     if (actionType === ProviderResponseStatus.REJECTED && !reason.trim()) {
-      return setErrorMsg(validationMsg.REASON_INVALID);
+      return setErrorMsg(validationMsg.INVALID);
     }
 
     try {

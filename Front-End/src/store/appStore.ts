@@ -9,7 +9,7 @@ import providerInfoReducer from "./user/providerInfoSlice";
 import providerBookingReducer from "./provider/bookingSlice";
 import providerBookingRequestReducer from "./provider/bookingRequestSlice";
 import availabilityReducer from "./provider/availabilitySlice";
-
+import disputeReducer from "./admin/disputeSlice";
 const appStore = configureStore({
   reducer: {
     auth: authReducer,
@@ -23,6 +23,9 @@ const appStore = configureStore({
     providerBookingInfo: providerBookingReducer,
     providerBookingRequest: providerBookingRequestReducer,
     availability: availabilityReducer,
+
+    disputes: disputeReducer,
+
   }
 });
 

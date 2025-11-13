@@ -18,6 +18,7 @@ import { IDashboardReportUseCase } from "../../application/Interface/useCases/Ad
 import { IGetDisputesUseCase } from "../../application/Interface/useCases/Admin/IGetDisputesUseCase";
 import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
 import { IDisputeContentInfoUseCase } from "../../application/Interface/useCases/Admin/IDisputeContentInfoUseCase";
+import { IDisputeActionUseCase } from "../../application/Interface/useCases/Admin/IDisputeActionUseCase";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
@@ -36,6 +37,7 @@ export class AdminController {
         private _toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
         private _getDisputesUseCase: IGetDisputesUseCase,
         private _disputeContentInfoUseCase: IDisputeContentInfoUseCase,
+        private _disputeActionUseCase: IDisputeActionUseCase,
         private _commissionFeeUseCase: ICommissionFeeUseCase,
         private _updateCommissionFeeUseCase: IUpdateCommissionFeeUseCase,
     ) { }
@@ -269,11 +271,32 @@ export class AdminController {
         }
     }
 
-    async commissionFee(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async disputeAction(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+
             if (!req.user?.userId) {
                 throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
             }
+
+            const userId = req.user.userId;
+            const { disputeId } = req.params;
+            const { reason, status } = req.body;
+
+            const result = await this._disputeActionUseCase.execute({ disputeId, userId, reason, status });
+
+            res.status(OK).json({
+                success: true,
+                disputeStatus: result.status,
+                adminNote : result.adminNote
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async commissionFee(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
 
             const data = await this._commissionFeeUseCase.execute();
 

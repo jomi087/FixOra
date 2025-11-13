@@ -15,14 +15,14 @@ export class GetDisputesUseCase implements IGetDisputesUseCase {
     async execute(input: FilterDisputeInputDTO): Promise<DisputeListResponseDTO> {
         try {
             const { searchQuery, filterType, filterStatus, limit, page } = input;
-            
+
             const { data, total } = await this._disputeRepository.findDisputeWithFilters(
                 searchQuery,
                 filterType, filterStatus,
                 page, limit
             );
 
-            const mappedData: DisputeListItemDTO[] = data.map(({ dispute, user }) => ({
+            const mappedData: DisputeListItemDTO[] = data.map(({ dispute, user, admin }) => ({
                 disputeId: dispute.disputeId,
                 disputeType: dispute.disputeType,
                 reportedBy: {
@@ -31,9 +31,13 @@ export class GetDisputesUseCase implements IGetDisputesUseCase {
                     email: user.email,
                     role: user.role
                 },
-                reason : dispute.reason,
-                status : dispute.status,
-                createdAt : dispute.createdAt,
+                reason: dispute.reason,
+                status: dispute.status,
+                adminNote: admin && dispute.adminNote ? {
+                    name: `${admin.fname} ${admin.lname ?? ""} `,
+                    action: dispute.adminNote.action
+                } : undefined,
+                createdAt: dispute.createdAt,
             }));
 
             return {
@@ -41,7 +45,7 @@ export class GetDisputesUseCase implements IGetDisputesUseCase {
                 total,
             };
 
-        } catch(error) {
+        } catch (error) {
             console.log(error);
             if (error.status && error.message) {
                 throw error;

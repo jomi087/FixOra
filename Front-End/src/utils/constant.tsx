@@ -1,7 +1,4 @@
-import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
-import { RoleEnum } from "@/shared/enums/roles";
 import type { TimeRange } from "@/shared/types/dashboard";
-import type { Dispute, DisputeContent } from "@/shared/types/dispute";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
@@ -102,7 +99,8 @@ export const Messages = {
 export const validationMsg = {
   ISSUE_TYPE_REQUIRED: "Issue Type is required.",
   ISSUE_DESCRIPTION_REQUIRED: "Please describe the issue.",
-  REASON_INVALID: "Please enter a valid Reason"
+  INVALID: "Feild Required",
+  MIN_LENGTH : (min: number) => `Minimum ${min} characters required.`,
 };
 
 export const placeHolder = {
@@ -165,7 +163,7 @@ export const adminSideBarOptions: SideBarOption[] = [
   { icon: Users, section: "Users", to: "/admin/users" },
   { icon: Users, section: "Providers", to: "/admin/providers" },
   { icon: Wrench, section: "Services", to: "/admin/services" },
-  { icon: AlertTriangle, section: "Dispute", to: "/admin/dispute" },
+  { icon: AlertTriangle, section: "Dispute", to: "/admin/disputes" },
   { icon: Settings, section: "Settings", to: "/admin/settings" },
 ];
 
@@ -278,6 +276,7 @@ export const API_ROUTES = {
 
     DISPUTE_MANAGEMENT: "/api/admin/disputes",
     DISPUTE_CONTENT_INFO: (id: string) => `/api/admin/disputes/${id}/content`,
+    DISPUTE_ACTION: (id: string) => `/api/admin/disputes/${id}/action`,
 
     COMMISSION_FEE: "/api/admin/commission-fee",
   },
@@ -347,58 +346,3 @@ export const blogPosts: Array<BlogPost> = [
   },
 ];
 /*************************************************************************************** */
-
-export const dummyDisputes: Dispute[] = [
-  {
-    disputeId: "DSP-1001",
-    disputeType: DisputeType.REVIEW,
-    reportedBy: {
-      userId: "23",
-      name: "customerA",
-      email: "customerA@gmail.com",
-      role: RoleEnum.CUSTOMER
-    },
-    reason: "Fake review content",
-    status: DisputeStatus.PENDING,
-    createdAt: "2025-11-05T12:45:00Z",
-  },
-  {
-    disputeId: "DSP-1002",
-    disputeType: DisputeType.CHAT,
-    reportedBy: {
-      userId: "123",
-      name: "custoerB",
-      email: "custoerB@gmail.com",
-      role: RoleEnum.CUSTOMER
-    },
-    reason: "Harassment during chat",
-    status: DisputeStatus.RESOLVED,
-    createdAt: "2025-11-03T09:30:00Z",
-  },
-  {
-    disputeId: "DSP-1003",
-    disputeType: DisputeType.REVIEW,
-    reportedBy: {
-      userId: "12",
-      name: "customerC",
-      email: "customerC@gmail.com",
-      role: RoleEnum.CUSTOMER
-    },
-    reason: "Spam content",
-    status: DisputeStatus.REJECTED,
-    createdAt: "2025-11-01T18:00:00Z",
-  },
-];
-
-export const Contentinfo: DisputeContent = {
-  id: "123",
-  description: "Provider arrived 2 hours late and was unprofessional during the session.",
-  rating: 1,
-  date: "2025-11-04",
-  user: {
-    userId: "1",
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    role: RoleEnum.CUSTOMER,
-  }
-};

@@ -22,6 +22,10 @@ export interface Dispute {
   },
   reason: string;
   status: DisputeStatus;
+  adminNote?: {
+    name: string;
+    action: string;
+  };
   createdAt: string;
 }
 

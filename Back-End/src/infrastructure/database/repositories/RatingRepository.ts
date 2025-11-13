@@ -3,16 +3,20 @@ import { Rating } from "../../../domain/entities/RatingEntity";
 import { User } from "../../../domain/entities/UserEntity";
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { RatingModel } from "../models/RatingModel";
+// import { ITransactionSession } from "../../../domain/interface/DatabaseInterface/ITransactionManager";
 
 export class RatingRepository implements IRatingRepository {
+    /** @inheritdoc */
     async findByBookingID(bookingId: string): Promise<Rating | null> {
         return RatingModel.findOne({ bookingId }).lean();
     }
 
+    /** @inheritdoc */
     async create(rating: Rating): Promise<void> {
         await new RatingModel(rating).save();
     }
 
+    /** @inheritdoc */
     async findActiveProviderReviews(providerId: string, currentPage: number, limit: number): Promise<{
         data: {
             rating: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
@@ -67,6 +71,7 @@ export class RatingRepository implements IRatingRepository {
         return { data, total };
     }
 
+    /** @inheritdoc */
     async findReviewById(ratingId: string): Promise<{
         rating: Pick<Rating, "ratingId" | "rating" | "feedback" | "createdAt">;
         user: Pick<User, "userId" | "fname" | "lname" | "email" | "role">;
@@ -106,6 +111,7 @@ export class RatingRepository implements IRatingRepository {
         return result[0];
     }
 
+    /** @inheritdoc */
     async updateRating(ratingId: string,
         updateData: Partial<{ rating: number; feedback: string }>
     ): Promise<Rating | null> {
@@ -116,4 +122,19 @@ export class RatingRepository implements IRatingRepository {
             { new: true }
         ).lean();
     }
+
+    /** @inheritdoc */
+    async deactivateRating(ratingId: string /*txSession?: ITransactionSession*/): Promise<boolean> {
+        // const session = (txSession as any)?.nativeSession;
+        const result = await RatingModel.findOneAndUpdate(
+            { ratingId },
+            { $set: { active: false, updatedAt: new Date() } },
+            { new: true } //{ new: true, session }
+        );
+
+        return !!result;
+    }
+
+
+
 }

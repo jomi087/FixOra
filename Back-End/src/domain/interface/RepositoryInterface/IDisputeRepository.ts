@@ -1,32 +1,40 @@
+import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { Dispute } from "../../entities/DisputeEntity";
 import { User } from "../../entities/UserEntity";
+// import { ITransactionSession } from "../DatabaseInterface/ITransactionManager";
 
 export interface IDisputeRepository {
     /**
      * Persists a new Dispute entity to the database.
-     * @param dispute - The Dispute entity containing all required details.
-     */
+     * @param dispute
+     * @returns A Promise resolving to the newly created dispute entity.
+    */
     create(dispute: Dispute): Promise<Dispute>;
 
     /**
      * Finds a dispute by its unique disputeId.
-     * @param disputeId - The unique identifier of the dispute.
-     */
+     * @param disputeId
+     * @returns A Promise resolving to the dispute entity if found, otherwise null.
+    */
     findById(disputeId: string): Promise<Dispute | null>;
 
     /**
      * Find existing dispute by the user on same contentId 
      * @param userId 
-     * @param contentId 
-     */
+     * @param contentId
+     * @returns A Promise resolving to true if a dispute exists, otherwise false.
+    */
     findExistingDispute(userId: string, contentId: string): Promise<boolean>;
 
     /**
-     * Fetches a paginated list of disputes based on search and filter criteria.
-     * Performs text search, filtering by type and status, and applies pagination.
-     * @param options - Contains search and filter (Filtering options for dispute type and status) parameters for the query 
-     * @param currentPage  
+     * Retrieves a paginated list of disputes filtered by search, type, and status.
+     * Performs a text search on dispute data, applies type/status filters, and paginates results.
+     * @param searchQuery 
+     * @param filterType 
+     * @param filterStatus 
+     * @param page
      * @param limit
+     * @returns A Promise resolving to a paginated result containing dispute-user pairs and the total count.
     */
     findDisputeWithFilters(
         searchQuery: string,
@@ -36,18 +44,28 @@ export interface IDisputeRepository {
         limit: number
     ): Promise<{
         data: {
-            dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt">
+            dispute: Pick<Dispute, "disputeId" | "disputeType" | "reason" | "status" | "createdAt" | "adminNote">
             user: Pick<User, "userId" | "fname" | "lname" | "email" | "role">,
+            admin: Pick<User, "fname" | "lname">
         }[]; total: number;
     }>
 
     /**
-     * Updates the status and optional admin note of a dispute.
+     * Updates dispute by updatating the status, Admin ( info, notes )and resolvedAt
      * @param disputeId - The ID of the dispute to update.
      * @param status - The new dispute status.
-     * @param adminNote - Optional admin note with action details.
+     * @param adminNote -  admin info & note of action details.
+     * @returns A Promise resolving to the updated Dispute entity, or null if not found.
     */
-    updateStatus(disputeId: string, status: string, adminNote ?: { adminId: string; action: string }): Promise<Dispute | null>;
+    updateDispute(
+        disputeId: string,
+        status: DisputeStatus,
+        adminNote: {
+            adminId: string;
+            action: string
+        },
+        // txSession?: ITransactionSession
+    ): Promise<Dispute | null>;
 
 }
 

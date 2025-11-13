@@ -42,6 +42,7 @@ import CommissionFeePage from "@/pages/admin/CommissionFeePage.tsx";
 import PublicRoute from "./PublicRoute.tsx";
 import SalesPage from "@/pages/provider/SalesPage.tsx";
 import DisputePage from "@/pages/admin/DisputePage.tsx";
+import DisputeInfoPage from "@/pages/admin/DisputeInfoPage.tsx";
 
 
 
@@ -151,7 +152,8 @@ const router = createBrowserRouter([
       { path: "providers", element: <ProviderManagement /> },
       { path: "provider-request", element: <ProviderApplicationPage /> },
       { path: "services", element: <ServiceManagement /> },
-      { path: "dispute", element: <DisputePage /> },
+      { path: "disputes", element: <DisputePage /> },
+      { path: "disputes/:disputeId", element: <DisputeInfoPage /> },
       { path: "settings", element: <SettingsPage /> },
       { path: "settings/profile", element: <AdminProfilePage /> },
       { path: "change-password", element: <ChangePasswordPage /> },

@@ -25,6 +25,10 @@ import { PushNotificationService } from "../infrastructure/services/PushNotifica
 import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService";
 import { PaymentService } from "../infrastructure/services/PaymentService";
 
+import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
+import { ReviewDisputeActionHandler } from "../application/useCases/admin/handlers/DisputeActionHandler";
+
+// Data-access Repositories
 const userRepository = new UserRepository();
 const otpRepository = new OtpRepository();
 const categoryRepository = new CategoryRepository();
@@ -38,6 +42,7 @@ const ratingRepository = new RatingRepository();
 const commissionFeeRepository = new CommissionFeeRepository();
 const disputeRepository = new DisputeRepository();
 
+// business/technical service 
 const loggerService = new WinstonLogger();
 const emailService = new EmailService();
 const otpGenratorservice = new OtpGenratorservice();
@@ -50,6 +55,12 @@ const pushNotificationService = new PushNotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
 const paymentService = new PaymentService();
 
+// strategy handler,
+const reviewHandler = new ReviewDisputeContentHandler(ratingRepository);
+const reviewActionHandler = new ReviewDisputeActionHandler(ratingRepository);
+
+// import { MongooseTransactionManager } from "../infrastructure/database/mongooseTransactionManager";
+// const transactionManager = new MongooseTransactionManager();
 
 /******************************************************************************************************************************************************/
 import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware";
@@ -248,10 +259,11 @@ const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepo
 import { GetDisputesUseCase } from "../application/useCases/admin/GetDisputesUseCase";
 const getDisputesUseCase = new GetDisputesUseCase(disputeRepository);
 
-import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
-const reviewHandler = new ReviewDisputeContentHandler(ratingRepository);
 import { DisputeContentInfoUseCase } from "../application/useCases/admin/DisputeContentInfoUseCase";
-const disputeContentInfoUseCase = new DisputeContentInfoUseCase(disputeRepository, { [DisputeType.REVIEW]: reviewHandler, });
+const disputeContentInfoUseCase = new DisputeContentInfoUseCase(disputeRepository, { [DisputeType.REVIEW]: reviewHandler });
+
+import { DisputeActionUseCase } from "../application/useCases/admin/DisputeActionUseCase";
+const disputeActionUseCase = new DisputeActionUseCase(disputeRepository, { [DisputeType.REVIEW]: reviewActionHandler }, userRepository /* transactionManager */);
 
 import { CommissionFeeUseCase } from "../application/useCases/admin/CommissionFeeUseCase";
 const commissionFeeUseCase = new CommissionFeeUseCase(commissionFeeRepository);
@@ -274,7 +286,7 @@ const userController = new UserController(activeServiceUseCase, getActiveProvide
 
 const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase);
 
-const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, disputeContentInfoUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
+const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, disputeContentInfoUseCase, disputeActionUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
 
 export {
     publicController,
