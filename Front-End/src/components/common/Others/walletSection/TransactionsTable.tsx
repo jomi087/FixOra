@@ -5,6 +5,7 @@ import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import type { Transaction } from "@/shared/types/wallet";
 import { TransactionStatus, TransactionType } from "@/shared/enums/Transaction";
 import Pagination from "@/components/common/others/Pagination";
+import { shortId } from "@/utils/helper/utils";
 
 
 const statusConfig: Record<
@@ -73,7 +74,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page
                           Payment Not Completed 
                         </span>
                       ) : (
-                        tx.transactionId
+                        shortId(tx.transactionId)
                       )}
                     </TableCell>
                     <TableCell>{tx.amount}</TableCell>

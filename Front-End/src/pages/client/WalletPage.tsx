@@ -1,4 +1,4 @@
-import Wallet from "@/components/client/accountSection/walletSection/Wallet";
+import Wallet from "@/components/common/others/walletSection/Wallet";
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/others/SideBar";
 import { userSideBarOptions } from "@/utils/constant";
