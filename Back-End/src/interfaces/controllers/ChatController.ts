@@ -4,7 +4,7 @@ import { Messages } from "../../shared/const/Messages";
 
 import { IGetUserChatsUseCase } from "../../application/Interface/useCases/chat/IGetUserChatsUseCase";
 import { IStartChatUseCase } from "../../application/Interface/useCases/chat/IStartChatUseCase";
-import { IGetChatMessagesUseCase } from "../../application/Interface/useCases/chat/IGetChatMessagesUseCase ";
+import { IGetChatMessagesUseCase } from "../../application/Interface/useCases/chat/IGetChatMessagesUseCase";
 
 const { OK, UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG } = Messages;
