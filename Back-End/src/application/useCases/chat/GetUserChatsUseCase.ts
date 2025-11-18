@@ -3,7 +3,7 @@ import { IChatRepository } from "../../../domain/interface/RepositoryInterface/I
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { GetChatsInputDTO } from "../../DTOs/ChatDTO";
-import { IGetUserChatsUseCase } from "../../Interface/useCases/chat/GetUserChatsUseCase";
+import { IGetUserChatsUseCase } from "../../Interface/useCases/chat/IGetUserChatsUseCase";
 
 
 const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
