@@ -41,7 +41,7 @@ export class UserController {
         private _providerInfoUseCase: IProviderInfoUseCase,
         private _getProviderReviewsUseCase: IGetProviderReviewsUseCase,
         private _updateReviewUseCase: IUpdateReviewUseCase,
-        private _createDisputeAndNotifyUseCase : ICreateDisputeAndNotifyUseCase,
+        private _createDisputeAndNotifyUseCase: ICreateDisputeAndNotifyUseCase,
         private _bookingUseCase: IBookingUseCase,
         private _createPaymentUseCase: ICreatePaymentUseCase,
         private _walletPaymentUseCase: IWalletPaymentUseCase,
@@ -234,8 +234,8 @@ export class UserController {
             }
             const userId = req.user.userId;
             const disputeType = DisputeType.REVIEW;
-            const { ratingId:contextId, reason } = req.body;
-            await this._createDisputeAndNotifyUseCase.execute({ userId, disputeType ,contextId, reason });
+            const { ratingId: contextId, reason } = req.body;
+            await this._createDisputeAndNotifyUseCase.execute({ userId, disputeType, contextId, reason });
 
             res.status(OK).json({
                 success: true,
@@ -497,7 +497,6 @@ export class UserController {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
             }
 
-
             const reviewStatus = await this._reviewStatusUseCase.execute(bookingId);
 
             res.status(OK).json({
@@ -526,7 +525,6 @@ export class UserController {
             next(error);
         }
     }
-
 
     async walletInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -572,5 +570,4 @@ export class UserController {
             next(error);
         }
     }
-
 }

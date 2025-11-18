@@ -1,5 +1,5 @@
 import express from "express";
-import { AuthMiddleware, userController } from "../../main/dependencyInjector";
+import { AuthMiddleware, userController, chatController } from "../../main/dependencyInjector";
 import { validateRequest } from "../middleware/validateRequest";
 import { bookingIdSchema, bookingRequestSchema } from "../validations/bookingSchema";
 import { resetPasswordSchema, verifyPasswordSchema } from "../validations/authSchema";
@@ -10,6 +10,7 @@ import upload from "../middleware/upload";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { addFundsSchema } from "../validations/walletSchema";
 import { addReviewSchema, reportReviewSchema, updateReviewSchema } from "../validations/reviewSchema";
+import { startChatSchema } from "../validations/chatSchema";
 
 const router = express.Router();
 
@@ -51,6 +52,10 @@ router.get("/booking-history", AuthMiddleware([RoleEnum.Customer]), (req, res, n
 router.get("/bookingDetails/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.bookingDetails.bind(userController));
 router.patch("/booking/retry-availability/:bookingId",AuthMiddleware([RoleEnum.Customer]), userController.retryAvailability.bind(userController));
 router.patch("/booking/cancel-booking/:bookingId", AuthMiddleware([RoleEnum.Customer]), userController.cancelBooking.bind(userController));
+
+router.post("/chats",validateRequest(startChatSchema), AuthMiddleware([RoleEnum.Customer]), chatController.startChat.bind(chatController));
+router.get("/chats", AuthMiddleware([RoleEnum.Customer]), chatController.getChatList.bind(chatController));
+router.get("/chats/:chatId/messages", AuthMiddleware([RoleEnum.Customer]),  chatController.getChatMessages.bind(chatController));;
 
 router.get("/wallet", AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), userController.walletInfo.bind(userController));
 router.post("/wallet/add-fund", validateRequest(addFundsSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), (req, res, next) => userController.addFund(req, res, next));

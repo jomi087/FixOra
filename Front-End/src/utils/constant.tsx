@@ -1,8 +1,9 @@
+import { RoleEnum } from "@/shared/enums/roles";
 import type { TimeRange } from "@/shared/types/dashboard";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
-  CalendarCheck, MessageSquareText, Wallet, ShieldAlert,
+  CalendarCheck, MessageSquareText, Wallet,
   LayoutDashboard, Settings, Wrench, AlertTriangle,
   MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined
 } from "lucide-react";
@@ -100,7 +101,7 @@ export const validationMsg = {
   ISSUE_TYPE_REQUIRED: "Issue Type is required.",
   ISSUE_DESCRIPTION_REQUIRED: "Please describe the issue.",
   INVALID: "Feild Required",
-  MIN_LENGTH : (min: number) => `Minimum ${min} characters required.`,
+  MIN_LENGTH: (min: number) => `Minimum ${min} characters required.`,
 };
 
 export const placeHolder = {
@@ -136,7 +137,6 @@ export const userSideBarOptions: SideBarOption[] = [
   { icon: CalendarCheck, section: "Bookings", to: "/customer/account/bookings" },
   { icon: MessageSquareText, section: "Chats", to: "/customer/account/chats" },
   { icon: Wallet, section: "Wallet", to: "/customer/account/wallet" },
-  { icon: ShieldAlert, section: "Dispute", to: "/customer/account/dispute" },
 ];
 
 //provider Side Bar
@@ -205,6 +205,11 @@ export const API_ROUTES = {
     ACKNOWLEDGE: (id: string) => `/api/notification/acknowledge/${id}`,
   },
 
+  CHAT: {
+    LIST: (role: RoleEnum) => `/api/${role}/chats`,
+    MESSAGES: (role:RoleEnum, chatId:string) => `/api/${role}/chats/${chatId}/messages`,
+  },
+
   CUSTOMER: {
     SERVICES: "/api/customer/services",
 
@@ -229,7 +234,6 @@ export const API_ROUTES = {
     BOOKING_DETAILS: (id: string) => `/api/customer/bookingDetails/${id}`,
     RETRY_AVAILABILITY: (id: string) => `/api/customer/booking/retry-availability/${id}`,
     CANCEL_BOOKING: (id: string) => `/api/customer/booking/cancel-booking/${id}`,
-
     WALLET_INFO: (page: number, limit: number) =>
       `/api/customer/wallet?page=${page}&limit=${limit}`,
     ADD_FUND: "/api/customer/wallet/add-fund",
@@ -346,3 +350,48 @@ export const blogPosts: Array<BlogPost> = [
   },
 ];
 /*************************************************************************************** */
+
+export const dummyChats: any[] = [
+  { id: "1", name: "Soman", message: "Mrngg jomu", time: "8:55 AM", unread: 0 },
+  { id: "2", name: "BCR62 April 2024", message: "You reacted 👍", time: "4:10 PM", unread: 0 },
+  { id: "3", name: "Communication BCR62", message: "Session Report...", time: "2:22 PM", unread: 0 },
+  { id: "4", name: "ANSAR BROTOTYPE", message: "✔✔ And video call ui also", time: "5:09 PM", unread: 5 },
+  { id: "5", name: "MJ Boys 🌱", message: "📷 Video", time: "4:41 PM", unread: 0 },
+  { id: "6", name: "Alphonsa Kids 👶", message: "Gd evng ❤️", time: "6:12 PM", unread: 0 },
+  { id: "7", name: "Family Group 👨‍👩‍👧", message: "Dinner at 8 PM", time: "7:01 PM", unread: 1 },
+  { id: "8", name: "Office Team 💼", message: "Meeting postponed", time: "3:14 PM", unread: 0 },
+  { id: "9", name: "John Doe", message: "Check this out!", time: "11:45 AM", unread: 0 },
+  { id: "10", name: "Project Group 🚀", message: "Updated the docs", time: "10:36 AM", unread: 3 },
+  { id: "11", name: "Brototype Batch", message: "Next session link", time: "4:59 PM", unread: 0 },
+  { id: "12", name: "Travel Buddies ✈️", message: "Trip confirmed!", time: "1:22 PM", unread: 0 },
+  { id: "13", name: "College Mates 🎓", message: "Plan for weekend?", time: "9:18 AM", unread: 0 },
+  { id: "14", name: "Cricket Team 🏏", message: "Practice today?", time: "5:45 PM", unread: 0 },
+  { id: "15", name: "Gym Partner 💪", message: "Leg day🔥", time: "8:10 AM", unread: 0 },
+];
+
+export const sampleMessages: any[] = [
+  { id: "1", content: "Hey! How are you?", sender: "them", createdAt: "8:50 AM" },
+  { id: "2", content: "I'm good! Just working on some projects", sender: "me", createdAt: "8:52 AM" },
+  { id: "3", content: "That's great! What are you working on?", sender: "them", createdAt: "8:53 AM" },
+  { id: "4", content: "Building a chat interface with React", sender: "me", createdAt: "8:54 AM" },
+  { id: "5", content: "Mrngg jomu", sender: "them", createdAt: "8:55 AM" },
+
+  // New dummy data
+  { id: "6", content: "Nicee! React can be fun 😄", sender: "them", createdAt: "8:56 AM" },
+  { id: "7", content: "Yeah, once the components start coming together, it feels great!", sender: "me", createdAt: "8:57 AM" },
+  { id: "8", content: "Are you also adding animations?", sender: "them", createdAt: "8:58 AM" },
+  { id: "9", content: "Yep! Planning to add smooth transitions and typing indicators", sender: "me", createdAt: "9:00 AM" },
+  { id: "10", content: "That's awesome! Can't wait to see it", sender: "them", createdAt: "9:02 AM" },
+
+  { id: "11", content: "I’ll send you a demo link soon 🔗", sender: "me", createdAt: "9:05 AM" },
+  { id: "12", content: "Btw did you have breakfast?", sender: "them", createdAt: "9:06 AM" },
+  { id: "13", content: "Not yet, totally forgot 😅", sender: "me", createdAt: "9:07 AM" },
+  { id: "14", content: "Bruhhh go eat something 😂", sender: "them", createdAt: "9:08 AM" },
+  { id: "15", content: "Okay finee I'll make coffee first ☕", sender: "me", createdAt: "9:10 AM" },
+
+  { id: "16", content: "Coffee doesn't count as breakfast 😭", sender: "them", createdAt: "9:11 AM" },
+  { id: "17", content: "It does in my world 😌", sender: "me", createdAt: "9:12 AM" },
+  { id: "18", content: "Anyway do you need help with the UI?", sender: "them", createdAt: "9:15 AM" },
+  { id: "19", content: "Maybe later! Still structuring the components", sender: "me", createdAt: "9:17 AM" },
+  { id: "20", content: "Cool, just ping me", sender: "them", createdAt: "9:18 AM" }
+];

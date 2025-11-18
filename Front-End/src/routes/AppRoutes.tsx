@@ -33,7 +33,7 @@ import BookingDetailsPage from "@/pages/client/BookingDetailsPage.tsx";
 import JobHistoryPage from "@/pages/provider/JobHistoryPage.tsx";
 import JobDetailsPage from "@/pages/provider/JobDetailsPage.tsx";
 import ProviderWalletPage from "@/pages/provider/WalletPage.tsx";
-import UserWalletPage from "@/pages/client/WalletPage.tsx";
+import ClientWalletPage from "@/pages/client/WalletPage.tsx";
 import AvailabilityPage from "@/pages/provider/AvailabilityPage.tsx";
 import AdvanceProfilePage from "@/pages/provider/AdvanceProfilePage.tsx";
 import SettingsPage from "@/pages/admin/SettingsPage.tsx";
@@ -43,6 +43,9 @@ import PublicRoute from "./PublicRoute.tsx";
 import SalesPage from "@/pages/provider/SalesPage.tsx";
 import DisputePage from "@/pages/admin/DisputePage.tsx";
 import DisputeInfoPage from "@/pages/admin/DisputeInfoPage.tsx";
+import ProviderChatPage from "@/pages/provider/ChatPage.tsx";
+import ClientChatPage from "@/pages/client/ChatPage.tsx";
+
 
 
 
@@ -104,14 +107,15 @@ const router = createBrowserRouter([
     children: [
       { path: "services", element: <ServicePage /> },
       { path: "providers", element: <ProvidersPage /> },
+      { path: "provider-KYC", element: <VerifictionFormPage /> },
       { path: "providers/provider-booking/:providerId", element: <ProviderBookingPage /> },
       { path: "providers/provider-booking/payment/:bookingId", element: <PaymentPage /> },
       { path: "account/profile", element: <ClientProfilePage /> },
       { path: "change-password", element: <ChangePasswordPage /> },
       { path: "account/bookings", element: <BookingHistoryPage /> },
       { path: "booking-details/:bookingId", element: <BookingDetailsPage /> },
-      { path: "account/wallet", element: <UserWalletPage /> },
-      { path: "provider-KYC", element: <VerifictionFormPage /> },
+      { path: "account/chats", element: <ClientChatPage /> },
+      { path: "account/wallet", element: <ClientWalletPage /> },
     ],
   },
   //Provider Routes
@@ -126,9 +130,10 @@ const router = createBrowserRouter([
     ),
     children: [
       { path: "dashboard", element: <ProviderDashboardPage /> },
+      { path: "chats", element: <ProviderChatPage /> },
+      { path: "wallet", element: <ProviderWalletPage /> },
       { path: "booking-history", element: <JobHistoryPage /> },
       { path: "booking-details/:bookingId", element: <JobDetailsPage /> },
-      { path: "wallet", element: <ProviderWalletPage /> },
       { path: "settings/profile", element: <ProviderProfilePage /> },
       { path: "change-password", element: <ChangePasswordPage /> },
       { path: "settings/advance-profile", element: <AdvanceProfilePage /> },
@@ -158,7 +163,6 @@ const router = createBrowserRouter([
       { path: "settings/profile", element: <AdminProfilePage /> },
       { path: "change-password", element: <ChangePasswordPage /> },
       { path: "settings/commission-fee", element: <CommissionFeePage /> },
-
     ]
   },
   {

@@ -1,9 +1,14 @@
 import { Button } from "@/components/ui/button";
+import AuthService from "@/services/AuthService";
+import { Messages } from "@/utils/constant";
+import type { AxiosError } from "axios";
 import { BsChatLeftText } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface ClientInfoProps {
   providerUser: {
-    providerUserId: string;
+    userId: string;
     fname: string;
     lname: string;
     email: string;
@@ -12,6 +17,21 @@ interface ClientInfoProps {
 }
 
 const ProviderInfo: React.FC<ClientInfoProps> = ({ providerUser }) => {
+  const navigate = useNavigate();
+  console.log(providerUser);
+
+  const handleChat = async () => {
+    try {
+      await AuthService.startChatWithProvider(providerUser.userId);
+      navigate("/customer/account/chats");
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      const errorMsg =
+        err.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
+      toast.error(errorMsg);
+    }
+  };
+
   return (
     <>
       <h3 className="text-lg font-bold text-center underline underline-offset-4 text-nav-text">Provider Information</h3>
@@ -32,8 +52,7 @@ const ProviderInfo: React.FC<ClientInfoProps> = ({ providerUser }) => {
           variant="outline"
           size="sm"
           className="flex items-center gap-2 cursor-pointer"
-          //onClick={() => {}}
-        >
+          onClick={handleChat}        >
           <BsChatLeftText /> Chat
         </Button>
       </div>

@@ -42,7 +42,7 @@ export class ProviderController {
         private _getAvailabilityUseCase: IGetAvailabilityUseCase,
         private _setAvailabilityUseCase: ISetAvailabilityUseCase,
         private _toggleAvailabilityUseCase: IToggleAvailabilityUseCase,
-        private _getSalesReportUseCase : IGetSalesReportUseCase,
+        private _getSalesReportUseCase: IGetSalesReportUseCase,
     ) { }
 
 
@@ -362,7 +362,7 @@ export class ProviderController {
 
     async generateSalesReport(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { filter:preset, startDate, endDate } = req.query as {
+            const { filter: preset, startDate, endDate } = req.query as {
                 filter?: SalesPreset;
                 startDate?: string;
                 endDate?: string;

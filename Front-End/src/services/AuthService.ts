@@ -10,6 +10,7 @@ import type { TimeRange } from "@/shared/types/dashboard";
 import type { DisputeContentResponse, DisputeListPayload, DisputeListResponse } from "@/shared/types/dispute";
 import type { AxiosResponse } from "axios";
 import type { DisputeStatus } from "@/shared/enums/Dispute";
+import { RoleEnum } from "@/shared/enums/roles";
 
 class AuthService {
   // getBearerTokenConfig(token?: string) { //jwt token
@@ -47,10 +48,23 @@ class AuthService {
     return axiosInstance.get(API_ROUTES.NOTIFICATIONS.GET_ALL);
   }
 
+  getChats(role: RoleEnum, searchQuery?: string) {
+    return axiosInstance.get(API_ROUTES.CHAT.LIST(role), {
+      params: searchQuery?.trim() ? { searchQuery } : {}
+    });
+  }
+
+  getChatMessages(role: RoleEnum, chatId: string, page:number) {
+    return axiosInstance.get(API_ROUTES.CHAT.MESSAGES(role, chatId), {
+      params: { page }
+    });
+  }
+
+  /*********************************************************************************************************************** */
+
   acknowledgeNotificationAPI(notificationId: string) {
     // return axiosInstance.patch(`/api/notification/acknowledge/${notificationId}`);
     return axiosInstance.patch(API_ROUTES.NOTIFICATIONS.ACKNOWLEDGE(notificationId));
-
   }
 
   signupApi(data: Signup) {
@@ -161,6 +175,10 @@ class AuthService {
     return axiosInstance.get(API_ROUTES.CUSTOMER.BOOKING_DETAILS(bookingId));
   }
 
+  startChatWithProvider(providerUserId: string) {
+    return axiosInstance.post(API_ROUTES.CHAT.LIST(RoleEnum.CUSTOMER), { userId: providerUserId });
+  }
+
   retryAvailabilityApi(bookingId: string) {
     return axiosInstance.patch(API_ROUTES.CUSTOMER.RETRY_AVAILABILITY(bookingId));
   }
@@ -185,8 +203,6 @@ class AuthService {
     return axiosInstance.post(API_ROUTES.CUSTOMER.ADD_FUND, { amount }, this.getJsonConfig());
   }
 
-
-
   /*********************************************************************************************************************** */
   //Provider
   pendingRequestApi() {
@@ -206,6 +222,10 @@ class AuthService {
 
   jobDetailsApi(bookingId: string) {
     return axiosInstance.get(API_ROUTES.PROVIDER.JOB_DETAILS(bookingId));
+  }
+
+  startChatWithUser(userId: string) {
+    return axiosInstance.post(API_ROUTES.CHAT.LIST(RoleEnum.PROVIDER), { userId: userId });
   }
 
   providerJobHistoryApi(currentPage: number, itemsPerPage: number) {
@@ -317,7 +337,7 @@ class AuthService {
   }
 
   disputeAction(disputeId: string, reason: string, status: DisputeStatus) {
-    return axiosInstance.patch(API_ROUTES.ADMIN.DISPUTE_ACTION(disputeId), { reason,status });
+    return axiosInstance.patch(API_ROUTES.ADMIN.DISPUTE_ACTION(disputeId), { reason, status });
   }
   // editProfileApi(form: ProfileEdit) {
   //   return axiosInstance.patch(API_ROUTES.ADMIN.EDIT_PROFILE, form, this.getJsonConfig());

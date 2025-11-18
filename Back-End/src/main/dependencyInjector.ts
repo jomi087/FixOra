@@ -12,6 +12,8 @@ import { AvailabilityRepository } from "../infrastructure/database/repositories/
 import { RatingRepository } from "../infrastructure/database/repositories/RatingRepository";
 import { CommissionFeeRepository } from "../infrastructure/database/repositories/CommissionFeeRepository";
 import { DisputeRepository } from "../infrastructure/database/repositories/DisputeRepository";
+import { ChatMessageRepository } from "../infrastructure/database/repositories/ChatMessageRepository";
+import { ChatRepository } from "../infrastructure/database/repositories/ChatRepository";
 
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
 import { EmailService } from "../infrastructure/services/EmailService";
@@ -41,6 +43,8 @@ const availabilityRepository = new AvailabilityRepository();
 const ratingRepository = new RatingRepository();
 const commissionFeeRepository = new CommissionFeeRepository();
 const disputeRepository = new DisputeRepository();
+const chatRepository = new ChatRepository();
+const chatMessageRepository = new ChatMessageRepository();
 
 // business/technical service 
 const loggerService = new WinstonLogger();
@@ -270,13 +274,25 @@ const commissionFeeUseCase = new CommissionFeeUseCase(commissionFeeRepository);
 
 import { UpdateCommissionFeeUseCase } from "../application/useCases/admin/UpdateCommissionFeeUseCase";
 const updateCommissionFeeUseCase = new UpdateCommissionFeeUseCase(commissionFeeRepository);
+/******************************************************************************************************************************************************
+                                        Chat Specific
+******************************************************************************************************************************************************/
+import { StartChatUseCase } from "../application/useCases/chat/StartChatUseCase";
+const startChatUseCase = new StartChatUseCase(chatRepository);
+
+import { GetUserChatsUseCase } from "../application/useCases/chat/GetUserChatsUseCase";
+const getUserChatsUseCase = new GetUserChatsUseCase(chatRepository);
+
+import { GetChatMessagesUseCase } from "../application/useCases/chat/GetChatMessagesUseCase ";
+const getChatMessagesUseCase = new GetChatMessagesUseCase(chatMessageRepository);
 /******************************************************************************************************************************************************/
+
 import { PublicController } from "../interfaces/controllers/PublicController";
 import { AuthController } from "../interfaces/controllers/AuthController";
 import { UserController } from "../interfaces/controllers/UserContoller";
 import { AdminController } from "../interfaces/controllers/AdminController";
 import { ProviderController } from "../interfaces/controllers/ProviderController";
-
+import { ChatController } from "../interfaces/controllers/ChatController";
 
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
@@ -288,11 +304,14 @@ const providerController = new ProviderController(pendingBookingRequestUseCase, 
 
 const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, disputeContentInfoUseCase, disputeActionUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
 
+const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase);
+
 export {
     publicController,
     authController,
     AuthMiddleware,
     userController,
     providerController,
-    adminController
+    adminController,
+    chatController
 };
