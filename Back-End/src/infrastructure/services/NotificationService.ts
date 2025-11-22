@@ -1,16 +1,15 @@
 import {
-    AutoRejectNotification, /*ConfirmBookingNotification,*/ INotificationService,
-    NotificationPayload,
+    AutoRejectNotification,INotificationService, NotificationPayload,
     ProviderBookingNotification, UserResponsNotificaton
 } from "../../domain/interface/ServiceInterface/INotificationService";
 import { getIO } from "../socket/config";
 
 export class NotificationService implements INotificationService {
-    async send(userId: string, payload: NotificationPayload): Promise<void> {
+    send(userId: string, payload: NotificationPayload): void {
         getIO().to(userId).emit("notification", payload);
     }
 
-    async sendToRole(role: string, payload: NotificationPayload): Promise<void> {
+    sendToRole(role: string, payload: NotificationPayload): void {
         getIO().to(role).emit("notification", payload);
     }
 
@@ -29,7 +28,6 @@ export class NotificationService implements INotificationService {
         getIO().to(providerUserId).emit("booking:autoReject", payload);
     }
 
-
     autoRejectTimeOutPayment(userId: string, bookingId: string): void {
         getIO().to(userId).emit("payment:autoReject", bookingId);
     }
@@ -41,4 +39,6 @@ export class NotificationService implements INotificationService {
     notifyPaymentFailureToUser(userId: string, reason: string): void {
         getIO().to(userId).emit("payment:failure", reason);
     }
+
+
 }

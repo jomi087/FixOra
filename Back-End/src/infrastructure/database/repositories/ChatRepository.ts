@@ -1,4 +1,4 @@
-import { PipelineStage } from "mongoose";
+import mongoose, { PipelineStage } from "mongoose";
 import { ChatListItem } from "../../../domain/entities/projections/ChatListItem";
 import { IChatRepository } from "../../../domain/interface/RepositoryInterface/IChatRepository";
 import { ChatModel } from "../models/ChatModel";
@@ -6,9 +6,8 @@ import { Chat } from "../../../domain/entities/ChatEntity";
 
 export class ChatRepository implements IChatRepository {
 
+    /** @inheritdoc */
     async findUserChats(userId: string, search?: string): Promise<ChatListItem[]> {
-        console.log(userId, "userId", search, "search", typeof search);
-        
         const pipeline: PipelineStage[] = [
             {
                 $match: {
@@ -48,7 +47,6 @@ export class ChatRepository implements IChatRepository {
         ];
 
         if (search && search.trim()) {
-            console.log("hi",search);
             pipeline.push({
                 $match: {
                     $or: [
@@ -96,12 +94,10 @@ export class ChatRepository implements IChatRepository {
             }
         );
 
-        let x = await ChatModel.aggregate(pipeline);
-        console.log(x);
-        return x;
+        return await ChatModel.aggregate(pipeline);
     }
 
-    
+    /** @inheritdoc */
     async findChatBetweenUsers(participants: string[]): Promise<Chat | null> {
         const chatDoc = await ChatModel.findOne({ participants: { $all: participants, $size: participants.length } });
 
@@ -113,45 +109,36 @@ export class ChatRepository implements IChatRepository {
         };
     }
 
+    /** @inheritdoc */
     async createChat(participants: string[]): Promise<Chat> {
         const doc = await ChatModel.create({ participants });
-
         return {
             id: doc._id.toString(),
             participants: doc.participants,
+        };
+    }
+
+    /** @inheritdoc */
+    async updateLatestMessage(chatId: string, messageId: string): Promise<void> {
+        await ChatModel.findByIdAndUpdate(chatId, {
+            latestMessageId: new mongoose.Types.ObjectId(messageId),
+            updatedAt: new Date(),
+        });
+    }
+
+    /** @inheritdoc */
+    async getChatById(chatId: string): Promise<Chat | null> {
+        const chatDoc = await ChatModel.findById(chatId).lean();
+
+        if (!chatDoc) return null;
+
+        return {
+            id: chatDoc._id.toString(),
+            participants: chatDoc.participants,
+            latestMessageId: chatDoc.latestMessageId?.toString() || null,
+            createdAt: chatDoc.createdAt,
+            updatedAt: chatDoc.updatedAt
         };
     }
 }
 
-
-/*
-    async create(participants: string[]): Promise<Chat> {
-        const doc = await ChatModel.create({ participants });
-
-        return {
-            id: doc._id.toString(),
-            participants: doc.participants,
-            createdAt: doc.createdAt,
-        };
-    }
-    
-    async findByChatId(chatId: string): Promise<Chat | null> {
-        return null;
-    }
-
-    async findByParticipants(participants: string[]): Promise<Chat | null> {
-        const doc = await ChatModel.findOne({
-            participants: { $all: participants, $size: participants.length }
-        });
-
-        if (!doc) return null;
-
-        return {
-            id: doc._id.toString(),
-            participants: doc.participants,
-            latestMessage: doc.latestMessage?.toString(),
-            createdAt: doc.createdAt,
-            updatedAt: doc.updatedAt
-        };
-    }
-    */

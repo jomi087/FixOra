@@ -54,10 +54,14 @@ class AuthService {
     });
   }
 
-  getChatMessages(role: RoleEnum, chatId: string, page:number) {
+  getChatMessages(role: RoleEnum, chatId: string, page: number, limit: number ) {
     return axiosInstance.get(API_ROUTES.CHAT.MESSAGES(role, chatId), {
-      params: { page }
+      params: { page, limit }
     });
+  }
+
+  sendChatMessages(role: RoleEnum, chatId: string, content: string) {
+    return axiosInstance.post(API_ROUTES.CHAT.MESSAGES(role, chatId), { content });
   }
 
   /*********************************************************************************************************************** */

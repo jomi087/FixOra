@@ -19,6 +19,7 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
 
     //socket Event listners
     ioInstance.on("connection", (socket) => {
+        logger.info("---------Socket Connected--------");
         const { userId, role } = socket.data;
 
         // Join user-specific room for personal notifications
@@ -29,16 +30,23 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
             socket.join(role);
         }
 
-        logger.info(`---------${role} ${userId} joined room ${userId}------------`);
+        //user join chat room
+        socket.on("chat:joinRoom", (chatId: string) => {
+            socket.join(chatId);
+        });
+
+        //typing event
+        socket.on("chat:typing", ({ chatId }) => {
+            socket.to(chatId).emit("chat:typing", { userId });
+        });
 
         socket.on("disconnect", (reason) => {
-            logger.info(`-----User ${userId} disconnected. Reason: ${reason}-------------`);
+            logger.info(`-----------------socket disconnected, Reason: ${reason}-------------`);
         });
 
         socket.on("error", (error) => {
             logger.error(`Socket error for user ${userId}:`, error);
         });
-
     });
 
     return ioInstance;

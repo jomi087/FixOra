@@ -43,7 +43,8 @@ export const SLPP = 7;                                                  //SLPP =
 export const BHPP = 7;                                                  //BHPP => Booking History Per Page  -> default set to 10
 export const TLPP = 5;                                                  //TLPP => Transaction List Per Page -> default set to 10
 export const RLPP = 5;                                                  //RLPP => Review List Per Page
-export const DLPP = 10;                                                 //DLPP => Dispure List Per Page
+export const DLPP = 10;                                                 //DLPP => Dispute List Per Page
+export const MPP = 50;                                                  //MPP => Messages per page
 export const DATE_RANGE_DAYS = 365;
 export const ONE_WEEK = 7;
 export const TIME_SLOTS = {
@@ -207,7 +208,7 @@ export const API_ROUTES = {
 
   CHAT: {
     LIST: (role: RoleEnum) => `/api/${role}/chats`,
-    MESSAGES: (role:RoleEnum, chatId:string) => `/api/${role}/chats/${chatId}/messages`,
+    MESSAGES: (role: RoleEnum, chatId: string) => `/api/${role}/chats/${chatId}/messages`,
   },
 
   CUSTOMER: {

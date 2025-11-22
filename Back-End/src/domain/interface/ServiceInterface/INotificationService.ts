@@ -40,8 +40,8 @@ export interface ConfirmBookingNotification {
 }
 
 export interface INotificationService {
-    send(userId: string, payload: NotificationPayload): Promise<void>;
-    sendToRole(role: string, payload: NotificationPayload): Promise<void>
+    send(userId: string, payload: NotificationPayload): void;
+    sendToRole(role: string, payload: NotificationPayload): void;
 
     notifyBookingRequestToProvider(providerUserId: string, payload: ProviderBookingNotification): void
     notifyBookingResponseToUser(userId: string, payload: UserResponsNotificaton): void

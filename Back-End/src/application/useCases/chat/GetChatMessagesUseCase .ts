@@ -21,7 +21,6 @@ export class GetChatMessagesUseCase implements IGetChatMessagesUseCase {
             return await this._chatMessageRepository.getMessagesByChatId(chatId, page, limit);
             
         } catch (error) {
-            console.log("error",error);
             if (error.status && error.message) {
                 throw error;
             }

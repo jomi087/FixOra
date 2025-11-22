@@ -2,8 +2,11 @@ import mongoose from "mongoose";
 import { ChatMessageListItem } from "../../../domain/entities/projections/ChatMessageListItem";
 import { IChatMessageRepository } from "../../../domain/interface/RepositoryInterface/IChatMessageRepository";
 import { ChatMessageModel } from "../models/ChatMessageModel";
+import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
 
 export class ChatMessageRepository implements IChatMessageRepository {
+
+    /** @inheritdoc */
     async getMessagesByChatId(
         chatId: string,
         page: number,
@@ -36,4 +39,26 @@ export class ChatMessageRepository implements IChatMessageRepository {
 
         return { data: ordered, total };
     }
+
+    /** @inheritdoc */
+    async createChatMessage(chatId: string, senderId: string, content: string): Promise<ChatMessage> {
+
+        const messageDoc = await ChatMessageModel.create({
+            chatId: new mongoose.Types.ObjectId(chatId),
+            senderId,
+            content,
+        });
+
+        return {
+            id: messageDoc._id.toString(),
+            chatId: messageDoc.chatId.toString(),
+            senderId: messageDoc.senderId,
+            content: messageDoc.content,
+            isRead: messageDoc.isRead,
+            isActive: messageDoc.isActive,
+            createdAt: messageDoc.createdAt,
+            updatedAt: messageDoc.updatedAt,
+        };
+    }
+
 }

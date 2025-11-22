@@ -5,7 +5,7 @@ import { KYCStatus } from "../../shared/enums/KYCstatus";
 import { BookingStatus } from "../../shared/enums/BookingStatus";
 import { DAYS, LEAVE_OPTIONS } from "../../shared/const/constants";
 
-export const stringField = z.string();
+export const stringField = z.string().trim();
 export const numberField = z.number();
 
 export const optionalStringField = z.string().optional();
@@ -23,6 +23,7 @@ export const numberMinMax = (mini: number, miniMsg: string, maxi: number, maxiMs
 
 export const stringMinMax = (mini: number, miniMsg: string, maxi: number, maxiMsg: string) => z
     .string()
+    .trim()
     .min(mini, miniMsg)
     .max(maxi, maxiMsg);
 

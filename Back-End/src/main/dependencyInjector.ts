@@ -26,6 +26,7 @@ import { NotificationService } from "../infrastructure/services/NotificationServ
 import { PushNotificationService } from "../infrastructure/services/PushNotificationService";
 import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService";
 import { PaymentService } from "../infrastructure/services/PaymentService";
+import { ChatService } from "../infrastructure/services/ChatService";
 
 import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
 import { ReviewDisputeActionHandler } from "../application/useCases/admin/handlers/DisputeActionHandler";
@@ -58,6 +59,7 @@ const notificationService = new NotificationService();
 const pushNotificationService = new PushNotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
 const paymentService = new PaymentService();
+const chatService = new ChatService();
 
 // strategy handler,
 const reviewHandler = new ReviewDisputeContentHandler(ratingRepository);
@@ -285,6 +287,9 @@ const getUserChatsUseCase = new GetUserChatsUseCase(chatRepository);
 
 import { GetChatMessagesUseCase } from "../application/useCases/chat/GetChatMessagesUseCase ";
 const getChatMessagesUseCase = new GetChatMessagesUseCase(chatMessageRepository);
+
+import { SendChatMessageUseCase } from "../application/useCases/chat/SendChatMessageUseCase";
+const sendChatMessageUseCase = new  SendChatMessageUseCase(chatRepository, chatMessageRepository );
 /******************************************************************************************************************************************************/
 
 import { PublicController } from "../interfaces/controllers/PublicController";
@@ -304,7 +309,7 @@ const providerController = new ProviderController(pendingBookingRequestUseCase, 
 
 const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, disputeContentInfoUseCase, disputeActionUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
 
-const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase);
+const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase, sendChatMessageUseCase, chatService);
 
 export {
     publicController,

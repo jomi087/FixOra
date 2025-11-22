@@ -1,10 +1,23 @@
+import { ChatMessage } from "../../entities/ChatMessageEntity";
 import { ChatMessageListItem } from "../../entities/projections/ChatMessageListItem";
 
 export interface IChatMessageRepository {
-    getMessagesByChatId(
-        chatId: string,
-        page: number,
-        limit: number
-    ): Promise<{ data: ChatMessageListItem[]; total: number }>;
+    /**
+     * Retrieves paginated messages belonging to a specific chat.
+     * @param chatId 
+     * @param page 
+     * @param limit 
+     */
+    getMessagesByChatId(chatId: string, page: number, limit: number): Promise<{
+        data: ChatMessageListItem[]; total: number
+    }>;
+    
+    /**
+     * Creates a new message within a chat.
+     * @param chatId 
+     * @param senderId 
+     * @param content 
+     */
+    createChatMessage(chatId: string, senderId: string, content:string):Promise<ChatMessage>
 }
 
