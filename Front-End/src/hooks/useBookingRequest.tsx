@@ -218,7 +218,8 @@ export const useBookingRequest = () => {
   };
 
   return {
-    isWaiting, showModePayment,
+    isWaiting, setIsWaiting,
+    showModePayment, setShowModePayment,
     data,
     dates, selectedDate, handleDateChange,
     filteredTimeSlots, selectedTime, handleTimeChange,

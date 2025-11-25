@@ -313,7 +313,7 @@ const BookingDetails = () => {
     <>
       {showModePayment &&
         <div className="fixed inset-0 bg-black/60 z-[9999] flex flex-col items-center justify-center">
-          <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl border rounded-xl overflow-auto shadow-black shadow-2xl bg-background ">
+          <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl border rounded-xl overflow-auto shadow-black shadow-2xl bg-background p-5 ">
             <div className="flex justify-between ">
               <div className="text-xl font-bold font-mono underline underline-offset-4 pt-5 pb-2 pl-5">Mode of Payment</div>
               <div

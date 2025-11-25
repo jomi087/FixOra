@@ -25,19 +25,28 @@ const FormSchema = z.object({
 interface ModeOfPaymentProps {
   handlePayment: (paymentType: PaymentMode, balance?: number) => void
   isSubmitting: boolean
+  timmer?: {
+    minutes: number;
+    seconds: number;
+  }
 }
 
-export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isSubmitting }) => {
+
+export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isSubmitting, timmer }) => {
   const { data: wallet } = useAppSelector((state) => state.wallet);
-  
   const dispatch = useAppDispatch();
+
 
   useEffect(() => {
     dispatch(fetchUserWalletInfo());
-  },[]);
+  }, []);
+
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      type: PaymentMode.WALLET
+    }
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -46,7 +55,7 @@ export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isS
         toast.info("wallet is missing");
         return;
       }
-      handlePayment(data.type, wallet.balance );
+      handlePayment(data.type, wallet.balance);
     } else {
       handlePayment(data.type);
     }
@@ -91,13 +100,22 @@ export const ModeOfPayment: React.FC<ModeOfPaymentProps> = ({ handlePayment, isS
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          variant={"success"}
-          disabled={isSubmitting}
-        >
-          { isSubmitting ? "Processing..." : "Submit" }
-        </Button>
+        <div className="flex justify-between items-end ">
+          <Button
+            type="submit"
+            variant={"success"}
+            disabled={isSubmitting}
+          // className="w-full"
+          >
+            {isSubmitting ? "Processing..." : "Submit"}
+          </Button>
+          {timmer &&
+            <p className="text-end font-roboto font-medium underline underline-offset-4 ">
+              {String(timmer.minutes).padStart(2, "0")}:{String(timmer.seconds).padStart(2, "0")}
+            </p>
+          }
+        </div>
+
       </form>
     </Form>
   );

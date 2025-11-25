@@ -25,6 +25,7 @@ export const ConfirmSeal: string = "/images/completedStamp.png";
 export const CancelSeal: string = "/images/cancelledSeal.png";
 
 /********************************************* Rules  *******************************************************/
+export const PAYMENT_SESSION_TIMEOUT_MS = Number(import.meta.env.VITE_PAYMENT_TIMEOUT_MS);
 
 export const searchInputLength: number = 30; //50
 export const shortInputLength: number = 50; //50

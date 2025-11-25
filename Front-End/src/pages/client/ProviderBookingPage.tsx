@@ -3,10 +3,10 @@ import Nav from "@/components/common/layout/Nav";
 import { useEffect } from "react";
 import ProviderInfo from "@/components/client/providersSection/providerInfo/ProviderInfo";
 import PageLoader from "@/components/common/others/PageLoader";
-import BookingSlots from "../../components/client/providersSection/providerInfo/BookingSlots";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchProviderInfo } from "@/store/user/providerInfoSlice";
 import Review from "@/components/client/providersSection/providerInfo/Review";
+import BookingSlots from "@/components/client/providersSection/providerInfo/BookingSlots";
 
 const ProviderBookingPage: React.FC = () => {
   const { providerId } = useParams<{ providerId: string }>();

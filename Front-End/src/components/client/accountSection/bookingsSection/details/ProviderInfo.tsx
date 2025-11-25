@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 interface ClientInfoProps {
   providerUser: {
-    userId: string;
+    providerUserId: string;
     fname: string;
     lname: string;
     email: string;
@@ -22,7 +22,7 @@ const ProviderInfo: React.FC<ClientInfoProps> = ({ providerUser }) => {
 
   const handleChat = async () => {
     try {
-      await AuthService.startChatWithProvider(providerUser.userId);
+      await AuthService.startChatWithProvider(providerUser.providerUserId);
       navigate("/customer/account/chats");
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
