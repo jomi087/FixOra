@@ -43,7 +43,7 @@ const ProviderBookingPage: React.FC = () => {
           {data && data.service.subcategories.length > 0 ? (
             <>
               <ProviderInfo />
-              <BookingSlots />
+              <BookingSlots  type={"Schedule"}/>
               <Review providerId={providerId!} />
             </>
           ) : (

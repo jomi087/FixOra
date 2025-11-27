@@ -28,6 +28,7 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
             const mappedData: BookingDetailsOutputDTO = {
                 bookingId: booking.bookingId!,
                 providerUser: {
+                    providerId: provider.providerId,
                     userId: userProvider.userId,
                     fname: userProvider.fname,
                     lname: userProvider.lname || "",

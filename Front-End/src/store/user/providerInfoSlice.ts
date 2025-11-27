@@ -29,7 +29,10 @@ const initialState: ProviderInfoState = {
   error: null,
 };
 
-export const fetchProviderInfo = createAsyncThunk<ProviderInfo, string>(
+export const fetchProviderInfo = createAsyncThunk<
+  ProviderInfo,     // Return type
+  string            // Argument type
+>(
   "providerInfo/fetchData",
   async (providerId: string, { rejectWithValue }) => {
     try {
@@ -46,8 +49,8 @@ export const fetchProviderInfo = createAsyncThunk<ProviderInfo, string>(
 
 
 export const fetchProviderReviews = createAsyncThunk<
-  { reviews: providerReviews[]; totalPages: number },
-  { providerId: string; currentPage: number; itemsPerPage: number }
+  { reviews: providerReviews[]; totalPages: number },               // Return type
+  { providerId: string; currentPage: number; itemsPerPage: number } // arg type
 >(
   "providerReviews/fetchData",
   async ({ providerId, currentPage, itemsPerPage }, { rejectWithValue }) => {
@@ -96,16 +99,13 @@ const providerInfoSlice = createSlice({
       state.isLoadingProvider = false;
     },
     updateReview: (state, action) => {
-      console.log("action",action);
       if (state.reviews) {
         const review = state.reviews.find((data) => data.ratingData.ratingId === action.payload.ratingId);
-        console.log("review",review);
         if (review) {
           review.ratingData.feedback = action.payload.feedback;
           review.ratingData.rating = action.payload.rating;
         }
       }
-
     }
   },
   extraReducers: (builder) => {

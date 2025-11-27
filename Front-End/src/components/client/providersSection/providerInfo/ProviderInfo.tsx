@@ -58,7 +58,7 @@ const ProviderInfo: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="mt-5 flex flex-col lg:flex-row gap-10 overflow-clip rounded-xl ">
+        <div className="mt-5 mb-10 flex flex-col lg:flex-row gap-10 overflow-clip rounded-xl ">
           <div className="flex flex-col sm:flex-row  gap-6 shadow-xl shadow-ring border-2  p-6 rounded-xl w-full">
             <div className="flex flex-col items-center gap-2 ">
               <p className="text-base font-serif text-center uppercase underline underline-offset-4">

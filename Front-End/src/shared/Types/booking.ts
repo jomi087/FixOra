@@ -37,7 +37,7 @@ export type BookingAutoRejectPayload = {
 
 export interface ConfirmJobBookings {
   bookingId: string;
-  scheduledAt: Date;
+  scheduledAt: string;
   status: BookingStatus;
 }
 
@@ -52,6 +52,7 @@ export interface jobHistory extends BookingsHistory { }
 export interface BookingInfoDetails {
   bookingId: string;
   providerUser: {
+    providerId: string;
     providerUserId: string;
     fname: string;
     lname: string;

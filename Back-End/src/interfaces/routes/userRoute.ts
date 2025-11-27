@@ -1,7 +1,7 @@
 import express from "express";
 import { AuthMiddleware, userController, chatController } from "../../main/dependencyInjector";
 import { validateRequest } from "../middleware/validateRequest";
-import { bookingIdSchema, bookingRequestSchema } from "../validations/bookingSchema";
+import { bookingIdSchema, bookingRequestSchema, rescheduleBookingSchema } from "../validations/bookingSchema";
 import { resetPasswordSchema, verifyPasswordSchema } from "../validations/authSchema";
 import { validateKYCRequest } from "../validations/kycSchema";
 import { editProfileSchema } from "../validations/profileSchema";
@@ -40,6 +40,7 @@ router.post("/review/dispute", validateRequest(reportReviewSchema), AuthMiddlewa
 router.get("/booking/review-status/:bookingId", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.reviewStatus(req, res, next));
 
 router.post("/provider/booking", validateRequest(bookingRequestSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createBooking(req, res, next));
+router.post("/reschedule/booking/:bookingId", validateRequest(rescheduleBookingSchema), AuthMiddleware([RoleEnum.Customer]), userController.rescheduleBooking .bind(userController));
 router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateOnlinePayment(req, res, next));
 router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateWalletPayment(req, res, next));
 

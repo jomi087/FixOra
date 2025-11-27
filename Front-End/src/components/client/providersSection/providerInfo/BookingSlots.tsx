@@ -11,7 +11,12 @@ import { PAYMENT_SESSION_TIMEOUT_MS } from "@/utils/constant";
 
 const durationMs = PAYMENT_SESSION_TIMEOUT_MS;
 
-const BookingSlots: React.FC = () => {
+interface BookingSlotsProps {
+  type: "Schedule" | "Reschedule";
+  rescheduleBooking?: (scheduledAt: Date) => Promise<void>
+}
+
+const BookingSlots: React.FC<BookingSlotsProps> = ({ type, rescheduleBooking }) => {
 
   const {
     isWaiting, setIsWaiting,
@@ -23,8 +28,8 @@ const BookingSlots: React.FC = () => {
     selectedServiceId, setSelectedServiceId,
     description, setDescription,
     submitBooking,
-    handlePayment, isSubmitting
-  } = useBookingRequest();
+    handlePayment, isSubmitting 
+  } = useBookingRequest(type, rescheduleBooking);
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [remaining, setRemaining] = useState(durationMs);
@@ -53,7 +58,7 @@ const BookingSlots: React.FC = () => {
 
   return (
     <>
-      {isWaiting && !showModePayment && (
+      {isWaiting && !showModePayment &&(
         <div className="fixed inset-0 bg-black/60 z-[9999] flex flex-col items-center justify-center">
           <Lottie animationData={LodingAnimation} loop={true} className="w-40 h-40" />
           <p className=" m-4 text-primary text-lg font-mono">Waiting for provider response...</p>
@@ -77,13 +82,13 @@ const BookingSlots: React.FC = () => {
                 x
               </p>
             </div>
-            < ModeOfPayment handlePayment={handlePayment} isSubmitting={isSubmitting} timmer={{ minutes, seconds } } />
+            < ModeOfPayment handlePayment={handlePayment} isSubmitting={isSubmitting} timmer={{ minutes, seconds }} />
           </div>
         </div>
       )}
 
       {data ? (
-        <div className="shadow-lg shadow-ring border-2 mt-10 p-6 rounded-xl">
+        <div className="shadow-lg shadow-ring border-2 mt-5 p-6 rounded-xl ">
           <h3 className="text-lg font-semibold mb-4">Booking Details</h3>
           <BookingDatesInfo
             dates={dates}
@@ -108,6 +113,7 @@ const BookingSlots: React.FC = () => {
             setDescription={setDescription}
             submitBooking={submitBooking}
           />
+
         </div>
       ) : (
         <div className="flex justify-center h-[78vh] items-center text-sm text-muted-foreground ">

@@ -54,7 +54,7 @@ class AuthService {
     });
   }
 
-  getChatMessages(role: RoleEnum, chatId: string, page: number, limit: number ) {
+  getChatMessages(role: RoleEnum, chatId: string, page: number, limit: number) {
     return axiosInstance.get(API_ROUTES.CHAT.MESSAGES(role, chatId), {
       params: { page, limit }
     });
@@ -143,6 +143,10 @@ class AuthService {
 
   bookingApplicationApi(payload: { providerId: string, providerUserId: string, scheduledAt: Date; issueTypeId: string; issue: string; }) {
     return axiosInstance.post(API_ROUTES.CUSTOMER.BOOKING_APPLICATION, payload, this.getJsonConfig());
+  }
+
+  rescheduleBooking(bookingId: string, rescheduledAt: Date) {
+    return axiosInstance.post(API_ROUTES.CUSTOMER.RESCHEDULE_BOOKING(bookingId), { rescheduledAt });
   }
 
   onlinePaymentApi(bookingId: string) {

@@ -2,7 +2,7 @@ import Calendar from "./Calendar";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import { addConfirmedBooking, fetchProviderBookingsInfo, removeBooking } from "@/store/provider/bookingSlice";
+import { addConfirmedBooking, fetchProviderBookingsInfo, removeBooking, updateConfirmedBooking } from "@/store/provider/bookingSlice";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import { toast } from "react-toastify";
 import type { ConfirmJobBookings } from "@/shared/types/booking";
@@ -31,6 +31,8 @@ const DailyJobInfo = () => {
       dispatch(addConfirmedBooking(latest.metadata));
     } else if (latest?.type === NotificationType.BOOKING_CANCELLED) {
       dispatch(removeBooking(latest.metadata.bookingId));
+    } else if (latest?.type === NotificationType.BOOKING_RESCHEDULED) {
+      dispatch(updateConfirmedBooking(latest.metadata));
     }
   }, [items]);
 

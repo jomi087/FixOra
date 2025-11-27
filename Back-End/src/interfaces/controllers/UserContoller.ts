@@ -26,6 +26,7 @@ import { IGetProviderReviewsUseCase } from "../../application/Interface/useCases
 import { IUpdateReviewUseCase } from "../../application/Interface/useCases/Client/IUpdateReviewUseCase";
 import { ICreateDisputeAndNotifyUseCase } from "../../application/Interface/useCases/Client/ICreateDisputeAndNotifyUseCase";
 import { DisputeType } from "../../shared/enums/Dispute";
+import { IRescheduleBookingUseCase } from "../../application/Interface/useCases/Client/IRescheduleBookingUseCase";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -43,6 +44,7 @@ export class UserController {
         private _updateReviewUseCase: IUpdateReviewUseCase,
         private _createDisputeAndNotifyUseCase: ICreateDisputeAndNotifyUseCase,
         private _bookingUseCase: IBookingUseCase,
+        private _rescheduleBookingUseCase: IRescheduleBookingUseCase,
         private _createPaymentUseCase: ICreatePaymentUseCase,
         private _walletPaymentUseCase: IWalletPaymentUseCase,
         private _verifyPaymentUseCase: IVerifyPaymentUseCase,
@@ -265,6 +267,26 @@ export class UserController {
             res.status(200).json({
                 message: SUBMITTED_BOOKING_REQUEST,
                 booking
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async rescheduleBooking(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { rescheduledAt } = req.body;
+            const bookingId = req.params.bookingId as string;
+
+            console.log("hi");
+
+            const data = await this._rescheduleBookingUseCase.execute({ bookingId, rescheduledAt });
+
+            res.status(200).json({
+                success: true,
+                rescheduledAt: data
             });
 
         } catch (error) {

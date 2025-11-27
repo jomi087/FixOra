@@ -16,7 +16,13 @@ import { NotificationType } from "@/shared/enums/NotificationType";
 import type { AxiosError } from "axios";
 
 
-export const useBookingRequest = () => {
+
+
+export const useBookingRequest = (
+  type: "Schedule" | "Reschedule",
+  rescheduleBooking?: (scheduledAt: Date) => Promise<void>
+) => {
+
   const dates = generateDateList(DATE_RANGE_DAYS); //365
   let allSlots = generateTimeSlots(
     TIME_SLOTS.STARTHOURS, //0
@@ -67,7 +73,14 @@ export const useBookingRequest = () => {
 
   const handleTimeChange = (time: string) => {
     setSelectedTime(time);
-    setIsDialogOpen(true);
+    // console.log("handleTimeChange",time, selectedDate, selectedTime, );
+    if (type == "Reschedule") {
+      if (!rescheduleBooking) return toast.error("Something went wrong");
+      const rescheduledAt = dateTime(selectedDate, time);
+      rescheduleBooking(rescheduledAt);
+    } else {
+      setIsDialogOpen(true);
+    }
   };
 
   const submitBooking = async () => {
@@ -114,18 +127,18 @@ export const useBookingRequest = () => {
     const handleBookingResponse = (payload: BookingResponsePayload) => {
       if (payload.response === ProviderResponseStatus.ACCEPTED) {
         setBookingId(payload.bookingId);
-        console.log("mode of payment was invoked");
+        // console.log("mode of payment was invoked");
         setShowModePayment(true);
 
       } else if (payload.response === ProviderResponseStatus.REJECTED) {
         setIsWaiting(false);
 
         dispatch(removeBooking(payload.bookingId));
-        
+
         const toastMessage = (
           <div className="w-full">
             <p className="p-2 text-sm font-medium">Your Booking was Rejected</p>
-            <p className="text-end text-[10px] ">{`[Reason: ${payload.reason}]`}</p>
+            <p className="text-end text-[12px] ">{`[Reason: ${payload.reason}]`}</p>
           </div>
         );
 
@@ -162,7 +175,9 @@ export const useBookingRequest = () => {
     }
   }, [items]);
 
-  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
+  
+  const stripePromise = type === "Schedule" ? loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!) : null;
+  
   const handlePayment = async (paymentType: PaymentMode, balance?: number) => {
     setIsSubmitting(true);
     if (paymentType === PaymentMode.ONLINE) {

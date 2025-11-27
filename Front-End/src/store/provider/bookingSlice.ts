@@ -1,9 +1,16 @@
 import AuthService from "@/services/AuthService";
+import type { BookingStatus } from "@/shared/enums/BookingStatus";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { ConfirmJobBookings } from "@/shared/types/booking";
 import { Messages } from "@/utils/constant";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";
+
+export interface UpdateConfirmedBookingPayload {
+  bookingId: string;
+  scheduledAt: string; // or Date
+  status: BookingStatus;
+}
 
 interface providerBookingState {
   data: ConfirmJobBookings[];
@@ -17,7 +24,11 @@ const initialState: providerBookingState = {
   error: null,
 };
 
-export const fetchProviderBookingsInfo = createAsyncThunk(
+export const fetchProviderBookingsInfo = createAsyncThunk<
+  ConfirmJobBookings[],   // Return type
+  void,                   // Argument type
+  { rejectValue: string } // Optional rejected value type
+>(
   "providerBookingInfo/fetchData",
   async (_, { rejectWithValue }) => {
     try {
@@ -37,11 +48,20 @@ const providerBookingSlice = createSlice({
   name: "providerBookingInfo",
   initialState,
   reducers: {
-    addConfirmedBooking: (state, action) => {
+    addConfirmedBooking: (state, action: PayloadAction<ConfirmJobBookings>) => {
       state.data.push(action.payload);
     },
-    removeBooking: (state, action) => { 
-      state.data = state.data.filter((b)=>b.bookingId != action.payload);
+    updateConfirmedBooking: (state, action: PayloadAction<UpdateConfirmedBookingPayload>) => {
+      if (state.data) {
+        const booking = state.data.find((cb) => cb.bookingId === action.payload.bookingId);
+        if (booking) {
+          booking.scheduledAt = action.payload.scheduledAt;
+          booking.status = action.payload.status;
+        }
+      }
+    },
+    removeBooking: (state, action: PayloadAction<string>) => {
+      state.data = state.data.filter((b) => b.bookingId != action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -61,7 +81,7 @@ const providerBookingSlice = createSlice({
   }
 });
 
-export const { addConfirmedBooking,removeBooking } = providerBookingSlice.actions;
+export const { addConfirmedBooking, updateConfirmedBooking, removeBooking } = providerBookingSlice.actions;
 export default providerBookingSlice.reducer;
 
 

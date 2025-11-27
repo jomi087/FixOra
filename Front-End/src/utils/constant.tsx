@@ -226,6 +226,7 @@ export const API_ROUTES = {
     REVIEW_STATUS: (id: string) => `/api/customer/booking/review-status/${id}`,
 
     BOOKING_APPLICATION: "/api/customer/provider/booking",
+    RESCHEDULE_BOOKING : (bookingId: string) => `/api/customer/reschedule/booking/${bookingId}`,
     ONLINE_PAYMENT: "/api/customer/create-checkout-session",
     WALLET_PAYMENT: "/api/customer/wallet-payment",
     PAYMENT_STATUS: (bookingId: string) => `/api/customer/booking/notify-paymentStatus/${bookingId}`,

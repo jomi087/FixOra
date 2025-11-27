@@ -15,6 +15,7 @@ interface TimeSlotSelectorProps {
     scheduledAt: Date;
     status: BookingStatus;
   }[];
+
 }
 
 const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
@@ -22,12 +23,12 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
   selectedTime,
   onTimeChange,
   selectedDate,
-  bookedSlots
+  bookedSlots,
 }) => {
   return (
     <div className="mt-6 border p-4 rounded-xl">
       <h3 className="text-lg font-semibold mb-4">Select Time</h3>
-      { timeSlots.length <= 0 ? (
+      {timeSlots.length <= 0 ? (
         <div className="font-bold font-roboto text-center">No Slots Available For Today</div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
@@ -37,8 +38,8 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
               const { date, time } = splitDateTime(b.scheduledAt);
               return (
                 date === selectedDate &&
-                  time === slot.value &&
-                  (b.status === BookingStatus.CONFIRMED || b.status === BookingStatus.PENDING)
+                time === slot.value &&
+                (b.status === BookingStatus.CONFIRMED || b.status === BookingStatus.PENDING)
               );
             });
 
@@ -62,9 +63,7 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
               <button
                 key={idx}
                 disabled={!!booking || isTimePassed}
-                onClick={() => {
-                  if (!booking && !isTimePassed) onTimeChange(slot.value);
-                }}
+                onClick={() => onTimeChange(slot.value) }
                 title={
                   booking
                     ? booking.status === BookingStatus.CONFIRMED ? "Already booked" : "Booking on Process"
@@ -78,7 +77,7 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
           })}
         </div>
       )}
-      
+
     </div>
   );
 };

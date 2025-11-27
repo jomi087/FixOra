@@ -11,6 +11,7 @@ export interface ConfirmBookingOutputDTO {
 export interface BookingDetailsOutputDTO {
     bookingId: string;
     providerUser: {
+        providerId: string;
         userId: string;
         fname: string;
         lname: string;

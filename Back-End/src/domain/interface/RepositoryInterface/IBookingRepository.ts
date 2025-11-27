@@ -30,6 +30,8 @@ export interface IBookingRepository {
 
   updateBooking(bookingId: string, updateData: Partial<Booking>): Promise<Booking | null>;
 
+  updateScheduleDateandTime(bookingId: string, timeStamp: Date): Promise<Booking | null>;
+
   updateProviderResponseAndPaymentStatus(
     bookingId: string,
     response: ProviderResponseStatus,
@@ -66,7 +68,7 @@ export interface IBookingRepository {
 
   BookingsDetailsById(bookingId: string): Promise<{
     userProvider: Pick<User, "userId" | "fname" | "lname" | "email">,
-    provider: Pick<Provider, "profileImage">
+    provider: Pick<Provider, "providerId" | "profileImage">
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
     booking: Partial<Booking>

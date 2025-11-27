@@ -24,7 +24,7 @@ import { InvoicePDF } from "./invoice/InvoicePDF";
 import { pdf } from "@react-pdf/renderer";
 import axios from "axios";
 import Feedback from "./Feedback";
-
+import BookingSlots from "@/components/client/providersSection/providerInfo/BookingSlots";
 
 const BookingDetails = () => {
   const { bookingId } = useParams();
@@ -36,14 +36,12 @@ const BookingDetails = () => {
   const { items, error } = useAppSelector(state => state.notification);
   const [openFeedBack, setOpenFeedBack] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [openBookingSlot, setOpenBookingSlot] = useState(false);
   const [hasUserReviewed, setHasUserReviewed] = useState<boolean | null>(null);
   //fetch Booking
   useEffect(() => {
     const fetchBooking = async () => {
-      if (!bookingId) {
-        toast.error("Booking ID is missing");
-        return;
-      }
+      if (!bookingId) return;
       try {
         const res = await AuthService.bookingDetailsApi(bookingId);
         setBookingInDetails(res.data.bookingDetailsData);
@@ -78,10 +76,7 @@ const BookingDetails = () => {
 
   //cancel Booking
   const cancelBooking = async () => {
-    if (!bookingId || !bookingInDetails) {
-      toast.error("Something went wrong");
-      return;
-    }
+    if (!bookingId || !bookingInDetails) return;
 
     try {
       const res = await AuthService.cancelBookingApi(bookingId);
@@ -126,12 +121,28 @@ const BookingDetails = () => {
     }
   };
 
+  const rescheduleBooking = async (rescheduledAt: Date) => {
+    if (!bookingId) return;
+    console.log("rescheduled AT", rescheduledAt);
+    try {
+      const res = await AuthService.rescheduleBooking(bookingId, rescheduledAt);
+      setBookingInDetails((prev) => {
+        if (!prev) return prev;
+        return { ...prev, scheduledAt: res.data.rescheduledAt };
+      });
+      toast.success("Booking SuccessFully re-scheduled");
+      setOpenBookingSlot(false);
+
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
+      toast.error(errorMsg);
+    }
+  };
+
   // validate retry payment
   const retryPayment = async () => {
-    if (!bookingId || !bookingInDetails) {
-      toast.error("Something went wrong");
-      return;
-    }
+    if (!bookingId || !bookingInDetails) return;
 
     //check slot is still avialable or not
     try {
@@ -176,10 +187,7 @@ const BookingDetails = () => {
 
   //payment
   const handlePayment = async (paymentType: PaymentMode, balance?: number) => {
-    if (!bookingInDetails) {
-      toast.error("booking id missing");
-      return;
-    }
+    if (!bookingInDetails) return;
 
     const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
     setIsSubmitting(true);
@@ -297,7 +305,7 @@ const BookingDetails = () => {
     return <BookingDetailsShimmer />;
   };
 
-  if (!bookingInDetails) {
+  if (!bookingInDetails || !bookingId) {
     return (
       <p className="text-center py-10 text-red-500">
         No booking details found
@@ -328,7 +336,7 @@ const BookingDetails = () => {
         </div>
       }
       <div className="min-h-screen w-full sm:px-2 overflow-auto text-body-text ">
-        <div className="flex flex-col-reverse md:flex-row">
+        <div className="flex flex-col-reverse md:flex-row border-b-2 pb-4">
           {/* left */}
           <div className="w-full md:w-[60%] lg:w-[70%] p-5 pb-0">
             <h2 className="text-lg font-bold mb-4 underline underline-offset-4 text-nav-text font-serif">Details</h2>
@@ -349,8 +357,11 @@ const BookingDetails = () => {
                 status={bookingInDetails.status}
                 retryPayment={retryPayment}
                 paymentInfo={bookingInDetails.paymentInfo}
+                scheduledAt={bookingInDetails.scheduledAt}
                 setOpenFeedBack={setOpenFeedBack}
                 setConfirmOpen={setConfirmOpen}
+                setOpenBookingSlot={setOpenBookingSlot}
+                providerId={bookingInDetails.providerUser.providerId}
                 hasUserReviewed={hasUserReviewed}
                 handleDownloadPDF={handleDownloadPDF}
               />
@@ -392,6 +403,9 @@ const BookingDetails = () => {
             }
           </div>
         </div>
+        {openBookingSlot &&
+          <BookingSlots type={"Reschedule"} rescheduleBooking={rescheduleBooking} />
+        }
       </div>
     </>
   );

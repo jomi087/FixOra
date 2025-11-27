@@ -25,7 +25,7 @@ export class BookingRepository implements IBookingRepository {
             "provider.id": providerId,
             scheduledAt,
             "provider.response": { $nin: [ProviderResponseStatus.REJECTED] },
-            status: { $in: [BookingStatus.PENDING, BookingStatus.CONFIRMED] }
+            status: { $nin: [BookingStatus.CANCELLED] }
         });
     }
 
@@ -38,7 +38,8 @@ export class BookingRepository implements IBookingRepository {
             {
                 $match: {
                     providerUserId: providerUserId,
-                    status: BookingStatus.PENDING
+                    status: BookingStatus.PENDING,
+                    "provider.response": ProviderResponseStatus.PENDING,
                 }
             },
             {
@@ -135,6 +136,42 @@ export class BookingRepository implements IBookingRepository {
             { $set: updateData },
             { new: true }
         ).lean();
+    }
+
+    async updateScheduleDateandTime(bookingId: string, timeStamp: Date): Promise<Booking | null> {
+        const updatedData =await BookingModel.findOneAndUpdate(
+            { bookingId },
+            { $set: { scheduledAt: timeStamp } },
+            { new: true }
+        ).lean();
+
+        if (!updatedData) return null;
+
+        const booking :Booking = {
+            bookingId: updatedData.bookingId,
+            userId: updatedData.userId,
+            providerUserId: updatedData.providerUserId,
+            provider: {
+                id: updatedData.provider.id,
+                response: updatedData.provider.response,
+                reason: updatedData.provider.reason,
+            },
+            scheduledAt: updatedData.scheduledAt,
+            issueTypeId: updatedData.issueTypeId,
+            issue: updatedData.issue,
+            status: updatedData.status,
+            pricing: updatedData.pricing,
+            commission: updatedData.commission,
+            paymentInfo: updatedData.paymentInfo,
+            esCrowAmout: updatedData.esCrowAmout,
+            diagnosed: updatedData.diagnosed,
+            workProof: updatedData.workProof,
+            cancelledAt: updatedData.cancelledAt,
+            createdAt: updatedData.createdAt,
+            updatedAt: updatedData.updatedAt,
+        };
+
+        return booking;
     }
 
     async updateProviderResponseAndPaymentStatus(
@@ -436,7 +473,7 @@ export class BookingRepository implements IBookingRepository {
 
     async BookingsDetailsById(bookingId: string): Promise<{
         userProvider: Pick<User, "userId" | "fname" | "lname" | "email">,
-        provider: Pick<Provider, "profileImage">
+        provider: Pick<Provider, "providerId" | "profileImage">
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
         //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
@@ -491,6 +528,7 @@ export class BookingRepository implements IBookingRepository {
                         email: "$providerUserDetails.email",
                     },
                     provider: {
+                        providerId: "$providerDetails.providerId",
                         profileImage: "$providerDetails.profileImage"
                     },
                     category: {
@@ -526,7 +564,7 @@ export class BookingRepository implements IBookingRepository {
 
         interface AggregatedResult {
             userProvider: Pick<User, "userId" | "fname" | "lname" | "email">,
-            provider: Pick<Provider, "profileImage">
+            provider: Pick<Provider, "providerId" | "profileImage">
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
             //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
@@ -705,7 +743,7 @@ export class BookingRepository implements IBookingRepository {
                                                     { $eq: ["$paymentInfo.status", PaymentStatus.PARTIAL_REFUNDED] },
                                                 ],
                                             },
-                                            "$commission",0
+                                            "$commission", 0
                                         ],
                                     },
                                 },

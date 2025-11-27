@@ -12,7 +12,7 @@ export const bookingIdSchema = z.object({
 
 export const bookingRequestSchema = z.object({
     providerId: providerIdField,
-    providerUserId : providerUserIdField,
+    providerUserId: providerUserIdField,
     scheduledAt: dateTimeField,
     issueTypeId: issueTypeIdField,
     issue: issueField
@@ -24,19 +24,32 @@ export const bookingRequestSchema = z.object({
     },
     {
         message: "Slot is Un-Available",
-        path: ["fullDate", "time"], // attach error to these fields
+        path: ["scheduledAt"],
     }
 );
 /********************************************************************************* */
 export const bookingStatusSchema = z.object({
-    action:providerResponseStatusField,
+    action: providerResponseStatusField,
     reason: optionalStringField,
 }).refine(
     (data) =>
         data.action === ProviderResponseStatus.ACCEPTED || (data.reason && data.reason.trim().length > 0), //truthy condition is false then trigger message
-    {                                                                     
+    {
         message: "Reason is required",
         path: ["reason"], // This will attach the error to the reason field
     }
 );
 /********************************************************************************* */
+
+export const rescheduleBookingSchema = z.object({
+    rescheduledAt: z.coerce.date()
+        .refine(
+            (data) => {
+                const bookingDateTime = new Date(data);
+                // Check if bookingDateTime is valid and in the future
+                return !isNaN(bookingDateTime.getTime()) && bookingDateTime > new Date();
+            },
+            { message: "Date cannot be in the past" }
+
+        )
+});
