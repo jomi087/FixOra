@@ -3,7 +3,7 @@ import AuthService from "@/services/AuthService";
 import type { BookingInfoDetails } from "@/shared/types/booking";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AppointmentDetails from "./AppointmentDetails";
@@ -38,6 +38,9 @@ const BookingDetails = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [openBookingSlot, setOpenBookingSlot] = useState(false);
   const [hasUserReviewed, setHasUserReviewed] = useState<boolean | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+
   //fetch Booking
   useEffect(() => {
     const fetchBooking = async () => {
@@ -184,6 +187,15 @@ const BookingDetails = () => {
       toast.error(errorMsg);
     }
   };
+  
+  useEffect(() => {
+    if (openBookingSlot) {
+      contentRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [openBookingSlot]);
 
   //payment
   const handlePayment = async (paymentType: PaymentMode, balance?: number) => {
@@ -404,7 +416,9 @@ const BookingDetails = () => {
           </div>
         </div>
         {openBookingSlot &&
-          <BookingSlots type={"Reschedule"} rescheduleBooking={rescheduleBooking} />
+          <div ref={contentRef}>
+            <BookingSlots type={"Reschedule"} rescheduleBooking={rescheduleBooking} />
+          </div>
         }
       </div>
     </>
