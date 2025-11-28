@@ -1,15 +1,28 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import type { Day, LeaveOption } from "@/shared/types/availability";
-import { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchAvailability, saveAvailability, toggleAvailability } from "@/store/provider/availabilitySlice";
 import { generateTimeSlots } from "@/utils/helper/Date&Time";
 import { TIME_SLOTS } from "@/utils/constant";
+import type { Day, LeaveOption } from "@/shared/types/availability";
 import { toast } from "react-toastify";
-import ConfirmationBar from "@/components/common/modal/ConfirmationBar";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
+// -- helper types --
+type DayState = { slots: string[]; active: boolean };
+
+// Build default schedule shape
+const defaultSchedule = (): Record<Day, DayState> => ({
+  Sunday: { slots: [], active: false },
+  Monday: { slots: [], active: false },
+  Tuesday: { slots: [], active: false },
+  Wednesday: { slots: [], active: false },
+  Thursday: { slots: [], active: false },
+  Friday: { slots: [], active: false },
+  Saturday: { slots: [], active: false },
+});
 
 const timeSlots = generateTimeSlots(
   TIME_SLOTS.STARTHOURS,
@@ -18,233 +31,199 @@ const timeSlots = generateTimeSlots(
 );
 
 const ScheduleAvailability = () => {
+  const dispatch = useAppDispatch();
+  const { data: availability } = useAppSelector((s) => s.availability);
+
   const [activeDay, setActiveDay] = useState<Day>("Sunday");
   const [workingHours, setWorkingHours] = useState(false);
   const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
-  const [leaveOption, setLeaveOption] = useState<LeaveOption | null>(null);
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [pendingArgs, setPendingArgs] = useState<{ day: Day; active: boolean } | null>(null);
 
-  // Why schedule is not of type DayScedule ? (answer given below)
-  const [schedule, setSchedule] = useState<Record<Day, { slots: string[], active: boolean }>>({
-    Sunday: { slots: [], active: false },
-    Monday: { slots: [], active: false },
-    Tuesday: { slots: [], active: false },
-    Wednesday: { slots: [], active: false },
-    Thursday: { slots: [], active: false },
-    Friday: { slots: [], active: false },
-    Saturday: { slots: [], active: false },
-  });
+  // local UI schedule (single source of truth while editing)
+  const [schedule, setSchedule] = useState<Record<Day, DayState>>(defaultSchedule());
 
-  const dispatch = useAppDispatch();
-  const { data: availability } = useAppSelector((state) => state.availability);
-  const activeDaySlots = availability.find((d) => d.day === activeDay)?.slots || [];
+  // Single modal state for all confirmations / leave choices
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<null | "leave" | "confirmSave">(null);
+  const [pendingToggleArgs, setPendingToggleArgs] = useState<{ day: Day; active: boolean } | null>(null);
+  // const [selectedLeaveOption, setSelectedLeaveOption] = useState<LeaveOption | null>(null);
 
+  // load availability on mount
   useEffect(() => {
     dispatch(fetchAvailability());
   }, [dispatch]);
 
+  // reflect server availability into local schedule when fetched
   useEffect(() => {
-    if (availability.length > 0) {
-      const updatedSchedule = availability.reduce((acc, dayObj) => {
-        acc[dayObj.day] = {
-          slots: dayObj.slots || [],
-          active: dayObj.active ?? false,
-        };
-        return acc;
-      }, {} as Record<Day, { slots: string[]; active: boolean }>);
-
-      setSchedule(updatedSchedule);
-    }
+    if (!availability || availability.length === 0) return;
+    const mapped = availability.reduce((acc: Record<Day, DayState>, d) => {
+      acc[d.day as Day] = { slots: d.slots || [], active: d.active ?? false };
+      return acc;
+    }, defaultSchedule());
+    setSchedule(mapped);
   }, [availability]);
 
+  // Convenience: slots currently saved on server for activeDay
+  const savedSlotsForActive = availability.find((d) => d.day === activeDay)?.slots || [];
+
+  // Toggle a slot in local schedule (add/remove)
   const handleSlotClick = (slotValue: string) => {
-    setSchedule(prev => {
-      const currentSlots = prev[activeDay].slots;
-      const updatedSlots = currentSlots.includes(slotValue)
-        ? currentSlots.filter(s => s !== slotValue)
-        : [...currentSlots, slotValue];
-      return { ...prev, [activeDay]: { ...prev[activeDay], slots: updatedSlots } };
+    setSchedule((prev) => {
+      const curr = prev[activeDay];
+      const has = curr.slots.includes(slotValue);
+      const nextSlots = has ? curr.slots.filter((s) => s !== slotValue) : [...curr.slots, slotValue];
+      return { ...prev, [activeDay]: { ...curr, slots: nextSlots } };
     });
   };
 
-  const askConfirmation = () => {
-    const hasEmptyDay = Object.values(schedule).some((day) => day.slots.length === 0);
-    if (hasEmptyDay) {
-      setError("* Please add working hours for all days before saving !");
+  // Ask confirmation before saving the whole schedule
+  const askSaveConfirmation = () => {
+    const missingDay = (Object.entries(schedule) as [Day, DayState][])
+      .find(([_day, data]) => data.slots.length === 0)?.[0];
+    if (missingDay) {
+      setError(`${missingDay} requires at least one working slot.`);
       return;
     }
-    setConfirmOpen(true);
+    setError("");
+    setModalMode("confirmSave");
+    setModalOpen(true);
   };
 
+  // Save handler (calls redux thunk)
   const handleSaveAvailability = async () => {
-    const resultAction = await dispatch(saveAvailability(schedule));
-    if (!saveAvailability.fulfilled.match(resultAction)) {
-      toast.error(resultAction.payload as string);
+    setModalOpen(false);
+    try {
+      const resultAction = await dispatch(saveAvailability(schedule));
+      if (!saveAvailability.fulfilled.match(resultAction)) {
+        toast.error(resultAction.payload as string);
+        return;
+      }
+      toast.success("Availability saved");
+      setWorkingHours(false);
+      setActiveDay("Sunday");
+    } catch {
+      toast.error("Failed to save availability");
     }
-    // setConfirmOpen(false);
-    setWorkingHours(false);
-    setActiveDay("Sunday");
   };
 
-
-  const handleToggleAvailability = async (args: { day: Day; active: boolean }, leaveOption?: LeaveOption) => {
-
-    if (!args.active && !leaveOption) {
-      toast.error("Missing leave-Option");
+  // Toggle availability (turn day on/off)
+  const requestToggleAvailability = (args: { day: Day; active: boolean }) => {
+    // if turning OFF, ask leave option first
+    if (!args.active) {
+      setPendingToggleArgs(args);
+      // setSelectedLeaveOption(null);
+      setModalMode("leave");
+      setModalOpen(true);
       return;
     }
-    const payload = args.active ? args : { ...args, leaveOption };
 
-    const resultAction = await dispatch(toggleAvailability(payload));
-    if (!toggleAvailability.fulfilled.match(resultAction)) {
-      toast.error(resultAction.payload as string);
+    // turn ON immediately
+    (async () => {
+      const resultAction = await dispatch(toggleAvailability(args));
+      if (!toggleAvailability.fulfilled.match(resultAction)) {
+        toast.error(resultAction.payload as string);
+        return;
+      }
+      setSchedule((prev) => ({ ...prev, [args.day]: { ...prev[args.day], active: args.active } }));
+    })();
+  };
+
+  // Confirm leave option and execute toggle
+  const confirmLeaveAndToggle = async () => {
+    if (!pendingToggleArgs) return;
+    let selectedLeaveOption: LeaveOption = "every_week"; // temp line
+    if (!selectedLeaveOption) {
+      toast.error("Choose leave option");
       return;
     }
-    setSchedule((prev) => ({
-      ...prev,
-      [args.day]: { ...prev[args.day], active: args.active },
-    }));
+    setModalOpen(false);
+
+    try {
+      type payloadType = { day: string; active: boolean; leaveOption?: LeaveOption }
+      const payload: payloadType = { ...pendingToggleArgs, leaveOption: selectedLeaveOption };
+      const resultAction = await dispatch(toggleAvailability(payload));
+      if (!toggleAvailability.fulfilled.match(resultAction)) {
+        toast.error(resultAction.payload as string);
+        return;
+      }
+      setSchedule((prev) => ({ ...prev, [pendingToggleArgs.day]: { ...prev[pendingToggleArgs.day], active: pendingToggleArgs.active } }));
+      toast.success("Day toggled");
+    } catch {
+      toast.error("Failed to toggle day");
+    } finally {
+      setPendingToggleArgs(null);
+      // setSelectedLeaveOption(null);
+      setModalMode(null);
+    }
+  };
+
+  // Helper to render a slot button class succinctly
+  const slotClass = (slotValue: string, day: Day) => {
+    const saved = (availability.find((d) => d.day === day)?.slots || []).includes(slotValue);
+    const selected = schedule[day].slots.includes(slotValue);
+    const removed = saved && !selected; // saved in backend but not selected now => user removed it
+
+    if (removed) return "bg-red-500 text-white border-red-600";
+    if (saved) return "bg-green-500 text-white border-primary cursor-not-allowed"; // visually indicate saved
+    if (selected) return "bg-chart-2 border-primary";
+    return "hover:border-primary bg-primary-foreground text-primary";
   };
 
   return (
-    <div className="w-full p-4">
-      <div className="flex justify-between mb-3 mt-2">
-        <h2 className="text-lg font-semibold font-serif  underline underline-offset-4">
-          WORKING HOURS
-        </h2>
+    <div className="w-full">
+      <div className="flex justify-between mt-4 m-3">
+        <h2 className="text-lg font-semibold font-serif underline underline-offset-4">WORKING HOURS</h2>
         {!workingHours ? (
-          <Button
-            className="cursor-pointer hover:bg-primary/90 active:scale-95"
-            onClick={() => setWorkingHours(true)}
-          >
-            ➕ ADD
-          </Button>
+          <Button onClick={() => setWorkingHours(true)}>➕ EDIT</Button>
         ) : (
-          <Button
-            className="cursor-pointer hover:bg-primary/90 active:scale-95"
-            onClick={() => setWorkingHours(false)}
-          >
-            👉 Back
-          </Button>
+          <Button onClick={() => setWorkingHours(false)}>👉 Back</Button>
         )}
       </div>
 
       <div className="flex gap-4 text-primary">
+        {/* left day list */}
         <div className="basis-[30%] p-2 space-y-4 border border-primary/20 rounded-lg">
-          {availability.map((dayObj) => (
-            <div
-              key={dayObj.day}
-              onClick={() => setActiveDay(dayObj.day)}
-              className={`p-2 border rounded-lg cursor-pointer transition 
-                ${activeDay === dayObj.day ? "border-primary bg-chart-2 dark:bg-primary/15 " : "border-primary/30 hover:bg-primary/5"}`}
-            >
-              <div className="flex items-center space-x-3">
-                {activeDaySlots.length > 0 && !workingHours &&
-                  <Switch
-                    id={dayObj.day}
-                    className="cursor-pointer"
-                    checked={schedule[dayObj.day].active}
-                    onCheckedChange={(checked) => {
-                      const args = { day: dayObj.day, active: checked };
-                      setPendingArgs(args);
-                      if (!checked) {
-                        setOpen(true);
-                        //setConfirmOpen(true);
-                      } else {
-                        handleToggleAvailability(args);
-                      }
-                    }}
-                  />
-                }
-                <Label
-                  htmlFor={dayObj.day}
-                  onClick={(e) => e.preventDefault()} // prevent label toggling switch
-                  className="cursor-pointer text-lg font-bold font-roboto"
-                >
-                  {dayObj.day}
-                </Label>
+          {availability.map((dayObj) => {
+            const day = dayObj.day as Day;
+            const serverSlots = dayObj.slots || [];
+            const active = schedule[day].active;
+
+            return (
+              <div
+                key={day}
+                onClick={() => setActiveDay(day)}
+                className={`p-2 border rounded-lg cursor-pointer transition ${activeDay === day ? "border-primary bg-chart-2 dark:bg-primary/15" : "border-primary/30 hover:bg-primary/5"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Label className="cursor-pointer text-lg font-bold font-roboto" onClick={(e) => e.preventDefault()}>{day}</Label>
+                  </div>
+
+                  <div>
+                    {/* show switch only if the provider has slots set for that day (server data) */}
+                    {serverSlots.length > 0 && !workingHours && (
+                      <Switch
+                        id={day}
+                        checked={active}
+                        onCheckedChange={(checked) => requestToggleAvailability({ day, active: checked })}
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-          {pendingArgs && leaveOption &&
-            <ConfirmationBar
-              confirmOpen={confirmOpen}
-              setConfirmOpen={setConfirmOpen}
-              handleAction={() => {
-                handleToggleAvailability(pendingArgs, leaveOption);
-              }}
-              description="Are you sure you want to proceed ?"
-              extraContent={
-                <p className="font-roboto text-[12px]">
-                  {`This action will cancel all existing bookings scheduled on ${activeDay} ${leaveOption === "this_week" ? "for this week" : "for every week"} .`}
-                </p>
-              }
-            />
-          }
-
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="max-w-md">
-              <DialogHeader>
-                <DialogTitle>Leave Request</DialogTitle>
-                <DialogDescription>
-                  Confirm how you’d like to schedule your leave.
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-3 text-sm text-muted-foreground">
-                <p>You have requested leave on <span className="font-medium text-foreground">{activeDay}</span>.</p>
-                <p>
-                  Would you like this leave only for  this week,
-                  or repeat it every week?
-                </p>
-              </div>
-
-              <DialogFooter className="flex justify-end gap-3">
-                <Button
-                  variant="outline"
-                  className="cursor-pointer active:scale-95 "
-                  disabled
-                  onClick={() => {
-                    setLeaveOption("this_week");
-                    setConfirmOpen(true);
-                    setOpen(false);
-                  }}
-                >
-                  This Week
-                </Button>
-                <Button
-                  className="cursor-pointer active:scale-95"
-                  onClick={() => {
-                    setLeaveOption("every_week");
-                    setConfirmOpen(true);
-                    setOpen(false);
-                  }}
-                >
-                  Every Week
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+            );
+          })}
         </div>
 
+        {/* right content */}
         {!workingHours ? (
           <div className="basis-[70%]">
-            {activeDaySlots.length === 0 ? (
-              <div className="flex justify-center items-center h-[80%] jusbg-amber-800">
-                <p className="text-xl font-roboto font-bold">Work Time Not Set</p>
-              </div>
+            {savedSlotsForActive.length === 0 ? (
+              <div className="flex justify-center items-center h-[80%]"><p className="text-xl font-roboto font-bold">Work Time Not Set</p></div>
             ) : (
               <>
                 <h3 className="text-md font-semibold mb-2">{activeDay} Slots</h3>
                 <div className="grid grid-cols-4 gap-3">
-                  {activeDaySlots.map((slot, idx) => (
-                    <div
-                      key={idx}
-                      className={`p-2 border rounded-lg text-center cursor-pointer 
-                        ${schedule[activeDay]?.active ? "bg-chart-2/70" : "bg-gray-100 text-gray-600"}`}
-                    >
+                  {savedSlotsForActive.map((slot, idx) => (
+                    <div key={idx} className={`p-2 border rounded-lg text-center ${schedule[activeDay]?.active ? "bg-chart-2/70" : "bg-gray-100 text-gray-600"}`}>
                       {slot}
                     </div>
                   ))}
@@ -254,68 +233,96 @@ const ScheduleAvailability = () => {
           </div>
         ) : (
           <div className="basis-[70%]">
+            <p className="text-sm text-primary/50 font-semibold mb-2">* Select a time slot to add it, or click an existing one to remove it from {activeDay}.</p>
             <div className="grid grid-cols-4 gap-4 rounded-lg mt-2">
-              {timeSlots.map((slot) => {
-                const isSaved = availability.find((d) => d.day === activeDay)?.slots.includes(slot.value);
-                const isSelected = schedule[activeDay].slots.includes(slot.value);
-                return (
-                  <button
-                    key={slot.value}
-                    onClick={() => {
-                      if (!isSaved) handleSlotClick(slot.value);
-                    }}
-                    disabled={isSaved}
-                    className={`h-12 border-1 rounded-lg flex items-center justify-center transition cursor-pointer
-                    ${isSaved ?
-                    "bg-green-500 text-white border-primary cursor-not-allowed"
-                    : isSelected ?
-                      "bg-chart-2 border-1 border-primary"
-                      : "hover:border-primary hover:border-1 bg-primary-foreground text-primary"
-                  }`}
-                  >
-                    {slot.time}
-                  </button>
-                );
-              })}
+              {timeSlots.map((slot) => (
+                <button
+                  key={slot.value}
+                  onClick={() => handleSlotClick(slot.value)}
+                  className={`h-12 border rounded-lg flex items-center justify-center transition cursor-pointer ${slotClass(slot.value, activeDay)}`}
+                  disabled={false}
+                >
+                  {slot.time}
+                </button>
+              ))}
             </div>
+
             <div className="flex justify-end-safe gap-3 mt-5 mr-5">
               <p className="text-red-400 font-semibold text-sm font-roboto pt-2">{error}</p>
+
               {error ? (
-                <Button
-                  className="cursor-pointer hover:scale-105 active:scale-95"
-                  onClick={() => setError("")}
-                >
-                  OK
-                </Button>
+                <Button onClick={() => setError("")}>OK</Button>
               ) : (
-                <Button
-                  variant={"success"}
-                  className="cursor-pointer w-28 hover:scale-105 active:scale-95"
-                  onClick={askConfirmation}
-                >
-                  SAVE
-                </Button>
+                <Button variant={"success"} onClick={askSaveConfirmation} className="w-28">SAVE</Button>
               )}
             </div>
-            <ConfirmationBar
-              confirmOpen={confirmOpen}
-              setConfirmOpen={setConfirmOpen}
-              handleAction={handleSaveAvailability}
-              description="Are you sure you want to proceed? This action is permanent and cannot be undone."
-            />
           </div>
         )}
       </div>
-    </div >
+
+      {/* Unified modal used for both leave choice and save confirmation */}
+      <Dialog
+        open={modalOpen}
+        onOpenChange={(v) => {
+          setModalOpen(v);
+          if (!v) {
+            setModalMode(null);
+            setPendingToggleArgs(null);
+            // setSelectedLeaveOption(null);
+          }
+        }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{modalMode === "leave" ? "Leave Request" : "Confirm Save"}</DialogTitle>
+            <DialogDescription>
+              {modalMode === "leave" ? "Confirm how you’d like to schedule your leave." : "Save availability? This will overwrite your existing schedule."}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 mt-2 text-sm">
+            {modalMode === "leave" && (
+              <>
+                <p>You have requested leave on <span className="font-medium">{pendingToggleArgs?.day}</span>.</p>
+                {/* <p>Would you like this leave only for this week, or repeat it every week?</p> */}
+                {/* <div className="flex gap-3 mt-3">
+                  <button className={`px-3 py-2 rounded ${selectedLeaveOption === "this_week" ? "bg-chart-2 text-white" : "border"}`} onClick={() => setSelectedLeaveOption("this_week")}>This Week</button>
+                  <button className={`px-3 py-2 rounded ${selectedLeaveOption === "every_week" ? "bg-chart-2 text-white" : "border"}`} onClick={() => setSelectedLeaveOption("every_week")}>Every Week</button>
+                </div> */}
+              </>
+            )}
+
+            {modalMode === "confirmSave" && (
+              <div>
+                <p className="mb-4">Below are the working hour slots you have selected for each day. Please review them before saving.</p>
+                <ul className="font-roboto list-disc p-1 flex justify-between flex-wrap gap-4">
+                  {Object.entries(schedule).map(([d, val]) => (
+                    <li
+                      className="w-[138px] text-sm  border"
+                      key={d}>
+                      <strong
+                        className="text-xs"
+                      >
+                        {d}
+                      </strong>
+                      : {val.slots.length} slot(s)
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter className="flex justify-end gap-3 mt-4">
+            <Button onClick={() => setModalOpen(false)}>Cancel</Button>
+            {modalMode === "leave" ? (
+              <Button variant="destructive" onClick={confirmLeaveAndToggle}>Confirm Leave</Button>
+            ) : (
+              <Button variant="success" onClick={handleSaveAvailability}>Yes, Save</Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
-
 export default ScheduleAvailability;
-
-/*
-  instead of making schedule state of type DaySchedule
-  i create a object type  state of schedule that cz of fast lookup O(1)
-  or else of perticular day i might had to iterate O(n) (n = 7 (7 days [1 week]))
-  and also this give me strong typing in  point of days
-(normaly is donst make that deifference cz of  O(1) cs O(7) wont make that diffrence
-  */

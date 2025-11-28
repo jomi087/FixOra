@@ -148,7 +148,7 @@ import { BookingUseCase } from "../application/useCases/client/BookingUseCase";
 const bookingUseCase = new BookingUseCase(bookingRepository, notificationService, pushNotificationService, bookingSchedulerService, userRepository, availabilityRepository, commissionFeeRepository);
 
 import { RescheduleBookingUseCase } from "../application/useCases/client/RescheduleBookingUseCase";
-const rescheduleBookingUseCase = new RescheduleBookingUseCase(bookingRepository, availabilityRepository, notificationService, notificationRepository  );
+const rescheduleBookingUseCase = new RescheduleBookingUseCase(bookingRepository, availabilityRepository, notificationService, notificationRepository);
 
 import { CreatePaymentUseCase } from "../application/useCases/client/CreatePaymentUseCase";
 const createPaymentUseCase = new CreatePaymentUseCase(paymentService, bookingRepository);
@@ -228,7 +228,7 @@ import { GetAvailabilityUseCase } from "../application/useCases/providers/GetAva
 const getAvailabilityUseCase = new GetAvailabilityUseCase(providerRepository, availabilityRepository);
 
 import { SetAvailabilityUseCase } from "../application/useCases/providers/SetAvailabilityUseCase";
-const setAvailabilityUseCase = new SetAvailabilityUseCase(providerRepository, availabilityRepository);
+const setAvailabilityUseCase = new SetAvailabilityUseCase(providerRepository, availabilityRepository, bookingRepository, walletRepository, notificationService, notificationRepository);
 
 import { ToggleAvailabilityUseCase } from "../application/useCases/providers/ToggleAvailabilityUseCase";
 const toggleAvailabilityUseCase = new ToggleAvailabilityUseCase(providerRepository, availabilityRepository, bookingRepository, walletRepository, notificationService, notificationRepository);
@@ -292,7 +292,7 @@ import { GetChatMessagesUseCase } from "../application/useCases/chat/GetChatMess
 const getChatMessagesUseCase = new GetChatMessagesUseCase(chatMessageRepository);
 
 import { SendChatMessageUseCase } from "../application/useCases/chat/SendChatMessageUseCase";
-const sendChatMessageUseCase = new  SendChatMessageUseCase(chatRepository, chatMessageRepository );
+const sendChatMessageUseCase = new SendChatMessageUseCase(chatRepository, chatMessageRepository);
 /******************************************************************************************************************************************************/
 
 import { PublicController } from "../interfaces/controllers/PublicController";

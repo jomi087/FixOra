@@ -139,7 +139,7 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async updateScheduleDateandTime(bookingId: string, timeStamp: Date): Promise<Booking | null> {
-        const updatedData =await BookingModel.findOneAndUpdate(
+        const updatedData = await BookingModel.findOneAndUpdate(
             { bookingId },
             { $set: { scheduledAt: timeStamp } },
             { new: true }
@@ -147,7 +147,7 @@ export class BookingRepository implements IBookingRepository {
 
         if (!updatedData) return null;
 
-        const booking :Booking = {
+        const booking: Booking = {
             bookingId: updatedData.bookingId,
             userId: updatedData.userId,
             providerUserId: updatedData.providerUserId,
@@ -575,12 +575,68 @@ export class BookingRepository implements IBookingRepository {
         return result ?? null;
     }
 
-    async findBookingsByWeekday(providerId: string, dayIndex: number): Promise<Booking[]> {
+    async findBookingsByWeekday(providerUserId: string, dayIndex: number): Promise<Booking[]> {
         return BookingModel.find({
-            providerUserId: providerId,
+            providerUserId,
             status: { $eq: BookingStatus.CONFIRMED },
             $expr: { $eq: [{ $dayOfWeek: "$scheduledAt" }, dayIndex + 1] }
         });
+    }
+
+    async findBookingsByUtcRange(
+        providerUserId: string, dayIndex: number,
+        utcStartString: string, utcEndString: string
+    ): Promise<Booking[]> {
+
+        const docs = await BookingModel.find({
+            providerUserId,
+            status: BookingStatus.CONFIRMED,
+            scheduledAt: { $gte: new Date() }, // only future bookings
+            $expr: {
+                $and: [
+                    // Match weekday (1=Sun ... 7=Sat)
+                    { $eq: [{ $dayOfWeek: "$scheduledAt" }, dayIndex + 1] },
+
+                    // Match time window converted to HH:MM (UTC)
+                    {
+                        $and: [
+                            {
+                                $gte: [
+                                    { $dateToString: { format: "%H:%M", date: "$scheduledAt", timezone: "UTC" } },
+                                    utcStartString
+                                ]
+                            },
+                            {
+                                $lt: [
+                                    { $dateToString: { format: "%H:%M", date: "$scheduledAt", timezone: "UTC" } },
+                                    utcEndString
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }).lean();
+
+        return docs.map(d => ({
+            bookingId: d.bookingId,
+            userId: d.userId,
+            providerUserId: d.providerUserId,
+            provider: d.provider,
+            scheduledAt: d.scheduledAt,
+            issueTypeId: d.issueTypeId,
+            issue: d.issue,
+            status: d.status,
+            pricing: d.pricing,
+            commission: d.commission,
+            paymentInfo: d.paymentInfo,
+            esCrowAmout: d.esCrowAmout,
+            diagnosed: d.diagnosed,
+            workProof: d.workProof,
+            cancelledAt: d.cancelledAt,
+            createdAt: d.createdAt,
+            updatedAt: d.updatedAt
+        }));
     }
 
 

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
@@ -5,23 +6,193 @@ import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
 import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../DTOs/AvailabilityDTO";
 import { ISetAvailabilityUseCase } from "../../Interface/useCases/Provider/ISetAvailabilityUseCase";
+import { DaySchedule } from "../../../domain/entities/AvailabilityEntity";
+import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
+import { DAYS } from "../../../shared/const/constants";
+import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
+import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
+import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { SendBookingCancelledInput } from "../../DTOs/NotificationDTO";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { PaymentStatus } from "../../../shared/enums/Payment";
+import { Notification } from "../../../domain/entities/NotificationEntity";
+import { NotificationType } from "../../../shared/enums/Notification";
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, PROVIDER_NOT_FOUND } = Messages;
+const { INTERNAL_ERROR, PROVIDER_NOT_FOUND, WALLET_ID_NOT_FOUND, NOT_FOUND_MSG } = Messages;
 
 export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
     constructor(
         private readonly _providerRepository: IProviderRepository,
-        private readonly _availabilityRepository: IAvailabilityRepository
+        private readonly _availabilityRepository: IAvailabilityRepository,
+        private readonly _bookingRepository: IBookingRepository,
+        private readonly _walletRepository: IWalletRepository,
+        private readonly _notificationService: INotificationService,
+        private readonly _notificationRepository: INotificationRepository,
     ) { }
+
+    private async sendBookingCancelledNotification(input: SendBookingCancelledInput): Promise<void> {
+        try {
+            const { userId, title, message, metadata } = input;
+
+            const notification: Notification = {
+                notificationId: uuidv4(),
+                userId, //reciver
+                type: NotificationType.BOOKING_CANCELLED,
+                title,
+                message,
+                metadata,
+                isRead: false,
+                createdAt: new Date(),
+            };
+
+            await this._notificationRepository.save(notification);
+
+            await this._notificationService.send(userId, {
+                //notificationId: notification.notificationId,
+                type: notification.type,
+                title: notification.title,
+                message: notification.message,
+                metadata: notification.metadata,
+                createdAt: notification.createdAt,
+                isRead: notification.isRead,
+            });
+
+        } catch (error) {
+            if (error.status && error.message) throw error;
+            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        }
+    }
+
+    private getRemovedSlots(oldWorkTime: DaySchedule[], newWorkTime: DaySchedule[]): { day: Day; slots: string[] }[] {
+
+        const removed: { day: Day; slots: string[] }[] = [];
+
+        for (const oldDay of oldWorkTime) {
+
+            const newDay = newWorkTime.find(n => n.day === oldDay.day);
+            if (!newDay) continue;
+
+            const oldSlots = oldDay.slots;
+            const newSlots = newDay.slots;
+
+            // removed = old minus new
+            const removedSlots = oldSlots.filter(s => !newSlots.includes(s));
+
+            if (removedSlots.length > 0) {
+                removed.push({
+                    day: oldDay.day,
+                    slots: removedSlots
+                });
+            }
+        }
+
+        return removed;
+    }
+
+    async cancelBookingsForSlots(providerUserId: string, removedSlots: { day: Day; slots: string[] }[]): Promise<void> {
+
+        for (const entry of removedSlots) {
+            const { day, slots } = entry;
+
+            const dayIndex = DAYS.indexOf(day);
+            for (const slot of slots) {
+
+                const [hour, minute] = slot.split(":").map(Number);
+                // console.log(hour, minute);
+
+                const local = new Date();
+                local.setHours(hour, minute, 0, 0);
+
+                // Convert to UTC; we only keep the hour & minute part
+                const utcHour = local.getUTCHours().toString().padStart(2, "0");
+                const utcMinute = local.getUTCMinutes().toString().padStart(2, "0");
+
+                const utcStartString = `${utcHour}:${utcMinute}`;
+
+                // End time = +1 hour
+                const localEnd = new Date(local.getTime() + 60 * 60 * 1000);
+                const utcEndHour = localEnd.getUTCHours().toString().padStart(2, "0");
+                const utcEndMinute = localEnd.getUTCMinutes().toString().padStart(2, "0");
+
+                const utcEndString = `${utcEndHour}:${utcEndMinute}`;
+
+                const bookings = await this._bookingRepository.findBookingsByUtcRange(providerUserId, dayIndex, utcStartString, utcEndString);
+                // console.log("bookings", bookings);
+
+                for (const booking of bookings) {
+
+                    if (!booking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+
+                    let wallet = await this._walletRepository.findByUserId(booking.userId);
+                    if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+
+                    const transactionId = `Wlt_${uuidv4()}`;
+                    const numAmount = Number(booking.esCrowAmout);
+
+                    //updating user wallet with full refund
+                    await this._walletRepository.updateWalletOnTransaction({
+                        userId: booking.userId,
+                        transactionId,
+                        amount: numAmount,
+                        status: TransactionStatus.SUCCESS,
+                        type: TransactionType.REFUND,
+                        reason: `Booking cancellation refund, for booking ${booking.bookingId}`
+                    });
+
+                    //updating booking data 
+                    const updateData = {
+                        paymentInfo: {
+                            mop: booking.paymentInfo.mop,
+                            status: PaymentStatus.REFUNDED,
+                            paidAt: new Date(),
+                            transactionId: booking.paymentInfo.transactionId,
+                            reason: "Provider is Not Avalialble - refunded 100%"
+                        },
+                        status: BookingStatus.CANCELLED,
+                        esCrowAmout: 0,
+                        cancelledAt: new Date()
+                    };
+
+                    const updatedBooking = await this._bookingRepository.updateBooking(booking.bookingId, updateData);
+                    if (!updatedBooking || !updatedBooking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+
+                    await this.sendBookingCancelledNotification({
+                        userId: updatedBooking.providerUserId,
+                        title: "Booking Cancelled",
+                        message: `${updatedBooking.scheduledAt.toLocaleString()} Booking is been Cancelled `,
+                        metadata: {
+                            bookingId: updatedBooking.bookingId,
+                        }
+                    });
+
+                    await this.sendBookingCancelledNotification({
+                        userId: updatedBooking.userId,
+                        title: "Booking Cancelled",
+                        message: `${updatedBooking.scheduledAt.toLocaleString()} Booking is been Cancelled `,
+                        metadata: {
+                            bookingId: updatedBooking.bookingId,
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+
     async execute(input: setAvailabilityInputDTO): Promise<setAvailabilityOutputDTO[]> {
 
         try {
+
             let provider = await this._providerRepository.findByUserId(input.providerUserId);
             if (!provider) throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND };
             // console.log("inputSchedule", input.schedule);
 
-            const workTime = Object.entries(input.schedule)//input.schedule: Record<Day, { slots: string[], active: boolean }>;
+            const oldAvailability = await this._availabilityRepository.getProviderAvialability(provider.providerId);
+            if (!oldAvailability) throw { status: NOT_FOUND, message: "Availability not found" };
+
+            const newWorkTime = Object.entries(input.schedule)//input.schedule: Record<Day, { slots: string[], active: boolean }>;
                 .map(([day, value,]) => ({
                     day: day as Day,
                     slots: [...value.slots].sort((a, b) => {
@@ -32,9 +203,18 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
                     }),
                     active: value.active
                 }));
-            // console.log("workTime", workTime);
 
-            const availability = await this._availabilityRepository.storeWorkingTime(provider.providerId, workTime);
+            console.log(`oldAvailability.workTime -> ${oldAvailability.workTime}, newWorkTime -> ${newWorkTime}`);
+
+            const removedSlots = this.getRemovedSlots(oldAvailability.workTime, newWorkTime);
+
+            console.log("removedSlots", removedSlots);
+
+            if (removedSlots.length > 0) {
+                await this.cancelBookingsForSlots(input.providerUserId, removedSlots);
+            }
+
+            const availability = await this._availabilityRepository.storeWorkingTime(provider.providerId, newWorkTime);
             if (!availability) throw { status: NOT_FOUND, message: "Availability not found" };
 
             const mappedData: setAvailabilityOutputDTO[] = availability.workTime;

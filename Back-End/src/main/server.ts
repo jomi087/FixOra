@@ -41,7 +41,7 @@ const corsOptions = {
     origin: process.env.FRONTEND_URL,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type","Authorization","X-Requested-With","Accept","Origin"]
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"]
 };
 /**********************************************************************************************
  * DATABASE INITIALIZATION
@@ -63,10 +63,10 @@ app.use(express.static(path.join(__dirname, "../public")));
 /**********************************************************************************************
  * ROUTES
 **********************************************************************************************/
-app.use("/api",publicRoutes);
+app.use("/api", publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/customer", userRoutes);
-app.use("/api/provider",providerRoutes);
+app.use("/api/provider", providerRoutes);
 app.use("/api/admin", adminRoutes);
 app.use(errorHandler);
 
@@ -74,13 +74,12 @@ app.use(errorHandler);
  * SERVER INITIALIZATION
  **********************************************************************************************/
 const server = http.createServer(app); // this was implimented so that i can get the server instanace (server obj) which is required is socket i.O other-wise we only use the listen method of server
-initializeSocket(server,logger);
+initializeSocket(server, logger);
 logger.info("Socket.IO initialized");
 
 server.listen(port, () => {
     logger.info(`Server is started running in http://localhost:${port}`);
 });
-
 
 /**********************************************************************************************
  * GLOBAL ERROR HANDLERS — Catch unhandled exceptions/rejections early

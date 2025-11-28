@@ -1,113 +1,115 @@
 import type { BookingRequestPayload } from "@/shared/types/booking";
-
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
 import { BellRing } from "lucide-react";
-import AuthService from "@/services/AuthService";
-import { toast } from "react-toastify";
-import { longInputLength, Messages, validationMsg } from "@/utils/constant";
+import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { useState } from "react";
-import { splitDateTime } from "@/utils/helper/Date&Time";
+import AuthService from "@/services/AuthService";
+import { toast } from "react-toastify";
 import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
+import { splitDateTime } from "@/utils/helper/Date&Time";
+import { longInputLength, Messages, validationMsg } from "@/utils/constant";
 import type { AxiosError } from "axios";
-
 
 interface BookingApplicationDialogueProps {
   data: BookingRequestPayload;
   onClose: () => void;
 }
 
-const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({ data, onClose, }) => {
+const BookingApplicationDialog: React.FC<BookingApplicationDialogueProps> = ({
+  data,
+  onClose,
+}) => {
+  const [step, setStep] = useState<"main" | "confirm">("main");
+  const [actionType, setActionType] = useState<
+    Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING> | null
+  >(null);
 
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [actionType, setActionType] = useState<Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING> | null>(null);
   const [reason, setReason] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
   const { date, time } = splitDateTime(data.scheduledAt);
 
-  const askConfirmation = (type: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>) => {
+  const openConfirm = (type: Exclude<ProviderResponseStatus, ProviderResponseStatus.PENDING>) => {
     setActionType(type);
-    setConfirmOpen(true);
+    setStep("confirm");
   };
 
   const handleConfirm = async () => {
-
     if (!actionType) return;
+
     if (actionType === ProviderResponseStatus.REJECTED && !reason.trim()) {
       return setErrorMsg(validationMsg.INVALID);
     }
 
     try {
       await AuthService.UpdateBookingStatusApi(data.bookingId, actionType, reason);
-      toast.success(actionType.toLocaleUpperCase());
-
+      toast.success(actionType.toUpperCase());
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.BOOKING_STATUS_FAILED;
       toast.error(errorMsg);
     }
 
-    setConfirmOpen(false);
     onClose();
   };
 
   return (
-    <>
-      {/* Main Booking Request popup */}
-      <Dialog open onOpenChange={onClose} >
-        <DialogContent
-          className="pointer-events-none [&>button]:hidden"
-          onInteractOutside={(e) => e.preventDefault()}
-        >
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent
+        className="max-w-md"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
+        {step === "main" && (
           <div className="pointer-events-auto rounded-lg border p-6 shadow-md">
-            <div className="flex items-center gap-3 mb-4">
-              <BellRing className="text-yellow-500" size={32} />
-              <div>
-                <DialogTitle className="text-lg font-semibold">
-                  New Booking Request
-                </DialogTitle>
-                <DialogDescription className="text-xs text-muted-foreground">
-                  Please acknowledge your booking.
-                </DialogDescription>
+            <DialogHeader >
+              <div className="flex items-center gap-3 mb-4">
+                <BellRing className="text-yellow-500" size={32} />
+                <div>
+                  <DialogTitle className="text-lg font-semibold">
+                    New Booking Request
+                  </DialogTitle>
+                  <DialogDescription className="text-xs text-muted-foreground">
+                    Please respond to this request.
+                  </DialogDescription>
+                </div>
               </div>
-            </div>
+            </DialogHeader>
 
             <div className="space-y-1 mb-4">
-              <p>
-                <span className="font-medium">From:</span>{" "}
-                {data.userName.toLocaleUpperCase()}
-              </p>
-              <p>
-                <span className="font-medium">Issue Type:</span> {data.issueType}
-              </p>
-              <p>
-                <span className="font-medium">Date:</span> {date}
-              </p>
-              <p>
-                <span className="font-medium">Time:</span> {time}
-              </p>
+              <p><span className="font-medium">From:</span> {data.userName.toUpperCase()}</p>
+              <p><span className="font-medium">Issue Type:</span> {data.issueType}</p>
+              <p><span className="font-medium">Date:</span> {date}</p>
+              <p><span className="font-medium">Time:</span> {time}</p>
               <p className="font-medium">
-                Description:
-                <span className="font-normal text-base"> {data.issue} </span>
+                Description: <span className="font-normal text-base">{data.issue}</span>
               </p>
             </div>
-            <button
-              className=" w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition"
-              onClick={() => askConfirmation(ProviderResponseStatus.ACCEPTED)}
+
+            <Button
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+              onClick={() => openConfirm(ProviderResponseStatus.ACCEPTED)}
             >
-              Acknowledge
-            </button>
-            <DialogFooter className="!justify-start mt-3" >
+              Accept
+            </Button>
+
+            <DialogFooter className="!justify-start mt-3">
               <div>
                 <p className="text-xs text-muted-foreground">
-                  Please reject a booking only if absolutely necessary
+                  Reject only if absolutely necessary
                 </p>
-                <p className="text-xs text-muted-foreground ">
+                <p className="text-xs text-muted-foreground">
                   Frequent rejections may impact your service reliability and visibility
                   <button
-                    className="text-[11px] pl-1 text-blue-200 hover:underline cursor-pointer"
-                    onClick={() => askConfirmation(ProviderResponseStatus.REJECTED)}
+                    className="text-[11px] pl-1 text-blue-600 hover:underline cursor-pointer"
+                    onClick={() => openConfirm(ProviderResponseStatus.REJECTED)}
                   >
                     Reject
                   </button>
@@ -115,53 +117,48 @@ const BookingApplicationDialouge: React.FC<BookingApplicationDialogueProps> = ({
               </div>
             </DialogFooter>
           </div>
-        </DialogContent>
+        )}
 
-      </Dialog>
-
-      {/*Confirmation popup */}
-      {confirmOpen && (
-        <AlertDialog open>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Do you really want to{" "}
+        {/* CONFIRMATION STEP */}
+        {step === "confirm" && (
+          <>
+            <DialogHeader>
+              <DialogTitle>Confirm Action</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to{" "}
                 {actionType === ProviderResponseStatus.ACCEPTED ? "accept" : "reject"}{" "}
-                this booking ?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            {actionType === ProviderResponseStatus.REJECTED &&
+                this booking?
+              </DialogDescription>
+            </DialogHeader>
+
+            {actionType === ProviderResponseStatus.REJECTED && (
               <>
                 <Input
                   type="text"
                   placeholder="Enter a reason"
                   value={reason}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  maxLength={longInputLength}
+                  onChange={(e) => {
                     const val = e.target.value;
                     setReason(val);
-                    if (val.trim().length > 0) {
-                      setErrorMsg("");
-                    }
+                    if (val.trim()) setErrorMsg("");
                   }}
-                  maxLength={longInputLength}
                 />
-                {errorMsg && <p className="text-sm">{errorMsg}</p>}
+                {errorMsg && <p className="text-sm text-red-500">{errorMsg}</p>}
               </>
-            }
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => {
-                setConfirmOpen(false);
-              }}>
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={handleConfirm}>Yes</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
-    </>
+            )}
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setStep("main")}>Back</Button>
+              <Button variant="destructive" onClick={handleConfirm}>
+                Yes, Confirm
+              </Button>
+            </DialogFooter>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default BookingApplicationDialouge;
+export default BookingApplicationDialog;

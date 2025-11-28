@@ -77,6 +77,8 @@ export interface IBookingRepository {
 
   findBookingsByWeekday(providerUserId: string, dayIndex: number): Promise<Booking[]>
 
+  findBookingsByUtcRange( providerUserId: string, dayIndex: number, utcStartString: string, utcEndString: string ): Promise<Booking[]>
+
   findProviderSalesByDateRange(providerUserId: string, start: Date, end: Date): Promise<{
     total: number;
     completed: number;
