@@ -9,6 +9,7 @@
 @import 'swiper/css/free-mode';
 @import 'swiper/css/navigation';
 @import "tw-animate-css";
+@import "leaflet/dist/leaflet.css";
 
 @custom-variant dark (&:is(.dark *));
 

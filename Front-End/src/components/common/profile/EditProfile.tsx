@@ -9,10 +9,9 @@ import { Label } from "@/components/ui/label";
 import type { ProfileEdit } from "@/shared/types/user";
 import type { Address } from "@/shared/types/location";
 
-import { getAddressFromCoordinates } from "@/utils/helper/reverseGeocodingLocation";
+import { getAddressFromCoordinates, getCoordinatesFromAddress } from "@/utils/helper/openCageGeocoding";
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";
 import AuthService from "@/services/AuthService";
-import { getCoordinatesFromAddress } from "@/utils/helper/forwardGeocodingLocation";
 import { Userinfo } from "@/store/common/userSlice";
 import { validateFName, validateLName, validateMobileNo } from "@/utils/validation/formValidation";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";

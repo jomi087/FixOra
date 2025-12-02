@@ -215,6 +215,10 @@ export const API_ROUTES = {
   CUSTOMER: {
     SERVICES: "/api/customer/services",
 
+    REVERSE_GEOCODE: "/api/customer/geocode/reverse",
+    AUTO_COMPLETE_SEARCH: "/api/customer/geocode/search",
+    FORWARD_GEOCODE: "/api/customer/geocode/forward",
+    
     PROVIDERS: "/api/customer/providers",
     PROVIDER_KYC: "/api/customer/provider-kyc",
 
@@ -226,7 +230,7 @@ export const API_ROUTES = {
     REVIEW_STATUS: (id: string) => `/api/customer/booking/review-status/${id}`,
 
     BOOKING_APPLICATION: "/api/customer/provider/booking",
-    RESCHEDULE_BOOKING : (bookingId: string) => `/api/customer/reschedule/booking/${bookingId}`,
+    RESCHEDULE_BOOKING: (bookingId: string) => `/api/customer/reschedule/booking/${bookingId}`,
     ONLINE_PAYMENT: "/api/customer/create-checkout-session",
     WALLET_PAYMENT: "/api/customer/wallet-payment",
     PAYMENT_STATUS: (bookingId: string) => `/api/customer/booking/notify-paymentStatus/${bookingId}`,

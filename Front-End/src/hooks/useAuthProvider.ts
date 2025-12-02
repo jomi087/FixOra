@@ -13,12 +13,13 @@ import { Messages, PCPP } from "@/utils/constant";
 import type { ActiveProvider } from "@/shared/types/user";
 import { setApplyFilters, setReset } from "@/store/user/filterSlice";
 import type { AxiosError } from "axios";
+import type { AppLocation } from "@/shared/types/location";
 
 export const useAuthProvider = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { selectedService,nearByFilter,ratingFilter,availabilityFilter,applyFilter,reset } = useAppSelector((state)=>state.filter);    
+  const { selectedService, nearByFilter, ratingFilter, availabilityFilter, applyFilter, reset } = useAppSelector((state) => state.filter);
 
   const [data, setData] = useState<ActiveProvider[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -27,9 +28,12 @@ export const useAuthProvider = () => {
   const [filter, setFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = PCPP || 12;
+  const [location, setLocation] = useState<AppLocation | null>(null);
+
+
 
   const [debouncedQuery] = useDebounce(searchQuery, 500);
-    
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -43,19 +47,25 @@ export const useAuthProvider = () => {
           nearByFilter,
           ratingFilter,
           availabilityFilter,
+          ...(location && {
+            coordinates: {
+              latitude: location.lat,
+              longitude: location.lng
+            }
+          })
         });
 
         if (res.status === HttpStatusCode.OK) {
           setData(res.data.providerData ?? []);
           setTotal(res.data.total ?? 0);
-        }  
-                
+        }
+
         if (applyFilter) dispatch(setApplyFilters(false));
         if (reset) dispatch(setReset(false));
 
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
-        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA ;
+        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
         toast.error(errorMsg);
         if (error?.response?.status === HttpStatusCode.UNPROCESSABLE_ENTITY) {
           navigate("/customer/account/profile");
@@ -65,16 +75,16 @@ export const useAuthProvider = () => {
       }
     };
     fetchData();
-            
-  }, [debouncedQuery, filter, currentPage, applyFilter,reset]);
+
+  }, [debouncedQuery, filter, currentPage, applyFilter, reset, location]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [debouncedQuery, filter, applyFilter,reset]);
+  }, [debouncedQuery, filter, applyFilter, reset]);
 
   const totalPages = useMemo(
     () => Math.ceil(total / itemsPerPage),
-    [total, itemsPerPage ]
+    [total, itemsPerPage]
   );
 
   return {
@@ -88,8 +98,9 @@ export const useAuthProvider = () => {
     setFilter,
     currentPage,
     setCurrentPage,
+    setLocation,
   };
-    
+
 };
 
 

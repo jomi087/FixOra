@@ -7,25 +7,34 @@ interface SearchInputProps {
   value: string;
   onChange: (val: string) => void;
   placeholder?: string;
-  className?: string
+  className?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = React.memo(({ value, onChange, placeholder = "Search...",className = "w-full" }) => {
-  return (
-    <div className={`${className}`}>
-      <Label className="sr-only">Search</Label>
-      <Input
-        maxLength={searchInputLength} 
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="dark:bg-foreground dark:text-background"
-        
-      />
-    </div>
-  );
-});
+const SearchInput: React.FC<SearchInputProps> = React.memo(
+  ({ value, onChange, placeholder = "Search...", className = "w-full" }) => {
+    return (
+      <div className={`relative ${className}`}>
+        <Label className="sr-only">Search</Label>
+
+        <Input
+          maxLength={searchInputLength}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="dark:bg-foreground dark:text-background pr-8"
+        />
+
+        {value && (
+          <p
+            onClick={() => onChange("")}
+            className="absolute -right-0 top-1/2 -translate-y-1/2 text-sm px-2 text-black hover:text-black hover:cursor-pointer border-0"
+          >
+            ×
+          </p>
+        )}
+      </div>
+    );
+  }
+);
 
 export default SearchInput;
-
-

@@ -17,10 +17,15 @@ export type Address = {
 export type Coordinates = {
   latitude: number;
   longitude: number;
-} 
+}
 
 export type AddressWithCoordinates = Address & {
   coordinates: Coordinates;
 };
   
+export interface AppLocation {
+  lat: number;
+  lng: number;
+  address: string;
+}
  

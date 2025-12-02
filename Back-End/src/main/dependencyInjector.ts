@@ -27,6 +27,7 @@ import { PushNotificationService } from "../infrastructure/services/PushNotifica
 import { BookingSchedulerService } from "../infrastructure/services/BookingSchedulerService";
 import { PaymentService } from "../infrastructure/services/PaymentService";
 import { ChatService } from "../infrastructure/services/ChatService";
+import { OlaGeocodeService } from "../infrastructure/services/GeocodeService";
 
 import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
 import { ReviewDisputeActionHandler } from "../application/useCases/admin/handlers/DisputeActionHandler";
@@ -60,6 +61,8 @@ const pushNotificationService = new PushNotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
 const paymentService = new PaymentService();
 const chatService = new ChatService();
+const geocodeService = new OlaGeocodeService();
+
 
 // strategy handler,
 const reviewHandler = new ReviewDisputeContentHandler(ratingRepository);
@@ -293,7 +296,22 @@ const getChatMessagesUseCase = new GetChatMessagesUseCase(chatMessageRepository)
 
 import { SendChatMessageUseCase } from "../application/useCases/chat/SendChatMessageUseCase";
 const sendChatMessageUseCase = new SendChatMessageUseCase(chatRepository, chatMessageRepository);
+/******************************************************************************************************************************************************
+                                        Geo-coding
+******************************************************************************************************************************************************/
+import { ReverseGeocodeUseCase } from "../application/useCases/geocode/ola/ReverseGeocodeUseCase";
+const reverseGeocodeUseCase = new ReverseGeocodeUseCase(geocodeService);
+
+import { ForwardGeocodeUseCase } from "../application/useCases/geocode/ola/ForwardGeocodeUseCase";
+const forwardGeocodeUseCase = new ForwardGeocodeUseCase(geocodeService);
+
+import { AutocompleteGeocodeUseCase } from "../application/useCases/geocode/ola/AutocompleteGeocodeUseCase";
+const autocompleteGeocodeUseCase = new AutocompleteGeocodeUseCase(geocodeService);
+
 /******************************************************************************************************************************************************/
+
+
+
 
 import { PublicController } from "../interfaces/controllers/PublicController";
 import { AuthController } from "../interfaces/controllers/AuthController";
@@ -301,6 +319,7 @@ import { UserController } from "../interfaces/controllers/UserContoller";
 import { AdminController } from "../interfaces/controllers/AdminController";
 import { ProviderController } from "../interfaces/controllers/ProviderController";
 import { ChatController } from "../interfaces/controllers/ChatController";
+import { GeocodeController } from "../interfaces/controllers/GeocodeController";
 
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
@@ -314,6 +333,8 @@ const adminController = new AdminController(dashboardReportUseCase, getCustomers
 
 const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase, sendChatMessageUseCase, chatService);
 
+const geocodeController = new GeocodeController(reverseGeocodeUseCase, forwardGeocodeUseCase, autocompleteGeocodeUseCase);
+
 export {
     publicController,
     authController,
@@ -321,5 +342,6 @@ export {
     userController,
     providerController,
     adminController,
-    chatController
+    chatController,
+    geocodeController,
 };

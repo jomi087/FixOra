@@ -9,13 +9,26 @@ import ProviderCard from "./ProviderCard";
 import MobileFilterSideBar from "./MobileFilterSideBar";
 import { useAuthProvider } from "@/hooks/useAuthProvider";
 import Pagination from "@/components/common/others/Pagination";
+import { MapPinPlus } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import LocationPicker from "../providerApplication/LocationPicker";
 
 
 
 const filterOptions = [
-  { label: "A-z", value: "ascending" },
-  { label: "Z-a", value: "descending" },
+  { label: "name ascending", value: "ascending" },
+  { label: "name descending", value: "descending" },
 ];
+
+// will add later
+// const filterOptions = [
+//   { label: "Name ↑", value: "name_asc" },
+//   { label: "Name ↓", value: "name_desc" },
+//   { label: "Rating ↑", value: "rating_asc" },
+//   { label: "Rating ↓", value: "rating_desc" },
+//   { label: "Price ↑", value: "price_asc" },
+//   { label: "Price ↓", value: "price_desc" }
+// ];
 
 
 const ProviderList = () => {
@@ -29,9 +42,11 @@ const ProviderList = () => {
     setFilter,
     currentPage,
     setCurrentPage,
+    setLocation,
   } = useAuthProvider();
 
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [openPicker, setOpenPicker] = useState(false);
 
   return (
     <div>
@@ -40,7 +55,35 @@ const ProviderList = () => {
         <div className="hidden sm:flex gap-4 flex-row items-center justify-between ">
           <div className="flex gap-3  items-center md:w-[450px]">
             <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
-            <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} className="md:w-44" />
+            <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} className="md:w-44"/>
+            
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="!p-1 bg-transparent hover:bg-transparent"
+                    onClick={() => setOpenPicker(true)}
+                  >
+                    <MapPinPlus />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p >Use Current Location</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {openPicker &&
+              <LocationPicker
+                open={openPicker}
+                onClose={() => setOpenPicker(false)}
+                onSave={(loc) => {
+                  setLocation(loc);
+                  setOpenPicker(false);
+                }} />
+            }
+
           </div>
           <div className="md:w-auto">
             <Button
@@ -94,7 +137,7 @@ const ProviderList = () => {
       </div>
       {/* T & C */}
       <ProviderTandC openConfirm={openConfirm} setOpenConfirm={setOpenConfirm} />
-    </div>
+    </div >
   );
 };
 

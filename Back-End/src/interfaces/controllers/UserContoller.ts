@@ -81,12 +81,30 @@ export class UserController {
                 searchQuery = "", filter = "",
                 currentPage = 1, itemsPerPage = 16,
                 selectedService, nearByFilter,
-                ratingFilter, availabilityFilter
+                ratingFilter, availabilityFilter,
+                coordinates
             } = req.query;
 
             const user = req.user;
             if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
             if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
+            
+            let parsedCoordinates = {
+                latitude: user.location.coordinates.latitude,
+                longitude: user.location.coordinates.longitude
+            };
+
+            if (coordinates) {
+                try {
+                    const coords = JSON.parse(coordinates as string);
+                    parsedCoordinates = {
+                        latitude: Number(coords.latitude),
+                        longitude: Number(coords.longitude)
+                    };
+                } catch {
+                    throw { status: BAD_REQUEST, message: "Invalid coordinates format" };
+                }
+            }
 
             const result = await this._getActiveProvidersUseCase.execute({
                 searchQuery: String(searchQuery),
@@ -99,7 +117,7 @@ export class UserController {
                     ratingFilter: ratingFilter ? Number(ratingFilter) : undefined,
                     availabilityFilter: availabilityFilter ? String(availabilityFilter) : undefined,
                 },
-                coordinates: user.location.coordinates
+                coordinates: parsedCoordinates
             });
 
             res.status(OK).json({

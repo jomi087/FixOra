@@ -1,5 +1,5 @@
 import express from "express";
-import { AuthMiddleware, userController, chatController } from "../../main/dependencyInjector";
+import { AuthMiddleware, userController, chatController, geocodeController } from "../../main/dependencyInjector";
 import { validateRequest } from "../middleware/validateRequest";
 import { bookingIdSchema, bookingRequestSchema, rescheduleBookingSchema } from "../validations/bookingSchema";
 import { resetPasswordSchema, verifyPasswordSchema } from "../validations/authSchema";
@@ -19,6 +19,11 @@ router.get("/services", AuthMiddleware([RoleEnum.Customer]), (req, res, next) =>
 
 //Providers  Section
 router.get("/providers", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.activeProviders(req, res, next));
+
+router.get("/geocode/reverse", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => geocodeController.reverse(req, res, next));
+router.get("/geocode/forward", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => geocodeController.forward(req, res, next));
+router.get("/geocode/search", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => geocodeController.autocomplete(req, res, next));
+
 router.post("/provider-kyc",
     AuthMiddleware([RoleEnum.Customer]),
     upload.fields([
@@ -40,7 +45,7 @@ router.post("/review/dispute", validateRequest(reportReviewSchema), AuthMiddlewa
 router.get("/booking/review-status/:bookingId", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.reviewStatus(req, res, next));
 
 router.post("/provider/booking", validateRequest(bookingRequestSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.createBooking(req, res, next));
-router.post("/reschedule/booking/:bookingId", validateRequest(rescheduleBookingSchema), AuthMiddleware([RoleEnum.Customer]), userController.rescheduleBooking .bind(userController));
+router.post("/reschedule/booking/:bookingId", validateRequest(rescheduleBookingSchema), AuthMiddleware([RoleEnum.Customer]), userController.rescheduleBooking.bind(userController));
 router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateOnlinePayment(req, res, next));
 router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateWalletPayment(req, res, next));
 

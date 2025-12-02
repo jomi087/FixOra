@@ -1,7 +1,27 @@
 import axios, { AxiosError } from "axios";
 import type { Coordinates } from "@/shared/types/location";
 
+// Reverse Geocode (lat/lng → address)
+export const getAddressFromCoordinates = async (lat: number, lon: number) => {
+  try {
+    const res = await axios.get("https://api.opencagedata.com/geocode/v1/json", {
+      params: {  //for query params are written like this in axios  for path param we can write directly (example shown in pincodeInfo.ts )
+        q: `${lat}+${lon}`,
+        key: import.meta.env.VITE_OPENCAGE_API_KEY,
+        language: "en",
+        roadinfo: 1,
 
+      },
+    });
+    return res.data?.results[0]?.components;
+
+  } catch (error) {
+    console.error("Axios error in getAddressFromCoordinates:", error);
+    throw new Error("Unable to retrieve address from coordinates.");
+  }
+};
+
+// Forward Geocoding (text → lat/lng)
 export const getCoordinatesFromAddress = async (address: string): Promise<Coordinates> => {
   try {
     const res = await axios.get("https://api.opencagedata.com/geocode/v1/json", {
@@ -27,3 +47,8 @@ export const getCoordinatesFromAddress = async (address: string): Promise<Coordi
     throw new Error("Unable to get coordinates from address.");
   }
 };
+
+/* 
+    I have used https://opencagedata.com/ 
+    for getting actual address from the log and lat 
+*/

@@ -11,6 +11,7 @@ import type { DisputeContentResponse, DisputeListPayload, DisputeListResponse } 
 import type { AxiosResponse } from "axios";
 import type { DisputeStatus } from "@/shared/enums/Dispute";
 import { RoleEnum } from "@/shared/enums/roles";
+import type { Coordinates } from "@/shared/types/location";
 
 class AuthService {
   // getBearerTokenConfig(token?: string) { //jwt token
@@ -115,8 +116,37 @@ class AuthService {
     return axiosInstance.get(API_ROUTES.CUSTOMER.SERVICES);
   }
 
-  getAuthProvidersApi(params: { searchQuery: string, filter: string, currentPage: number, itemsPerPage: number, selectedService?: string; nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string }) {
-    return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDERS, { params });
+  reverseGeocode(lat: number, lng: number) {
+    return axiosInstance.get(API_ROUTES.CUSTOMER.REVERSE_GEOCODE, {
+      params: { lat, lng }
+    });
+  }
+
+  autoCompleteSearch(address: string) {
+    return axiosInstance.get(API_ROUTES.CUSTOMER.AUTO_COMPLETE_SEARCH, {
+      params: { address }
+    });
+  }
+
+  forwardGeocode(address: string) {
+    return axiosInstance.get(API_ROUTES.CUSTOMER.FORWARD_GEOCODE, {
+      params: { address }
+    });
+  }
+
+  getAuthProvidersApi(q: {
+    searchQuery: string, filter: string,
+    currentPage: number, itemsPerPage: number,
+    selectedService?: string;
+    nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string,
+    coordinates?: Coordinates
+  }) {
+    return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDERS, {
+      params: {
+        ...q,
+        coordinates: q.coordinates ? JSON.stringify(q.coordinates) : undefined
+      }
+    });
   }
 
   providerKYCApi(data: FormData) {
