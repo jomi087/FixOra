@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import AuthService from "@/services/AuthService";
-import type { AddressWithCoordinates } from "@/shared/types/location";
+import type { AppLocation } from "@/shared/types/location";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { BsChatLeftText } from "react-icons/bs";
@@ -13,7 +13,7 @@ interface ClientInfoProps {
     fname: string;
     lname: string;
     email: string;
-    location: AddressWithCoordinates;
+    location: AppLocation;
   };
 }
 
@@ -72,21 +72,7 @@ const ClientInfo: React.FC<ClientInfoProps> = ({ user }) => {
             <span>N/A</span>
           ) : (
             <>
-              {user.location.houseinfo && (
-                <span>{user.location.houseinfo},</span>
-              )}
-              {user.location.street && (
-                <span>{user.location.street},</span>
-              )}
-              {user.location.locality && (
-                <span>{user.location.locality},</span>
-              )}
-              <span>{user.location.city},</span>
-              <br />
-              <span>{user.location.district},</span>
-              <span>{user.location.state}</span>
-              <br />
-              <span>{user.location.postalCode}</span>
+              <span>{user.location.address}</span>             
             </>
           )}
         </p>

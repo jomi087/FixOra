@@ -130,7 +130,7 @@ export class UserController {
                 success: true,
                 providerData: result.data,
                 total: result.total,
-                selectedAddress : user.selectedLocation?.address ?? null
+                selectedAddress: user.selectedLocation?.address ?? null
             });
 
         } catch (error) {
@@ -322,10 +322,42 @@ export class UserController {
 
             const userId = user.userId;
 
+            let location: { latitude: number; longitude: number };
+            let address: string;
+
+            if (user.selectedLocation) {
+
+                address = user.selectedLocation.address;
+                location = {
+                    latitude: user.selectedLocation.lat,
+                    longitude: user.selectedLocation.lng
+                };
+
+            } else {
+
+                const formatedAddress = [
+                    user.location.houseinfo,
+                    user.location.street,
+                    user.location.locality,
+                    user.location.city,
+                    user.location.district,
+                    user.location.state,
+                    user.location.postalCode
+                ].filter(Boolean).join(", ");
+
+                address = formatedAddress;
+                location = {
+                    latitude: user.location.coordinates.latitude,
+                    longitude: user.location.coordinates.longitude
+                };
+            }
+
+
             const booking = await this._bookingUseCase.execute({
                 userId, providerUserId, providerId,
                 scheduledAt, issueTypeId, issue,
-                coordinates: user.location.coordinates
+                address,
+                coordinates: location
             });
 
             res.status(200).json({

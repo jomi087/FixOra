@@ -34,7 +34,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
                     fname: user.fname,
                     lname: user.lname || "",
                     email: user.email,
-                    location: user.location
+                    location: booking.location!
                 },
                 scheduledAt: booking.scheduledAt!,
                 category: {

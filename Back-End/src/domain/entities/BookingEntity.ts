@@ -5,10 +5,15 @@ import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
 export interface Booking {
     bookingId: string;//uuid
     userId: string;
+    location: {
+        address: string;
+        lat: number;
+        lng: number;
+    },
     providerUserId: string;
     provider: {
         id: string;
-        response: ProviderResponseStatus  
+        response: ProviderResponseStatus
         reason?: string;
     },
     scheduledAt: Date;
@@ -21,11 +26,11 @@ export interface Booking {
     };
     commission: number;
     paymentInfo?: {
-        mop: PaymentMode; 
+        mop: PaymentMode;
         status: PaymentStatus;
         paidAt: Date;
         transactionId: string;
-        reason?: string; 
+        reason?: string;
     }
     esCrowAmout?: number;
     diagnosed?: {

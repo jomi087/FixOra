@@ -150,6 +150,7 @@ export class BookingRepository implements IBookingRepository {
         const booking: Booking = {
             bookingId: updatedData.bookingId,
             userId: updatedData.userId,
+            location: updatedData.location,
             providerUserId: updatedData.providerUserId,
             provider: {
                 id: updatedData.provider.id,
@@ -307,7 +308,7 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async jobDetailsById(bookingId: string): Promise<{
-        user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
+        user: Pick<User, "userId" | "fname" | "lname" | "email" >,
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
         //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof" | >
@@ -351,16 +352,6 @@ export class BookingRepository implements IBookingRepository {
                         fname: "$userDetails.fname",
                         lname: "$userDetails.lname",
                         email: "$userDetails.email",
-                        location: {
-                            houseinfo: "$userDetails.location.houseinfo",
-                            street: "$userDetails.location.street",
-                            district: "$userDetails.location.district",
-                            city: "$userDetails.location.city",
-                            locality: "$userDetails.location.locality",
-                            state: "$userDetails.location.state",
-                            postalCode: "$userDetails.location.postalCode",
-                            coordinates: "$userDetails.location.coordinates"
-                        },
                     },
 
                     category: {
@@ -373,6 +364,7 @@ export class BookingRepository implements IBookingRepository {
                     },
                     booking: {
                         bookingId: "$bookingId",
+                        location: "$location",
                         scheduledAt: "$scheduledAt",
                         issue: "$issue",
                         status: "$status",
@@ -396,7 +388,7 @@ export class BookingRepository implements IBookingRepository {
         ];
 
         interface AggregatedResult {
-            user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
+            user: Pick<User, "userId" | "fname" | "lname" | "email" >,
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
             //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
@@ -621,6 +613,7 @@ export class BookingRepository implements IBookingRepository {
         return docs.map(d => ({
             bookingId: d.bookingId,
             userId: d.userId,
+            location: d.location,
             providerUserId: d.providerUserId,
             provider: d.provider,
             scheduledAt: d.scheduledAt,

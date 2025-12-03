@@ -16,6 +16,11 @@ const BookingSchema = new Schema<IBookingModel>({
         type: String,
         required: true
     },
+    location: {
+        address: { type: String },
+        lat: { type: Number },
+        lng: { type: Number },
+    },
     providerUserId: {
         type: String,
         required: true

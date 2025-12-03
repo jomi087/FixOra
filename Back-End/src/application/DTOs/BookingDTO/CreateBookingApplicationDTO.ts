@@ -7,16 +7,17 @@ export interface CreateBookingApplicationDTO {
     scheduledAt: string;
     issueTypeId: string;
     issue: string;
+    address: string;
     coordinates: {
         latitude: number;
         longitude: number;
     }
 }
 
-export interface CreateBookingApplicationInputDTO  extends CreateBookingApplicationDTO { }
+export interface CreateBookingApplicationInputDTO extends CreateBookingApplicationDTO { }
 
-export interface CreateBookingApplicationOutputDTO  {
-      bookingId: string;
-      scheduledAt: Date;
-      status: BookingStatus;
+export interface CreateBookingApplicationOutputDTO {
+    bookingId: string;
+    scheduledAt: Date;
+    status: BookingStatus;
 }

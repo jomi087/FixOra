@@ -56,7 +56,7 @@ export interface IBookingRepository {
   findProviderConfirmBookingsById(providerUserId: string): Promise<Booking[]>
 
   jobDetailsById(bookingId: string): Promise<{
-    user: Pick<User, "userId" | "fname" | "lname" | "email" | "location">,
+    user: Pick<User, "userId" | "fname" | "lname" | "email" >,
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
     booking: Partial<Booking>

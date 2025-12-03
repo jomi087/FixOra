@@ -1,6 +1,5 @@
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
-import { AddressDTO } from "../Common/AddressDTO";
 
 export interface ConfirmBookingOutputDTO {
     bookingId: string;
@@ -81,7 +80,11 @@ export interface jobDetailsOutputDTO {
         fname: string;
         lname: string;
         email: string;
-        location?: AddressDTO
+        location: {
+            address: string;
+            lat: number;
+            lng: number;
+        },
     };
     scheduledAt: Date;
     category: {

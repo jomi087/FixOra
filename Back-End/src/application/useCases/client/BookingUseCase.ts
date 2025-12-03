@@ -119,6 +119,11 @@ export class BookingUseCase implements IBookingUseCase {
             const newBooking: Booking = {
                 bookingId: uuidv4(),
                 userId: input.userId,
+                location: {
+                    address: input.address,
+                    lat: input.coordinates.latitude,
+                    lng: input.coordinates.longitude,
+                },
                 providerUserId: input.providerUserId,
                 provider: {
                     id: input.providerId,
