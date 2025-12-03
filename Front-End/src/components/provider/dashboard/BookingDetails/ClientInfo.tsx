@@ -2,10 +2,15 @@ import { Button } from "@/components/ui/button";
 import AuthService from "@/services/AuthService";
 import type { AppLocation } from "@/shared/types/location";
 import { Messages } from "@/utils/constant";
+import { toPascalCase } from "@/utils/helper/utils";
 import type { AxiosError } from "axios";
+import { MapPin } from "lucide-react";
 import { BsChatLeftText } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import MapAnimation from "@/assets/animations/Map Location.json";
+import Lottie from "lottie-react";
+
 
 interface ClientInfoProps {
   user: {
@@ -57,7 +62,7 @@ const ClientInfo: React.FC<ClientInfoProps> = ({ user }) => {
       <div className="space-y-2 sm:mt-4 sm:pt-4 border-t">
         <div className="flex items-center gap-2">
           <p className="font-semibold w-14">Name:</p>
-          <p className="text-sm font-serif">{`${user.fname} ${user.lname}`}</p>
+          <p className="text-sm font-serif">{`${toPascalCase(user.fname)} ${toPascalCase(user.lname)}`}</p>
         </div>
         <div className="flex items-center gap-2">
           <p className="font-semibold w-14">Email:</p>
@@ -65,18 +70,46 @@ const ClientInfo: React.FC<ClientInfoProps> = ({ user }) => {
         </div>
       </div>
 
-      <div className="pt-2 mt-3 border-t">
-        <p className="font-semibold">Address</p>
-        <p className="text-sm pt-1 font-serif">
-          {!user.location ? (
-            <span>N/A</span>
-          ) : (
-            <>
-              <span>{user.location.address}</span>             
-            </>
-          )}
-        </p>
+      <div className="pt-4 mt-4 border-t border-gray-200">
+        <div className="flex items-center gap-2 mb-1">
+          <MapPin className="w-5 h-5" />
+          <h3 className="font-semibold ">Address</h3>
+        </div>
+        {!user?.location ? (
+          <div className="flex items-center gap-2  ml-7">
+            <span className="text-sm">No address available</span>
+          </div>
+        ) : (
+          <div className="space-y-5">
+            <div className="ml-7">
+
+              <p className="text-sm text-primary leading-relaxed font-serif">
+                {user.location.address}
+              </p>
+            </div>
+            <div className="border-t border-b border-primary rounded-lg relative">
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${user.location.lat},${user.location.lng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-end gap-3 px-4 py-2 text-sm font-medium w-full "
+              >
+                {/* <Navigation className="w-4 h-4" /> */}
+                <p className="text-[12px] font-roboto absolute top-2 right-2">Click for direction</p>
+                <Lottie
+                  animationData={MapAnimation}
+                  loop={true}
+                  className=""
+                />
+              </a>
+            </div>
+
+          </div>
+
+        )}
+
       </div>
+
       {/* get direction logic intigrate will google map */}
     </>
   );
