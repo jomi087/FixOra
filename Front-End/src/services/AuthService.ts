@@ -11,7 +11,7 @@ import type { DisputeContentResponse, DisputeListPayload, DisputeListResponse } 
 import type { AxiosResponse } from "axios";
 import type { DisputeStatus } from "@/shared/enums/Dispute";
 import { RoleEnum } from "@/shared/enums/roles";
-import type { Coordinates } from "@/shared/types/location";
+import type { AppLocation } from "@/shared/types/location";
 
 class AuthService {
   // getBearerTokenConfig(token?: string) { //jwt token
@@ -134,19 +134,17 @@ class AuthService {
     });
   }
 
-  getAuthProvidersApi(q: {
+  getAuthProvidersApi(params: {
     searchQuery: string, filter: string,
     currentPage: number, itemsPerPage: number,
     selectedService?: string;
     nearByFilter?: string, ratingFilter?: string, availabilityFilter?: string,
-    coordinates?: Coordinates
   }) {
-    return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDERS, {
-      params: {
-        ...q,
-        coordinates: q.coordinates ? JSON.stringify(q.coordinates) : undefined
-      }
-    });
+    return axiosInstance.get(API_ROUTES.CUSTOMER.PROVIDERS, { params });
+  }
+
+  saveLocation(loc: AppLocation) {
+    return axiosInstance.post(API_ROUTES.CUSTOMER.SAVE_LOCATION, loc);
   }
 
   providerKYCApi(data: FormData) {

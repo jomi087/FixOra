@@ -10,17 +10,24 @@ export interface Address {
   state: string;
   postalCode: string;
   coordinates: {
-      latitude: number;
-      longitude: number;
+    latitude: number;
+    longitude: number;
   }
-  geo:{ // this was implimented to support distance-based filtering using $geoNear,
+  geo: { // this was implimented to support distance-based filtering using $geoNear,
     type: "Point";
     coordinates: [number, number]; // [longitude, latitude]
   };
 }
 
+export interface SelectedLocation {
+  address: string;          // formatted full address
+  lat: number;
+  lng: number;
+  updatedAt: Date;
+}
+
 export interface User {
-  userId : string;
+  userId: string;
   fname: string;
   lname?: string;
   email: string;
@@ -30,6 +37,7 @@ export interface User {
   googleId?: string;
   refreshToken?: string;
   location?: Address;
+  selectedLocation?: SelectedLocation;
   isBlocked: boolean;
   createdAt?: Date;
   updatedAt?: Date;

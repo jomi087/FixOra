@@ -24,6 +24,8 @@ router.get("/geocode/reverse", AuthMiddleware([RoleEnum.Customer]), (req, res, n
 router.get("/geocode/forward", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => geocodeController.forward(req, res, next));
 router.get("/geocode/search", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => geocodeController.autocomplete(req, res, next));
 
+router.post("/save-location", AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.saveLocation(req, res, next));
+
 router.post("/provider-kyc",
     AuthMiddleware([RoleEnum.Customer]),
     upload.fields([

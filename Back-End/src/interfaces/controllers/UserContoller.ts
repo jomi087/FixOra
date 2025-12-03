@@ -27,6 +27,7 @@ import { IUpdateReviewUseCase } from "../../application/Interface/useCases/Clien
 import { ICreateDisputeAndNotifyUseCase } from "../../application/Interface/useCases/Client/ICreateDisputeAndNotifyUseCase";
 import { DisputeType } from "../../shared/enums/Dispute";
 import { IRescheduleBookingUseCase } from "../../application/Interface/useCases/Client/IRescheduleBookingUseCase";
+import { IUpdateSelectedLocationUseCase } from "../../application/Interface/useCases/Client/IUpdateSelectedLocationUseCase";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -38,6 +39,7 @@ export class UserController {
     constructor(
         private _activeServiceUseCase: IActiveServiceUseCase,
         private _getActiveProvidersUseCase: IGetActiveProvidersUseCase,
+        private _updateSelectedLocationUseCase: IUpdateSelectedLocationUseCase,
         private _kycRequestUseCase: IKYCRequestUseCase,
         private _providerInfoUseCase: IProviderInfoUseCase,
         private _getProviderReviewsUseCase: IGetProviderReviewsUseCase,
@@ -82,28 +84,32 @@ export class UserController {
                 currentPage = 1, itemsPerPage = 16,
                 selectedService, nearByFilter,
                 ratingFilter, availabilityFilter,
-                coordinates
             } = req.query;
+
+            console.log(req.query);
 
             const user = req.user;
             if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
             if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
-            
+
             let parsedCoordinates = {
                 latitude: user.location.coordinates.latitude,
                 longitude: user.location.coordinates.longitude
             };
 
-            if (coordinates) {
-                try {
-                    const coords = JSON.parse(coordinates as string);
-                    parsedCoordinates = {
-                        latitude: Number(coords.latitude),
-                        longitude: Number(coords.longitude)
-                    };
-                } catch {
-                    throw { status: BAD_REQUEST, message: "Invalid coordinates format" };
-                }
+            // if (coordinates) {
+            //     const coords = JSON.parse(coordinates as string);
+            //     parsedCoordinates = {
+            //         latitude: Number(coords.latitude),
+            //         longitude: Number(coords.longitude)
+            //     };
+            // }
+
+            if (user.selectedLocation) {
+                parsedCoordinates = {
+                    latitude: user.selectedLocation.lat,
+                    longitude: user.selectedLocation.lng
+                };
             }
 
             const result = await this._getActiveProvidersUseCase.execute({
@@ -123,7 +129,34 @@ export class UserController {
             res.status(OK).json({
                 success: true,
                 providerData: result.data,
-                total: result.total
+                total: result.total,
+                selectedAddress : user.selectedLocation?.address ?? null
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async saveLocation(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const userId = req.user?.userId;
+            if (!userId) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+
+            const { address, lat, lng } = req.body;
+            console.log(address, lat, lng);
+
+            await this._updateSelectedLocationUseCase.execute({
+                userId,
+                location: {
+                    address,
+                    lat,
+                    lng
+                }
+            });
+
+            res.status(OK).json({
+                success: true
             });
 
         } catch (error) {
@@ -196,9 +229,22 @@ export class UserController {
             if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
             if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
 
+            let location = {
+                latitude: user.location.coordinates.latitude,
+                longitude: user.location.coordinates.longitude
+            };
+
+            if (user.selectedLocation) {
+                location = {
+                    latitude: user.selectedLocation.lat,
+                    longitude: user.selectedLocation.lng
+                };
+            }
+
+
             const result = await this._providerInfoUseCase.execute({
                 id,
-                coordinates: user.location.coordinates
+                coordinates: location
             });
 
             res.status(OK).json({

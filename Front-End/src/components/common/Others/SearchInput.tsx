@@ -21,7 +21,7 @@ const SearchInput: React.FC<SearchInputProps> = React.memo(
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="dark:bg-foreground dark:text-background pr-8"
+          className="dark:bg-foreground dark:text-background pr-8 sm:min-w-44 md:min-w-56"
         />
 
         {value && (

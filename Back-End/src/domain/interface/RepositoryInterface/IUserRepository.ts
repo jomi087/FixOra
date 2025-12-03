@@ -16,11 +16,13 @@ export interface IUserRepository {
 
     findByUserId(userId: string, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
 
-    findUserEmail(userId:string):Promise<string|null>
+    findUserEmail(userId: string): Promise<string | null>
 
     findByUserGoogleId(googleId: string): Promise<User | null>;
 
     updateRole(userId: string, role: RoleEnum, omitFields?: Array<keyof User>): Promise<Partial<User> | null>;
+
+    updateSelectedLocation(userId: string, location: { address: string; lat: number; lng: number }): Promise<void>
 
     updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">

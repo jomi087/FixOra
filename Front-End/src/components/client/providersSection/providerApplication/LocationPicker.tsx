@@ -35,11 +35,7 @@ interface Suggestion {
 
 export default function LocationPicker({ open, onClose, onSave }: LocationPickerProps) {
 
-  const [position, setPosition] = useState<{ lat: number; lng: number }>({
-    lat: 20.5937,
-    lng: 78.9629,
-  });
-
+  const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
   const [address, setAddress] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -92,7 +88,7 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
   // ----------------------------
   const choosePlace = async (address: string) => {
     const results = await forwardGeocode(address);
-
+    console.log("choosePlace", results);
     if (results.length > 0) {
       const loc = results[0];
       setPosition({ lat: loc.lat, lng: loc.lng });
@@ -107,6 +103,7 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
   // Reverse geocode when marker moves
   // ----------------------------
   useEffect(() => {
+    if (!position) return;
     const fetchAddress = async () => {
       const addr = await reverseGeocode(position.lat, position.lng);
       console.log("default location ", addr);
@@ -119,8 +116,9 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
   // Draggable Marker Component
   // ----------------------------
   const DraggableMarker = () => {
+
     const markerRef = useRef<LeafletMarker | null>(null);
-    
+    const { lat, lng } = position!;
     useMapEvents({
       click(e) {
         setPosition({
@@ -133,7 +131,7 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
     return (
       <Marker
         draggable={true}
-        position={[position.lat, position.lng]}
+        position={[lat, lng]}
         ref={markerRef}
         eventHandlers={{
           dragend() {
@@ -187,12 +185,12 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
         {/* Map */}
         <div className="h-80 mt-3">
           <MapContainer
-            center={[position.lat, position.lng]}
-            zoom={13}
+            center={position ? [position.lat, position.lng] : [20.5937, 78.9629]}
+            zoom={position ? 25 : 5}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <DraggableMarker />
+            {position && <DraggableMarker />}
           </MapContainer>
         </div>
 
@@ -209,8 +207,8 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
           </button>
 
           <button
-            onClick={() => onSave({ ...position, address })}
-            className="px-4 py-2 bg-blue-600 text-white rounded"
+            disabled={!position}
+            onClick={() => position && onSave({ ...position, address })}
           >
             Save
           </button>

@@ -4,15 +4,18 @@ import FilterSelect from "../../../common/others/FilterSelect";
 import SearchInput from "../../../common/others/SearchInput";
 import { Button } from "../../../ui/button";
 
-import ProviderTandC from "../providerApplication/ProviderTandC";
 import ProviderCard from "./ProviderCard";
-import MobileFilterSideBar from "./MobileFilterSideBar";
+// import MobileFilterSideBar from "./MobileFilterSideBar";
 import { useAuthProvider } from "@/hooks/useAuthProvider";
 import Pagination from "@/components/common/others/Pagination";
 import { MapPinPlus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import LocationPicker from "../providerApplication/LocationPicker";
-
+import type { AppLocation } from "@/shared/types/location";
+import type { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { Messages } from "@/utils/constant";
+import AuthService from "@/services/AuthService";
 
 
 const filterOptions = [
@@ -43,10 +46,23 @@ const ProviderList = () => {
     currentPage,
     setCurrentPage,
     setLocation,
+    selectedAddress, setSelectedAddress
   } = useAuthProvider();
 
-  const [openConfirm, setOpenConfirm] = useState(false);
   const [openPicker, setOpenPicker] = useState(false);
+
+  const handleSaveLocation = async (loc: AppLocation) => {
+    try {
+      await AuthService.saveLocation(loc);
+      setLocation(loc);
+      setSelectedAddress(loc.address);
+      setOpenPicker(false);
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_SAVE_DATA;
+      toast.error(errorMsg);
+    }
+  };
 
   return (
     <div>
@@ -55,17 +71,24 @@ const ProviderList = () => {
         <div className="hidden sm:flex gap-4 flex-row items-center justify-between ">
           <div className="flex gap-3  items-center md:w-[450px]">
             <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
-            <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} className="md:w-44"/>
-            
+            <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} className="md:w-44" />
+
+          </div>
+          <div className="">
+            {selectedAddress && <span
+              className="text-[13px] font-roboto underline underline-offset-4 mr-2"
+            >
+              {`${selectedAddress?.split(",")[0]}`}
+            </span>}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="ghost"
-                    className="!p-1 bg-transparent hover:bg-transparent"
+                    variant={"outline"}
+                    className="font-light"
                     onClick={() => setOpenPicker(true)}
                   >
-                    <MapPinPlus />
+                    <MapPinPlus/>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
@@ -78,25 +101,14 @@ const ProviderList = () => {
               <LocationPicker
                 open={openPicker}
                 onClose={() => setOpenPicker(false)}
-                onSave={(loc) => {
-                  setLocation(loc);
-                  setOpenPicker(false);
-                }} />
+                onSave={handleSaveLocation}
+              />
             }
-
-          </div>
-          <div className="md:w-auto">
-            <Button
-              variant="default"
-              className="bg-yellow-600"
-              onClick={() => setOpenConfirm(true)}
-            >
-              Become Providers
-            </Button>
           </div>
         </div>
+
         {/* Mobile version*/}
-        <div className="space-y-4">
+        {/* <div className="space-y-4">
           <div className="flex sm:hidden gap-4 md:flex-row  md:items-center justify-between ">
             <MobileFilterSideBar />
             <div className="md:w-auto">
@@ -113,7 +125,8 @@ const ProviderList = () => {
             <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
             <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} />
           </div>
-        </div>
+        </div> */}
+
         {isLoading ? (
           <div className="flex-1 bg-footer-background text-body-text">
             <SkeletonInfoCard count={8} />
@@ -135,8 +148,7 @@ const ProviderList = () => {
           </>
         )}
       </div>
-      {/* T & C */}
-      <ProviderTandC openConfirm={openConfirm} setOpenConfirm={setOpenConfirm} />
+
     </div >
   );
 };

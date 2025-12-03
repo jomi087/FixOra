@@ -83,6 +83,12 @@ const userSchema = new mongoose.Schema<IUserModel>({
         type: addressSchema,
         default: undefined
     },
+    selectedLocation: {
+        address: { type: String },
+        lat: { type: Number },
+        lng: { type: Number },
+        updatedAt: { type: Date },
+    },
     fcmTokens: [
         {
             token: { type: String, required: true },

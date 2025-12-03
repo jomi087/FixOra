@@ -18,5 +18,13 @@ export interface ProfileDTO {
 }
 
 
-export interface UpdatedProfileOutputDTO  extends ProfileDTO{}
+export interface UpdatedProfileOutputDTO extends ProfileDTO { }
 
+export interface SelectedLocationInputDTO {
+    userId: string,
+    location: {
+        address: string;
+        lat: number;
+        lng: number
+    }
+}

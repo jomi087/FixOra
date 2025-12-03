@@ -219,6 +219,8 @@ export const API_ROUTES = {
     AUTO_COMPLETE_SEARCH: "/api/customer/geocode/search",
     FORWARD_GEOCODE: "/api/customer/geocode/forward",
     
+    SAVE_LOCATION: "/api/customer/save-location",
+    
     PROVIDERS: "/api/customer/providers",
     PROVIDER_KYC: "/api/customer/provider-kyc",
 

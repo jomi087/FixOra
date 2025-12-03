@@ -29,8 +29,7 @@ export const useAuthProvider = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = PCPP || 12;
   const [location, setLocation] = useState<AppLocation | null>(null);
-
-
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
 
   const [debouncedQuery] = useDebounce(searchQuery, 500);
 
@@ -47,17 +46,12 @@ export const useAuthProvider = () => {
           nearByFilter,
           ratingFilter,
           availabilityFilter,
-          ...(location && {
-            coordinates: {
-              latitude: location.lat,
-              longitude: location.lng
-            }
-          })
         });
 
         if (res.status === HttpStatusCode.OK) {
           setData(res.data.providerData ?? []);
           setTotal(res.data.total ?? 0);
+          setSelectedAddress(res.data.selectedAddress);
         }
 
         if (applyFilter) dispatch(setApplyFilters(false));
@@ -99,6 +93,7 @@ export const useAuthProvider = () => {
     currentPage,
     setCurrentPage,
     setLocation,
+    selectedAddress, setSelectedAddress
   };
 
 };

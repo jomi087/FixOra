@@ -54,6 +54,18 @@ export class UserRepository implements IUserRepository {
         ).select(omitSelect).lean<Partial<User>>();
     }
 
+    async updateSelectedLocation(userId: string, location: { address: string; lat: number; lng: number }): Promise<void> {
+        await UserModel.findOneAndUpdate(
+            { userId },
+            {
+                selectedLocation: {
+                    ...location,
+                    updatedAt: new Date()
+                }
+            }
+        );
+    }
+
     async updateProfie(userId: string,
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
     ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">> {

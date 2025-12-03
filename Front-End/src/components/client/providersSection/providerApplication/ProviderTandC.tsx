@@ -44,7 +44,7 @@ const ProviderTandC: React.FC<ProviderTandCProps> = ({ openConfirm, setOpenConfi
               navigate("/customer/provider-KYC");
             }}
           >
-                        Confirm
+            Confirm
           </Button>
         </DialogFooter>
       </DialogContent>
