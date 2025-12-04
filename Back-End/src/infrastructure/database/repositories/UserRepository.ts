@@ -277,15 +277,28 @@ export class UserRepository implements IUserRepository {
 
         const sortCondition: Record<string, 1 | -1> = {};
         switch (filter) {
-        case "ascending":
+        case "name_asc":
             sortCondition["fname"] = 1;
             break;
-        case "descending":
+        case "name_desc":
             sortCondition["fname"] = -1;
+            break;
+        case "rating_asc":
+            sortCondition["averageRating"] = 1;
+            break;
+        case "rating_desc":
+            sortCondition["averageRating"] = -1;
+            break;
+        case "price_asc":
+            sortCondition["providerDetails.serviceCharge"] = 1;
+            break;
+        case "price_desc":
+            sortCondition["providerDetails.serviceCharge"] = -1;
             break;
         default:
             sortCondition["averageRating"] = -1;
             break;
+
         }
 
         const matchUserConditions: Record<string, unknown> = {

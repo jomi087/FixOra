@@ -18,20 +18,16 @@ import { Messages } from "@/utils/constant";
 import AuthService from "@/services/AuthService";
 
 
-const filterOptions = [
-  { label: "name ascending", value: "ascending" },
-  { label: "name descending", value: "descending" },
-];
+const filterOptions = [ // correction this is not filterOptions this is sort Options
+  { label: "Name (A → Z)", value: "name_asc" },
+  { label: "Name (Z → A)", value: "name_desc" },
 
-// will add later
-// const filterOptions = [
-//   { label: "Name ↑", value: "name_asc" },
-//   { label: "Name ↓", value: "name_desc" },
-//   { label: "Rating ↑", value: "rating_asc" },
-//   { label: "Rating ↓", value: "rating_desc" },
-//   { label: "Price ↑", value: "price_asc" },
-//   { label: "Price ↓", value: "price_desc" }
-// ];
+  { label: "Rating (High → Low)", value: "rating_desc" },
+  { label: "Rating (Low → High)", value: "rating_asc" },
+
+  { label: "Price (Low → High)", value: "price_asc" },
+  { label: "Price (High → Low)", value: "price_desc" }
+];
 
 
 const ProviderList = () => {
@@ -88,7 +84,7 @@ const ProviderList = () => {
                     className="font-light"
                     onClick={() => setOpenPicker(true)}
                   >
-                    <MapPinPlus/>
+                    <MapPinPlus />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
