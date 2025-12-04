@@ -82,23 +82,48 @@ const Chat = () => {
     loadChatList();
   }, [debouncedQuery]);
 
+  const reorderChatList = (prev: ChatListItem[], updatedChat: ChatListItem) => {
+    // remove old position
+    const filtered = prev.filter(c => c.id !== updatedChat.id);
+
+    // put updated chat at top
+    return [updatedChat, ...filtered];
+  };
+
   useEffect(() => {
+
+    //previous code to make reOrder chat list logic update to below once
+    // const handleChatListUpdate = (msg: ChatMessage) => {
+    //   setChatList(prev =>
+    //     prev.map(chat =>
+    //       chat.id === msg.chatId ? {
+    //         ...chat,
+    //         latestMessage: {
+    //           id: msg.id,
+    //           content: msg.content,
+    //           senderId: msg.senderId,
+    //           createdAt: msg.createdAt,
+    //          }
+    //       }: chat 
+    //  ))};
+
     const handleChatListUpdate = (msg: ChatMessage) => {
-      setChatList(prev =>
-        prev.map(chat =>
-          chat.id === msg.chatId
-            ? {
-              ...chat,
-              latestMessage: {
-                id: msg.id,
-                content: msg.content,
-                senderId: msg.senderId,
-                createdAt: msg.createdAt,
-              }
-            }
-            : chat
-        )
-      );
+      setChatList(prev => {
+        const updatedChat = prev.find(c => c.id === msg.chatId);
+        if (!updatedChat) return prev;
+
+        const newChat = {
+          ...updatedChat,
+          latestMessage: {
+            id: msg.id,
+            content: msg.content,
+            senderId: msg.senderId,
+            createdAt: msg.createdAt,
+          }
+        };
+
+        return reorderChatList(prev, newChat);
+      });
     };
 
     socket.on("chat:list:update", handleChatListUpdate);
@@ -106,6 +131,8 @@ const Chat = () => {
       socket.off("chat:list:update", handleChatListUpdate);
     };
   }, []);
+
+
 
   //load chat
   const handleChatSelect = async (chat: ChatListItem) => {
@@ -213,19 +240,22 @@ const Chat = () => {
     if (!user) return;
 
     const handler = (msg: ChatMessage) => {
-      setChatList(prev =>
-        prev.map(c =>
-          c.id === msg.chatId ? {
-            ...c,
-            latestMessage: {
-              id: msg.id,
-              content: msg.content,
-              senderId: msg.senderId,
-              createdAt: msg.createdAt,
-            }
-          } : c
-        )
-      );
+      setChatList(prev => {
+        const updatedChat = prev.find(c => c.id === msg.chatId);
+        if (!updatedChat) return prev;
+
+        const newChat = {
+          ...updatedChat,
+          latestMessage: {
+            id: msg.id,
+            content: msg.content,
+            senderId: msg.senderId,
+            createdAt: msg.createdAt,
+          }
+        };
+
+        return reorderChatList(prev, newChat);
+      });
 
       if (msg.senderId === user.userId) return; // this will stop current to show soket reponse 
 
