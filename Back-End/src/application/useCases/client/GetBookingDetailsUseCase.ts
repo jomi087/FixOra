@@ -29,7 +29,7 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
                 bookingId: booking.bookingId!,
                 providerUser: {
                     providerId: provider.providerId,
-                    userId: userProvider.userId,
+                    providerUserId: userProvider.userId,
                     fname: userProvider.fname,
                     lname: userProvider.lname || "",
                     email: userProvider.email,

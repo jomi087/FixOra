@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 interface ClientInfoProps {
   providerUser: {
+    providerId: string;
     providerUserId: string;
     fname: string;
     lname: string;

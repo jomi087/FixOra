@@ -11,7 +11,7 @@ export interface BookingDetailsOutputDTO {
     bookingId: string;
     providerUser: {
         providerId: string;
-        userId: string;
+        providerUserId: string;
         fname: string;
         lname: string;
         email: string;
