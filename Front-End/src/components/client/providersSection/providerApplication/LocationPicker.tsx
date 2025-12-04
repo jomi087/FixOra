@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import L, { LatLng, Marker as LeafletMarker } from "leaflet";
 import { autoCompleteSearch, forwardGeocode, reverseGeocode } from "@/utils/helper/olaGeocoding";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 
 interface LocationPickerProps {
@@ -155,13 +157,13 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
 
       <div className="relative bg-white rounded-lg p-4 w-full max-w-4xl shadow">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-semibold">Select Location</h2>
+          <h2 className="text-lg font-semibold text-black font-roboto ">Select Location</h2>
           <button onClick={onClose}>✖</button>
         </div>
 
         {/* Search Box */}
-        <input
-          className="w-full border p-2 rounded mb-2"
+        <Input
+          className="w-full border-1 p-2 border-black/40 rounded mb-2"
           placeholder="Search location..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -195,23 +197,26 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
         </div>
 
         {/* Address */}
-        <p className="mt-2 text-sm text-gray-700">{address}</p>
+        <p className="mt-2 text-sm text-gray-700 font-roboto">{address}</p>
 
         {/* Buttons */}
         <div className="flex gap-2 justify-end mt-4">
-          <button
+          <Button
             onClick={getCurrentLocation}
-            className="px-3 py-1 bg-green-600 text-white rounded"
+            className="px-3 py-1 bg-blue-600 text-white hover:bg-blue-700 "
           >
             Use Current Location
-          </button>
+          </Button>
 
-          <button
+          <Button
             disabled={!position}
+            variant={"success"}
             onClick={() => position && onSave({ ...position, address })}
+            className=" "
+
           >
             Save
-          </button>
+          </Button>
         </div>
       </div>
     </div>
