@@ -40,7 +40,6 @@ export class SignupUseCase implements ISignupUseCase{
                 userId: uuidv4(),
             };
             
-            // src/config.ts
             const expiryTime  = process.env.JWT_TEMP_ACCESS_TOKEN_EXPIRY as SignOptions["expiresIn"];
             const tempToken = jwt.sign(tempPayload, process.env.JWT_TEMP_ACCESS_SECRET as string, { expiresIn: expiryTime });
 

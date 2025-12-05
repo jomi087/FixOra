@@ -46,7 +46,7 @@ const ReportReview: React.FC<ReportReviewProps> = ({ ratingId }) => {
         open={openReport}
         setOpen={setOpenReport}
         tittle="Report this review"
-        discription="Your report will be carefully reviewed by our team and take action if it’s found to be valid"
+        description="Your report will be carefully reviewed by our team and take action if it’s found to be valid"
         placeholder="Off-Topic, Inappropriate, Fake, Etc..."
       />
     </div>

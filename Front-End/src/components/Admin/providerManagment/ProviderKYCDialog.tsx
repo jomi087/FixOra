@@ -254,7 +254,7 @@ const ProviderKYCDialog: React.FC<ProviderKYCDialogProps> = ({ selectedProvider,
                   open={rejectDialogOpen}
                   setOpen={setRejectDialogOpen}
                   tittle="Reason"
-                  discription="Please provide good and understandable reason"
+                  description="Please provide good and understandable reason"
                   placeholder="Enter reason..."
                 />
               </div>
