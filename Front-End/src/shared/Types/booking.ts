@@ -2,7 +2,7 @@ import type { BookingStatus } from "../enums/BookingStatus";
 import type { NotificationType } from "../enums/NotificationType";
 import type { PaymentMode, PaymentStatus } from "../enums/Payment";
 import type { ProviderResponseStatus } from "../enums/ProviderResponseStatus";
-import type { AddressWithCoordinates } from "./location";
+import type { AppLocation } from "./location";
 
 export interface Notification {
   notificationId?: string;
@@ -99,7 +99,7 @@ export interface JobInfoDetails {
     fname: string;
     lname: string;
     email: string;
-    location: AddressWithCoordinates;
+    location: AppLocation;
   };
   scheduledAt: string;
   category: {
