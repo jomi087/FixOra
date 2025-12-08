@@ -1,7 +1,7 @@
 
 
 export interface IResendOtpUseCase {
-    execute( token : string ) : Promise<void>
+    execute( email : string ) : Promise<void>
 }
 
 /* 

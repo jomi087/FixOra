@@ -11,7 +11,7 @@ import { FcmSchema } from "../validations/FcmSchema";
 
 router.post("/signup", validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next));
 router.post("/verify-otp", (req, res, next) => authController.verifySignupAc(req, res, next));
-router.get("/resend-otp", (req, res, next) => authController.resendOtp(req, res, next));
+router.post("/resend-otp", (req, res, next) => authController.resendOtp(req, res, next));
 
 router.post("/signin", validateRequest(signinSchema), (req, res, next) => authController.signin(req, res, next));
 

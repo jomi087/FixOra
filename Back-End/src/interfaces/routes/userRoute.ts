@@ -2,9 +2,9 @@ import express from "express";
 import { AuthMiddleware, userController, chatController, geocodeController } from "../../main/dependencyInjector";
 import { validateRequest } from "../middleware/validateRequest";
 import { bookingIdSchema, bookingRequestSchema, rescheduleBookingSchema } from "../validations/bookingSchema";
-import { resetPasswordSchema, verifyPasswordSchema } from "../validations/authSchema";
+import { otpSchema, resetPasswordSchema, verifyPasswordSchema } from "../validations/authSchema";
 import { validateKYCRequest } from "../validations/kycSchema";
-import { editProfileSchema } from "../validations/profileSchema";
+import { editProfileSchema, emailSchema } from "../validations/profileSchema";
 
 import upload from "../middleware/upload";
 import { RoleEnum } from "../../shared/enums/Roles";
@@ -52,6 +52,10 @@ router.post("/create-checkout-session", validateRequest(bookingIdSchema), AuthMi
 router.post("/wallet-payment", validateRequest(bookingIdSchema), AuthMiddleware([RoleEnum.Customer]), (req, res, next) => userController.initiateWalletPayment(req, res, next));
 
 //Profile Section
+router.post("/email/update/request", validateRequest(emailSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Admin]), (req, res, next) => userController.requestEmailUpdate(req, res, next));
+router.post("/email/update/confirm", validateRequest(otpSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Admin]), (req, res, next) => userController.confirmEmailUpdate(req, res, next));
+
+
 router.patch("/editProfile", validateRequest(editProfileSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Admin]), (req, res, next) => userController.editProfile(req, res, next));
 router.post("/verifyPassword", validateRequest(verifyPasswordSchema), AuthMiddleware(), (req, res, next) => userController.verifyPassword(req, res, next));
 router.patch("/change-password", validateRequest(resetPasswordSchema), AuthMiddleware(), (req, res, next) => userController.changePassword(req, res, next));

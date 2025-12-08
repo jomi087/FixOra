@@ -165,6 +165,12 @@ const walletPaymentUseCase = new WalletPaymentUseCase(bookingRepository, walletR
 import { VerifyPaymentUseCase } from "../application/useCases/client/VerifyPaymentUseCase";
 const verifyPaymentUseCase = new VerifyPaymentUseCase(paymentService, notificationService, bookingRepository, walletRepository, bookingSchedulerService, notificationRepository);
 
+import { RequestEmailUpdateUseCase } from "../application/useCases/client/RequestEmailUpdateUseCase";
+const requestEmailUpdateUseCase = new RequestEmailUpdateUseCase(userRepository,otpGenratorservice, otpRepository, emailService);
+
+import { ConfirmEmailUpdateUseCase } from "../application/useCases/client/ConfirmEmailUpdateUseCase";
+const confirmEmailUpdateUseCase = new ConfirmEmailUpdateUseCase(otpRepository,userRepository);
+
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository);
 
@@ -313,9 +319,6 @@ const autocompleteGeocodeUseCase = new AutocompleteGeocodeUseCase(geocodeService
 
 /******************************************************************************************************************************************************/
 
-
-
-
 import { PublicController } from "../interfaces/controllers/PublicController";
 import { AuthController } from "../interfaces/controllers/AuthController";
 import { UserController } from "../interfaces/controllers/UserContoller";
@@ -328,7 +331,7 @@ const publicController = new PublicController(getLandingDataUseCase, getNotifica
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase);
 
-const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, updateSelectedLocationUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateReviewUseCase, createDisputeAndNotifyUseCase, bookingUseCase, rescheduleBookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addReviewUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
+const userController = new UserController(activeServiceUseCase, getActiveProvidersUseCase, updateSelectedLocationUseCase, kycRequestUseCase, providerInfoUseCase, getProviderReviewsUseCase, updateReviewUseCase, createDisputeAndNotifyUseCase, bookingUseCase, rescheduleBookingUseCase, createPaymentUseCase, walletPaymentUseCase, verifyPaymentUseCase, requestEmailUpdateUseCase, confirmEmailUpdateUseCase, updateProfileUseCase, verifyPasswordUseCase, resetPasswordUseCase, bookingHistoryUseCase, getBookingDetailsUseCase, retryAvailabilityUseCase, reviewStatusUseCase, cancelBookingUseCase, addReviewUseCase, getUserwalletInfoUseCase, walletTopUpUseCase);
 
 const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase);
 

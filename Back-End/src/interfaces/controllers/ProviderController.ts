@@ -45,7 +45,7 @@ export class ProviderController {
         private _getSalesReportUseCase: IGetSalesReportUseCase,
     ) { }
 
-
+    //Booking
     async pendingBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
@@ -239,6 +239,7 @@ export class ProviderController {
         }
     }
 
+    //profile
     async providerServices(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
@@ -256,7 +257,6 @@ export class ProviderController {
             next(error);
         }
     }
-
 
     async providerInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -277,7 +277,6 @@ export class ProviderController {
         }
     }
 
-
     async updateProviderData(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
@@ -297,7 +296,7 @@ export class ProviderController {
         }
     }
 
-
+    //availability
     async getAvailabilityTime(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
@@ -360,6 +359,7 @@ export class ProviderController {
         }
     }
 
+    //sales
     async generateSalesReport(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { filter: preset, startDate, endDate } = req.query as {

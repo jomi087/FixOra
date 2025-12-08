@@ -15,8 +15,10 @@ import { IRefreshTokenUseCase } from "../../application/Interface/useCases/Auth/
 import { ISignoutUseCase } from "../../application/Interface/useCases/Auth/ISignoutUseCase";
 import { ISignupUseCase } from "../../application/Interface/useCases/Auth/ISignupUseCase";
 import { IRegisterFcmTokenUseCase } from "../../application/Interface/useCases/Auth/IRegisterFcmTokenUseCase";
+import jwt from "jsonwebtoken";
+import { DecodedUserDTO } from "../../application/DTOs/AuthDTO/DecodedUserDTO";
 
-const { OK, BAD_REQUEST, UNAUTHORIZED } = HttpStatusCode;
+const { OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS, USER_NOT_FOUND,
     SIGNIN_SUCCESSFUL, MISSING_TOKEN, VERIFICATION_MAIL_SENT, LOGGED_OUT, PASSWORD_RESET_SUCCESS
 } = Messages;
@@ -79,8 +81,22 @@ export class AuthController {
 
     async resendOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const tempToken = req.cookies.tempToken;
-            await this._resendOtpUseCase.execute(tempToken);
+            
+            let email: string;
+            console.log(req.body);
+
+            if (req.cookies.tempToken) {
+                const tempToken = req.cookies.tempToken;
+                const decodeUserData = jwt.verify(tempToken, process.env.JWT_TEMP_ACCESS_SECRET as string) as DecodedUserDTO;
+                email = decodeUserData.email;
+
+            } else if (req.body.email) {
+                email = req.body.email;
+            } else {
+                throw { status: FORBIDDEN, message: "Email not available for OTP resend." };
+            }
+
+            await this._resendOtpUseCase.execute(email);
 
             res.status(OK).json({
                 success: true,

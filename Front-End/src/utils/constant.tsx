@@ -236,6 +236,8 @@ export const API_ROUTES = {
     ONLINE_PAYMENT: "/api/customer/create-checkout-session",
     WALLET_PAYMENT: "/api/customer/wallet-payment",
     PAYMENT_STATUS: (bookingId: string) => `/api/customer/booking/notify-paymentStatus/${bookingId}`,
+    UPDATE_EMAIL_REQUEST: "/api/customer/email/update/request",
+    UPDATE_EMAIL: "/api/customer/email/update/confirm",
     EDIT_PROFILE: "/api/customer/editProfile",
     VERIFY_PASSWORD: "/api/customer/verifyPassword",
     CHANGE_PASSWORD: "/api/customer/change-password",

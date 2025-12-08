@@ -91,6 +91,14 @@ export class UserRepository implements IUserRepository {
         return updatedUser;
     }
 
+    async updateEmail(userId: string, email: string): Promise<void> {
+        await UserModel.findOneAndUpdate({ userId },
+            { $set: { email } }
+        );
+    }
+
+
+
     async toogleUserStatusById(userId: string, isBlocked: boolean): Promise<boolean> {
         const result = await UserModel.updateOne(
             { userId },

@@ -76,8 +76,8 @@ class AuthService {
     return axiosInstance.post(API_ROUTES.AUTH.SIGNUP, data, this.getJsonConfig());
   }
 
-  resendOtpApi() {
-    return axiosInstance.get(API_ROUTES.AUTH.RESEND_OTP);
+  resendOtpApi(email?: string) {
+    return axiosInstance.post(API_ROUTES.AUTH.RESEND_OTP, { email });
   }
 
   VerifySignupOtpApi(Data: string) {
@@ -187,6 +187,14 @@ class AuthService {
 
   checkBookingPaymentStatus(bookingId: string) {
     return axiosInstance.get(API_ROUTES.CUSTOMER.PAYMENT_STATUS(bookingId));
+  }
+
+  updateEmail(email: string) {
+    return axiosInstance.post(API_ROUTES.CUSTOMER.UPDATE_EMAIL_REQUEST, { email });
+  }
+
+  verifyUpdateEmail(otp: string, email: string) {
+    return axiosInstance.post(API_ROUTES.CUSTOMER.UPDATE_EMAIL, { otp, newEmail: email });
   }
 
   editProfileApi(form: ProfileEdit) {

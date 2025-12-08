@@ -28,6 +28,8 @@ import { ICreateDisputeAndNotifyUseCase } from "../../application/Interface/useC
 import { DisputeType } from "../../shared/enums/Dispute";
 import { IRescheduleBookingUseCase } from "../../application/Interface/useCases/Client/IRescheduleBookingUseCase";
 import { IUpdateSelectedLocationUseCase } from "../../application/Interface/useCases/Client/IUpdateSelectedLocationUseCase";
+import { IRequestEmailUpdateUseCase } from "../../application/Interface/useCases/Client/IRequestEmailUpdateUseCase";
+import { IConfirmEmailUpdateUseCase } from "../../application/Interface/useCases/Client/IConfirmEmailUpdateUseCase";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
@@ -50,6 +52,8 @@ export class UserController {
         private _createPaymentUseCase: ICreatePaymentUseCase,
         private _walletPaymentUseCase: IWalletPaymentUseCase,
         private _verifyPaymentUseCase: IVerifyPaymentUseCase,
+        private _requestEmailUpdateUseCase: IRequestEmailUpdateUseCase,
+        private _confirmEmailUpdateUseCase: IConfirmEmailUpdateUseCase,
         private _updateProfileUseCase: IUpdateProfileUseCase,
         private _verifyPasswordUseCase: IVerifyPasswordUseCase,
         private _resetPasswordUseCase: IResetPasswordUseCase,
@@ -63,6 +67,7 @@ export class UserController {
         private _walletTopUpUseCase: IWalletTopUpUseCase,
     ) { }
 
+    //Service
     async activeServices(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const servicesData = await this._activeServiceUseCase.execute();
@@ -77,6 +82,8 @@ export class UserController {
         }
     }
 
+
+    //provider
     async activeProviders(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const {
@@ -138,6 +145,43 @@ export class UserController {
         }
     }
 
+    async providerInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { id } = req.params;
+
+            const user = req.user;
+            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
+            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
+
+            let location = {
+                latitude: user.location.coordinates.latitude,
+                longitude: user.location.coordinates.longitude
+            };
+
+            if (user.selectedLocation) {
+                location = {
+                    latitude: user.selectedLocation.lat,
+                    longitude: user.selectedLocation.lng
+                };
+            }
+
+
+            const result = await this._providerInfoUseCase.execute({
+                id,
+                coordinates: location
+            });
+
+            res.status(OK).json({
+                success: true,
+                providerInfoData: result
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    //location
     async saveLocation(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = req.user?.userId;
@@ -164,6 +208,7 @@ export class UserController {
         }
     }
 
+    //kyc
     async kycApplication(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = req.user?.userId;
@@ -221,42 +266,8 @@ export class UserController {
         }
     }
 
-    async providerInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const { id } = req.params;
 
-            const user = req.user;
-            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
-            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
-
-            let location = {
-                latitude: user.location.coordinates.latitude,
-                longitude: user.location.coordinates.longitude
-            };
-
-            if (user.selectedLocation) {
-                location = {
-                    latitude: user.selectedLocation.lat,
-                    longitude: user.selectedLocation.lng
-                };
-            }
-
-
-            const result = await this._providerInfoUseCase.execute({
-                id,
-                coordinates: location
-            });
-
-            res.status(OK).json({
-                success: true,
-                providerInfoData: result
-            });
-
-        } catch (error) {
-            next(error);
-        }
-    }
-
+    //review
     async providerReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id: providerId } = req.params;
@@ -276,7 +287,6 @@ export class UserController {
             next(error);
         }
     }
-
 
     async updatedReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -312,6 +322,44 @@ export class UserController {
         }
     }
 
+    async reviewStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            const { bookingId } = req.params;
+            if (!bookingId) {
+                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            }
+
+            const reviewStatus = await this._reviewStatusUseCase.execute(bookingId);
+
+            res.status(OK).json({
+                success: true,
+                message: reviewStatus,
+                reviewStatus
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    async addReview(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { bookingId, rating, feedback } = req.body;
+
+            await this._addReviewUseCase.execute({ bookingId, rating, feedback });
+
+            res.status(OK).json({
+                success: true,
+                message: "successfull",
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    //booking
     async createBooking(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { providerId, providerUserId, scheduledAt, issueTypeId, issue } = req.body;
@@ -370,7 +418,6 @@ export class UserController {
         }
     }
 
-
     async rescheduleBooking(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { rescheduledAt } = req.body;
@@ -383,113 +430,6 @@ export class UserController {
             res.status(200).json({
                 success: true,
                 rescheduledAt: data
-            });
-
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    async initiateOnlinePayment(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const { bookingId } = req.body;
-            const sessionId = await this._createPaymentUseCase.execute(bookingId);
-
-            res.status(OK).json(
-                sessionId
-            );
-
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    async initiateWalletPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
-            }
-            const userId = req.user.userId;
-
-            const { bookingId } = req.body;
-
-            const result = await this._walletPaymentUseCase.execute({ userId, bookingId });
-
-            res.status(OK).json({
-                result
-            });
-
-        } catch (error) {
-            console.log(error);
-            next(error);
-        }
-    }
-
-    async verifyPaymentViaWebHook(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const sig = req.headers["stripe-signature"] as string;
-            const rawBody = req.body;
-
-            await this._verifyPaymentUseCase.execute(rawBody, sig);
-
-            res.status(OK).send("Webhook received"); //to notify stripe
-
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    async editProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-
-            if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
-            }
-
-            const userId = req.user.userId;
-            const profileData = req.body;
-
-            const updatedUser = await this._updateProfileUseCase.execute({ userId, profileData });
-
-            res.status(OK).json({
-                success: true,
-                message: PROFILE_UPDATED_SUCCESS,
-                user: updatedUser
-            });
-
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    async verifyPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const { password } = req.body;
-
-            if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
-            }
-            const userId = req.user.userId;
-            await this._verifyPasswordUseCase.execute(password, userId);
-
-            res.status(OK).json({
-                success: true,
-                message: VERIFICATION_MAIL_SENT,
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    async changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const { token, password } = req.body;
-
-            await this._resetPasswordUseCase.execute(token, password);
-
-            res.status(OK).json({
-                success: true,
-                message: VERIFICATION_MAIL_SENT
             });
 
         } catch (error) {
@@ -607,37 +547,50 @@ export class UserController {
         }
     }
 
-    async reviewStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+    //payment
+    async initiateOnlinePayment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            const { bookingId } = req.body;
+            const sessionId = await this._createPaymentUseCase.execute(bookingId);
 
-            const { bookingId } = req.params;
-            if (!bookingId) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
-            }
-
-            const reviewStatus = await this._reviewStatusUseCase.execute(bookingId);
-
-            res.status(OK).json({
-                success: true,
-                message: reviewStatus,
-                reviewStatus
-            });
+            res.status(OK).json(
+                sessionId
+            );
 
         } catch (error) {
             next(error);
         }
-    };
+    }
 
-    async addReview(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async initiateWalletPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { bookingId, rating, feedback } = req.body;
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const userId = req.user.userId;
 
-            await this._addReviewUseCase.execute({ bookingId, rating, feedback });
+            const { bookingId } = req.body;
+
+            const result = await this._walletPaymentUseCase.execute({ userId, bookingId });
 
             res.status(OK).json({
-                success: true,
-                message: "successfull",
+                result
             });
+
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
+
+    async verifyPaymentViaWebHook(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const sig = req.headers["stripe-signature"] as string;
+            const rawBody = req.body;
+
+            await this._verifyPaymentUseCase.execute(rawBody, sig);
+
+            res.status(OK).send("Webhook received"); //to notify stripe
 
         } catch (error) {
             next(error);
@@ -688,4 +641,107 @@ export class UserController {
             next(error);
         }
     }
+
+    //profile
+    async requestEmailUpdate(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            // console.log("hi");
+            const currentEmail = req.user.email!;
+            const { email: newEmail } = req.body;
+
+            await this._requestEmailUpdateUseCase.execute({ currentEmail, newEmail });
+
+            res.status(OK).json({
+                success: true,
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async confirmEmailUpdate(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            console.log(req.body);
+            const currentEmail = req.user.email!;
+            const userId = req.user.userId;
+
+            const { otp, newEmail } = req.body;
+            await this._confirmEmailUpdateUseCase.execute({ userId, otp, currentEmail, newEmail });
+
+            res.status(OK).json({
+                success: true,
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async editProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+
+            const userId = req.user.userId;
+            const profileData = req.body;
+
+            const updatedUser = await this._updateProfileUseCase.execute({ userId, profileData });
+
+            res.status(OK).json({
+                success: true,
+                message: PROFILE_UPDATED_SUCCESS,
+                user: updatedUser
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async verifyPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { password } = req.body;
+
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const userId = req.user.userId;
+            await this._verifyPasswordUseCase.execute(password, userId);
+
+            res.status(OK).json({
+                success: true,
+                message: VERIFICATION_MAIL_SENT,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { token, password } = req.body;
+
+            await this._resetPasswordUseCase.execute(token, password);
+
+            res.status(OK).json({
+                success: true,
+                message: VERIFICATION_MAIL_SENT
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
 }

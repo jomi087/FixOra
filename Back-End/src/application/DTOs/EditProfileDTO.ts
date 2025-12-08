@@ -17,6 +17,17 @@ export interface ProfileDTO {
     location: AddressDTO;
 }
 
+export interface NewEmailRequestInputDTO {
+    currentEmail: string;
+    newEmail: string;
+}
+
+export interface EmailUpdateVerfifyOTPInputDTO {
+    userId: string;
+    otp: string;
+    currentEmail: string;
+    newEmail: string;
+}
 
 export interface UpdatedProfileOutputDTO extends ProfileDTO { }
 

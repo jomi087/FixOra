@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { cityField,  stateField, districtField, firstNameField, lastNameField, latitudeField, localityField, longitudeField, mobileField, postalCodeField, houseInfoField, streetField } from "./fields";
+import { cityField,  stateField, districtField, firstNameField, lastNameField, latitudeField, localityField, longitudeField, mobileField, postalCodeField, houseInfoField, streetField, emailField } from "./fields";
 
 export const editProfileSchema = z.object({
     fname: firstNameField,
     lname: lastNameField,
     mobile: mobileField,
-
     location: z.object({
         houseinfo: houseInfoField.optional(),  
         street: streetField.optional(), 
@@ -22,3 +21,6 @@ export const editProfileSchema = z.object({
     }),
 });
 
+export const emailSchema = z.object({
+    email: emailField
+});

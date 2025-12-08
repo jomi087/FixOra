@@ -28,6 +28,8 @@ export interface IUserRepository {
         updateData: Pick<User, "fname" | "lname" | "mobileNo" | "location">
     ): Promise<Pick<User, "fname" | "lname" | "mobileNo" | "location">>
 
+    updateEmail(userId: string, email: string): Promise<void>
+
     toogleUserStatusById(userId: string, isBlocked: boolean): Promise<boolean>;
     updateRefreshTokenAndGetUser(userId: string, refreshToken: string): Promise<Omit<User, "password"> | null>;
     resetRefreshTokenById(userId: string, refreshToken?: string): Promise<boolean>;
