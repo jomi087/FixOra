@@ -33,7 +33,8 @@ export class GetUserwalletInfoUseCase implements IGetUserwalletInfoUseCase {
                     amount: tx.amount,
                     status: tx.status,
                     type: tx.type,
-                    date: tx.createdAt
+                    date: tx.createdAt,
+                    bookingId: tx.metadata?.bookingId
                 }))
             };
             

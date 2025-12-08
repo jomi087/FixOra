@@ -7,6 +7,7 @@ export interface Transaction {
     type: TransactionType;
     status: TransactionStatus;
     date: Date;
+    bookingId?: string;
 }
 
 export interface WalletDTO{

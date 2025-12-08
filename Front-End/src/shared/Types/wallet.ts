@@ -6,6 +6,7 @@ export interface Transaction {
   type: TransactionType;
   status: TransactionStatus;
   date: string;
+  bookingId?: string;
 }
 
 export interface WalletInfo {

@@ -62,7 +62,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
     async execute(input: CancelBookingInputDTO): Promise<CancelBookingOutputDTO> {
         try {
             const { userId, bookingId } = input;
-            
+
             const bookingData = await this._bookingRepository.findByBookingId(bookingId);
             if (!bookingData) {
                 throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
@@ -101,7 +101,10 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                     amount: numAmount,
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.REFUND,
-                    reason: `Booking cancellation refund, for booking ${bookingData.bookingId}`
+                    reason: `Booking cancellation refund, for booking ${bookingData.bookingId}`,
+                    metadata: {
+                        bookingId: bookingData.bookingId
+                    }
                 });
 
                 //updating booking data
@@ -156,7 +159,10 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                     amount: halfRefund,
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.REFUND,
-                    reason: `Booking cancellation refund for booking ${bookingData.bookingId}`
+                    reason: `Booking cancellation refund for booking ${bookingData.bookingId}`,
+                    metadata: {
+                        bookingId: bookingData.bookingId
+                    }
                 });
 
                 //updating provider wallet will partial refund (50% -  commission fee)
@@ -166,7 +172,10 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                     amount: providerAmount,
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.CREDIT,
-                    reason: `Booking cancellation compensation for booking ${bookingData.bookingId}`
+                    reason: `Booking cancellation compensation for booking ${bookingData.bookingId}`,
+                    metadata: {
+                        bookingId: bookingData.bookingId
+                    }
                 });
 
                 //updating booking data

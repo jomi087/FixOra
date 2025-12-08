@@ -1,4 +1,4 @@
-import { Schema ,Document,model } from "mongoose";
+import { Schema, Document, model } from "mongoose";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Wallet } from "../../../domain/entities/WalletEntity";
 
@@ -6,46 +6,49 @@ import { Wallet } from "../../../domain/entities/WalletEntity";
 const walletTransaction = new Schema({
     transactionId: {
         type: String,
-        required:true,
+        required: true,
     },
-    amount : {
-        type : Number,
-        required : true,
+    amount: {
+        type: Number,
+        required: true,
     },
-    status : {
+    status: {
         type: String,
         enum: Object.values(TransactionStatus),
     },
-    type : {    
+    type: {
         type: String,
         enum: Object.values(TransactionType),
     },
-    reason : {
-        type : String,
+    reason: {
+        type: String,
+    },
+    metadata: {
+        type: Schema.Types.Mixed, // flexible object
     }
 }, {
     _id: false,
-    timestamps : true
-}); 
+    timestamps: true
+});
 
-export interface IWalletModel extends Document,Wallet{}
+export interface IWalletModel extends Document, Wallet { }
 
 
 const walletSchema = new Schema<IWalletModel>({
     userId: {
         type: String,
         required: true,
-        unique:true,
+        unique: true,
     },
-    balance : {
-        type : Number,
-        required :  true,
-        default : 0 
+    balance: {
+        type: Number,
+        required: true,
+        default: 0
     },
-    transactions : [walletTransaction] ,
+    transactions: [walletTransaction],
 
-},{
-    timestamps : true
+}, {
+    timestamps: true
 });
 
 const WalletModel = model<IWalletModel>("Wallet", walletSchema);

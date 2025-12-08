@@ -8,6 +8,9 @@ export interface Transaction {
   status: TransactionStatus;
   type: TransactionType;
   reason?: string;
+  metadata?: {
+    bookingId: string;
+  };
   createdAt: Date;
   updatedAt?: Date;
 }

@@ -87,6 +87,9 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     amount: totalAmount,
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.DEBIT,
+                    metadata: {
+                        bookingId: booking.bookingId
+                    }
                 });
             } catch (error) {
                 await this._walletRepository.updateWalletOnTransaction({
@@ -95,7 +98,10 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     amount: totalAmount,
                     status: TransactionStatus.FAILED,
                     type: TransactionType.DEBIT,
-                    reason: error.message || "Wallet Payment failed"
+                    reason: error.message || "Wallet Payment failed",
+                    metadata: {
+                        bookingId: booking.bookingId
+                    }
                 });
 
                 const updateData = {
@@ -121,7 +127,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 },
                 status: BookingStatus.CONFIRMED,
                 esCrowAmout: totalAmount,
-                workProof : []
+                workProof: []
             };
 
             let updatedBooking: Booking | null;
@@ -142,6 +148,9 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.CREDIT,
                     reason: "Refund due to booking update failure",
+                    metadata: {
+                        bookingId: booking.bookingId
+                    }
                 });
 
                 throw { status: INTERNAL_SERVER_ERROR, message: error.message || INTERNAL_ERROR };

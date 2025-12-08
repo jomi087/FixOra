@@ -5,8 +5,9 @@ import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import type { Transaction } from "@/shared/types/wallet";
 import { TransactionStatus, TransactionType } from "@/shared/enums/Transaction";
 import Pagination from "@/components/common/others/Pagination";
-import { shortId } from "@/utils/helper/utils";
-
+import { shortBookingId, shortId } from "@/utils/helper/utils";
+import { BsFillInfoCircleFill } from "react-icons/bs";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 
 const statusConfig: Record<
   TransactionStatus, {
@@ -38,7 +39,7 @@ interface TransactionsTableProps {
   totalPages: number;
 }
 
-const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page,setPage,totalPages }) => {
+const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, page, setPage, totalPages }) => {
   return (
     <>
       <Card>
@@ -49,37 +50,39 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Payment ID</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead className="text-center" >Sr-No</TableHead>
+                <TableHead className="text-center" >Payment ID</TableHead>
+                <TableHead className="text-center" >Amount</TableHead>
+                <TableHead className="text-center" >Date</TableHead>
+                <TableHead className="text-center" >Type</TableHead>
+                <TableHead className="text-center" >Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {transactions.length == 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-6">
+                  <TableCell colSpan={6} className="text-center py-6">
                     <h3 className="text-muted-foreground">No Transaction Found</h3>
                   </TableCell>
                 </TableRow>
               ) : (
-                transactions.map((tx) => (
+                transactions.map((tx, idx) => (
                   <TableRow key={tx.transactionId}>
-                    <TableCell>
+                    <TableCell className="w-2 text-center">{idx + 1}</TableCell>
+                    <TableCell className="text-center" >
                       {tx.transactionId === "N/A" ? (
                         <span
                           className="text-red-500"
                         >
-                          Payment Not Completed 
+                          Payment Not Completed
                         </span>
                       ) : (
                         shortId(tx.transactionId)
                       )}
                     </TableCell>
-                    <TableCell>{tx.amount}</TableCell>
-                    <TableCell>{new Date(tx.date).toLocaleDateString()}</TableCell>
-                    <TableCell >
+                    <TableCell className="text-center" >{tx.amount}</TableCell>
+                    <TableCell className="text-center" >{new Date(tx.date).toLocaleDateString()}</TableCell>
+                    <TableCell className="text-center" >
                       <Badge
                         variant={tx.type === TransactionType.CREDIT ?
                           "success" : tx.type === TransactionType.REFUND ?
@@ -90,14 +93,35 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page
                         {tx.type}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <span
-                        className={`flex items-center ${statusConfig[tx.status].color}`}
+                        className={`flex items-center justify-center ${statusConfig[tx.status].color}`}
                       >
                         {statusConfig[tx.status].icon}
                         {statusConfig[tx.status].label}
                       </span>
                     </TableCell>
+
+                    <TableCell className="w-2 cursor-pointer text-center">
+                      {tx.bookingId && (
+                        <TooltipProvider delayDuration={200}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span>
+                                <BsFillInfoCircleFill size={18} />
+                              </span>
+                            </TooltipTrigger>
+
+                            <TooltipContent side="top">
+                              <p >Booking ID: {shortBookingId(tx.bookingId)}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </TableCell>
+
+
+
                   </TableRow>
                 )))}
             </TableBody>
@@ -120,3 +144,20 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions,page
 };
 
 export default TransactionsTable;
+
+/*
+<div className="relative group inline-block">
+      <BsFillInfoCircleFill size={18} className="cursor-pointer" />
+      <div
+        className="
+          absolute left-1/2 -translate-x-1/2 mt-2
+          whitespace-nowrap
+          bg-black text-white text-xs px-2 py-1 rounded
+          opacity-0 invisible group-hover:opacity-100 group-hover:visible
+          transition-all duration-200
+        "
+      >
+        {tx.bookingId}
+      </div>
+</div >
+*/

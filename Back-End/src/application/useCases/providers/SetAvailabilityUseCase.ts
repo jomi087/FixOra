@@ -138,7 +138,10 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
                         amount: numAmount,
                         status: TransactionStatus.SUCCESS,
                         type: TransactionType.REFUND,
-                        reason: `Booking cancellation refund, for booking ${booking.bookingId}`
+                        reason: `Booking cancellation refund, for booking ${booking.bookingId}`,
+                        metadata: {
+                            bookingId: booking.bookingId
+                        }
                     });
 
                     //updating booking data 

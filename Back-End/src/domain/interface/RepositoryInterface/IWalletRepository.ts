@@ -11,6 +11,7 @@ export interface IWalletRepository {
         transactionId: string; amount: number;
         status: TransactionStatus; type: TransactionType; 
         reason?: string;
+        metadata?:object
     }): Promise<void>
 
     findByUserIdWithTransactions(

@@ -87,6 +87,9 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
                 amount: providerAmount,
                 status: TransactionStatus.SUCCESS,
                 type: TransactionType.CREDIT,
+                metadata: {
+                    bookingId: bookingData.bookingId
+                }
             });
             const parts = input.parts?.map((rp) => ({
                 name: rp.name,

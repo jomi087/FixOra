@@ -18,9 +18,10 @@ export class WalletRepository implements IWalletRepository {
         transactionId: string; amount: number;
         status: TransactionStatus; type: TransactionType;
         reason?: string;
+        metadata?: object
     }): Promise<void> {
 
-        const { userId, transactionId, amount, status, type, reason } = params;
+        const { userId, transactionId, amount, status, type, reason, metadata  } = params;
 
         const transaction = {
             transactionId,
@@ -28,7 +29,8 @@ export class WalletRepository implements IWalletRepository {
             status,
             type,
             createdAt: new Date(),
-            ...(reason ? { reason } : {})
+            ...(reason ? { reason } : {}),
+            ...(metadata ? { metadata } : {}),
         };
 
         let balanceUpdate: { $inc?: { balance: number } } = {};
@@ -92,7 +94,7 @@ export class WalletRepository implements IWalletRepository {
 
         const result = await WalletModel.aggregate(pipeline);
         if (!result.length || !result[0].data) return null;
-        
+
         return {
             data: result[0].data as Wallet,
             totalTransactions: result[0].totalTransactions,
