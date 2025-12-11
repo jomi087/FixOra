@@ -7,3 +7,5 @@ export type DecodedUserToken = {
     iat: number;
     exp: number;
 };
+
+export type CallStatus = "accepted" | "rejected";

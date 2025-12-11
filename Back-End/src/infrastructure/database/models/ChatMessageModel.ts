@@ -1,10 +1,13 @@
 import { Schema, model, Document, Types } from "mongoose";
+import { CallStatus } from "../../../shared/types/common";
 
 export interface ChatMessageDocument extends Document {
     _id: Types.ObjectId;
     chatId: Types.ObjectId;
     senderId: string;
     content: string;
+    type: "text" | "call";
+    callStatus?: CallStatus;
     isRead: boolean;
     isActive: boolean;
     createdAt: Date;
@@ -28,6 +31,16 @@ const ChatMessageSchema = new Schema<ChatMessageDocument>(
             type: String,
             trim: true,
             required: true,
+        },
+        type: {
+            type: String,
+            enum: ["text", "call"],
+            default: "text"
+        },
+        callStatus: {
+            type: String,
+            enum: ["accepted", "rejected"],
+            required: false
         },
         isRead: {
             type: Boolean,

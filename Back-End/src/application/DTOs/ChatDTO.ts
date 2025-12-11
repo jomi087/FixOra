@@ -1,3 +1,5 @@
+import { CallStatus } from "../../shared/types/common";
+
 export interface StartChatDTO {
     userId: string;
     partnerId: string;
@@ -22,11 +24,8 @@ export interface SendChatMessageInputDTO {
     content: string,
 }
 
-export interface SendChatMessageOutputDTO {
-    id: string;
+export interface LogCallInputDTO {
     chatId: string;
-    senderId: string;
-    content: string;
-    createdAt: Date;
-    isRead: boolean;
+    callerId: string;
+    status: CallStatus;
 }

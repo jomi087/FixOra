@@ -1,8 +1,9 @@
-import { SendChatMessageInputDTO, SendChatMessageOutputDTO } from "../../../DTOs/ChatDTO";
+import { ChatMessage } from "../../../../domain/entities/ChatMessageEntity";
+import { SendChatMessageInputDTO } from "../../../DTOs/ChatDTO";
 
 export interface ISendChatMessageUseCase {
     execute(input: SendChatMessageInputDTO): Promise<{
-        chatMessage: SendChatMessageOutputDTO,
+        chatMessage: ChatMessage,
         receiverId: string
     }>
 }

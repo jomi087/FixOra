@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { stringMinMax, uuidField } from "./fields";
+import { stringField, stringMinMax, uuidField } from "./fields";
 
 export const startChatSchema = z.object({
     userId: uuidField("PartnerId"),
@@ -7,6 +7,11 @@ export const startChatSchema = z.object({
 
 
 export const chatMessageSchema = z.object({
-    content: stringMinMax(1,"Message cannot be empty", 5000, "Message is too long")
+    content: stringMinMax(1, "Message cannot be empty", 5000, "Message is too long")
 });
 
+
+export const callLogSchema = z.object({
+    callerId: uuidField("callerId"),
+    status: stringField
+});

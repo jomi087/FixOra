@@ -15,6 +15,7 @@ import { DisputeRepository } from "../infrastructure/database/repositories/Dispu
 import { ChatMessageRepository } from "../infrastructure/database/repositories/ChatMessageRepository";
 import { ChatRepository } from "../infrastructure/database/repositories/ChatRepository";
 
+
 import { WinstonLogger } from "../infrastructure/services/WinstonLoggerService";
 import { EmailService } from "../infrastructure/services/EmailService";
 import { OtpGenratorservice } from "../infrastructure/services/OtpGeneratorService";
@@ -28,6 +29,8 @@ import { BookingSchedulerService } from "../infrastructure/services/BookingSched
 import { PaymentService } from "../infrastructure/services/PaymentService";
 import { ChatService } from "../infrastructure/services/ChatService";
 import { OlaGeocodeService } from "../infrastructure/services/GeocodeService";
+import { CallService } from "../infrastructure/services/CallService";
+ 
 
 import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
 import { ReviewDisputeActionHandler } from "../application/useCases/admin/handlers/DisputeActionHandler";
@@ -61,6 +64,7 @@ const pushNotificationService = new PushNotificationService();
 const bookingSchedulerService = new BookingSchedulerService();
 const paymentService = new PaymentService();
 const chatService = new ChatService();
+const callService = new CallService();
 const geocodeService = new OlaGeocodeService();
 
 
@@ -305,6 +309,9 @@ const getChatMessagesUseCase = new GetChatMessagesUseCase(chatMessageRepository)
 
 import { SendChatMessageUseCase } from "../application/useCases/chat/SendChatMessageUseCase";
 const sendChatMessageUseCase = new SendChatMessageUseCase(chatRepository, chatMessageRepository);
+
+import { LogCallUseCase } from "../application/useCases/chat/LogCallUseCase";
+const logCallUseCase = new LogCallUseCase(chatRepository,chatMessageRepository);
 /******************************************************************************************************************************************************
                                         Geo-coding
 ******************************************************************************************************************************************************/
@@ -327,6 +334,7 @@ import { ProviderController } from "../interfaces/controllers/ProviderController
 import { ChatController } from "../interfaces/controllers/ChatController";
 import { GeocodeController } from "../interfaces/controllers/GeocodeController";
 
+
 const publicController = new PublicController(getLandingDataUseCase, getNotificationsUseCase, notificationAcknowledgmentUseCase);
 
 const authController = new AuthController(signupUseCase, verifySignupOtpUseCase, resendOtpUseCase, signinUseCase, googleSigninUseCase, forgotPasswordUseCase, resetPasswordUseCase, registerFcmTokenUseCase, refreshTokenUseCase, signoutUseCase);
@@ -337,7 +345,7 @@ const providerController = new ProviderController(pendingBookingRequestUseCase, 
 
 const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, disputeContentInfoUseCase, disputeActionUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
 
-const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase, sendChatMessageUseCase, chatService);
+const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase, sendChatMessageUseCase,logCallUseCase, chatService, callService);
 
 const geocodeController = new GeocodeController(reverseGeocodeUseCase, forwardGeocodeUseCase, autocompleteGeocodeUseCase);
 

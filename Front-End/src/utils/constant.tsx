@@ -210,6 +210,7 @@ export const API_ROUTES = {
   CHAT: {
     LIST: (role: RoleEnum) => `/api/${role}/chats`,
     MESSAGES: (role: RoleEnum, chatId: string) => `/api/${role}/chats/${chatId}/messages`,
+    CALL_LOGS: (role: RoleEnum, chatId:string) => `/api/${role}/chats/${chatId}/call-log`
   },
 
   CUSTOMER: {

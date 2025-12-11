@@ -10,7 +10,7 @@ import upload from "../middleware/upload";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { addFundsSchema } from "../validations/walletSchema";
 import { addReviewSchema, reportReviewSchema, updateReviewSchema } from "../validations/reviewSchema";
-import { chatMessageSchema, startChatSchema } from "../validations/chatSchema";
+import { callLogSchema, chatMessageSchema, startChatSchema } from "../validations/chatSchema";
 
 const router = express.Router();
 
@@ -69,6 +69,7 @@ router.post("/chats", validateRequest(startChatSchema), AuthMiddleware([RoleEnum
 router.get("/chats", AuthMiddleware([RoleEnum.Customer]), chatController.getChatList.bind(chatController));
 router.get("/chats/:chatId/messages", AuthMiddleware([RoleEnum.Customer]), chatController.getChatMessages.bind(chatController));;
 router.post("/chats/:chatId/messages", validateRequest(chatMessageSchema), AuthMiddleware([RoleEnum.Customer]), chatController.sendChatMessage.bind(chatController));
+router.post("/chats/:chatId/call-log", validateRequest(callLogSchema), AuthMiddleware([RoleEnum.Customer]), chatController.logCall.bind(chatController));
 
 router.get("/wallet", AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), userController.walletInfo.bind(userController));
 router.post("/wallet/add-fund", validateRequest(addFundsSchema), AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), (req, res, next) => userController.addFund(req, res, next));

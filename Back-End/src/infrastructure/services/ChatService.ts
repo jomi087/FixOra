@@ -4,12 +4,12 @@ import { getIO } from "../socket/config";
 export class ChatService implements IChatService {
 
     /** @inheritdoc */
-    sendNewMessage(chatId: string, message: any): void {
+    sendNewMessage(chatId: string, message: Record<string,unknown>): void {
         getIO().to(chatId).emit("chat:newMessage", message);
     }
 
     /** @inheritdoc */
-    sendChatListUpdate(userId: string, payload: any) {
+    sendChatListUpdate(userId: string, payload: Record<string,unknown>) {
         getIO().to(userId).emit("chat:list:update", payload);
     }
 

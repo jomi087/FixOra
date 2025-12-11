@@ -7,6 +7,9 @@ import { IStartChatUseCase } from "../../application/Interface/useCases/chat/ISt
 import { IGetChatMessagesUseCase } from "../../application/Interface/useCases/chat/IGetChatMessagesUseCase";
 import { ISendChatMessageUseCase } from "../../application/Interface/useCases/chat/ISendChatMessageUseCase";
 import { IChatService } from "../../domain/interface/ServiceInterface/IChatService";
+import { CallStatus } from "../../shared/types/common";
+import { ICallService } from "../../domain/interface/ServiceInterface/ICallService";
+import { ILogCallUseCase } from "../../application/Interface/useCases/chat/ILogCallUseCase";
 
 const { OK, UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG } = Messages;
@@ -18,7 +21,9 @@ export class ChatController {
         private _getUserChatsUseCase: IGetUserChatsUseCase,
         private _getChatMessagesUseCase: IGetChatMessagesUseCase,
         private _sendChatMessageUseCase: ISendChatMessageUseCase,
-        private _chatService: IChatService
+        private _logCallUseCase: ILogCallUseCase,
+        private _chatService: IChatService,
+        private _callService: ICallService,
     ) { }
 
     async startChat(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -97,13 +102,67 @@ export class ChatController {
                 content,
             });
 
-            this._chatService.sendNewMessage(chatId, chatMessage);
-            this._chatService.sendChatListUpdate(receiverId, chatMessage);
+            const responseDTO = {
+                id: chatMessage.id!,
+                chatId: chatMessage.chatId,
+                senderId: chatMessage.senderId,
+                content: chatMessage.content,
+                type: chatMessage.type,
+                createdAt: chatMessage.createdAt!,
+                isRead: chatMessage.isRead,
+            };
+
+            this._chatService.sendNewMessage(chatId, responseDTO);
+            this._chatService.sendChatListUpdate(receiverId, responseDTO);
 
 
             res.status(OK).json({
                 success: true,
-                chatMessage
+            });
+
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async logCall(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            if (!req.user?.userId) {
+                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+            }
+            const { chatId } = req.params;
+            const { callerId, status }: { callerId: string; status: CallStatus } = req.body;
+            // const receiverId = req.user.userId;
+
+            const chatMessage = await this._logCallUseCase.execute({
+                chatId,
+                callerId,
+                status
+            });
+
+            const responseDTO = {
+                id: chatMessage.id!,
+                chatId: chatMessage.chatId,
+                senderId: chatMessage.senderId,
+                content: chatMessage.content,
+                type: chatMessage.type,
+                callStatus: chatMessage.callStatus,
+                createdAt: chatMessage.createdAt!,
+                isRead: chatMessage.isRead,
+            };
+
+            this._chatService.sendNewMessage(chatId, responseDTO);
+            this._chatService.sendChatListUpdate(callerId, responseDTO);
+
+
+            if (status == "accepted") {
+                this._callService.sendCallAccepted(callerId, { roomID: chatId });
+            } else if (status == "rejected") {
+                this._callService.sendCallRejected(callerId, { reason: "Call Rejected" });
+            }
+
+            res.status(OK).json({
+                success: true,
             });
 
         } catch (err) {

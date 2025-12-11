@@ -3,6 +3,7 @@ import { ChatMessageListItem } from "../../../domain/entities/projections/ChatMe
 import { IChatMessageRepository } from "../../../domain/interface/RepositoryInterface/IChatMessageRepository";
 import { ChatMessageModel } from "../models/ChatMessageModel";
 import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
+import { CallStatus } from "../../../shared/types/common";
 
 export class ChatMessageRepository implements IChatMessageRepository {
 
@@ -27,7 +28,9 @@ export class ChatMessageRepository implements IChatMessageRepository {
                         id: { $toString: "$_id" },
                         chatId: { $toString: "$chatId" },
                         senderId: 1,
+                        type: 1,
                         content: 1,
+                        callStatus:1,
                         createdAt: 1,
                         isRead: 1,
                     },
@@ -41,12 +44,22 @@ export class ChatMessageRepository implements IChatMessageRepository {
     }
 
     /** @inheritdoc */
-    async createChatMessage(chatId: string, senderId: string, content: string): Promise<ChatMessage> {
+    async createChatMessage(
+        chatId: string,
+        senderId: string,
+        content: string,
+        type: "text" | "call",
+        status?: CallStatus,
+    ): Promise<ChatMessage> {
+
+        const callStatus = type === "call" ? status : undefined;
 
         const messageDoc = await ChatMessageModel.create({
             chatId: new mongoose.Types.ObjectId(chatId),
             senderId,
             content,
+            type,
+            callStatus
         });
 
         return {
@@ -54,6 +67,8 @@ export class ChatMessageRepository implements IChatMessageRepository {
             chatId: messageDoc.chatId.toString(),
             senderId: messageDoc.senderId,
             content: messageDoc.content,
+            type: messageDoc.type,
+            ...(messageDoc.callStatus && { callStatus: messageDoc.callStatus }),
             isRead: messageDoc.isRead,
             isActive: messageDoc.isActive,
             createdAt: messageDoc.createdAt,

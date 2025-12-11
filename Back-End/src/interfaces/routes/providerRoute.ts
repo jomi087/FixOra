@@ -8,7 +8,7 @@ import { daySchema, workTimeSchema } from "../validations/availabilitySchema";
 import upload from "../middleware/upload";
 import { diagnoseSchema } from "../validations/diagnoseSchema";
 import { UpdateProviderDataSchema } from "../validations/providerDataSchema";
-import { chatMessageSchema, startChatSchema } from "../validations/chatSchema";
+import { callLogSchema, chatMessageSchema, startChatSchema } from "../validations/chatSchema";
 
 const router = express.Router();
 
@@ -22,6 +22,7 @@ router.post("/chats",validateRequest(startChatSchema), AuthMiddleware([RoleEnum.
 router.get("/chats", AuthMiddleware([RoleEnum.Provider]), chatController.getChatList.bind(chatController));
 router.get("/chats/:chatId/messages", AuthMiddleware([RoleEnum.Provider]),  chatController.getChatMessages.bind(chatController));;
 router.post("/chats/:chatId/messages", validateRequest(chatMessageSchema), AuthMiddleware([RoleEnum.Provider]), chatController.sendChatMessage.bind(chatController));
+router.post("/chats/:chatId/call-log", validateRequest(callLogSchema), AuthMiddleware([RoleEnum.Provider]), chatController.logCall.bind(chatController));
 
 router.get("/job-history", AuthMiddleware([RoleEnum.Provider]), providerController.getJobHistory.bind(providerController));
 router.post("/arrival-otp/:bookingId", AuthMiddleware([RoleEnum.Provider]), providerController.arrivalOtp.bind(providerController));
@@ -40,6 +41,7 @@ router.get("/availability-time", AuthMiddleware([RoleEnum.Provider]), providerCo
 router.post("/schedule-availability-time", validateRequest(workTimeSchema), AuthMiddleware([RoleEnum.Provider]), providerController.scheduleAvailabilityTime.bind(providerController));
 router.patch("/toggle-availability", validateRequest(daySchema), AuthMiddleware([RoleEnum.Provider]), providerController.toggleAvailability.bind(providerController));
 router.get("/generate-salesReport", AuthMiddleware([RoleEnum.Provider]), providerController.generateSalesReport.bind(providerController));
+
 export default router;
 
 

@@ -14,11 +14,13 @@ export interface ChatListItem {
 }
 
 export interface ChatMessage {
-  id: string;
-  chatId: string;
-  senderId: string;
-  content: string;
-  createdAt: Date;
-  isRead: boolean;
+    id: string;
+    chatId: string;
+    senderId: string;
+    content: string;
+    type: "text" | "call"
+    callStatus?:  "accepted" | "rejected";
+    createdAt: Date;
+    isRead: boolean;
 }
 

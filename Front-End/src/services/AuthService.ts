@@ -61,6 +61,10 @@ class AuthService {
     });
   }
 
+  logCall(role: RoleEnum, chatId:string, payload: { callerId: string,status: string }) {
+    return axiosInstance.post(API_ROUTES.CHAT.CALL_LOGS(role,chatId), payload);
+  }
+
   sendChatMessages(role: RoleEnum, chatId: string, content: string) {
     return axiosInstance.post(API_ROUTES.CHAT.MESSAGES(role, chatId), { content });
   }
