@@ -1,3 +1,7 @@
+import { Category } from "../../domain/entities/CategoryEntity";
+import { UploadedFile } from "../../shared/types/common";
+import { PaginationInputDTO, PaginationOutputDTO } from "./Common/PaginationDTO";
+
 export interface SubCategory {
   subCategoryId: string;
   name: string;
@@ -31,4 +35,22 @@ export interface ShortCategoryOutputDTO {
     subCategoryId: string;
     name: string;
   }[];
+}
+
+export interface GetServicesInputDTO extends PaginationInputDTO { }
+
+export interface GetServicesOutputDTO extends PaginationOutputDTO<Partial<Category>> { }
+
+export interface UpdateCategoryInputDTO {
+  categoryId: string;
+  name: string;
+  description: string;
+  imageFile: UploadedFile | null
+}
+
+export interface UpdateSubCategoryInputDTO {
+  subCategoryId: string;
+  name: string;
+  description: string;
+  imageFile: UploadedFile | null
 }

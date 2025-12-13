@@ -1,4 +1,6 @@
 import { DisputeType } from "../shared/enums/Dispute";
+import { allowedTypes, maxSizeMB } from "../shared/const/constants";
+
 
 import { UserRepository } from "../infrastructure/database/repositories/UserRepository";
 import { OtpRepository } from "../infrastructure/database/repositories/OtpRepository";
@@ -30,8 +32,8 @@ import { PaymentService } from "../infrastructure/services/PaymentService";
 import { ChatService } from "../infrastructure/services/ChatService";
 import { OlaGeocodeService } from "../infrastructure/services/GeocodeService";
 import { CallService } from "../infrastructure/services/CallService";
- 
 
+import { FileValidator } from "../application/services/FileValidator";
 import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
 import { ReviewDisputeActionHandler } from "../application/useCases/admin/handlers/DisputeActionHandler";
 
@@ -67,6 +69,8 @@ const chatService = new ChatService();
 const callService = new CallService();
 const geocodeService = new OlaGeocodeService();
 
+//validatior
+const fileValidator = new FileValidator(allowedTypes, maxSizeMB);
 
 // strategy handler,
 const reviewHandler = new ReviewDisputeContentHandler(ratingRepository);
@@ -74,7 +78,6 @@ const reviewActionHandler = new ReviewDisputeActionHandler(ratingRepository);
 
 // import { MongooseTransactionManager } from "../infrastructure/database/mongooseTransactionManager";
 // const transactionManager = new MongooseTransactionManager();
-
 /******************************************************************************************************************************************************/
 import { createAuthMiddleware } from "../interfaces/middleware/authMiddleware";
 const AuthMiddleware = createAuthMiddleware(tokenService, userRepository);
@@ -170,10 +173,10 @@ import { VerifyPaymentUseCase } from "../application/useCases/client/VerifyPayme
 const verifyPaymentUseCase = new VerifyPaymentUseCase(paymentService, notificationService, bookingRepository, walletRepository, bookingSchedulerService, notificationRepository);
 
 import { RequestEmailUpdateUseCase } from "../application/useCases/client/RequestEmailUpdateUseCase";
-const requestEmailUpdateUseCase = new RequestEmailUpdateUseCase(userRepository,otpGenratorservice, otpRepository, emailService);
+const requestEmailUpdateUseCase = new RequestEmailUpdateUseCase(userRepository, otpGenratorservice, otpRepository, emailService);
 
 import { ConfirmEmailUpdateUseCase } from "../application/useCases/client/ConfirmEmailUpdateUseCase";
-const confirmEmailUpdateUseCase = new ConfirmEmailUpdateUseCase(otpRepository,userRepository);
+const confirmEmailUpdateUseCase = new ConfirmEmailUpdateUseCase(otpRepository, userRepository);
 
 import { UpdateProfileUseCase } from "../application/useCases/client/UpdateProfileUseCase";
 const updateProfileUseCase = new UpdateProfileUseCase(userRepository);
@@ -281,6 +284,12 @@ const createServiceCategoryUseCase = new CreateServiceCategoryUseCase(categoryRe
 import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/ToggleCategoryStatusUseCase";
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository);
 
+import { UpdateCategoryUseCase } from "../application/useCases/admin/UpdateCategoryUseCase";
+const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository, imageUploaderService, fileValidator);
+
+import { UpdateSubCategoryUseCase } from "../application/useCases/admin/UpdateSubCategoryUseCase";
+const updateSubCategoryUseCase = new UpdateSubCategoryUseCase(categoryRepository, imageUploaderService, fileValidator);
+
 import { GetDisputesUseCase } from "../application/useCases/admin/GetDisputesUseCase";
 const getDisputesUseCase = new GetDisputesUseCase(disputeRepository);
 
@@ -311,7 +320,7 @@ import { SendChatMessageUseCase } from "../application/useCases/chat/SendChatMes
 const sendChatMessageUseCase = new SendChatMessageUseCase(chatRepository, chatMessageRepository);
 
 import { LogCallUseCase } from "../application/useCases/chat/LogCallUseCase";
-const logCallUseCase = new LogCallUseCase(chatRepository,chatMessageRepository);
+const logCallUseCase = new LogCallUseCase(chatRepository, chatMessageRepository);
 /******************************************************************************************************************************************************
                                         Geo-coding
 ******************************************************************************************************************************************************/
@@ -343,9 +352,9 @@ const userController = new UserController(activeServiceUseCase, getActiveProvide
 
 const providerController = new ProviderController(pendingBookingRequestUseCase, updateBookingStatusUseCase, getConfirmBookingsUseCase, getJobDetailsUseCase, jobHistoryUseCase, verifyArrivalUseCase, verifyArrivalOtpUseCase, workCompletionUseCase, providerServiceUseCase, providerServiceInfoUseCase, providerDataUpdateUseCase, getAvailabilityUseCase, setAvailabilityUseCase, toggleAvailabilityUseCase, getSalesReportUseCase);
 
-const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, getDisputesUseCase, disputeContentInfoUseCase, disputeActionUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
+const adminController = new AdminController(dashboardReportUseCase, getCustomersUseCase, toggleUserStatusUseCase, getProvidersUseCase, providerApplicationUseCase, updateKYCStatusUseCase, getServiceUseCase, createServiceCategoryUseCase, imageUploaderService, toggleCategoryStatusUseCase, updateCategoryUseCase, updateSubCategoryUseCase, getDisputesUseCase, disputeContentInfoUseCase, disputeActionUseCase, commissionFeeUseCase, updateCommissionFeeUseCase);
 
-const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase, sendChatMessageUseCase,logCallUseCase, chatService, callService);
+const chatController = new ChatController(startChatUseCase, getUserChatsUseCase, getChatMessagesUseCase, sendChatMessageUseCase, logCallUseCase, chatService, callService);
 
 const geocodeController = new GeocodeController(reverseGeocodeUseCase, forwardGeocodeUseCase, autocompleteGeocodeUseCase);
 

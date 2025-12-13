@@ -65,7 +65,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
                   name="email"
                   id="email"
                   aria-required="true"
-                  className="flex-1 p-3 outline-none focus:ring-2 focus:ring-blue-400"
+                  className="flex-1 p-3 outline-none "
                   placeholder="Enter your email"
                   required
                   autoComplete="email"
@@ -90,7 +90,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
                     name="password"
                     id="password"
                     aria-required="true"
-                    className="flex-1 p-3 outline-none focus:ring-8 "
+                    className="flex-1 p-3 outline-none  "
                     placeholder="Enter your password"
                     required
                     autoComplete="current-password"

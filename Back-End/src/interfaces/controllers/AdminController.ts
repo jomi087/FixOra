@@ -19,9 +19,13 @@ import { IGetDisputesUseCase } from "../../application/Interface/useCases/Admin/
 import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
 import { IDisputeContentInfoUseCase } from "../../application/Interface/useCases/Admin/IDisputeContentInfoUseCase";
 import { IDisputeActionUseCase } from "../../application/Interface/useCases/Admin/IDisputeActionUseCase";
+import { IUpdateCategoryUseCase } from "../../application/Interface/useCases/Admin/IUpdateCategoryUseCase";
+import { IUpdateSubCategoryUseCase } from "../../application/Interface/useCases/Admin/IUpdateSubCategoryUseCase";
 
 const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING, SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS } = Messages;
+const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING,
+    SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS,
+} = Messages;
 
 export class AdminController {
     constructor(
@@ -35,6 +39,8 @@ export class AdminController {
         private _createServiceCategoryUseCase: ICreateServiceCategoryUseCase,
         private _imageUploaderService: IImageUploaderService,
         private _toggleCategoryStatusUseCase: IToggleCategoryStatusUseCase,
+        private _updateCategoryUseCase: IUpdateCategoryUseCase,
+        private _updateSubCategoryUseCase: IUpdateSubCategoryUseCase,
         private _getDisputesUseCase: IGetDisputesUseCase,
         private _disputeContentInfoUseCase: IDisputeContentInfoUseCase,
         private _disputeActionUseCase: IDisputeActionUseCase,
@@ -232,6 +238,66 @@ export class AdminController {
         }
     }
 
+    async updateCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { categoryId } = req.params;
+            const { name, description } = req.body;
+
+            const imageFile = req.file
+                ? {
+                    buffer: req.file.buffer,
+                    mimeType: req.file.mimetype,
+                    size: req.file.size,
+                }
+                : null;
+
+            const data = await this._updateCategoryUseCase.execute({
+                categoryId,
+                name,
+                description,
+                imageFile
+            });
+
+            res.status(OK).json({
+                success: true,
+                updatedCategory: data
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    async updateSubCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { subCategoryId } = req.params;
+            const { name, description } = req.body;
+
+            const imageFile = req.file
+                ? {
+                    buffer: req.file.buffer,
+                    mimeType: req.file.mimetype,
+                    size: req.file.size,
+                }
+                : null;
+
+            const data = await this._updateSubCategoryUseCase.execute({
+                subCategoryId,
+                name,
+                description,
+                imageFile
+            });
+
+            res.status(OK).json({
+                success: true,
+                updatedCategory: data
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
     async getDispute(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { searchQuery = "", filterType = "", filterStatus = "", page = 1, limit = 10 } = req.query;
@@ -287,7 +353,7 @@ export class AdminController {
             res.status(OK).json({
                 success: true,
                 disputeStatus: result.status,
-                adminNote : result.adminNote
+                adminNote: result.adminNote
             });
 
         } catch (error) {

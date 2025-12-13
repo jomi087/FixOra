@@ -1,4 +1,4 @@
-import { Category } from "../../../domain/entities/CategoryEntity";
+import { Category, Subcategory } from "../../../domain/entities/CategoryEntity";
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
 import CategoryModel from "../models/CategoryModel";
 import { FilterQuery } from "mongoose";
@@ -99,9 +99,9 @@ export class CategoryRepository implements ICategoryRepository {
         blockedServices: number;
         newServices: number;
     }> {
-        const [totalServices,blockedServices,newServices] = await Promise.all([
+        const [totalServices, blockedServices, newServices] = await Promise.all([
             CategoryModel.countDocuments({}),
-            CategoryModel.countDocuments({ isActive : false }),
+            CategoryModel.countDocuments({ isActive: false }),
             CategoryModel.countDocuments({ createdAt: { $gte: start, $lte: end } })
         ]);
 
@@ -109,6 +109,98 @@ export class CategoryRepository implements ICategoryRepository {
             totalServices,
             blockedServices,
             newServices,
+        };
+    }
+
+    async updateCategory(id: string, data: Partial<Category>): Promise<Category | null> {
+        let result = await CategoryModel.findOneAndUpdate(
+            { categoryId: id },
+            data,
+            { new: true }
+        ).lean();
+
+        if (!result) return null;
+
+        return {
+            categoryId: result.categoryId,
+            name: result.name,
+            description: result.description,
+            image: result.image,
+            isActive: result.isActive,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt,
+            subcategories: result.subcategories?.map((sub: Subcategory) => ({
+                subCategoryId: sub.subCategoryId,
+                name: sub.name,
+                description: sub.description,
+                image: sub.image,
+                isActive: sub.isActive,
+                createdAt: sub.createdAt,
+                updatedAt: sub.updatedAt,
+            })) || []
+        };
+    }
+
+    async updateSubCategory(id: string, data: Partial<Subcategory>): Promise<Category | null> {
+        let result = await CategoryModel.findOneAndUpdate(
+            { "subcategories.subCategoryId": id },
+            {
+                $set: {
+                    "subcategories.$.name": data.name,
+                    "subcategories.$.description": data.description,
+                    ...(data.image && { "subcategories.$.image": data.image }),
+                    "subcategories.$.updatedAt": new Date()
+                }
+            },
+            { new: true }
+        ).lean();
+
+        if (!result) return null;
+
+        return {
+            categoryId: result.categoryId,
+            name: result.name,
+            description: result.description,
+            image: result.image,
+            isActive: result.isActive,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt,
+            subcategories: result.subcategories?.map((sub: Subcategory) => ({
+                subCategoryId: sub.subCategoryId,
+                name: sub.name,
+                description: sub.description,
+                image: sub.image,
+                isActive: sub.isActive,
+                createdAt: sub.createdAt,
+                updatedAt: sub.updatedAt,
+            })) || []
+        };
+    }
+
+    async findCategoryBySubCategoryId(subCategoryId: string): Promise<Category | null> {
+        let result = await CategoryModel.findOne({
+            "subcategories.subCategoryId": subCategoryId
+        }).lean();
+
+        if (!result) return null;
+
+        return {
+            categoryId: result.categoryId,
+            name: result.name,
+            description: result.description,
+            image: result.image,
+            isActive: result.isActive,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt,
+            subcategories: result.subcategories?.map((sub: Subcategory) => ({
+                subCategoryId: sub.subCategoryId,
+                name: sub.name,
+                description: sub.description,
+                image: sub.image,
+                isActive: sub.isActive,
+                createdAt: sub.createdAt,
+                updatedAt: sub.updatedAt,
+            })) || []
         };
     }
 }

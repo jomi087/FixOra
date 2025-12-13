@@ -1,24 +1,26 @@
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
+import { z } from "zod";
+import { stringMinMax } from "./fields";
 
 
 const { BAD_REQUEST } = HttpStatusCode;
 const {
     CATEGORY_NAME_REQUIRED, CATEGORY_DESCRIPTION_REQUIRED, INVALID_SUBCATEGORIES_JSON,
-    AT_LEAST_ONE_SUBCATEGORY_REQUIRED,SUBCATEGORY_NAME_REQUIRED,SUBCATEGORY_DESCRIPTION_REQUIRED,
+    AT_LEAST_ONE_SUBCATEGORY_REQUIRED, SUBCATEGORY_NAME_REQUIRED, SUBCATEGORY_DESCRIPTION_REQUIRED,
 } = Messages;
 
-export function validateCategory( req: Request, res: Response, next: NextFunction) {
+export function validateCategory(req: Request, res: Response, next: NextFunction) {
     try {
         const { name, description, subcategories } = req.body;
 
         if (!name || typeof name !== "string" || !name.trim()) {
-            throw { status : BAD_REQUEST, message : CATEGORY_NAME_REQUIRED };
+            throw { status: BAD_REQUEST, message: CATEGORY_NAME_REQUIRED };
         }
 
         if (!description || typeof description !== "string" || !description.trim()) {
-            throw { status : BAD_REQUEST, message : CATEGORY_DESCRIPTION_REQUIRED };
+            throw { status: BAD_REQUEST, message: CATEGORY_DESCRIPTION_REQUIRED };
         }
 
         let parsedSubcategories: any;
@@ -26,7 +28,7 @@ export function validateCategory( req: Request, res: Response, next: NextFunctio
             try {
                 parsedSubcategories = JSON.parse(subcategories);
             } catch {
-                throw { status : BAD_REQUEST, message : INVALID_SUBCATEGORIES_JSON };
+                throw { status: BAD_REQUEST, message: INVALID_SUBCATEGORIES_JSON };
             }
         } else {
             parsedSubcategories = subcategories;
@@ -53,4 +55,11 @@ export function validateCategory( req: Request, res: Response, next: NextFunctio
         next(error);
     }
 }
+
+export const updateCategorySchema = z.object({
+    name: stringMinMax(4, "Name must be at least 4 characters", 20, "Name must not be more than 20 characters"),
+    description: stringMinMax(5, "Description must be at least 5 characters", 50, "Description must not be more than 50 characters"),
+    // image comes from req.file, so we don't validate it here
+});
+
 

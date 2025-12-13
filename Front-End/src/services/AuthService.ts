@@ -61,8 +61,8 @@ class AuthService {
     });
   }
 
-  logCall(role: RoleEnum, chatId:string, payload: { callerId: string,status: string }) {
-    return axiosInstance.post(API_ROUTES.CHAT.CALL_LOGS(role,chatId), payload);
+  logCall(role: RoleEnum, chatId: string, payload: { callerId: string, status: string }) {
+    return axiosInstance.post(API_ROUTES.CHAT.CALL_LOGS(role, chatId), payload);
   }
 
   sendChatMessages(role: RoleEnum, chatId: string, content: string) {
@@ -371,6 +371,15 @@ class AuthService {
   addCategoryApi(data: FormData) {
     return axiosInstance.post(API_ROUTES.ADMIN.CATEGORY_MANAGEMENT, data);
   }
+
+  updateCategory(data: FormData, categoryId: string) {
+    return axiosInstance.patch(API_ROUTES.ADMIN.UPDATE_MAIN_CATEGORY(categoryId), data);
+  }
+
+  updateSubCategory(data: FormData, subCategoryId: string) {
+    return axiosInstance.patch(API_ROUTES.ADMIN.UPDATE_SUB_CATEGORY(subCategoryId), data);
+  }
+
 
   toggleCategoryStatusApi(categoryId: string) {
     return axiosInstance.patch(API_ROUTES.ADMIN.TOGGLE_CATEGORY_STATUS(categoryId));

@@ -6,44 +6,66 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import SearchInput from "@/components/common/others/SearchInput";
 import FilterSelect from "@/components/common/others/FilterSelect";
 import AddCategoryDialoge from "@/components/admin/ServiceManagement/AddCategoryDialoge";
-import ServiceTable from "@/components/admin/ServiceManagement/ServiceTable";
 import Pagination from "@/components/common/others/Pagination";
 import { useServiceManagement } from "@/hooks/useServiceManagement";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { AxiosError } from "axios";
-
+import MainServiceTable from "@/components/admin/ServiceManagement/MainServiceTable";
+import SubServiceTable from "@/components/admin/ServiceManagement/SubServiceTable";
+import type { Category } from "@/shared/types/category";
 
 const ServiceManagement: React.FC = () => {
 
   const [refreshFlag, setRefreshFlag] = useState(false);
-  const { categories, loading, setSearchQuery, setFilter, totalPages, searchQuery, filter, currentPage, setCurrentPage, setCategories } = useServiceManagement(refreshFlag);
+  const { categories, loading, setSearchQuery, setFilter, totalPages, searchQuery, filter, currentPage, setCurrentPage, setCategories, selectedCategory, setSelectedCategory } = useServiceManagement(refreshFlag);
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const selectedCategory = categories[selectedIndex];
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleToggleStatus = async (categoryId: string) => {
     try {
       const res = await AuthService.toggleCategoryStatusApi(categoryId);
       if (res.status === HttpStatusCode.OK) {
-        setCategories(prev =>
-          prev.map((cat) => cat.categoryId === categoryId ? {
-            ...cat,
-            isActive: !cat.isActive,
-            subcategories: cat.subcategories.map((sub) => ({
-              ...sub,
-              isActive: !cat.isActive,
-            })),
-          } : cat)
-        );
+        setCategories(prev => {
+          const updated = prev.map(cat =>
+            cat.categoryId === categoryId
+              ? {
+                ...cat,
+                isActive: !cat.isActive,
+                subcategories: cat.subcategories.map(sub => ({
+                  ...sub,
+                  isActive: !cat.isActive,
+                })),
+              }
+              : cat
+          );
+
+          if (selectedCategory?.categoryId === categoryId) {
+            setSelectedCategory(updated.find(c => c.categoryId === categoryId) || null);
+          }
+
+          return updated;
+        });
+
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       console.log(error);
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS;
       toast.error(errorMsg);
+    }
+  };
+
+  const handleUpdateCategory = (updatedCategory: Category) => {
+    setCategories(prev =>
+      prev.map(c =>
+        c.categoryId === updatedCategory.categoryId ? updatedCategory : c
+      )
+    );
+
+    if (selectedCategory?.categoryId === updatedCategory.categoryId) {
+      setSelectedCategory(updatedCategory);
     }
   };
 
@@ -64,11 +86,11 @@ const ServiceManagement: React.FC = () => {
               direction="horizontal"
               className="w-full rounded-lg border h-full flex-col md:flex-row"
             >
-              <ResizablePanel defaultSize={60} className="overflow-auto md:max-h-full">
+              <ResizablePanel defaultSize={65} className="overflow-auto md:max-h-full">
                 <div className="m-4">
                   <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
                     <div className="flex flex-col gap-3 md:flex-row md:items-center w-full md:w-[480px]">
-                      <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Provider" />
+                      <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search Service" />
                       <FilterSelect filter={filter} onChange={setFilter} options={filterOptions} />
                     </div>
                     <div className="w-full md:w-auto">
@@ -85,18 +107,17 @@ const ServiceManagement: React.FC = () => {
                     </div>
                   ) : (
                     <>
-                      <ServiceTable
+                      <MainServiceTable
                         tableColumns={[
                           { label: "Service", className: "text-center" },
                           { label: "Status", className: "w-50 text-center" },
                           { label: "Action", className: " w-50 text-center" },
                         ]}
                         categories={categories}
-                        selectedIndex={selectedIndex}
-                        onSelect={setSelectedIndex}
-                        showActions={true}
-                        emptyMessage="Service Category Is Empty."
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
                         onToggleStatus={handleToggleStatus}
+                        onUpdateCategory={handleUpdateCategory}
                       />
                       {totalPages > 1 && (
                         <Pagination
@@ -113,7 +134,7 @@ const ServiceManagement: React.FC = () => {
 
               <ResizableHandle className="hidden md:flex" />
 
-              <ResizablePanel defaultSize={40} className="overflow-auto max-h-[70vh] md:max-h-full">
+              <ResizablePanel defaultSize={35} className="overflow-auto max-h-[70vh] md:max-h-full">
                 <div className="m-4">
                   {selectedCategory && (
                     <div className="flex justify-center items-center w-full mb-4">
@@ -130,15 +151,14 @@ const ServiceManagement: React.FC = () => {
                   )}
                   <hr />
                   <h2 className="font-medium font-serif my-2 text-center">Sub-Category</h2>
-                  <ServiceTable
+                  <SubServiceTable
                     tableColumns={[
-                      { label: "Service" },
-                      { label: "Status" },
+                      { label: "Service", className: "" },
+                      { label: "Status", className: "text-center" },
+                      { label: "Action", className: "text-center" },
                     ]}
-                    categories={selectedCategory?.subcategories ?? []}
-                    showActions={false}
-                    emptyMessage="No subcategories available."
-                    //onToggleStatus={handleToggleStatus}
+                    subcategories={selectedCategory?.subcategories ?? []}
+                    onUpdateCategory={handleUpdateCategory}
                   />
                 </div>
               </ResizablePanel>

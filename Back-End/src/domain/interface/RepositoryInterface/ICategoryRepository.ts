@@ -1,4 +1,4 @@
-import { Category } from "../../entities/CategoryEntity";
+import { Category, Subcategory } from "../../entities/CategoryEntity";
 
 export interface ICategoryRepository {
     create(category: Category): Promise<Category>;
@@ -20,5 +20,8 @@ export interface ICategoryRepository {
         blockedServices: number;
         newServices: number;
     }>;
-    
+
+    updateCategory(id: string, data: Partial<Category>): Promise<Category | null>;
+    updateSubCategory(id: string, data: Partial<Subcategory>): Promise<Category | null>;
+    findCategoryBySubCategoryId(subCategoryId: string): Promise<Category | null>;
 }

@@ -80,6 +80,7 @@ export const Messages = {
   FORGOT_PASSWORD_FAILED: "Forgot Password Failed",
   ACCOUNT_CREATION_FAILED: "Account Creation failed",
   FAILED_TO_UPDATE_STATUS: "Failed to update status",
+  FAILED_TO_UPDATE: "Failed to update",
   INVALID_OR_UNAVAILABLE_PINCODE: "Invalid or unavailable Pincode",
   NETWORK_ERROR_FETCHING_POSTAL_INFO: "Network error while fetching postal info",
   BOOKING_STATUS_FAILED: "Failed to update booking status",
@@ -210,7 +211,7 @@ export const API_ROUTES = {
   CHAT: {
     LIST: (role: RoleEnum) => `/api/${role}/chats`,
     MESSAGES: (role: RoleEnum, chatId: string) => `/api/${role}/chats/${chatId}/messages`,
-    CALL_LOGS: (role: RoleEnum, chatId:string) => `/api/${role}/chats/${chatId}/call-log`
+    CALL_LOGS: (role: RoleEnum, chatId: string) => `/api/${role}/chats/${chatId}/call-log`
   },
 
   CUSTOMER: {
@@ -219,9 +220,9 @@ export const API_ROUTES = {
     REVERSE_GEOCODE: "/api/customer/geocode/reverse",
     AUTO_COMPLETE_SEARCH: "/api/customer/geocode/search",
     FORWARD_GEOCODE: "/api/customer/geocode/forward",
-    
+
     SAVE_LOCATION: "/api/customer/save-location",
-    
+
     PROVIDERS: "/api/customer/providers",
     PROVIDER_KYC: "/api/customer/provider-kyc",
 
@@ -288,6 +289,9 @@ export const API_ROUTES = {
     TOGGLE_USER_STATUS: (userId: string) => `/api/admin/users/${userId}/status`,
 
     CATEGORY_MANAGEMENT: "/api/admin/services",
+    UPDATE_MAIN_CATEGORY: (categoryId: string) => `/api/admin/services/${categoryId}`,
+    UPDATE_SUB_CATEGORY: (subCategoryId: string) => `/api/admin/subServices/${subCategoryId}`,
+
     TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/services/${id}/status`,
 
     DISPUTE_MANAGEMENT: "/api/admin/disputes",

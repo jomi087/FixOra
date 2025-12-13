@@ -1,4 +1,4 @@
-import { GetServicesInputDTO, GetServicesOutputDTO } from "../../../DTOs/GetServiceDTO";
+import { GetServicesInputDTO, GetServicesOutputDTO } from "../../../DTOs/CategoryDTO";
 
 export interface IGetServiceUseCase {
     execute(input : GetServicesInputDTO ):Promise< GetServicesOutputDTO >

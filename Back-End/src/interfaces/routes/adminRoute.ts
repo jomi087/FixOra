@@ -1,7 +1,7 @@
 import express from "express";
 import { AuthMiddleware, adminController } from "../../main/dependencyInjector";
 import upload from "../middleware/upload";
-import { validateCategory } from "../validations/categorySchema";
+import { updateCategorySchema, validateCategory } from "../validations/categorySchema";
 import { validateRequest } from "../middleware/validateRequest";
 import { kycStatus } from "../validations/kycSchema";
 import { RoleEnum } from "../../shared/enums/Roles";
@@ -21,6 +21,8 @@ router.patch("/users/:userId/status", AuthMiddleware([RoleEnum.Admin]), adminCon
 router.get("/services", AuthMiddleware([RoleEnum.Admin]), adminController.getServices.bind(adminController));
 router.post("/services", AuthMiddleware([RoleEnum.Admin]), upload.any(), validateCategory, adminController.addService.bind(adminController));
 router.patch("/services/:categoryId/status", AuthMiddleware([RoleEnum.Admin]), adminController.toggleCategoryStatus.bind(adminController));
+router.patch("/services/:categoryId", AuthMiddleware([RoleEnum.Admin]), upload.single("image"), validateRequest(updateCategorySchema), adminController.updateCategory.bind(adminController));
+router.patch("/subServices/:subCategoryId", AuthMiddleware([RoleEnum.Admin]), upload.single("image"), validateRequest(updateCategorySchema), adminController.updateSubCategory.bind(adminController));
 
 router.get("/disputes", AuthMiddleware([RoleEnum.Admin]), adminController.getDispute.bind(adminController));
 router.get("/disputes/:disputeId/content", AuthMiddleware([RoleEnum.Admin]), adminController.disputeContentInfo.bind(adminController));

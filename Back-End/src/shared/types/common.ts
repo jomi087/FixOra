@@ -8,4 +8,11 @@ export type DecodedUserToken = {
     exp: number;
 };
 
+export interface UploadedFile {
+    buffer: Buffer;
+    mimeType: string;
+    size: number;
+}
+
+
 export type CallStatus = "accepted" | "rejected";

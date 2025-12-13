@@ -7,19 +7,21 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
 
-export const useServiceManagement = (refreshFlag:Boolean) => {
+export const useServiceManagement = (refreshFlag: Boolean) => {
 
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [totalCateogories, setTotalCateogories] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all");
-  const [debouncedQuery] = useDebounce(searchQuery,500);
+  const [debouncedQuery] = useDebounce(searchQuery, 500);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = SLPP || 10;
+  const itemsPerPage = SLPP;
 
   const totalPages = Math.ceil(totalCateogories / itemsPerPage);
-      
+
   useEffect(() => {
     const fetchCategory = async () => {
       setLoading(true);
@@ -28,10 +30,12 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
         if (res.status === HttpStatusCode.OK) {
           setCategories(res.data.catogoriesData);
           setTotalCateogories(res.data.total);
+          setSelectedCategory(res.data.catogoriesData[0]);
+
         }
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
-        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CATEGORY ;
+        const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_CATEGORY;
         toast.error(errorMsg);
       } finally {
         setLoading(false);
@@ -39,11 +43,11 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
     };
     fetchCategory();
   }, [debouncedQuery, filter, currentPage, refreshFlag]);
-  
+
   useEffect(() => {
     setCurrentPage(1);
   }, [debouncedQuery, filter]);
-    
+
   return {
     categories,
     loading,
@@ -54,6 +58,6 @@ export const useServiceManagement = (refreshFlag:Boolean) => {
     filter,
     currentPage,
     setCurrentPage,
-    setCategories
+    setCategories, selectedCategory, setSelectedCategory
   };
 };
