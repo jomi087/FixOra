@@ -93,7 +93,7 @@ server.listen(port, () => {
 //     process.exit(1);
 // });
 
-//instead of tiny we can create a our manaul api logger and connect with winston logger
+//instead of morgan tiny we can create a our manaul api logger and connect with winston logger
 // app.use((req, res, next) => {
 //     const start = Date.now();
 //     res.on("finish", () => {
