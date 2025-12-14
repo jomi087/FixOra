@@ -24,7 +24,7 @@ const mongoConnect = async (logger: ILoggerService): Promise<void> => {
     });
 
     mongoose.connection.on("disconnected", () => {
-        logger.warn("⚠️ MongoDB disconnected");
+        logger.warn("MongoDB disconnected");
     });
 };
 

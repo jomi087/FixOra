@@ -1,4 +1,5 @@
 import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
+import { ILoggerService } from "../../../domain/interface/ServiceInterface/ILoggerService";
 import { COMMISSION_FEE } from "../../../shared/const/constants";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
@@ -11,6 +12,7 @@ const { INTERNAL_ERROR } = Messages;
 export class InitializeCommissionFeeUseCase implements IInitializeCommissionFeeUseCase {
     constructor(
         private readonly _commissionFeeRepository: ICommissionFeeRepository,
+        private readonly _logger : ILoggerService,
     ) { }
 
     async execute(): Promise<void> {
@@ -21,9 +23,9 @@ export class InitializeCommissionFeeUseCase implements IInitializeCommissionFeeU
                     fee: COMMISSION_FEE,
                     feeHistory: [],
                 });
-                console.log(" Default commission fee created.",COMMISSION_FEE);
+                this._logger.info("Default commission fee created.",COMMISSION_FEE);
             } else {
-                console.log(" Commission fee already exists, skipping creation.");
+                this._logger.info("Commission fee already exists, skipping creation.");
             }
         } catch (error) {
             if (error.status && error.message) {

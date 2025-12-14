@@ -45,13 +45,12 @@ const corsOptions = {
 };
 /**********************************************************************************************
  * DATABASE INITIALIZATION
- **********************************************************************************************/
+**********************************************************************************************/
 mongoConnect(logger);
-initializeCommissionFee();
+initializeCommissionFee(logger);
 /**********************************************************************************************
  * MIDDLEWARES
 **********************************************************************************************/
-
 app.use("/api", rawRoutes); //instead of parsing buffer to json we are passing as buffer it self
 app.use(cookieParser());
 app.use(morgan("tiny", { stream }));
@@ -71,7 +70,7 @@ app.use("/api/admin", adminRoutes);
 app.use(errorHandler);
 
 /**********************************************************************************************
- * SERVER INITIALIZATION
+ * SERVER INITIALIZATION 
  **********************************************************************************************/
 const server = http.createServer(app); // this was implimented so that i can get the server instanace (server obj) which is required is socket i.O other-wise we only use the listen method of server
 initializeSocket(server, logger);
@@ -92,4 +91,18 @@ server.listen(port, () => {
 // process.on("uncaughtException", (err) => {
 //     console.error("Uncaught Exception", err);
 //     process.exit(1);
+// });
+
+//instead of tiny we can create a our manaul api logger and connect with winston logger
+// app.use((req, res, next) => {
+//     const start = Date.now();
+//     res.on("finish", () => {
+//         logger.info("HTTP Request", {
+//             method: req.method,
+//             url: req.originalUrl,
+//             statusCode: res.statusCode,
+//             durationMs: Date.now() - start,
+//         });
+//     });
+//     next();
 // });
