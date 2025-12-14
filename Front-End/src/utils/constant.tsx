@@ -177,8 +177,6 @@ export const settingOptions: { section: string; to: string }[] = [
 ];
 
 /*********************************************************************************************************************************************************/
-export const providers: Array<string> = ["/images/provider1.jpg", "/images/provider1.jpg", "/images/provider1.jpg"];
-
 interface BlogPost {
   title: string;
   description: string;
@@ -186,7 +184,6 @@ interface BlogPost {
   author: string;     // new
   date: string;       // new (ISO or readable format)
 }
-
 /********************************************************************************************************************************************************* */
 
 // constants/apiRoutes.ts

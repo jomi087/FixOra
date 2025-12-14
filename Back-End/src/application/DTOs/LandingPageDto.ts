@@ -2,6 +2,9 @@ import { Category } from "../../domain/entities/CategoryEntity";
 
 export interface GetLandingDataOutputDTO {
   categories: Partial<Category>[]
-  // providers?: ProviderLandingDTO[];
+  providers: {
+    providerUserId: string;
+    providerImage: string
+  }[];
   // blogs?: BlogLandingDTO[];
 }

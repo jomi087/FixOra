@@ -56,7 +56,7 @@ export interface IBookingRepository {
   findProviderConfirmBookingsById(providerUserId: string): Promise<Booking[]>
 
   jobDetailsById(bookingId: string): Promise<{
-    user: Pick<User, "userId" | "fname" | "lname" | "email" >,
+    user: Pick<User, "userId" | "fname" | "lname" | "email">,
     category: Pick<Category, "categoryId" | "name">,
     subCategory: Pick<Subcategory, "subCategoryId" | "name">,
     booking: Partial<Booking>
@@ -77,7 +77,7 @@ export interface IBookingRepository {
 
   findBookingsByWeekday(providerUserId: string, dayIndex: number): Promise<Booking[]>
 
-  findBookingsByUtcRange( providerUserId: string, dayIndex: number, utcStartString: string, utcEndString: string ): Promise<Booking[]>
+  findBookingsByUtcRange(providerUserId: string, dayIndex: number, utcStartString: string, utcEndString: string): Promise<Booking[]>
 
   findProviderSalesByDateRange(providerUserId: string, start: Date, end: Date): Promise<{
     total: number;
@@ -97,6 +97,7 @@ export interface IBookingRepository {
     topProviders: { providerUserId: string; providerName: string; jobCount: number }[];
   }>;
 
+  topProvider(Nos: number): Promise<{ providerUserId: string; providerImage: string }[]>
 }
 
 

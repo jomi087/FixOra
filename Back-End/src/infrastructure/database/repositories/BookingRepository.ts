@@ -308,7 +308,7 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async jobDetailsById(bookingId: string): Promise<{
-        user: Pick<User, "userId" | "fname" | "lname" | "email" >,
+        user: Pick<User, "userId" | "fname" | "lname" | "email">,
         category: Pick<Category, "categoryId" | "name">,
         subCategory: Pick<Subcategory, "subCategoryId" | "name">,
         //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof" | >
@@ -388,7 +388,7 @@ export class BookingRepository implements IBookingRepository {
         ];
 
         interface AggregatedResult {
-            user: Pick<User, "userId" | "fname" | "lname" | "email" >,
+            user: Pick<User, "userId" | "fname" | "lname" | "email">,
             category: Pick<Category, "categoryId" | "name">,
             subCategory: Pick<Subcategory, "subCategoryId" | "name">,
             //booking: Pick<Booking, "bookingId" | "scheduledAt" | "issue" | "status" | "pricing" | "paymentInfo" | "workProof">
@@ -936,31 +936,35 @@ export class BookingRepository implements IBookingRepository {
         return data;
     }
 
-}
-
-
-/*
-{
-            totalRevenue: number;
-        bookingStatsByDate: { date: Date; totalBookings: number; totalRevenue:number }[];
-        bookingCountByService: { serviceName: string; count: number }[];
-        topProviders: { providerName: string; jobCount: number }[];
-}
-
-penalityRevenue: {
-    $sum: {
-        $cond: [
+    async topProvider(Nos: number): Promise<{ providerUserId: string; providerImage: string }[]> {
+        const result = await BookingModel.aggregate([
             {
-                $and: [
-                    { $eq: ["$status", BookingStatus.CANCELLED] },
-                    { $eq: ["$paymentInfo.status", PaymentStatus.PARTIAL_REFUNDED] },
-                ],
+                $match: {
+                    "provider.response": ProviderResponseStatus.ACCEPTED,
+                    status: BookingStatus.COMPLETED,
+                },
             },
-            { $ifNull: ["$commission", 0] },
-            0,
-        ],
-    },
-},
-*/
+            { $group: { _id: "$providerUserId", jobCount: { $sum: 1 } } },
+            { $sort: { jobCount: -1 } },
+            { $limit: Nos },
+            {
+                $lookup: {
+                    from: "providers",
+                    localField: "_id",  //_id = providerUserId after grouping
+                    foreignField: "userId",
+                    as: "providerDetails",
+                },
+            },
+            {
+                $project: {
+                    _id:0,
+                    providerUserId: "$_id",
+                    providerImage : "$providerDetails.profileImage"
+                },
+            },
+        ]);
+        return result;
+    }
 
+}
 

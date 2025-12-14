@@ -58,7 +58,6 @@ export class DashboardReportUseCase implements IDashboardReportUseCase {
             })),
             topProviders: bookingStats.topProviders
         };
-        console.log("📊 Dashboard Data:", mappedData);
         
         return mappedData;
     }

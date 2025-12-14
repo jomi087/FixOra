@@ -8,6 +8,9 @@ export const BodyParserLimits = {
     JSON_LIMIT: "1mb",
     URLENCODED_LIMIT: "1mb",
 };
+
+export const LANDING_PAGE_TOP_PROVIDERS_LIMIT = 5;
+
 export const BOOKING_REQUEST_TIMEOUT_MS = 
     process.env.NODE_ENV === "production" ? 5 * 60 * 1000 : 1 * 60 * 1000;
 

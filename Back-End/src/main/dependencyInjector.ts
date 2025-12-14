@@ -122,7 +122,7 @@ const signoutUseCase = new SignoutUseCase(signOutFactory);
 
 /***************************************************************************************************************************************************** */
 import { GetLandingDataUseCase } from "../application/useCases/public/GetLandingDataUseCase";
-const getLandingDataUseCase = new GetLandingDataUseCase(categoryRepository);
+const getLandingDataUseCase = new GetLandingDataUseCase(categoryRepository, bookingRepository);
 
 import { GetNotificationsUseCase } from "../application/useCases/public/GetNotificationsUseCase";
 const getNotificationsUseCase = new GetNotificationsUseCase(notificationRepository);

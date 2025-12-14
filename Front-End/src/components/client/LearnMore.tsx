@@ -4,7 +4,7 @@ import type { MainCategory } from "@/shared/types/category";
 
 
 //temp data
-import { App_Name, providers } from "../../utils/constant";
+import { App_Name } from "../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { slugify } from "@/utils/helper/utils";
 import { useAppSelector } from "@/store/hooks";
@@ -14,12 +14,15 @@ import { toast } from "react-toastify";
 
 interface learMoreProps {
   categories: MainCategory[]
-  //providers:ProviderImage[]
+  providers: {
+    providerUserId: string;
+    providerImage: string
+  }[];
   isPending: Boolean
 }
 
 
-const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
+const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }) => {
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
   const navigate = useNavigate();
@@ -105,9 +108,11 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
           <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto">
             {` ${App_Name} is not just a service hub for customers — it's also a growing network for professionals. Skilled technicians and service providers are welcome to join our platform, expand their reach, and collaborate with us to introduce new service categories. Together, we aim to create a comprehensive solution for every household need`}
           </p>
-          <div className='grid grid-cols-1 md:grid-cols-2 mt-20   to-blue-500 from-amber-500  p-10'>
-            <div className=''>
-              <div className="rounded-2xl text-center cursor-pointer shadow-2xl shadow-black">
+          <div
+            className={`grid mt-20 p-10 ${providers.length > 0 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"}`}
+          >
+            {providers.length > 0 && (
+              <div className="rounded-2xl text-center cursor-pointer shadow-2xl shadow-black w-full h-90 overflow-hidden">
                 <Swiper
                   modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
                   pagination={{ clickable: true }} // Enable clickable pagination
@@ -118,16 +123,18 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, isPending }) => {
                   }}
                   aria-label="Certified service providers slider"
                 >
-                  {providers.map((provider, index) => (
-                    <SwiperSlide key={index}>
-                      <div className="overflow-hidden rounded-t-2xl">
-                        <img src={provider} alt="provider1 image" className="rounded-2xl h-[100%]" />
-                      </div>
+                  {providers.map((provider) => (
+                    <SwiperSlide key={provider.providerUserId}>
+                      <img
+                        src={provider.providerImage}
+                        alt="provider1 image"
+                        className="rounded-2xl w-full "
+                      />
                     </SwiperSlide>
                   ))}
                 </Swiper>
               </div>
-            </div>
+            )}
             <div>
               <h3 className="text-xl font-medium text-center mt-4">Certified Providers</h3>
               <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4  mx-auto m-10   ">
