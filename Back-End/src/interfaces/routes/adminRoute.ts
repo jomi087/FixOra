@@ -19,7 +19,15 @@ router.patch("/provider-kyc/:id", validateRequest(kycStatus), AuthMiddleware([Ro
 router.patch("/users/:userId/status", AuthMiddleware([RoleEnum.Admin]), adminController.toggleUserStatus.bind(adminController));
 
 router.get("/services", AuthMiddleware([RoleEnum.Admin]), adminController.getServices.bind(adminController));
-router.post("/services", AuthMiddleware([RoleEnum.Admin]), upload.any(), validateCategory, adminController.addService.bind(adminController));
+router.post("/services",
+    AuthMiddleware([RoleEnum.Admin]),
+    upload.fields([
+        { name: "image", maxCount: 1 },
+        { name: "subcategoryImages", maxCount: 20 }
+    ]),
+    validateCategory,
+    adminController.addService.bind(adminController)
+);
 router.patch("/services/:categoryId/status", AuthMiddleware([RoleEnum.Admin]), adminController.toggleCategoryStatus.bind(adminController));
 router.patch("/services/:categoryId", AuthMiddleware([RoleEnum.Admin]), upload.single("image"), validateRequest(updateCategorySchema), adminController.updateCategory.bind(adminController));
 router.patch("/subServices/:subCategoryId", AuthMiddleware([RoleEnum.Admin]), upload.single("image"), validateRequest(updateCategorySchema), adminController.updateSubCategory.bind(adminController));

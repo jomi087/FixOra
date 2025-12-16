@@ -1,7 +1,7 @@
 // src/hooks/useCategoryForm.ts
 import { useState } from "react";
 import { validateImage } from "@/utils/validation/imageValidation";
-import { validateCategoryName,validateDescription } from "@/utils/validation/categoryValidation";
+import { validateCategoryName, validateDescription } from "@/utils/validation/categoryValidation";
 import { categoryImageSize } from "@/utils/constant";
 
 export interface SubcategoryForm {
@@ -67,7 +67,7 @@ export const useCategoryForm = () => {
     const subErrors = subcategories.map((sub) => {
       const subNameError = validateCategoryName(sub.name);
       const subDescError = validateDescription(sub.description);
-      const subImageError = validateImage(sub.image , categoryImageSize );
+      const subImageError = validateImage(sub.image, categoryImageSize);
       return subNameError || subDescError || subImageError || null;
     });
 
@@ -91,18 +91,23 @@ export const useCategoryForm = () => {
     formData.append("name", name);
     formData.append("description", description);
     if (image) formData.append("image", image);
-              
-    const subcategoriesJson = subcategories.map(sub => ({
-      name: sub.name,
-      description: sub.description,
-    }));
-    formData.append("subcategories", JSON.stringify(subcategoriesJson));
 
-    subcategories.forEach((sub, index) => {
+    formData.append(
+      "subcategories",
+      JSON.stringify(
+        subcategories.map(sub => ({
+          name: sub.name,
+          description: sub.description,
+        }))
+      )
+    );
+
+    subcategories.forEach(sub => {
       if (sub.image) {
-        formData.append(`subcategoryImages[${index}]`, sub.image);
+        formData.append("subcategoryImages", sub.image);
       }
     });
+    
     return formData;
   };
 

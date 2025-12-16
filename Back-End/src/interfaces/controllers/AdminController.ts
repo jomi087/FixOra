@@ -186,25 +186,45 @@ export class AdminController {
         try {
             let { name, description, subcategories } = req.body;
 
-            const files = req.files as Express.Multer.File[];
+            const files = req.files as {
+                image?: Express.Multer.File[];
+                subcategoryImages?: Express.Multer.File[];
+            };
 
-            const mainImageFile = files.find(file => file.fieldname === "image");
+            const mainImageFile = files.image?.[0];
+            if (!mainImageFile) {
+                throw new AppError(BAD_REQUEST, MAIN_CATEGORY_IMAGE_MISSING);
+            }
 
-            if (!mainImageFile) throw new AppError(BAD_REQUEST, MAIN_CATEGORY_IMAGE_MISSING);
             const mainImageUrl = await this._imageUploaderService.uploadImage(mainImageFile.buffer, "FixOra/Services");
 
-            const subcategoriesWithUrls = await Promise.all(
-                subcategories.map(async (sub: any, index: number) => {
-                    const subImageFile = files.find(file => file.fieldname === `subcategoryImages[${index}]`);
-                    if (!subImageFile) throw new AppError(BAD_REQUEST, SUBCATEGORY_IMAGE_MISSING);
-                    const imageUrl = await this._imageUploaderService.uploadImage(subImageFile.buffer, "FixOra/Services");
+            const subcategoryImages = files.subcategoryImages ?? [];
 
-                    return {
-                        name: sub.name,
-                        description: sub.description,
-                        image: imageUrl,
-                    };
-                })
+            if (subcategoryImages.length !== subcategories.length) {
+                throw new AppError(BAD_REQUEST, SUBCATEGORY_IMAGE_MISSING);
+            }
+
+            const subcategoriesWithUrls = await Promise.all(
+                subcategories.map(
+                    async (sub: { name: string; description: string }, index: number) => {
+                        const imageFile = subcategoryImages[index];
+                        if (!imageFile) {
+                            throw new AppError(BAD_REQUEST, SUBCATEGORY_IMAGE_MISSING);
+                        }
+
+                        const imageUrl =
+                            await this._imageUploaderService.uploadImage(
+                                imageFile.buffer,
+                                "FixOra/Services"
+                            );
+
+                        return {
+                            name: sub.name,
+                            description: sub.description,
+                            image: imageUrl,
+                        };
+                    }
+                )
             );
 
             const input = {

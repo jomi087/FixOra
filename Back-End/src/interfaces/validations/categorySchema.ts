@@ -39,7 +39,7 @@ export function validateCategory(req: Request, res: Response, next: NextFunction
             throw new AppError(BAD_REQUEST, AT_LEAST_ONE_SUBCATEGORY_REQUIRED);
         }
 
-        parsedSubcategories.forEach((sub: any, index: number) => {
+        parsedSubcategories.forEach((sub: { name: string; description:string}, index: number) => {
             if (!sub.name || typeof sub.name !== "string" || !sub.name.trim()) {
                 throw new AppError(BAD_REQUEST, SUBCATEGORY_NAME_REQUIRED(index + 1));
 
