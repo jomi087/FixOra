@@ -14,7 +14,7 @@ type Option<T> = { label: string; value: T };
 
 const typeOptions: Option<"All" | DisputeType>[] = [
   { label: "All", value: "All" },
-  { label: DisputeType.CHAT, value: DisputeType.CHAT },
+  // { label: DisputeType.CHAT, value: DisputeType.CHAT },
   { label: DisputeType.REVIEW, value: DisputeType.REVIEW },
 ];
 
