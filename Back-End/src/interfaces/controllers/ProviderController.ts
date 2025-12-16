@@ -24,7 +24,7 @@ import { IGetSalesReportUseCase } from "../../application/Interface/useCases/Pro
 import { AppError } from "../../shared/errors/AppError";
 
 const { OK, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND, IMAGE_VALIDATION_ERROR } = Messages;
+const { UNAUTHORIZED_MSG, NOT_FOUND_MSG, IMAGE_VALIDATION_ERROR } = Messages;
 
 export class ProviderController {
     constructor(
@@ -111,7 +111,7 @@ export class ProviderController {
             const { bookingId } = req.params;
 
             if (!bookingId) {
-                throw new AppError(NOT_FOUND, BOOKING_ID_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
 
             const data = await this._getJobDetailsUseCase.execute(bookingId);

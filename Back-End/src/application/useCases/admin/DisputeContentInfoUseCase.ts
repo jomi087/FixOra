@@ -8,7 +8,7 @@ import { IDisputeContentHandler } from "../../Interface/useCases/Admin/handlers/
 import { IDisputeContentInfoUseCase } from "../../Interface/useCases/Admin/IDisputeContentInfoUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
-const { DISPUTE_NOT_FOUND, INVALID_TYPE } = Messages;
+const { NOT_FOUND_MSG, INVALID_TYPE } = Messages;
 
 export class DisputeContentInfoUseCase implements IDisputeContentInfoUseCase {
     constructor(
@@ -19,7 +19,7 @@ export class DisputeContentInfoUseCase implements IDisputeContentInfoUseCase {
     async execute(disputeId: string): Promise<DisputeContentOutput> {
         try {
             const disputeData = await this._disputeRepository.findById(disputeId);
-            if (!disputeData) throw new AppError(NOT_FOUND, DISPUTE_NOT_FOUND);
+            if (!disputeData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Dispute"));
 
             const handler = this._handlers[disputeData.disputeType];
             if (!handler) throw new AppError(NOT_FOUND, INVALID_TYPE("Dispute"));

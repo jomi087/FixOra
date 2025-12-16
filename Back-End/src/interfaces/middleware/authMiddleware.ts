@@ -7,7 +7,7 @@ import { Messages } from "../../shared/const/Messages";
 import { RoleEnum } from "../../shared/enums/Roles";
 
 const { UNAUTHORIZED } = HttpStatusCode;
-const { TOKEN_EXPIRED,INVALID_TOKEN,USER_NOT_FOUND,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED,FORBIDDEN_MSG } = Messages;
+const { TOKEN_EXPIRED,INVALID_TOKEN,NOT_FOUND_MSG,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED,FORBIDDEN_MSG } = Messages;
 
 // Extend Express Request type  
 declare global {
@@ -41,7 +41,7 @@ export class AuthMiddleware {  //verify Jwt
                 const user = await this._userRepository.findByUserId(decode.id, ["password", "refreshToken"]);
                 
                 if (!user || !user.userId) {
-                    res.status(UNAUTHORIZED).json({ message: USER_NOT_FOUND });
+                    res.status(UNAUTHORIZED).json({ message: NOT_FOUND_MSG("User") });
                     return;
                 }
 

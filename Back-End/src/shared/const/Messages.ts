@@ -11,14 +11,6 @@ export const Messages = {
     IMAGE_VALIDATION_ERROR: "Image validation error",
     PROFILE_UPDATED_SUCCESS: "Profile updated successfully",
 
-    USER_NOT_FOUND: "User Not Found",
-    BOOKING_ID_NOT_FOUND: "BookingId Not Found",
-    WALLET_ID_NOT_FOUND: "Wallet Not Found",
-    EMAIL_NOT_FOUND: "Email Not Found",
-    PROVIDER_NOT_FOUND: "Provider Not Found",
-    CATEGORY_NOT_FOUND: "Category Not Found",
-    DISPUTE_NOT_FOUND: "Dispute Not Found",
-    NOTIFICATIONID_NOT_FOUND: "Notificaton Not Found",
     NOT_FOUND_MSG: (str: string = "Data"): string => `${str} Not Found`,
 
     ADD_ADDRESS: "Please add an Address",
@@ -84,12 +76,9 @@ export const Messages = {
     INVALID_TYPE: (str: string): string => str ? `Invalid ${str} Type` : "Invalid Type",
     INVALID_INPUT: (str: string): string => str ? `Invalid ${str} Input` : "Invalid Input",
 
-
     IMAGE_SIZE_EXCEEDED: "Image exceeds the maximum allowed size.",
-
     TOKEN_EXPIRED: "Token expired",
     MISSING_TOKEN: (str?: string): string => str ? `Missing ${str} token` : "Missing token",
-    TOKENS_REFRESHED_SUCCESS: "Tokens refreshed successfully",
 
     FIELD_REQUIRED: "Field is required",
     VALIDATION_FAILED: "Validation failed",

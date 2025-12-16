@@ -35,7 +35,7 @@ import { AppError } from "../../shared/errors/AppError";
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, FIELD_REQUIRED, KYC_REQUEST_STATUS,
     VERIFICATION_MAIL_SENT, PROFILE_UPDATED_SUCCESS, ADD_ADDRESS,
-    SUBMITTED_BOOKING_REQUEST, BOOKING_ID_NOT_FOUND } = Messages;
+    SUBMITTED_BOOKING_REQUEST, NOT_FOUND_MSG } = Messages;
 
 
 export class UserController {
@@ -221,7 +221,7 @@ export class UserController {
             const requiredFields = ["profileImage", "idCard", "educationCertificate"];
             for (const field of requiredFields) {
                 if (!files?.[field] || files[field].length === 0) {
-                    throw new AppError(BAD_REQUEST,FIELD_REQUIRED);
+                    throw new AppError(BAD_REQUEST, FIELD_REQUIRED);
                 }
             }
 
@@ -326,7 +326,7 @@ export class UserController {
 
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
 
             const reviewStatus = await this._reviewStatusUseCase.execute(bookingId);
@@ -366,7 +366,7 @@ export class UserController {
             const user = req.user;
             if (!user?.userId) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
 
-            if (!user.location || !user.location.coordinates) throw new AppError(UNPROCESSABLE_ENTITY,ADD_ADDRESS);
+            if (!user.location || !user.location.coordinates) throw new AppError(UNPROCESSABLE_ENTITY, ADD_ADDRESS);
             const userId = user.userId;
 
             let location: { latitude: number; longitude: number };
@@ -462,7 +462,7 @@ export class UserController {
         try {
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
             const data = await this._getBookingDetailsUseCase.execute(bookingId);
             res.status(OK).json({
@@ -485,7 +485,7 @@ export class UserController {
 
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
 
             const result = await this._retryAvailabilityUseCase.execute({ userId, bookingId });
@@ -527,7 +527,7 @@ export class UserController {
 
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
 
             const data = await this._cancelBookingUseCase.execute({ userId, bookingId });

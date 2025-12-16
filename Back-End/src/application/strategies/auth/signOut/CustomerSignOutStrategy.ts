@@ -7,7 +7,7 @@ import { SignOutDTO } from "../../../DTOs/AuthDTO/SingOutDTO";
 import { AppError } from "../../../../shared/errors/AppError";
 
 const { BAD_REQUEST } = HttpStatusCode;
-const { USER_NOT_FOUND } = Messages;
+const { NOT_FOUND_MSG } = Messages;
 
 
 export class CustomerSignOutStrategy implements ISignOutStrategy {
@@ -19,7 +19,7 @@ export class CustomerSignOutStrategy implements ISignOutStrategy {
         try {
             //clear refresh token
             if (!(await this._userRepository.resetRefreshTokenById(input.userId))) {
-                throw new AppError(BAD_REQUEST, USER_NOT_FOUND);
+                throw new AppError(BAD_REQUEST, NOT_FOUND_MSG("User"));
             }
         } catch (error:unknown) {
             throw error;

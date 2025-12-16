@@ -9,7 +9,7 @@ import { UpdateCategoryInputDTO } from "../../DTOs/CategoryDTO";
 import { IUpdateCategoryUseCase } from "../../Interface/useCases/Admin/IUpdateCategoryUseCase";
 
 const { NOT_FOUND, CONFLICT } = HttpStatusCode;
-const { CATEGORY_ALREADY_EXISTS, CATEGORY_NOT_FOUND } = Messages;
+const { CATEGORY_ALREADY_EXISTS, NOT_FOUND_MSG } = Messages;
 
 export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
     constructor(
@@ -41,7 +41,7 @@ export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
             });
 
             if (!updated) {
-                throw new AppError(NOT_FOUND, CATEGORY_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Category"));
             }
 
             return updated;

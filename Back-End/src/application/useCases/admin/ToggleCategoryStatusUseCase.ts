@@ -5,7 +5,7 @@ import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/Admin/ITo
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;
-const { CATEGORY_NOT_FOUND } = Messages;
+const { NOT_FOUND_MSG } = Messages;
 
 export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase {
     constructor(
@@ -15,7 +15,7 @@ export class ToggleCategoryStatusUseCase implements IToggleCategoryStatusUseCase
     async execute(categoryId: string): Promise<void> {
         try {
             const category = await this._categoryRepository.findById(categoryId);
-            if (!category) throw new AppError(NOT_FOUND, CATEGORY_NOT_FOUND);
+            if (!category) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Category"));
 
             const newStatus = !category.isActive;
 

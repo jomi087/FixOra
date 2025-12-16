@@ -13,7 +13,7 @@ import { AppError } from "../../../shared/errors/AppError";
 
 
 const { BAD_REQUEST, NOT_FOUND, CONFLICT } = HttpStatusCode;
-const { INVALID_ACTION, KYC_REJECTED, USER_NOT_FOUND, PROVIDER_ALREADY_EXISTS, KYC_APPROVED, KYC_ALREADY_REVIEWED, KYC_NOT_FOUND } = Messages;
+const { INVALID_ACTION, KYC_REJECTED, NOT_FOUND_MSG, PROVIDER_ALREADY_EXISTS, KYC_APPROVED, KYC_ALREADY_REVIEWED, KYC_NOT_FOUND } = Messages;
 
 export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
     constructor(
@@ -69,7 +69,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
 
             const updatedUser = await this._userRepository.updateRole(request.userId, RoleEnum.Provider, ["password", "refreshToken", "googleId", "createdAt", "isBlocked"]);
 
-            if (!updatedUser) throw new AppError(NOT_FOUND, USER_NOT_FOUND);
+            if (!updatedUser) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
 
 
             return KYC_APPROVED;

@@ -5,7 +5,7 @@ import { IToggleUserStatusUseCase } from "../../Interface/useCases/Admin/IToggle
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;
-const { USER_NOT_FOUND } = Messages;
+const { NOT_FOUND_MSG } = Messages;
 
 export class ToggleUserStatusUseCase implements IToggleUserStatusUseCase {
     constructor(
@@ -17,7 +17,7 @@ export class ToggleUserStatusUseCase implements IToggleUserStatusUseCase {
 
             const userData = await this._userRepository.findByUserId(userId, ["password", "refreshToken", "googleId", "role"]);
             if (!await this._userRepository.toogleUserStatusById(userId, !userData?.isBlocked)) {
-                throw new AppError(NOT_FOUND, USER_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
             }
 
         } catch (error: unknown) {

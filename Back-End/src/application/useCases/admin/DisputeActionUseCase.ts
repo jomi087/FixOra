@@ -9,7 +9,7 @@ import { IDisputeActionHandler } from "../../Interface/useCases/Admin/handlers/I
 import { IDisputeActionUseCase } from "../../Interface/useCases/Admin/IDisputeActionUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
-const { USER_NOT_FOUND, DISPUTE_NOT_FOUND, INVALID_TYPE } = Messages;
+const { NOT_FOUND_MSG, INVALID_TYPE } = Messages;
 
 export class DisputeActionUseCase implements IDisputeActionUseCase {
     constructor(
@@ -26,7 +26,7 @@ export class DisputeActionUseCase implements IDisputeActionUseCase {
         try {
             const { disputeId, status, userId, reason } = input;
             const disputeData = await this._disputeRepository.findById(disputeId);
-            if (!disputeData) throw new AppError(NOT_FOUND, DISPUTE_NOT_FOUND);
+            if (!disputeData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Dispute"));
 
             const handler = this._handlers[disputeData.disputeType];
             if (!handler) throw new AppError(NOT_FOUND, INVALID_TYPE("Dispute"));
@@ -36,12 +36,12 @@ export class DisputeActionUseCase implements IDisputeActionUseCase {
                 status,
                 { adminId: userId, action: reason },
             );
-            if (!updatedDispute || !updatedDispute.adminNote) throw new AppError(NOT_FOUND, DISPUTE_NOT_FOUND);
+            if (!updatedDispute || !updatedDispute.adminNote) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Dispute"));
 
             await handler.takeAction(updatedDispute);
 
             const adminData = await this._userReporitory.findByUserId(updatedDispute.adminNote.adminId, ["password", "refreshToken"]);
-            if (!adminData) throw new AppError(NOT_FOUND, USER_NOT_FOUND);
+            if (!adminData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
 
             const mappedData: DisputeActionOutputDTO = {
                 status: updatedDispute.status,

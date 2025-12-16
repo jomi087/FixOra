@@ -20,8 +20,8 @@ import { DecodedUserDTO } from "../../application/DTOs/AuthDTO/DecodedUserDTO";
 import { AppError } from "../../shared/errors/AppError";
 
 const { OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,
-    SIGNIN_SUCCESSFUL, MISSING_TOKEN, VERIFICATION_MAIL_SENT, EMAIL_NOT_FOUND,
+const { UNAUTHORIZED_MSG, OTP_SENT, ACCOUNT_CREATED_SUCCESS,
+    SIGNIN_SUCCESSFUL, MISSING_TOKEN, VERIFICATION_MAIL_SENT, NOT_FOUND_MSG,
     LOGGED_OUT, PASSWORD_RESET_SUCCESS
 } = Messages;
 
@@ -94,7 +94,7 @@ export class AuthController {
             } else if (req.body.email) {
                 email = req.body.email;
             } else {
-                throw new AppError(FORBIDDEN, EMAIL_NOT_FOUND);
+                throw new AppError(FORBIDDEN, NOT_FOUND_MSG("Email"));
             }
 
             await this._resendOtpUseCase.execute(email);
@@ -267,7 +267,6 @@ export class AuthController {
 
             res.status(OK).json({
                 success: true,
-                message: TOKENS_REFRESHED_SUCCESS
             });
 
         } catch (error) {

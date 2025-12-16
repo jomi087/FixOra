@@ -7,8 +7,7 @@ import { INotificationAcknowledgmentUseCase } from "../../application/Interface/
 import { AppError } from "../../shared/errors/AppError";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, NOTIFICATIONID_NOT_FOUND } = Messages;
-
+const { UNAUTHORIZED_MSG, NOT_FOUND_MSG } = Messages;
 
 export class PublicController {
     constructor(
@@ -55,7 +54,7 @@ export class PublicController {
             const { notificationId } = req.params;
 
             if (!notificationId || notificationId === "undefined") {
-                throw new AppError(NOT_FOUND, NOTIFICATIONID_NOT_FOUND);
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Notificaiton"));
             }
 
             // console.log("entered ", notificationId);
