@@ -3,6 +3,7 @@ import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { z } from "zod";
 import { stringMinMax } from "./fields";
+import { AppError } from "../../shared/errors/AppError";
 
 
 const { BAD_REQUEST } = HttpStatusCode;
@@ -16,11 +17,11 @@ export function validateCategory(req: Request, res: Response, next: NextFunction
         const { name, description, subcategories } = req.body;
 
         if (!name || typeof name !== "string" || !name.trim()) {
-            throw { status: BAD_REQUEST, message: CATEGORY_NAME_REQUIRED };
+            throw new AppError(BAD_REQUEST, CATEGORY_NAME_REQUIRED);
         }
 
         if (!description || typeof description !== "string" || !description.trim()) {
-            throw { status: BAD_REQUEST, message: CATEGORY_DESCRIPTION_REQUIRED };
+            throw new AppError(BAD_REQUEST, CATEGORY_DESCRIPTION_REQUIRED);
         }
 
         let parsedSubcategories: any;
@@ -28,22 +29,24 @@ export function validateCategory(req: Request, res: Response, next: NextFunction
             try {
                 parsedSubcategories = JSON.parse(subcategories);
             } catch {
-                throw { status: BAD_REQUEST, message: INVALID_SUBCATEGORIES_JSON };
+                throw new AppError(BAD_REQUEST, INVALID_SUBCATEGORIES_JSON);
             }
         } else {
             parsedSubcategories = subcategories;
         }
 
         if (!Array.isArray(parsedSubcategories) || parsedSubcategories.length === 0) {
-            throw { status: BAD_REQUEST, message: AT_LEAST_ONE_SUBCATEGORY_REQUIRED };
+            throw new AppError(BAD_REQUEST, AT_LEAST_ONE_SUBCATEGORY_REQUIRED);
         }
 
         parsedSubcategories.forEach((sub: any, index: number) => {
             if (!sub.name || typeof sub.name !== "string" || !sub.name.trim()) {
-                throw { status: BAD_REQUEST, message: SUBCATEGORY_NAME_REQUIRED(index + 1) };
+                throw new AppError(BAD_REQUEST, SUBCATEGORY_NAME_REQUIRED(index + 1));
+
             }
             if (!sub.description || typeof sub.description !== "string" || !sub.description.trim()) {
-                throw { status: BAD_REQUEST, message: SUBCATEGORY_DESCRIPTION_REQUIRED(index + 1) };
+                throw new AppError(BAD_REQUEST, SUBCATEGORY_DESCRIPTION_REQUIRED(index + 1));
+
             }
         });
 

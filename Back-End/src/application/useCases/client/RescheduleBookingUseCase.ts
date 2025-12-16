@@ -12,9 +12,12 @@ import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY } = HttpStatusCode;
-const { INTERNAL_ERROR, ALREDY_BOOKED, PENDING_BOOKING, BOOKING_ID_NOT_FOUND, NOT_FOUND_MSG } = Messages;
+const { CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY } = HttpStatusCode;
+const { ALREDY_BOOKED, PENDING_BOOKING, TIME_OUTSIDE_PROVIDER_WORKING_HOURS,
+    PROVIDER_UNAVAILABLE_FOR_SELECTED_DAY, NOT_FOUND_MSG
+} = Messages;
 
 export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
     constructor(
@@ -51,9 +54,8 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -61,7 +63,7 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
         try {
 
             const booking = await this._bookingRepository.findByBookingId(input.bookingId);
-            if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
             const prevScheduledAt: Date = booking.scheduledAt;
             const rescheduledAt: Date = new Date(input.rescheduledAt);
@@ -71,13 +73,15 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
 
             // console.log(CheckExistingNoRejectedBooking)
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.PENDING)) {
-                throw { status: CONFLICT, message: PENDING_BOOKING };
+                throw new AppError(CONFLICT, PENDING_BOOKING);
+
             } else if (CheckExistingNoRejectedBooking) {
-                throw { status: CONFLICT, message: ALREDY_BOOKED };
+                throw new AppError(CONFLICT, ALREDY_BOOKED);
+
             }
 
             let availability = await this._availabilityRepository.getProviderAvialability(booking.provider.id);
-            if (!availability) throw { status: NOT_FOUND, message: "Availability not found" };
+            if (!availability) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Availability"));
 
             const dayName = DAYS[rescheduledAt.getDay()];
 
@@ -86,12 +90,14 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
             const timeStr = `${hours}:${minutes}`;
 
             const daySchedule = availability.workTime.find(d => d.day === dayName && d.active);
-            if (!daySchedule) throw { status: CONFLICT, message: "Provider not available on selected day" };
+            if (!daySchedule) throw new AppError(CONFLICT, PROVIDER_UNAVAILABLE_FOR_SELECTED_DAY);
 
-            if (!daySchedule.slots.includes(timeStr)) throw { status: UNPROCESSABLE_ENTITY, message: "Selected time is outside provider’s working hours" };
+
+            if (!daySchedule.slots.includes(timeStr)) throw new AppError(UNPROCESSABLE_ENTITY, TIME_OUTSIDE_PROVIDER_WORKING_HOURS);
 
             const rescheduledBookingData = await this._bookingRepository.updateScheduleDateandTime(input.bookingId, rescheduledAt);
-            if (!rescheduledBookingData) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+            if (!rescheduledBookingData)  throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Bookng"));
+
 
             await this.sendBookingConfirmedNotification({
                 userId: rescheduledBookingData.providerUserId,
@@ -106,10 +112,8 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
 
             return rescheduledBookingData.scheduledAt;
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

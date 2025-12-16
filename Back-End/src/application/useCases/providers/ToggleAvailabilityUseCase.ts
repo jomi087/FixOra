@@ -18,9 +18,10 @@ import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, PROVIDER_NOT_FOUND, WALLET_ID_NOT_FOUND, NOT_FOUND_MSG } = Messages;
+const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { NOT_FOUND_MSG, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD } = Messages;
 
 export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
     constructor(
@@ -59,9 +60,8 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -69,14 +69,14 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
         try {
             const { day, providerUserId, leaveOption } = input;
             let provider = await this._providerRepository.findByUserId(providerUserId);
-            if (!provider) throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND };
+            if (!provider) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Provider"));
 
             let availability = await this._availabilityRepository.getProviderAvialability(provider.providerId);
-            if (!availability) throw { status: NOT_FOUND, message: "Availability not found" };
+            if (!availability) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Availability"));
 
             const daySchedule = availability.workTime.find(d => d.day === day);
             if (!daySchedule) {
-                throw { status: NOT_FOUND, message: `No schedule found for ${day}` };
+                throw new AppError(NOT_FOUND, `No schedule found for ${day}`);
             }
 
             if (leaveOption) {
@@ -89,11 +89,11 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
 
                 for (const bookingData of bookingsToCancel) {
 
-                    if (!bookingData.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                    if (!bookingData.paymentInfo) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
                     //wallet logic
                     let wallet = await this._walletRepository.findByUserId(bookingData.userId);
-                    if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+                    if (!wallet) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
 
                     const transactionId = `Wlt_${uuidv4()}`;
                     const numAmount = Number(bookingData.esCrowAmout);
@@ -126,7 +126,13 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
                     };
 
                     const updatedBooking = await this._bookingRepository.updateBooking(bookingData.bookingId, updateData);
-                    if (!updatedBooking || !updatedBooking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                    if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+                    if (!updatedBooking.paymentInfo) throw new AppError(
+                        INTERNAL_SERVER_ERROR,
+                        INTERNAL_ERROR,
+                        INVARIANT_VIOLATION_MISSING_FIELD("updatedBooking.paymentInfo")
+                    );
+
 
                     await this.sendBookingCancelledNotification({
                         userId: updatedBooking.providerUserId,
@@ -150,11 +156,8 @@ export class ToggleAvailabilityUseCase implements IToggleAvailabilityUseCase {
 
             await this._availabilityRepository.toogleAvailability(provider.providerId, day, !daySchedule.active);
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
 
 

@@ -1,15 +1,8 @@
 import { CommissionFee } from "../../../domain/entities/CommissionFeeEntity";
 import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
 import { COMMISSION_FEE } from "../../../shared/const/constants";
-import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { CommissionFeeDTO } from "../../DTOs/CommissionFeeDTO";
 import { ICommissionFeeUseCase } from "../../Interface/useCases/Admin/ICommissionFeeUseCase";
-
-
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
-
 
 export class CommissionFeeUseCase implements ICommissionFeeUseCase {
     constructor(
@@ -34,18 +27,15 @@ export class CommissionFeeUseCase implements ICommissionFeeUseCase {
                 createdAt: f.createdAt
             })) : [];
 
-            const mappedData:CommissionFeeDTO = {
+            const mappedData: CommissionFeeDTO = {
                 fee: commissionFeeData.fee,
                 feeHistory: history
             };
 
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

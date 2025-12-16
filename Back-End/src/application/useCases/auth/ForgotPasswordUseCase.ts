@@ -10,9 +10,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase";
 import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
 import { BRAND } from "../../../shared/const/constants";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, EMAIL_NOT_FOUND } = Messages;
+const {  NOT_FOUND } = HttpStatusCode;
+const {  NOT_FOUND_MSG } = Messages;
 
 export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
     constructor(
@@ -23,7 +24,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
     async execute(email: string): Promise<void> {
         try {
             if (!(await this._userRepository.findByEmail(email, ["password", "refreshToken",]))) {
-                throw { status: NOT_FOUND, message: EMAIL_NOT_FOUND };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Email"));
             }
 
             const expiryTime = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
@@ -37,11 +38,8 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
 
             await this._emailService.sendEmail(email, "FixOra Reset Password", html);
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

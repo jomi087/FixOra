@@ -4,12 +4,13 @@ import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmail
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { NewEmailRequestInputDTO } from "../../DTOs/EditProfileDTO";
 import { IRequestEmailUpdateUseCase } from "../../Interface/useCases/Client/IRequestEmailUpdateUseCase";
 import { commonOtpEmail } from "../../services/emailTemplates/commonOtpTemplate";
 
-const { CONFLICT, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { EMAIL_ALREADY_EXISTS, INTERNAL_ERROR } = Messages;
+const { CONFLICT } = HttpStatusCode;
+const { EMAIL_ALREADY_EXISTS } = Messages;
 
 export class RequestEmailUpdateUseCase implements IRequestEmailUpdateUseCase {
     constructor(
@@ -24,7 +25,7 @@ export class RequestEmailUpdateUseCase implements IRequestEmailUpdateUseCase {
         try {
             const existingUser = await this._userRepository.findByEmail(newEmail);
             if (existingUser) {
-                throw { status: CONFLICT, message: EMAIL_ALREADY_EXISTS };
+                throw new AppError(CONFLICT, EMAIL_ALREADY_EXISTS);
             }
 
             const otp = this._otpGenratorService.generateOtp();
@@ -35,16 +36,13 @@ export class RequestEmailUpdateUseCase implements IRequestEmailUpdateUseCase {
                 otp,
                 createdAt: new Date()
             });
-            
+
             const html = commonOtpEmail({ otp, description: "Email updation request" });
-            console.log("currentEmail",currentEmail);
+            console.log("currentEmail", currentEmail);
             await this._emailService.sendEmail(currentEmail, "FixOra OTP", html);
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

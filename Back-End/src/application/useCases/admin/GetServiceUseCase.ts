@@ -1,26 +1,20 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { Messages } from "../../../shared/const/Messages";
 import { GetServicesInputDTO, GetServicesOutputDTO } from "../../DTOs/CategoryDTO";
 import { IGetServiceUseCase } from "../../Interface/useCases/Admin/IGetServiceUseCase";
 
-
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
-
 export class GetServiceUseCase implements IGetServiceUseCase {
     constructor(
-        private readonly _categoryRepository : ICategoryRepository,
+        private readonly _categoryRepository: ICategoryRepository,
 
-    ) {}
-    
-    async execute(input : GetServicesInputDTO ):Promise< GetServicesOutputDTO > {    
+    ) { }
+
+    async execute(input: GetServicesInputDTO): Promise<GetServicesOutputDTO> {
         try {
 
             const { searchQuery, filter, currentPage, limit } = input;
 
-            const categories = await this._categoryRepository.findServicesWithFilters({ searchQuery, filter },currentPage, limit);
-            
+            const categories = await this._categoryRepository.findServicesWithFilters({ searchQuery, filter }, currentPage, limit);
+
             const mappedData = categories.data.map((cat) => ({
                 categoryId: cat.categoryId,
                 name: cat.name,
@@ -38,14 +32,11 @@ export class GetServiceUseCase implements IGetServiceUseCase {
 
             return {
                 data: mappedData,
-                total : categories.total
+                total: categories.total
             };
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

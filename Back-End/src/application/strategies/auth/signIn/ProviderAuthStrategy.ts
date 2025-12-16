@@ -6,37 +6,33 @@ import { Messages } from "../../../../shared/const/Messages";
 import { RoleEnum } from "../../../../shared/enums/Roles";
 import { SigninInputDTO } from "../../../DTOs/AuthDTO/SigninDTO";
 import { AuthData, IAuthStrategy } from "../../../Interface/strategies/auth/IAuthStrategy";
+import { AppError } from "../../../../shared/errors/AppError";
 
 
-const { FORBIDDEN, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INVALID_CREDENTIALS, INTERNAL_ERROR,ACCOUNT_BLOCKED } = Messages;
+const { FORBIDDEN, } = HttpStatusCode;
+const { INVALID_CREDENTIALS, ACCOUNT_BLOCKED } = Messages;
 
-export class ProviderAuthStrategy  implements IAuthStrategy  {
+export class ProviderAuthStrategy implements IAuthStrategy {
     constructor(
         private readonly _userRepository: IUserRepository,
         private readonly _hashService: IHashService,
         // private readonly providerRepository: IProviderRepository,
-    ) {}
+    ) { }
 
     async authenticate(credentials: SigninInputDTO): Promise<AuthData> {
         try {
             const user = await this._userRepository.findByEmail(credentials.email) as User;
 
-            if (!user || user.role != RoleEnum.Provider ) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };;
-            if (user.isBlocked) throw  { status: FORBIDDEN, message: ACCOUNT_BLOCKED  };
+            if (!user || user.role != RoleEnum.Provider) throw new AppError(FORBIDDEN, INVALID_CREDENTIALS);;
+            if (user.isBlocked) throw new AppError(FORBIDDEN, ACCOUNT_BLOCKED);
 
-            const isMatch = await this._hashService.compare(credentials.password, user.password as string );
-            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };
-            
+            const isMatch = await this._hashService.compare(credentials.password, user.password as string);
+            if (!isMatch) throw new AppError(FORBIDDEN, INVALID_CREDENTIALS);
+
             return { userData: user, role: RoleEnum.Provider };
-            
-        } catch (error) {
-            if (error.status && error.message) throw error;
 
-            throw {
-                status: INTERNAL_SERVER_ERROR,
-                message: INTERNAL_ERROR
-            };
+        } catch (error:unknown) {
+            throw error;
         }
     }
 }

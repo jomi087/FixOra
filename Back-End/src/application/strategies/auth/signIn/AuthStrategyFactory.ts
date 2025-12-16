@@ -2,6 +2,7 @@ import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 import { RoleEnum } from "../../../../shared/enums/Roles";
 import { IAuthStrategy } from "../../../Interface/strategies/auth/IAuthStrategy";
+import { AppError } from "../../../../shared/errors/AppError";
 
 
 const { INVALID_ROLE } = Messages;
@@ -16,7 +17,7 @@ export class AuthStrategyFactory {
     
     getStrategy(role: RoleEnum): IAuthStrategy {
         const strategy = this.strategies.get(role);
-        if (!strategy) throw { status: BAD_REQUEST , message: INVALID_ROLE };
+        if (!strategy) throw new AppError (BAD_REQUEST ,INVALID_ROLE );
         return strategy;
     }
 }

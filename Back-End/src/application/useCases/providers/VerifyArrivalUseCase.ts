@@ -8,9 +8,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyArrivalUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalUseCase";
 import { buildArrivalOtpEmail } from "../../services/emailTemplates/arrivalOtpTemplate";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { BOOKING_ID_NOT_FOUND, USER_NOT_FOUND, INTERNAL_ERROR } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 export class VerifyArrivalUseCase implements IVerifyArrivalUseCase {
     constructor(
@@ -24,10 +25,11 @@ export class VerifyArrivalUseCase implements IVerifyArrivalUseCase {
     async execute(bookingId: string): Promise<string> {
         try {
             const bookingData = await this._bookingRepository.findByBookingId(bookingId);
-            if (!bookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            if (!bookingData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
             const userData = await this._userRepository.findByUserId(bookingData.userId);
-            if (!userData || !userData.email) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+            if (!userData || !userData.email) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
+
 
             const payload = {
                 bookingId,
@@ -54,11 +56,8 @@ export class VerifyArrivalUseCase implements IVerifyArrivalUseCase {
 
             return token;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

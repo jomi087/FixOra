@@ -4,11 +4,12 @@ import { IFileValidator } from "../../../domain/interface/ServiceInterface/IFile
 import { IImageUploaderService } from "../../../domain/interface/ServiceInterface/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { UpdateSubCategoryInputDTO } from "../../DTOs/CategoryDTO";
 import { IUpdateSubCategoryUseCase } from "../../Interface/useCases/Admin/IUpdateSubCategoryUseCase";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT } = HttpStatusCode;
-const { INTERNAL_ERROR, } = Messages;
+const {  NOT_FOUND, CONFLICT } = HttpStatusCode;
+const {  NOT_FOUND_MSG, ALREADY_EXISTS_MSG } = Messages;
 
 export class UpdateSubCategoryUseCase implements IUpdateSubCategoryUseCase {
     constructor(
@@ -23,7 +24,7 @@ export class UpdateSubCategoryUseCase implements IUpdateSubCategoryUseCase {
 
             const parent = await this._categoryRepository.findCategoryBySubCategoryId(subCategoryId);
             if (!parent) {
-                throw { status: NOT_FOUND, message: "Parent category not found" };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Category"));
             }
 
             const normalizedNewName = name.trim().toLowerCase();
@@ -34,11 +35,11 @@ export class UpdateSubCategoryUseCase implements IUpdateSubCategoryUseCase {
             );
 
             if (duplicate) {
-                throw { status: CONFLICT, message: "Subcategory already exists" };
+                throw new AppError(CONFLICT, ALREADY_EXISTS_MSG("Subcategory"));
             }
 
             let imageUrl: string | null = null;
-            
+
             if (imageFile) {
                 this._fileValidator.validate(imageFile);
                 imageUrl = await this._imageUploaderService.uploadImage(imageFile.buffer, "FixOra/Services");
@@ -52,17 +53,13 @@ export class UpdateSubCategoryUseCase implements IUpdateSubCategoryUseCase {
             });
 
             if (!updated) {
-                throw { status: NOT_FOUND, message: "Id Not Found" };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Category"));
             }
 
             return updated;
 
-
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

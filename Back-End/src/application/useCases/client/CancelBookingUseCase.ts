@@ -14,10 +14,13 @@ import { SendBookingCancelledInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND, WALLET_ID_NOT_FOUND, NOT_FOUND_MSG, DATA_MISMATCH } = Messages;
+const { NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { BOOKING_ALREADY_CANCELLED, NOT_FOUND_MSG,
+    DATA_MISMATCH, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD,
+} = Messages;
 
 export class CancelBookingUseCase implements ICancelBookingUseCase {
     constructor(
@@ -53,9 +56,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 createdAt: notification.createdAt,
                 isRead: notification.isRead,
             });
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -65,16 +67,19 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
 
             const bookingData = await this._bookingRepository.findByBookingId(bookingId);
             if (!bookingData) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             };
 
-            if (bookingData.userId !== userId) throw { status: BAD_REQUEST, message: DATA_MISMATCH };
+            if (bookingData.userId !== userId) throw new AppError(BAD_REQUEST, DATA_MISMATCH);
+
 
             if (!bookingData.paymentInfo) {
-                throw { status: BAD_REQUEST, message: "Payment Information Missing" };
+                throw new AppError(INTERNAL_SERVER_ERROR,
+                    INTERNAL_ERROR,
+                    INVARIANT_VIOLATION_MISSING_FIELD("bookingData.paymentInfo"));
             }
             if (bookingData.status === BookingStatus.CANCELLED) {
-                throw { status: BAD_REQUEST, message: "Booking is already cancelled" };
+                throw new AppError(BAD_REQUEST, BOOKING_ALREADY_CANCELLED);
             }
 
             const bookedAt: Date = bookingData.paymentInfo!.paidAt;
@@ -89,7 +94,7 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
 
             if (isFullRefundEligible) {
                 let wallet = await this._walletRepository.findByUserId(bookingData.userId);
-                if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+                if (!wallet) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
 
                 const transactionId = `Wlt_${uuidv4()}`;
                 const numAmount = Number(bookingData.esCrowAmout);
@@ -122,7 +127,9 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 };
 
                 const updatedBooking = await this._bookingRepository.updateBooking(bookingId, updateData);
-                if (!updatedBooking || !updatedBooking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+                if (!updatedBooking.paymentInfo) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("updatedBooking.paymentInfo"));
+
 
                 //notifying provider
                 //this._notificationService.//notifyBookingCancellation(updatedBooking.providerUserId, updatedBooking.bookingId);
@@ -193,7 +200,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 };
 
                 const updatedBooking = await this._bookingRepository.updateBooking(bookingId, updateData);
-                if (!updatedBooking || !updatedBooking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+                if (!updatedBooking.paymentInfo) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("updatedBooking.paymentInfo"));
 
                 //notifying provider
                 //this._notificationService.//notifyBookingCancellation(updatedBooking.providerUserId, updatedBooking.bookingId);
@@ -216,11 +224,8 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 };
             }
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

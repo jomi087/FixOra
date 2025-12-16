@@ -3,73 +3,80 @@ import { Request, Response, NextFunction } from "express";
 import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
+import { AppError } from "../../shared/errors/AppError";
 
-// import { Request, Response , NextFunction } from "express";
-// // import { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
-// import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
-// import { Messages } from "../../shared/Messages";
-
-// export const errorHandler = (err: any, req: Request, res: Response ,next: NextFunction) => {
-//     console.log("testing log acvc",err);
-//     const status = err.status || HttpStatusCode.INTERNAL_SERVER_ERROR;
-//     const message = err.message || Messages.INTERNAL_ERROR;
-
-//     res.status(status).json({
-//         success: false,
-//         message,
-//         ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
-//     });
-// };
+const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { INTERNAL_ERROR } = Messages;
 
 
 export const createErrorHandler = (logger: ILoggerService) => {
-    return (err: any, req: Request, res: Response, _next: NextFunction) => {
-        
-        const status = err.status || HttpStatusCode.INTERNAL_SERVER_ERROR;
-        const message = err.message || Messages.INTERNAL_ERROR;
+    return (err: unknown, req: Request, res: Response, _next: NextFunction) => {
 
-        logger.error("🔥 Error Handler Triggered:", {
-            message,
-            stack: err.stack,
-            path: req.originalUrl,
-            method: req.method,
-        });
+        /*======================
+            UNCONTROLLED ERRORS
+        =======================*/
+        if (!(err instanceof AppError)) {
+            const errorObj =
+                err instanceof Error ? err : new Error(String(err));
 
-        res.status(status).json({
+            logger.error("Uncontrolled :-", {
+                message: errorObj.message,
+                stack: errorObj.stack,
+                path: req.originalUrl,
+                method: req.method,
+            });
+
+            res.status(INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: INTERNAL_ERROR,
+            });
+            return;
+        }
+
+        /*======================
+            CONTROLLED ERRORS
+        ========================*/
+
+        //  Security / Auth related → log as WARN
+        if (err.internalMessage) {
+            logger.warn("Controlled :-", {
+                message: err.message, // internalMessage already here
+                path: req.originalUrl,
+                method: req.method,
+            });
+        }
+
+        // Send SAFE message to frontend
+        res.status(err.status).json({
             success: false,
-            message,
-            ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+            message: err.publicMessage,
         });
     };
 };
 
-// import { AppError } from "../../shared/ApplicationError";
 
-// export const createErrorHandler = (logger: ILoggerService) => {
-//     return (err: unknown, req: Request, res: Response, _next: NextFunction) => {
-//         let status = HttpStatusCode.INTERNAL_SERVER_ERROR;
-//         let message:string = Messages.INTERNAL_ERROR;
+/* Basic version  (in some scenario i might require not to show the contrlled message to user thats were i updated the logic as above)
+export const createErrorHandler = (logger: ILoggerService) => {
+    return (err: unknown, req: Request, res: Response, _next: NextFunction) => {
+        if (!(err instanceof AppError)) {
+            const errorObj = err instanceof Error ? err : new Error(String(err));
 
-//         if (err instanceof AppError) {
-//             status = err.status;
-//             message = err.message; 
-//         }
+            logger.error("Uncontrolled Error Triggered", {
+                message: errorObj.message,
+                stack: errorObj.stack,
+                path: req.originalUrl,
+                method: req.method,
+            });
+        }
 
-//         logger.error("🔥 Error Handler Triggered:", {
-//             message: err instanceof Error ? err.message : message,
-//             stack: err instanceof Error ? err.stack : undefined,
-//             path: req.originalUrl,
-//             method: req.method,
-//         });
-
-//         res.status(status).json({
-//             success: false,
-//             message: process.env.NODE_ENV === "development" 
-//                 ? message 
-//                 : status === HttpStatusCode.INTERNAL_SERVER_ERROR 
-//                     ? Messages.INTERNAL_ERROR 
-//                     : message,
-//             ...(process.env.NODE_ENV === "development" && { stack: err instanceof Error ? err.stack : undefined }),
-//         });
-//     };
-// };
+        if (err instanceof AppError) {
+            res.status(err.status).json({ message: err.publicMessage  });
+        } else {
+            res.status(INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: INTERNAL_ERROR
+            });
+        }
+    };
+};
+*/

@@ -3,10 +3,11 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 
 export class CreatePaymentUseCase implements ICreatePaymentUseCase {
@@ -18,15 +19,14 @@ export class CreatePaymentUseCase implements ICreatePaymentUseCase {
     async execute(bookingId: string): Promise<string> {
         try {
             let booking = await this._bookingRepository.findByBookingId(bookingId);
-            if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
             const totalAmount = booking.pricing.baseCost + booking.pricing.distanceFee;
 
             return await this._paymentService.createPaymentIntent(booking.bookingId, totalAmount);
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

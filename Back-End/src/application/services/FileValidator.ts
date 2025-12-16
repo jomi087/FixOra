@@ -1,5 +1,12 @@
 import { IFileValidator } from "../../domain/interface/ServiceInterface/IFileValidator";
+import { Messages } from "../../shared/const/Messages";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { AppError } from "../../shared/errors/AppError";
 import { UploadedFile } from "../../shared/types/common";
+
+
+const { BAD_REQUEST } = HttpStatusCode;
+const { INVALID_IMAGE_FORMAT, IMAGE_SIZE_EXCEEDED } = Messages;
 
 export class FileValidator implements IFileValidator {
     constructor(
@@ -9,11 +16,11 @@ export class FileValidator implements IFileValidator {
 
     validate(file: UploadedFile): void {
         if (!this.allowedTypes.includes(file.mimeType)) {
-            throw { status: 400, message: "Invalid image type" };
+            throw new AppError(BAD_REQUEST, INVALID_IMAGE_FORMAT);
         }
 
         if (file.size > this.maxSizeMB * 1024 * 1024) {
-            throw { status: 400, message: "Image too large" };
+            throw new AppError(BAD_REQUEST, IMAGE_SIZE_EXCEEDED);
         }
     }
 }

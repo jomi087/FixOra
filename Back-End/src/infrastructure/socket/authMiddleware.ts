@@ -11,25 +11,38 @@ export const socketAuthMiddleware = (logger: ILoggerService) => {
     return (socket: Socket, next: (err?: ExtendedError) => void) => {
         try {
             const rawCookie = socket.handshake.headers.cookie;
-            if (!rawCookie) throw new Error("Unauthorized: No cookie provided");
+            if (!rawCookie) {
+                next(new Error("Unauthorized"));
+                return;
+            }
 
             const parsed = cookie.parse(rawCookie);
             const token = parsed.accessToken;
-            if (!token) throw new Error("Unauthorized: Token missing");
-
+            if (!token) {
+                next(new Error("Unauthorized"));
+                return;
+            }
             const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string) as DecodedUserToken;
-            
+
             if (![RoleEnum.Provider, RoleEnum.Customer, RoleEnum.Admin].includes(decoded.role)) {
-                throw new Error("Unauthorized role");
+                next(new Error("Forbidden"));
+                return;
             }
 
             socket.data.userId = decoded.id as string;
             socket.data.role = decoded.role as RoleEnum;
 
             next();
-        } catch (error) {
+        } catch (error: unknown) {
+            const errorObj =
+                error instanceof Error ? error : new Error(String(error));
 
-            logger.error("Socket auth error:", error);
+            // Log ONLY unexpected auth errors
+            logger.warn("Socket auth failed", {
+                message: errorObj.message,
+                socketId: socket.id,
+            });
+
             next(new Error("Unauthorized"));
         }
     };

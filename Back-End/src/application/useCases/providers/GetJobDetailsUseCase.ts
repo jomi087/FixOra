@@ -4,10 +4,11 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { jobDetailsOutputDTO } from "../../DTOs/BookingDTO/BookingInfoDTO";
 import { IGetJobDetailsUseCase } from "../../Interface/useCases/Provider/IGetJobDetailsUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, NOT_FOUND_MSG } = Messages;
+const { NOT_FOUND_MSG, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD } = Messages;
 
 
 export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
@@ -20,11 +21,12 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
 
             const bookingDataInDetails = await this._bookingRepository.jobDetailsById(input);
             if (!bookingDataInDetails) {
-                throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking-data"));
             };
 
             const { booking, category, subCategory, user } = bookingDataInDetails;
-            if (!booking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+            if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking-data"));
+            if (!booking.paymentInfo) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("booking.paymentInfo"));
 
             // console.log("checking diagnosed " ,booking.diagnosed);
             const mappedData: jobDetailsOutputDTO = {
@@ -68,11 +70,8 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
 
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

@@ -9,29 +9,30 @@ import { RoleEnum } from "../../../shared/enums/Roles";
 import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../DTOs/UpdateKYCStatusDTO";
 import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/Admin/IUpdateKYCStatusUseCase";
 import { v4 as uuidv4 } from "uuid";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR,BAD_REQUEST,NOT_FOUND,CONFLICT } = HttpStatusCode;
-const { INTERNAL_ERROR,INVALID_ACTION,KYC_REJECTED,USER_NOT_FOUND,PROVIDER_ALREADY_EXISTS,KYC_APPROVED,KYC_ALREADY_REVIEWED,KYC_NOT_FOUND  } = Messages;
+const { BAD_REQUEST, NOT_FOUND, CONFLICT } = HttpStatusCode;
+const { INVALID_ACTION, KYC_REJECTED, USER_NOT_FOUND, PROVIDER_ALREADY_EXISTS, KYC_APPROVED, KYC_ALREADY_REVIEWED, KYC_NOT_FOUND } = Messages;
 
 export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
     constructor(
         private readonly _kycRequestRepository: IKYCRequestRepository,
         private readonly _providerRepository: IProviderRepository,
-        private readonly _userRepository : IUserRepository
-    ){ }
-    
-    private async update (id:string, request:KYCRequest) : Promise<void> {
+        private readonly _userRepository: IUserRepository
+    ) { }
+
+    private async update(id: string, request: KYCRequest): Promise<void> {
         const updated = await this._kycRequestRepository.updateById(id, request);
-        if (!updated) throw { status: NOT_FOUND, message: KYC_NOT_FOUND };
+        if (!updated) throw new AppError(NOT_FOUND, KYC_NOT_FOUND);
     }
 
     private validateIsPending(request: KYCRequest) {
-        if (request.status !== KYCStatus.Pending) throw { status: CONFLICT, message: KYC_ALREADY_REVIEWED };
+        if (request.status !== KYCStatus.Pending) throw new AppError(CONFLICT, KYC_ALREADY_REVIEWED);
     }
 
     private async rejectRequest(id: string, request: KYCRequest, reason?: string): Promise<string> {
-        
+
         request.status = KYCStatus.Rejected;
         request.reason = reason;
         request.reviewedAt = new Date();
@@ -42,10 +43,10 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
     }
 
     private async approveRequest(id: string, request: KYCRequest): Promise<string> {
-    
+
         const existingProvider = await this._providerRepository.findByUserId(request.userId);
         if (existingProvider) {
-            throw { status: CONFLICT, message: PROVIDER_ALREADY_EXISTS };
+            throw new AppError(CONFLICT, PROVIDER_ALREADY_EXISTS);
         }
 
         request.status = KYCStatus.Approved;
@@ -54,7 +55,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
 
         try {
             await this._providerRepository.create({
-                providerId : uuidv4(),
+                providerId: uuidv4(),
                 userId: request.userId,
                 dob: request.dob,
                 gender: request.gender,
@@ -66,42 +67,41 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
                 isOnline: false,
             });
 
-            const updatedUser  = await this._userRepository.updateRole(request.userId, RoleEnum.Provider,["password","refreshToken","googleId","createdAt","isBlocked"]);
-            
-            if (!updatedUser) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+            const updatedUser = await this._userRepository.updateRole(request.userId, RoleEnum.Provider, ["password", "refreshToken", "googleId", "createdAt", "isBlocked"]);
+
+            if (!updatedUser) throw new AppError(NOT_FOUND, USER_NOT_FOUND);
+
 
             return KYC_APPROVED;
 
-        } catch (error) {
+        } catch (error: unknown) {
             //if db error then roll back
             request.status = KYCStatus.Pending;
             request.reviewedAt = undefined;
             await this.update(id, request);
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR , message : INTERNAL_ERROR };
+            throw error;
         }
     }
 
     async execute({ id, action, reason, adminId }: UpdateKYCStatusInputDTO): Promise<UpdateKYCStatusOutputDTO> {
         try {
             const request = await this._kycRequestRepository.findById(id);
-            if (!request) throw { status: NOT_FOUND, message: KYC_NOT_FOUND };
+            if (!request) throw new AppError(NOT_FOUND, KYC_NOT_FOUND);
 
             this.validateIsPending(request);
             request.reviewedBy = adminId;
-            
+
             let message: string;
             if (action === KYCStatus.Rejected) {
                 message = await this.rejectRequest(id, request, reason);
             } else if (action === KYCStatus.Approved) {
                 message = await this.approveRequest(id, request);
             } else {
-                throw { status: BAD_REQUEST, message: INVALID_ACTION };
+                throw new AppError(BAD_REQUEST, INVALID_ACTION);
             }
-            return { id , message };
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+            return { id, message };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -112,7 +112,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
     async execute({id,action,reason,adminId}:UpdateKYCStatusInputDTO): Promise<UpdateKYCStatusOutputDTO>{
         try {
             const request = await this.kycRequestRepository.findById(id)
-            if (!request) throw { status: NOT_FOUND, message: KYC_NOT_FOUND }
+            if (!request) throw err
             
 
             const now = new Date();
@@ -131,8 +131,7 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
             if (action === KYCStatus.Approved) {
                 // const existingProvider = await this.providerRepository.findByUserId(request.userId);
                 // if (existingProvider) {
-                //     throw { status: CONFLICT, message: "Provider already exists for this user" };
-                // }
+                //     throw err
 
                 request.status = KYCStatus.Approved;
                 request.reviewedAt = now;
@@ -154,13 +153,10 @@ export class UpdateKYCStatusUseCase implements IUpdateKYCStatusUseCase {
                 return { message : KYC_APPROVED }
             }
 
-            throw { status : BAD_REQUEST , message : INVALID_ACTION }  
+            throw err
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error:unknown) {
+            throw error;
         }
 
     }

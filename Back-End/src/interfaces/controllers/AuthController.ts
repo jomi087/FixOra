@@ -17,10 +17,12 @@ import { ISignupUseCase } from "../../application/Interface/useCases/Auth/ISignu
 import { IRegisterFcmTokenUseCase } from "../../application/Interface/useCases/Auth/IRegisterFcmTokenUseCase";
 import jwt from "jsonwebtoken";
 import { DecodedUserDTO } from "../../application/DTOs/AuthDTO/DecodedUserDTO";
+import { AppError } from "../../shared/errors/AppError";
 
 const { OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS, USER_NOT_FOUND,
-    SIGNIN_SUCCESSFUL, MISSING_TOKEN, VERIFICATION_MAIL_SENT, LOGGED_OUT, PASSWORD_RESET_SUCCESS
+const { UNAUTHORIZED_MSG, TOKENS_REFRESHED_SUCCESS, OTP_SENT, ACCOUNT_CREATED_SUCCESS,
+    SIGNIN_SUCCESSFUL, MISSING_TOKEN, VERIFICATION_MAIL_SENT, EMAIL_NOT_FOUND,
+    LOGGED_OUT, PASSWORD_RESET_SUCCESS
 } = Messages;
 
 
@@ -81,9 +83,8 @@ export class AuthController {
 
     async resendOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            
+
             let email: string;
-            console.log(req.body);
 
             if (req.cookies.tempToken) {
                 const tempToken = req.cookies.tempToken;
@@ -93,7 +94,7 @@ export class AuthController {
             } else if (req.body.email) {
                 email = req.body.email;
             } else {
-                throw { status: FORBIDDEN, message: "Email not available for OTP resend." };
+                throw new AppError(FORBIDDEN, EMAIL_NOT_FOUND);
             }
 
             await this._resendOtpUseCase.execute(email);
@@ -112,7 +113,7 @@ export class AuthController {
         try {
 
             const { code, role } = req.body;
-            if (!code || !role) throw { status: BAD_REQUEST, message: MISSING_TOKEN };
+            if (!code || !role) throw new AppError(BAD_REQUEST, MISSING_TOKEN("google"));
 
             const result = await this._googleSigninUseCase.execute(code, role);
 
@@ -207,7 +208,7 @@ export class AuthController {
         try {
             const userId = req.user?.userId;
             if (!userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const { FcmToken, platform } = req.body;
@@ -223,7 +224,7 @@ export class AuthController {
         try {
 
             if (!req.user) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             res.status(OK).json({
@@ -291,7 +292,8 @@ export class AuthController {
             const role = req.user?.role;
             const { fcmToken } = req.body as { fcmToken: string | null };
 
-            if (!userId || !role) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
+            if (!userId || !role) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
+
             await this._signoutUseCase.execute({ userId, role, fcmToken });
 
             const options = {

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ICreateServiceCategoryUseCase } from "../../Interface/useCases/Admin/ICreateServiceCategoryUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
 export interface SubcategoryInputDTO {
     name: string;
@@ -26,26 +27,30 @@ export class CreateServiceCategoryUseCase implements ICreateServiceCategoryUseCa
     ) { }
 
     async execute(input: CategoryInputDTO): Promise<void> {
-        const { name, description, subcategories, image } = input;
+        try {
+            const { name, description, subcategories, image } = input;
 
-        const normalizedCategoryName = name.trim().toLowerCase();
-        const exists = await this._categoryRepository.findByName(normalizedCategoryName);
-        if (exists) {
-            throw { status: BAD_REQUEST, message: CATEGORY_ALREADY_EXISTS };
-        }
+            const normalizedCategoryName = name.trim().toLowerCase();
+            const exists = await this._categoryRepository.findByName(normalizedCategoryName);
+            if (exists) {
+                throw new AppError(BAD_REQUEST, CATEGORY_ALREADY_EXISTS);
+            }
 
-        const category = {
-            categoryId: uuidv4(),
-            name: normalizedCategoryName,
-            description,
-            image,
-            isActive: false,
-            subcategories: subcategories.map(sub => ({
-                subCategoryId: uuidv4(),
+            const category = {
+                categoryId: uuidv4(),
+                name: normalizedCategoryName,
+                description,
+                image,
                 isActive: false,
-                ...sub,
-            })),
-        };
-        await this._categoryRepository.create(category);
+                subcategories: subcategories.map(sub => ({
+                    subCategoryId: uuidv4(),
+                    isActive: false,
+                    ...sub,
+                })),
+            };
+            await this._categoryRepository.create(category);
+        } catch (error: unknown) {
+            throw error;
+        }
     }
 }

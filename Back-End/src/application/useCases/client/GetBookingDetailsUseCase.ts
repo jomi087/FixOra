@@ -4,9 +4,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { BookingDetailsOutputDTO } from "../../DTOs/BookingDTO/BookingInfoDTO";
 import { IGetBookingDetailsUseCase } from "../../Interface/useCases/Client/IGetBookingDetailsUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, NOT_FOUND_MSG } = Messages;
+const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { NOT_FOUND_MSG, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD } = Messages;
 
 export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
     constructor(
@@ -18,12 +19,12 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
 
             const bookingDataInDetails = await this._bookingRepository.BookingsDetailsById(input);
             if (!bookingDataInDetails) {
-                throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking-Data"));
             };
 
             const { userProvider, provider, category, subCategory, booking } = bookingDataInDetails;
 
-            if (!booking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+            if (!booking.paymentInfo)  throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("booking.paymentInfo"));
 
             const mappedData: BookingDetailsOutputDTO = {
                 bookingId: booking.bookingId!,
@@ -66,11 +67,8 @@ export class GetBookingDetailsUseCase implements IGetBookingDetailsUseCase {
             return mappedData;
 
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

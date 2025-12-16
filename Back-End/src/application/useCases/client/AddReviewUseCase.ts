@@ -5,10 +5,11 @@ import { Messages } from "../../../shared/const/Messages";
 import { AddReviewInputDTO } from "../../DTOs/ReviewDTO";
 import { IAddReviewUseCase } from "../../Interface/useCases/Client/IAddReviewUseCase";
 import { v4 as uuidv4 } from "uuid";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND } = Messages;
+const { CONFLICT, NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG, ALREADY_EXISTS_MSG } = Messages;
 
 export class AddReviewUseCase implements IAddReviewUseCase {
     constructor(
@@ -22,27 +23,24 @@ export class AddReviewUseCase implements IAddReviewUseCase {
             const { bookingId, rating, feedback } = input;
 
             const isReviewed = await this._ratingRepository.findByBookingID(bookingId);
-            if (isReviewed) throw { status: CONFLICT, message: "Rating already exists for this booking." };
+            if (isReviewed) throw new AppError(CONFLICT, ALREADY_EXISTS_MSG("A review for this booking"));
 
             const bookingData = await this._bookingRepository.findByBookingId(bookingId);
-            if (!bookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            if (!bookingData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
             await this._ratingRepository.create({
                 ratingId: uuidv4(),
                 bookingId,
-                providerId : bookingData.provider.id,
-                userId : bookingData.userId,
+                providerId: bookingData.provider.id,
+                userId: bookingData.userId,
                 rating,
                 feedback,
                 active: true,
                 createdAt: new Date()
             });
-            
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

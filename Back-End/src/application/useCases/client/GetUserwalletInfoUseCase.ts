@@ -3,9 +3,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { WalletDTO, WalletInputDTO, WalletOutputDTO } from "../../DTOs/WalletDTO/walletDTO";
 import { IGetUserwalletInfoUseCase } from "../../Interface/useCases/Client/IGetUserwalletInfoUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, WALLET_ID_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 export class GetUserwalletInfoUseCase implements IGetUserwalletInfoUseCase {
     constructor(
@@ -18,11 +19,11 @@ export class GetUserwalletInfoUseCase implements IGetUserwalletInfoUseCase {
 
             const { userId, currentPage, limit } = input;
 
-            
+
             const wallet = await this._walletRepository.findByUserIdWithTransactions(userId, currentPage, limit);
-            
+
             if (!wallet) {
-                throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
             }
 
             const mappedData: WalletDTO = {
@@ -37,17 +38,14 @@ export class GetUserwalletInfoUseCase implements IGetUserwalletInfoUseCase {
                     bookingId: tx.metadata?.bookingId
                 }))
             };
-            
+
             return {
                 data: mappedData,
                 total: wallet.totalTransactions
             };
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

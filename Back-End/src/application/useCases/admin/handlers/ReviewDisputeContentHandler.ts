@@ -1,11 +1,12 @@
 import { IRatingRepository } from "../../../../domain/interface/RepositoryInterface/IRaitingRepository";
 import { Messages } from "../../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../../shared/errors/AppError";
 import { DisputeContentOutput } from "../../../DTOs/DisputeDTO";
 import { IDisputeContentHandler } from "../../../Interface/useCases/Admin/handlers/IDisputeContentHandler";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG, } = Messages;
 
 export class ReviewDisputeContentHandler implements IDisputeContentHandler {
     constructor(
@@ -15,7 +16,7 @@ export class ReviewDisputeContentHandler implements IDisputeContentHandler {
     async getContent(contentId: string): Promise<DisputeContentOutput> {
         try {
             const contentData = await this._ratingRepository.findReviewById(contentId);
-            if (!contentData) throw { status: NOT_FOUND, message: "ContentId Not Found" };
+            if (!contentData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Review"));
 
             const mappedData = {
                 id: contentData.rating.ratingId,
@@ -32,11 +33,8 @@ export class ReviewDisputeContentHandler implements IDisputeContentHandler {
 
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

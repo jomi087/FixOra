@@ -1,22 +1,17 @@
 import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { Messages } from "../../../shared/const/Messages";
 import { ActiveCategoryOutputDTO } from "../../DTOs/CategoryDTO";
 import { IActiveServiceUseCase } from "../../Interface/useCases/Client/IActiveServiceUseCase";
-
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
 
 
 export class ActiveServiceUseCase implements IActiveServiceUseCase {
     constructor(
-        private readonly _categoryRepository : ICategoryRepository
+        private readonly _categoryRepository: ICategoryRepository
     ) { }
-    
-    async execute():Promise<ActiveCategoryOutputDTO[]> {
+
+    async execute(): Promise<ActiveCategoryOutputDTO[]> {
         try {
             const categories = await this._categoryRepository.findActiveCategoriesWithActiveSubcategories();
-                        
+
             const mappedData = categories.map((cat) => ({
                 categoryId: cat.categoryId,
                 name: cat.name,
@@ -33,11 +28,8 @@ export class ActiveServiceUseCase implements IActiveServiceUseCase {
             }));
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR , message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 

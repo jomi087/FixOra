@@ -2,12 +2,13 @@ import { IDisputeRepository } from "../../../domain/interface/RepositoryInterfac
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { DisputeContentOutput } from "../../DTOs/DisputeDTO";
 import { IDisputeContentHandler } from "../../Interface/useCases/Admin/handlers/IDisputeContentHandler";
 import { IDisputeContentInfoUseCase } from "../../Interface/useCases/Admin/IDisputeContentInfoUseCase";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { DISPUTE_NOT_FOUND, INVALID_TYPE } = Messages;
 
 export class DisputeContentInfoUseCase implements IDisputeContentInfoUseCase {
     constructor(
@@ -18,19 +19,15 @@ export class DisputeContentInfoUseCase implements IDisputeContentInfoUseCase {
     async execute(disputeId: string): Promise<DisputeContentOutput> {
         try {
             const disputeData = await this._disputeRepository.findById(disputeId);
-            if (!disputeData) throw { status: NOT_FOUND, message: "DisputeId Not Found" };
+            if (!disputeData) throw new AppError(NOT_FOUND, DISPUTE_NOT_FOUND);
 
             const handler = this._handlers[disputeData.disputeType];
-            if (!handler) throw { status: NOT_FOUND, message: "Unsupported dispute type" };
+            if (!handler) throw new AppError(NOT_FOUND, INVALID_TYPE("Dispute"));
 
             return await handler.getContent(disputeData.contentId);
-             
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

@@ -6,10 +6,11 @@ import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
 import { getAvailabilityOutputDTO } from "../../DTOs/AvailabilityDTO";
 import { IGetAvailabilityUseCase } from "../../Interface/useCases/Provider/IGetAvailabilityUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, PROVIDER_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 export class GetAvailabilityUseCase implements IGetAvailabilityUseCase {
     constructor(
@@ -20,10 +21,11 @@ export class GetAvailabilityUseCase implements IGetAvailabilityUseCase {
         try {
 
             let provider = await this._providerRepository.findByUserId(providerUserId);
-            if (!provider) throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND };
+            if (!provider) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Provider"));
+
 
             let availability = await this._availabilityRepository.getProviderAvialability(provider.providerId);
-            
+
             if (!availability) {
 
                 const workTime = DAYS.map((day) => ({
@@ -43,11 +45,8 @@ export class GetAvailabilityUseCase implements IGetAvailabilityUseCase {
 
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

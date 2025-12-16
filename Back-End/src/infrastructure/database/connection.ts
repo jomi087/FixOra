@@ -9,12 +9,13 @@ const mongoConnect = async (logger: ILoggerService): Promise<void> => {
             serverSelectionTimeoutMS: 5000, // wait max 5s for server selection
         });
         logger.info("Connected to MongoDB");
-    } catch (error) {
-        logger.error("Failed to connect to MongoDB", {
-            message: error.message,
-            stack: error.stack,
-        });
+    } catch (error: unknown) {
+        const errorObj = error instanceof Error ? error : new Error(String(error));
 
+        logger.error("Failed to connect to MongoDB", {
+            message: errorObj.message,
+            stack: errorObj.stack,
+        });
         process.exit(1);
     }
 

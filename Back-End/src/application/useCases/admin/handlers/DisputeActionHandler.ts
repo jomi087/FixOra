@@ -4,10 +4,11 @@ import { IRatingRepository } from "../../../../domain/interface/RepositoryInterf
 import { Messages } from "../../../../shared/const/Messages";
 import { DisputeStatus } from "../../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../../shared/errors/AppError";
 import { IDisputeActionHandler } from "../../../Interface/useCases/Admin/handlers/IDisputeActionHandler";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 export class ReviewDisputeActionHandler implements IDisputeActionHandler {
     constructor(
@@ -19,14 +20,12 @@ export class ReviewDisputeActionHandler implements IDisputeActionHandler {
 
             if (dispute.status === DisputeStatus.RESOLVED) {
                 const aknowledge = await this._ratingRepository.deactivateRating(dispute.contentId /*txSession*/);
-                if (!aknowledge) throw { status: NOT_FOUND, message: "ContentId Not Found" };
+                if (!aknowledge) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Review"));
             }
-            
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+
+        } catch (error: unknown) {
+            throw error;
         }
+
     }
 }

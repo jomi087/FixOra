@@ -1,12 +1,13 @@
 import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { CommissionFeeDTO } from "../../DTOs/CommissionFeeDTO";
 import { IUpdateCommissionFeeUseCase } from "../../Interface/useCases/Admin/IUpdateCommissionFeeUseCase";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
+const {  NOT_FOUND } = HttpStatusCode;
+const {  NOT_FOUND_MSG } = Messages;
 
 
 export class UpdateCommissionFeeUseCase implements IUpdateCommissionFeeUseCase {
@@ -18,7 +19,7 @@ export class UpdateCommissionFeeUseCase implements IUpdateCommissionFeeUseCase {
 
         try {
             const commissionFeeData = await this._commissionFeeRepository.findCommissionFeeData();
-            if (!commissionFeeData) throw { status: NOT_FOUND, message: "commission fee data not found " };
+            if (!commissionFeeData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("CommissionFee"));
 
             commissionFeeData.feeHistory.push({
                 amount: commissionFee,
@@ -27,7 +28,7 @@ export class UpdateCommissionFeeUseCase implements IUpdateCommissionFeeUseCase {
             commissionFeeData.fee = commissionFee;
 
             const updatedFeeData = await this._commissionFeeRepository.updateCommissionFee(commissionFeeData);
-            if (!updatedFeeData) throw { status: NOT_FOUND, message: "commission fee Updation failed" };
+            if (!updatedFeeData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("CommissionFee"));
 
             const mappedData: CommissionFeeDTO = {
                 fee: updatedFeeData.fee,
@@ -39,11 +40,8 @@ export class UpdateCommissionFeeUseCase implements IUpdateCommissionFeeUseCase {
 
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

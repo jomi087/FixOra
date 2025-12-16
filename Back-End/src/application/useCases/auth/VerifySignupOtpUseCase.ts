@@ -7,9 +7,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifySignupOtpUseCase } from "../../Interface/useCases/Auth/IVerifySignupOtpUseCase";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { FORBIDDEN, BAD_REQUEST, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, INVALID_OTP, OTP_EXPIRED, INTERNAL_ERROR } = Messages;
+const { FORBIDDEN, BAD_REQUEST } = HttpStatusCode;
+const { MISSING_TOKEN, INVALID_OTP, OTP_EXPIRED } = Messages;
 
 export class VerifySignupOtpUseCase implements IVerifySignupOtpUseCase {
     constructor(
@@ -22,16 +23,17 @@ export class VerifySignupOtpUseCase implements IVerifySignupOtpUseCase {
     async execute(otpData: string, token: string): Promise<void> {
         try {
             if (!token) {
-                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
+                throw new AppError(FORBIDDEN, "Session expired, Please Sign-up again", MISSING_TOKEN("Sign-up"));
             }
 
             const decodeUserData = jwt.verify(token, process.env.JWT_TEMP_ACCESS_SECRET as string) as DecodedUserDTO;
 
             const storedOtp = await this._otpRepository.findOtpByEmail(decodeUserData.email);
             if (!storedOtp) {
-                throw { status: BAD_REQUEST, message: OTP_EXPIRED };
+                throw new AppError(BAD_REQUEST, OTP_EXPIRED);
             } else if (storedOtp.otp != otpData) {
-                throw { status: BAD_REQUEST, message: INVALID_OTP };
+                throw new AppError(BAD_REQUEST, INVALID_OTP);
+
             }
 
             const user = await this._userRepository.create({
@@ -45,7 +47,7 @@ export class VerifySignupOtpUseCase implements IVerifySignupOtpUseCase {
                     userId: user.userId,
                     balance: 0,
                     transactions: [],
-                    createdAt : new Date(),
+                    createdAt: new Date(),
                 });
             } catch (walletError) {
                 await this._userRepository.delete(user.userId);
@@ -55,12 +57,8 @@ export class VerifySignupOtpUseCase implements IVerifySignupOtpUseCase {
             await this._otpRepository.deleteOtpByEmail(decodeUserData.email);
 
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 

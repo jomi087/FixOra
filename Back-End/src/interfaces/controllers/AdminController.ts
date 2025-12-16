@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { RoleEnum } from "../../shared/enums/Roles";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
@@ -21,8 +20,9 @@ import { IDisputeContentInfoUseCase } from "../../application/Interface/useCases
 import { IDisputeActionUseCase } from "../../application/Interface/useCases/Admin/IDisputeActionUseCase";
 import { IUpdateCategoryUseCase } from "../../application/Interface/useCases/Admin/IUpdateCategoryUseCase";
 import { IUpdateSubCategoryUseCase } from "../../application/Interface/useCases/Admin/IUpdateSubCategoryUseCase";
+import { AppError } from "../../shared/errors/AppError";
 
-const { OK, BAD_REQUEST, FORBIDDEN } = HttpStatusCode;
+const { OK, BAD_REQUEST, UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG, MAIN_CATEGORY_IMAGE_MISSING,
     SUBCATEGORY_IMAGE_MISSING, CATEGORY_CREATED_SUCCESS,
 } = Messages;
@@ -144,8 +144,8 @@ export class AdminController {
             const id = req.params.id;
             const { action, reason } = req.body;
 
-            if (!req.user || req.user.role !== RoleEnum.Admin || !req.user.userId) {
-                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
+            if (!req.user?.userId) {
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const adminId = req.user.userId;
@@ -190,14 +190,13 @@ export class AdminController {
 
             const mainImageFile = files.find(file => file.fieldname === "image");
 
-            if (!mainImageFile) throw { status: BAD_REQUEST, message: MAIN_CATEGORY_IMAGE_MISSING };
-
+            if (!mainImageFile) throw new AppError(BAD_REQUEST, MAIN_CATEGORY_IMAGE_MISSING);
             const mainImageUrl = await this._imageUploaderService.uploadImage(mainImageFile.buffer, "FixOra/Services");
 
             const subcategoriesWithUrls = await Promise.all(
                 subcategories.map(async (sub: any, index: number) => {
                     const subImageFile = files.find(file => file.fieldname === `subcategoryImages[${index}]`);
-                    if (!subImageFile) throw { status: BAD_REQUEST, message: SUBCATEGORY_IMAGE_MISSING };
+                    if (!subImageFile) throw new AppError(BAD_REQUEST, SUBCATEGORY_IMAGE_MISSING);
                     const imageUrl = await this._imageUploaderService.uploadImage(subImageFile.buffer, "FixOra/Services");
 
                     return {
@@ -341,7 +340,7 @@ export class AdminController {
         try {
 
             if (!req.user?.userId) {
-                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const userId = req.user.userId;
@@ -378,7 +377,7 @@ export class AdminController {
     async updateCommissionFee(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const { commissionFee } = req.body;
 

@@ -1,11 +1,6 @@
 import Stripe from "stripe";
 import { IPaymentService } from "../../domain/interface/ServiceInterface/IPaymentService";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
-import { Messages } from "../../shared/const/Messages";
 import { RoleEnum } from "../../shared/enums/Roles";
-
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
 
 
 export class PaymentService implements IPaymentService {
@@ -44,10 +39,8 @@ export class PaymentService implements IPaymentService {
 
             return session.id;
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -82,15 +75,13 @@ export class PaymentService implements IPaymentService {
             });
             return session.id;
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
     async verifyPayment(rawBody: Buffer, signature: string): Promise<{
-        eventType:  "booking_success" | "booking_failed" | "wallet_success" | "wallet_failed",
+        eventType: "booking_success" | "booking_failed" | "wallet_success" | "wallet_failed",
         id: string,
         transactionId: string,
         amount?: string,
@@ -175,9 +166,8 @@ export class PaymentService implements IPaymentService {
             default:
                 return null;
             }
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
 
     }

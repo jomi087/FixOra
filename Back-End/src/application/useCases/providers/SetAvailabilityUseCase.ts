@@ -18,9 +18,10 @@ import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, PROVIDER_NOT_FOUND, WALLET_ID_NOT_FOUND, NOT_FOUND_MSG } = Messages;
+const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { NOT_FOUND_MSG, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD } = Messages;
 
 export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
     constructor(
@@ -59,9 +60,8 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -123,10 +123,15 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
 
                 for (const booking of bookings) {
 
-                    if (!booking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                    if (!booking.paymentInfo) throw new AppError(
+                        INTERNAL_SERVER_ERROR,
+                        INTERNAL_ERROR,
+                        INVARIANT_VIOLATION_MISSING_FIELD("updatedBooking.paymentInfo")
+                    );
 
                     let wallet = await this._walletRepository.findByUserId(booking.userId);
-                    if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+                    if (!wallet) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
+
 
                     const transactionId = `Wlt_${uuidv4()}`;
                     const numAmount = Number(booking.esCrowAmout);
@@ -159,7 +164,8 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
                     };
 
                     const updatedBooking = await this._bookingRepository.updateBooking(booking.bookingId, updateData);
-                    if (!updatedBooking || !updatedBooking.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                    if (!updatedBooking || !updatedBooking.paymentInfo) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+
 
                     await this.sendBookingCancelledNotification({
                         userId: updatedBooking.providerUserId,
@@ -189,11 +195,12 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
         try {
 
             let provider = await this._providerRepository.findByUserId(input.providerUserId);
-            if (!provider) throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND };
+            if (!provider) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Provider"));
+
             // console.log("inputSchedule", input.schedule);
 
             const oldAvailability = await this._availabilityRepository.getProviderAvialability(provider.providerId);
-            if (!oldAvailability) throw { status: NOT_FOUND, message: "Availability not found" };
+            if (!oldAvailability) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Availability"));
 
             const newWorkTime = Object.entries(input.schedule)//input.schedule: Record<Day, { slots: string[], active: boolean }>;
                 .map(([day, value,]) => ({
@@ -218,16 +225,14 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
             }
 
             const availability = await this._availabilityRepository.storeWorkingTime(provider.providerId, newWorkTime);
-            if (!availability) throw { status: NOT_FOUND, message: "Availability not found" };
+            if (!availability) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Availability"));
+
 
             const mappedData: setAvailabilityOutputDTO[] = availability.workTime;
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

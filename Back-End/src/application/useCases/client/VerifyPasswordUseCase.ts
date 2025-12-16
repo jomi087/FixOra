@@ -9,9 +9,10 @@ import { Messages } from "../../../shared/const/Messages";
 import { IVerifyPasswordUseCase } from "../../Interface/useCases/Client/IVerifyPasswordUseCase";
 import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
 import { BRAND } from "../../../shared/const/constants";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { FORBIDDEN, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR, INVALID_PASSWORD } = Messages;
+const { FORBIDDEN } = HttpStatusCode;
+const { INVALID_PASSWORD } = Messages;
 
 export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
     constructor(
@@ -24,7 +25,7 @@ export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
         try {
             const user = await this._userRepository.findByUserId(userId, ["refreshToken"]) as User;
             const isMatch = await this._hashService.compare(password, user.password as string);
-            if (!isMatch) throw { status: FORBIDDEN, message: INVALID_PASSWORD };
+            if (!isMatch) throw new AppError(FORBIDDEN, INVALID_PASSWORD);
 
             const expiryTime = process.env.JWT_TEMP_RESET_TOKEN_EXPIRY as SignOptions["expiresIn"];
             const resetToken = jwt.sign({ email: user.email }, process.env.JWT_RESET_PASSWORD_SECRET as string, { expiresIn: expiryTime });
@@ -38,11 +39,8 @@ export class VerifyPasswordUseCase implements IVerifyPasswordUseCase {
 
             await this._emailService.sendEmail(user.email, "FixOra Reset Password", html);
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

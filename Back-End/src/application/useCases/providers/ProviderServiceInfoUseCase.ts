@@ -1,11 +1,12 @@
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { ProviderServiceInfoOutputDTO } from "../../DTOs/ProviderInfoDTO";
 import { IProviderServiceInfoUseCase } from "../../Interface/useCases/Provider/IProviderServiceInfoUseCase";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, PROVIDER_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 
 export class ProviderServiceInfoUseCase implements IProviderServiceInfoUseCase {
@@ -17,24 +18,20 @@ export class ProviderServiceInfoUseCase implements IProviderServiceInfoUseCase {
 
         try {
             const serviceData = await this._providerRepository.findProviderServiceInfoById(providerUserId);
-            if (!serviceData) throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND };
+            if (!serviceData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Provider"));
 
             const { category, provider } = serviceData;
 
-            const mappedData:ProviderServiceInfoOutputDTO = {
+            const mappedData: ProviderServiceInfoOutputDTO = {
                 providerId: provider.providerId,
                 serviceCharge: provider.serviceCharge,
-                category : category
+                category: category
             };
 
             return mappedData;
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

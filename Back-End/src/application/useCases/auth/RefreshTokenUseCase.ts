@@ -3,33 +3,34 @@ import { ITokenService } from "../../../domain/interface/ServiceInterface/IToken
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IRefreshTokenUseCase } from "../../Interface/useCases/Auth/IRefreshTokenUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { FORBIDDEN,NOT_FOUND } = HttpStatusCode;
-const { UNAUTHORIZED_MSG,INVALID_REFRESH_TOKEN,USER_NOT_FOUND } = Messages;
+const { FORBIDDEN, NOT_FOUND } = HttpStatusCode;
+const { UNAUTHORIZED_MSG, INVALID_REFRESH_TOKEN, NOT_FOUND_MSG } = Messages;
 
 export class RefreshTokenUseCase implements IRefreshTokenUseCase {
     constructor(
-    private readonly _tokenService: ITokenService ,
-    private readonly _userRepository : IUserRepository
-    ) {}
+        private readonly _tokenService: ITokenService,
+        private readonly _userRepository: IUserRepository
+    ) { }
 
-    async execute(refreshToken: string): Promise<{ accessToken:string, refreshToken:string}>{
+    async execute(refreshToken: string): Promise<{ accessToken: string, refreshToken: string }> {
         try {
             if (!refreshToken) {
-                throw { status: FORBIDDEN,  message: UNAUTHORIZED_MSG  };
+                throw new AppError(FORBIDDEN, "Session expired. Please login again.", UNAUTHORIZED_MSG);
             }
 
             const decoded = this._tokenService.verifyRefreshToken(refreshToken) as {
-        id: string;
-        name: string;
-        email: string;
-        role: string;
-      };
+                id: string;
+                name: string;
+                email: string;
+                role: string;
+            };
 
-            const user = await this._userRepository.findByUserId(decoded?.id,["password"]);
-            if (!user || user.refreshToken !== refreshToken  ) {
-                throw { status: FORBIDDEN, message: INVALID_REFRESH_TOKEN };
+            const user = await this._userRepository.findByUserId(decoded?.id, ["password"]);
+            if (!user || user.refreshToken !== refreshToken) {
+                throw new AppError(FORBIDDEN, "Session expired. Please login again.", INVALID_REFRESH_TOKEN);
             }
 
             const payload = {
@@ -41,21 +42,18 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
 
             const newAccessToken = this._tokenService.generateAccessToken(payload);
             const newRefreshToken = this._tokenService.generateRefreshToken(payload);
-      
-            if (!await this._userRepository.resetRefreshTokenById( decoded.id, newRefreshToken )) {
-                throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+
+            if (!await this._userRepository.resetRefreshTokenById(decoded.id, newRefreshToken)) {
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
             }
 
-            return  {
+            return {
                 accessToken: newAccessToken,
                 refreshToken: newRefreshToken,
             };
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: FORBIDDEN, message: UNAUTHORIZED_MSG };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

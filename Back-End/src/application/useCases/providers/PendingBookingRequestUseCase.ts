@@ -1,11 +1,8 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { PendingBookingRequestOutputDTO } from "../../DTOs/BookingDTO/PendingBookingRequestDTO";
 import { IPendingBookingRequestUseCase } from "../../Interface/useCases/Provider/IPendingBookingRequestUseCase";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
+
 
 export class PendingBookingRequestUseCase implements IPendingBookingRequestUseCase {
     constructor(
@@ -27,11 +24,8 @@ export class PendingBookingRequestUseCase implements IPendingBookingRequestUseCa
 
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

@@ -1,11 +1,7 @@
 import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
-import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { DisputeListItemDTO, DisputeListResponseDTO, FilterDisputeInputDTO } from "../../DTOs/DisputeDTO";
 import { IGetDisputesUseCase } from "../../Interface/useCases/Admin/IGetDisputesUseCase";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
 
 export class GetDisputesUseCase implements IGetDisputesUseCase {
     constructor(
@@ -45,12 +41,8 @@ export class GetDisputesUseCase implements IGetDisputesUseCase {
                 total,
             };
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

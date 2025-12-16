@@ -12,40 +12,41 @@ import { IHashService } from "../../../domain/interface/ServiceInterface/IHashSe
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ISignupUseCase } from "../../Interface/useCases/Auth/ISignupUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { CONFLICT, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { EMAIL_ALREADY_EXISTS, INTERNAL_ERROR } = Messages;
+const { CONFLICT } = HttpStatusCode;
+const { EMAIL_ALREADY_EXISTS } = Messages;
 
-export class SignupUseCase implements ISignupUseCase{
+export class SignupUseCase implements ISignupUseCase {
     constructor(
-        private readonly _userRepository : IUserRepository,
-        private readonly _otpRepository: IOtpRepository ,
+        private readonly _userRepository: IUserRepository,
+        private readonly _otpRepository: IOtpRepository,
         private readonly _emailService: IEmailService,
         private readonly _otpGenratorService: IOtpGenratorService,
-        private readonly _hashService : IHashService
-    ) {}
-    
+        private readonly _hashService: IHashService
+    ) { }
+
     async execute(userData: SignupDTO): Promise<string> {
         try {
             const existingUser = await this._userRepository.findByEmail(userData.email);
             if (existingUser) {
-                throw { status: CONFLICT, message: EMAIL_ALREADY_EXISTS }; 
+                throw new AppError(CONFLICT,EMAIL_ALREADY_EXISTS);
             }
 
             const hashedPassword = await this._hashService.hash(userData.password);
-            
+
             const tempPayload = {
                 ...userData,
                 password: hashedPassword,
                 userId: uuidv4(),
             };
-            
-            const expiryTime  = process.env.JWT_TEMP_ACCESS_TOKEN_EXPIRY as SignOptions["expiresIn"];
+
+            const expiryTime = process.env.JWT_TEMP_ACCESS_TOKEN_EXPIRY as SignOptions["expiresIn"];
             const tempToken = jwt.sign(tempPayload, process.env.JWT_TEMP_ACCESS_SECRET as string, { expiresIn: expiryTime });
 
             const otp = this._otpGenratorService.generateOtp();
             console.log("This is the signup Otp", otp);
-            
+
             await this._otpRepository.storeOtp({
                 email: userData.email,
                 otp,
@@ -57,11 +58,8 @@ export class SignupUseCase implements ISignupUseCase{
 
             return tempToken;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 

@@ -8,10 +8,10 @@ import { DisputeInputDTO } from "../../DTOs/DisputeDTO";
 import { ICreateDisputeAndNotifyUseCase } from "../../Interface/useCases/Client/ICreateDisputeAndNotifyUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { buildDisputeReportEmail } from "../../services/emailTemplates/disputeReportTemplate";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, USER_NOT_FOUND } = Messages;
-
+const { CONFLICT, NOT_FOUND } = HttpStatusCode;
+const { ALREADY_REPORTED_DISPUTE_TYPE, NOT_FOUND_MSG } = Messages;
 
 export class CreateDisputeAndNotifyUseCase implements ICreateDisputeAndNotifyUseCase {
     constructor(
@@ -24,11 +24,10 @@ export class CreateDisputeAndNotifyUseCase implements ICreateDisputeAndNotifyUse
     async execute(input: DisputeInputDTO): Promise<void> {
         try {
             const existingDispute = await this._disputeRepository.findExistingDispute(input.userId, input.contextId);
-            if (existingDispute) throw { status: CONFLICT, message: `You’ve already reportedt this ${input.disputeType.toLocaleLowerCase()}` };
+            if (existingDispute) throw new AppError(CONFLICT, ALREADY_REPORTED_DISPUTE_TYPE(input.disputeType.toLocaleLowerCase()));
 
             const userEmail = await this._userRepository.findUserEmail(input.userId);
-            if (!userEmail) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
-
+            if (!userEmail) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
 
             const dispute = await this._disputeRepository.create({
                 disputeId: uuidv4(),
@@ -46,11 +45,9 @@ export class CreateDisputeAndNotifyUseCase implements ICreateDisputeAndNotifyUse
             });
 
             await this._emailService.sendEmail(userEmail, " Thank-you for your report - FixOra", html);
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+            
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

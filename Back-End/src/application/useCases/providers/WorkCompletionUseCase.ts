@@ -14,10 +14,11 @@ import { NotificationType } from "../../../shared/enums/Notification";
 import { SendWorkFinsihedInput } from "../../DTOs/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND, NOT_FOUND_MSG } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const {  NOT_FOUND_MSG } = Messages;
 
 
 export class WorkCompletionUseCase implements IWorkCompletionUseCase {
@@ -56,9 +57,8 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -75,7 +75,8 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
             }
 
             const bookingData = await this._bookingRepository.findByBookingId(input.bookingId);
-            if (!bookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            if (!bookingData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+
 
             const transactionId = `Wlt_${uuidv4()}`;
             const numAmount = Number(bookingData.esCrowAmout);
@@ -107,7 +108,8 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
             };
 
             const updatedBooking = await this._bookingRepository.updateBooking(input.bookingId, updateData);
-            if (!updatedBooking || !updatedBooking.workProof || !updatedBooking.diagnosed) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+            if (!updatedBooking || !updatedBooking.workProof || !updatedBooking.diagnosed) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+
 
             await this.sendCompletedWorkNotification({
                 userId: updatedBooking.userId,
@@ -128,12 +130,8 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
                 },
             };
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
 
     }

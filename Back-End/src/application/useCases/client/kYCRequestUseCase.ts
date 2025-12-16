@@ -13,9 +13,10 @@ import { KYCInputDTO } from "../../DTOs/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/Client/IKYCRequestUseCase";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { IImageUploaderService } from "../../../domain/interface/ServiceInterface/IImageUploaderService";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED, INTERNAL_ERROR, USER_NOT_FOUND } = Messages;
+const { BAD_REQUEST, NOT_FOUND } = HttpStatusCode;
+const { PENDING_KYC_REQUEST, KYC_ALREADY_APPROVED, NOT_FOUND_MSG } = Messages;
 
 export class KYCRequestUseCase implements IKYCRequestUseCase {
     constructor(
@@ -30,7 +31,8 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
         try {
 
             const user = await this._userRepository.findByUserId(userId);
-            if (!user) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+            if (!user) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
+
 
             const admins = await this._userRepository.findByRole(RoleEnum.Admin);
 
@@ -57,9 +59,8 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
             await this._notificationService.sendToRole(RoleEnum.Admin, payload);
 
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -103,10 +104,10 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
 
             if (existing) {
                 if (existing.status === KYCStatus.Pending) {
-                    throw { status: BAD_REQUEST, message: PENDING_KYC_REQUEST };
+                    throw new AppError(BAD_REQUEST, PENDING_KYC_REQUEST);
                 }
                 if (existing.status === KYCStatus.Approved) {
-                    throw { status: BAD_REQUEST, message: KYC_ALREADY_APPROVED };
+                    throw new AppError(BAD_REQUEST, KYC_ALREADY_APPROVED);
                 }
                 if (existing.status === KYCStatus.Rejected) {
                     await this._kycRequestRepository.updateByUserId(input.userId, newRequest) as KYCRequest;
@@ -118,11 +119,8 @@ export class KYCRequestUseCase implements IKYCRequestUseCase {
             await this.sendKYCRequestNotification(input.userId);
             return "submitted";
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

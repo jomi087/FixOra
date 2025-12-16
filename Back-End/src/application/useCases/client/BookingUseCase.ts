@@ -14,10 +14,11 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
 import { IPushNotificationService } from "../../../domain/interface/ServiceInterface/IPushNotificationService";
 import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY } = HttpStatusCode;
-const { INTERNAL_ERROR, ALREDY_BOOKED, PENDING_BOOKING, NOT_FOUND_MSG,
-    BOOKING_ID_NOT_FOUND, PROVIDER_NO_RESPONSE, } = Messages;
+const { CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY, BAD_REQUEST } = HttpStatusCode;
+const { ALREDY_BOOKED, PENDING_BOOKING, NOT_FOUND_MSG, PROVIDER_NO_RESPONSE, TIME_OUTSIDE_PROVIDER_WORKING_HOURS,
+    PROVIDER_UNAVAILABLE_FOR_SELECTED_DAY, INVALID_INPUT, INTERNAL_ERROR } = Messages;
 
 export class BookingUseCase implements IBookingUseCase {
     constructor(
@@ -47,7 +48,8 @@ export class BookingUseCase implements IBookingUseCase {
                 cancelledAt
             );
 
-            if (!updatedBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            if (!updatedBookingData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+
 
             this._notificationService.notifyBookingResponseToUser(updatedBookingData.userId, {
                 bookingId: updatedBookingData.bookingId,
@@ -80,13 +82,14 @@ export class BookingUseCase implements IBookingUseCase {
 
             // console.log(CheckExistingNoRejectedBooking)
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.ACCEPTED)) {
-                throw { status: CONFLICT, message: ALREDY_BOOKED };
+                throw new AppError(CONFLICT, ALREDY_BOOKED);
             } else if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.PENDING)) {
-                throw { status: CONFLICT, message: PENDING_BOOKING };
+                throw new AppError(CONFLICT, PENDING_BOOKING);
             }
 
             let availability = await this._availabilityRepository.getProviderAvialability(input.providerId);
-            if (!availability) throw { status: NOT_FOUND, message: "Availability not found" };
+            if (!availability) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Availability"));
+
 
             const dayName = DAYS[scheduledAt.getDay()];
 
@@ -95,25 +98,28 @@ export class BookingUseCase implements IBookingUseCase {
             const timeStr = `${hours}:${minutes}`;
 
             const daySchedule = availability.workTime.find(d => d.day === dayName && d.active);
-            if (!daySchedule) throw { status: CONFLICT, message: "Provider not available on selected day" };
+            if (!daySchedule)
+                throw new AppError(CONFLICT, PROVIDER_UNAVAILABLE_FOR_SELECTED_DAY);
 
-            if (!daySchedule.slots.includes(timeStr)) throw { status: UNPROCESSABLE_ENTITY, message: "Selected time is outside provider’s working hours" };
+            if (!daySchedule.slots.includes(timeStr)) throw new AppError(UNPROCESSABLE_ENTITY, TIME_OUTSIDE_PROVIDER_WORKING_HOURS);
 
             let result = await this._userRepository.getServiceChargeWithDistanceFee(input.providerId, input.coordinates);
             if (!result) {
-                throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
             }
 
             const { serviceCharge, distanceFee } = result;
 
             if (isNaN(serviceCharge) || isNaN(distanceFee)) {
-                throw { status: INTERNAL_SERVER_ERROR, message: "ServiceCharge/DistanceFee is NaN " };
+                throw new AppError(BAD_REQUEST, INTERNAL_ERROR, INVALID_INPUT("service charge / distance fee"));
             }
 
             const commissionFeeData = await this._commissionFeeRepository.findCommissionFeeData();
-            const commissionFee = commissionFeeData?.fee;
-            if (!commissionFeeData || !commissionFee || isNaN(commissionFee)) {
-                throw { status: INTERNAL_SERVER_ERROR, message: "Issue Found in CommissionFeeData" };
+            if (!commissionFeeData?.fee) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Commission"));
+
+            const commissionFee = commissionFeeData.fee;
+            if (isNaN(commissionFee)) {
+                throw new AppError(BAD_REQUEST, INTERNAL_ERROR, INVALID_INPUT("commission Fee"));
             }
 
             const newBooking: Booking = {
@@ -145,7 +151,7 @@ export class BookingUseCase implements IBookingUseCase {
             const bookingDataInDetails = await this._bookingRepository.findCurrentBookingDetails(bookingId);
 
             if (!bookingDataInDetails) {
-                throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
 
             const { userInfo, providerInfo, bookingInfo, subCategoryInfo } = bookingDataInDetails;
@@ -175,10 +181,8 @@ export class BookingUseCase implements IBookingUseCase {
             };
             return mappedData;
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

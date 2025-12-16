@@ -1,11 +1,7 @@
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { Messages } from "../../../shared/const/Messages";
 import { ReviewInputDTO, ReviewOutputDTO } from "../../DTOs/ReviewDTO";
 import { IGetProviderReviewsUseCase } from "../../Interface/useCases/Client/IGetProviderReviewsUseCase";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
 
 export class GetProviderReviewsUseCase implements IGetProviderReviewsUseCase {
     constructor(
@@ -25,7 +21,7 @@ export class GetProviderReviewsUseCase implements IGetProviderReviewsUseCase {
 
             const mappedData = reviewData.data.map((item) => ({
                 ratingData: {
-                    ratingId : item.rating.ratingId ,
+                    ratingId: item.rating.ratingId,
                     rating: item.rating.rating,
                     feedback: item.rating.feedback,
                     createdAt: item.rating.createdAt,
@@ -44,25 +40,8 @@ export class GetProviderReviewsUseCase implements IGetProviderReviewsUseCase {
                 total: totalPages
             };
 
-        } catch (error) {
-            if (error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }
-
-/*
-           if (error instanceof Error) {
-                const appError = new AppError(INTERNAL_SERVER_ERROR, error.message || "Internal Server Error");
-                appError.stack = error.stack;
-                throw appError;
-            }
-
-            if (error instanceof AppError) {
-                throw error;
-            }
-            
-            throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR);
-*/

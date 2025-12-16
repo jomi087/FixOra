@@ -7,9 +7,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase";
 import { SignInOutputDTO } from "../../DTOs/AuthDTO/SigninDTO";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, FORBIDDEN } = HttpStatusCode;
-const { INTERNAL_ERROR, USER_NOT_FOUND, ACCOUNT_BLOCKED } = Messages;
+const { NOT_FOUND, FORBIDDEN } = HttpStatusCode;
+const { NOT_FOUND_MSG, ACCOUNT_BLOCKED } = Messages;
 
 export class GoogleSigninUseCase implements IGoogleSigninUseCase {
     constructor(
@@ -36,7 +37,8 @@ export class GoogleSigninUseCase implements IGoogleSigninUseCase {
                     role,
                 });
             }
-            if (user.isBlocked) throw { status: FORBIDDEN, message: ACCOUNT_BLOCKED };
+            if (user.isBlocked) throw new AppError(FORBIDDEN, ACCOUNT_BLOCKED);
+
 
             const payload = {
                 id: user.userId,
@@ -49,7 +51,7 @@ export class GoogleSigninUseCase implements IGoogleSigninUseCase {
 
             const updatedUserData = await this._userRepository.updateRefreshTokenAndGetUser(user.userId, refToken);
             if (!updatedUserData) {
-                throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
             }
 
             let mappedupdatedUserData = {
@@ -67,11 +69,10 @@ export class GoogleSigninUseCase implements IGoogleSigninUseCase {
             };
 
             return mappedupdatedUserData;
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+            
+        } catch (error: unknown) {
+            throw error;
         }
+
     }
 }

@@ -16,10 +16,11 @@ import { SendBookingConfirmedInput } from "../../DTOs/NotificationDTO";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST, PAYMENT_REQUIRED } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND, DATA_MISMATCH, WALLET_ID_NOT_FOUND, INSUFFICIENT_BALANCE } = Messages;
+const { NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR, PAYMENT_REQUIRED } = HttpStatusCode;
+const { DATA_MISMATCH, NOT_FOUND_MSG, INSUFFICIENT_BALANCE, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD } = Messages;
 
 export class WalletPaymentUseCase implements IWalletPaymentUseCase {
     constructor(
@@ -58,9 +59,8 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -70,13 +70,14 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
             const { userId, bookingId } = input;
             let booking = await this._bookingRepository.findByBookingId(bookingId);
 
-            if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
-            if (booking.userId !== userId) throw { status: BAD_REQUEST, message: DATA_MISMATCH };
+            if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+            if (booking.userId !== userId) throw new AppError(BAD_REQUEST, DATA_MISMATCH);
+
 
             const wallet = await this._walletRepository.findByUserId(userId);
-            if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+            if (!wallet) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
             const totalAmount = booking.pricing.baseCost + booking.pricing.distanceFee;
-            if (wallet.balance < totalAmount) throw { status: PAYMENT_REQUIRED, message: INSUFFICIENT_BALANCE };
+            if (wallet.balance < totalAmount) throw new AppError(PAYMENT_REQUIRED, INSUFFICIENT_BALANCE);
 
             const transactionId = `Wlt_${uuidv4()}`;
 
@@ -91,14 +92,14 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                         bookingId: booking.bookingId
                     }
                 });
-            } catch (error) {
+            } catch (error:unknown) {
                 await this._walletRepository.updateWalletOnTransaction({
                     userId: userId,
                     transactionId,
                     amount: totalAmount,
                     status: TransactionStatus.FAILED,
                     type: TransactionType.DEBIT,
-                    reason: error.message || "Wallet Payment failed",
+                    reason: "Wallet Payment failed",
                     metadata: {
                         bookingId: booking.bookingId
                     }
@@ -115,7 +116,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 };
                 await this._bookingRepository.updateBooking(bookingId, updateData);
 
-                throw { status: INTERNAL_SERVER_ERROR, message: error.message || INTERNAL_ERROR };
+                throw error;
             };
 
             const updateData = {
@@ -134,12 +135,13 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
             try {
 
                 updatedBooking = await this._bookingRepository.updateBooking(bookingId, updateData);
-                if (!updatedBooking || !updatedBooking.paymentInfo) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+                if (!updatedBooking.paymentInfo) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("updatedBooking.paymentInfo"));
 
                 const jobKey = `paymentBooking-${updatedBooking.bookingId}`;
                 this._bookingSchedulerService.cancel(jobKey);
 
-            } catch (error) {
+            } catch (error: unknown) {
 
                 await this._walletRepository.updateWalletOnTransaction({
                     userId,
@@ -153,7 +155,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                     }
                 });
 
-                throw { status: INTERNAL_SERVER_ERROR, message: error.message || INTERNAL_ERROR };
+                throw error;
             }
 
 
@@ -192,9 +194,8 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                 }
             };
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

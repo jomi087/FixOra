@@ -1,13 +1,9 @@
 import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
 import { IChatMessageRepository } from "../../../domain/interface/RepositoryInterface/IChatMessageRepository";
 import { IChatRepository } from "../../../domain/interface/RepositoryInterface/IChatRepository";
-import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { LogCallInputDTO } from "../../DTOs/ChatDTO";
 import { ILogCallUseCase } from "../../Interface/useCases/chat/ILogCallUseCase";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR, } = Messages;
 
 export class LogCallUseCase implements ILogCallUseCase {
     constructor(
@@ -30,7 +26,7 @@ export class LogCallUseCase implements ILogCallUseCase {
                 chatId,
                 callerId,
                 content,
-                "call", 
+                "call",
                 status
             );
 
@@ -38,11 +34,8 @@ export class LogCallUseCase implements ILogCallUseCase {
 
             return chatMsg;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

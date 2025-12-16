@@ -2,11 +2,12 @@ import { ICategoryRepository } from "../../../domain/interface/RepositoryInterfa
 import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { ShortCategoryOutputDTO } from "../../DTOs/CategoryDTO";
 import { IProviderServiceUseCase } from "../../Interface/useCases/Provider/IProviderServiceUseCase";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, PROVIDER_NOT_FOUND, CATEGORY_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 export class ProviderServiceUseCase implements IProviderServiceUseCase {
 
@@ -19,11 +20,10 @@ export class ProviderServiceUseCase implements IProviderServiceUseCase {
 
         try {
             const categoryId = await this._providerRepository.findServiceId(providerUserId);
-            if (!categoryId) throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND };
+            if (!categoryId) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Provider"));
 
             const category = await this._categoryRepository.findById(categoryId);
-            if (!category) throw { status: NOT_FOUND, message: CATEGORY_NOT_FOUND };
-
+            if (!category) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Services"));
             const mappedData: ShortCategoryOutputDTO = {
                 categoryId: category.categoryId,
                 name: category.name,
@@ -35,12 +35,8 @@ export class ProviderServiceUseCase implements IProviderServiceUseCase {
 
             return mappedData;
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

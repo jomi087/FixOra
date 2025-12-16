@@ -10,6 +10,7 @@ import { IChatService } from "../../domain/interface/ServiceInterface/IChatServi
 import { CallStatus } from "../../shared/types/common";
 import { ICallService } from "../../domain/interface/ServiceInterface/ICallService";
 import { ILogCallUseCase } from "../../application/Interface/useCases/chat/ILogCallUseCase";
+import { AppError } from "../../shared/errors/AppError";
 
 const { OK, UNAUTHORIZED } = HttpStatusCode;
 const { UNAUTHORIZED_MSG } = Messages;
@@ -30,7 +31,7 @@ export class ChatController {
         try {
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const userId = req.user.userId;
             const partnerId = req.body.userId as string;
@@ -49,7 +50,7 @@ export class ChatController {
     async getChatList(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const search = req.query.searchQuery;
 
@@ -90,7 +91,7 @@ export class ChatController {
     async sendChatMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const { chatId } = req.params;
             const { content } = req.body;
@@ -128,7 +129,7 @@ export class ChatController {
     async logCall(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const { chatId } = req.params;
             const { callerId, status }: { callerId: string; status: CallStatus } = req.body;

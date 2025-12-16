@@ -10,10 +10,11 @@ import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { Messages } from "../../../shared/const/Messages";
 import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../DTOs/BookingDTO/UpdateBookingStatusDTO";
 import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/IUpdateBookingStatusUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND, ALREADY_UPDATED, PAYMENT_TIMEOUT_MSG } = Messages;
+const { NOT_FOUND, CONFLICT } = HttpStatusCode;
+const { NOT_FOUND_MSG, ALREADY_UPDATED, PAYMENT_TIMEOUT_MSG } = Messages;
 
 export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
     constructor(
@@ -40,7 +41,7 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
                 cancelledAt
             );
 
-            if (!cancelledBookingData) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+            if (!cancelledBookingData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             this._notificationService.autoRejectTimeOutPayment(cancelledBookingData.userId, cancelledBookingData.bookingId);
         });
     }
@@ -51,11 +52,11 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
 
             const booking = await this._bookingRepository.findByBookingId(bookingId);
             if (!booking) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
 
             if (booking.provider.response !== ProviderResponseStatus.PENDING) {
-                throw { status: CONFLICT, message: ALREADY_UPDATED };
+                throw new AppError(CONFLICT, ALREADY_UPDATED);
             }
 
             let updatedBookingData: Booking | null;
@@ -68,7 +69,7 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
             }
 
             if (!updatedBookingData) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             }
 
             if (action === ProviderResponseStatus.ACCEPTED) {
@@ -95,11 +96,8 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
 
             return mappedData;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

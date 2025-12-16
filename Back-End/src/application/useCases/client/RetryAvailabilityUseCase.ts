@@ -5,10 +5,11 @@ import { PaymentStatus } from "../../../shared/enums/Payment";
 import { Messages } from "../../../shared/const/Messages";
 import { RetryAvailabilityInputDTO, RetryAvailabilityOutputDTO } from "../../DTOs/BookingDTO/BookingInfoDTO";
 import { IRetryAvailabilityUseCase } from "../../Interface/useCases/Client/IRetryAvailabilityUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND, DATA_MISMATCH, ALREDY_BOOKED, NOT_FOUND_MSG, SLOT_TIME_PASSED } = Messages;
+const { NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
+const { DATA_MISMATCH, ALREDY_BOOKED, NOT_FOUND_MSG, SLOT_TIME_PASSED } = Messages;
 
 export class RetryAvailabilityUseCase implements IRetryAvailabilityUseCase {
     constructor(
@@ -16,17 +17,18 @@ export class RetryAvailabilityUseCase implements IRetryAvailabilityUseCase {
 
     ) { }
 
-    async execute(input: RetryAvailabilityInputDTO): Promise<RetryAvailabilityOutputDTO|null> {
+    async execute(input: RetryAvailabilityInputDTO): Promise<RetryAvailabilityOutputDTO | null> {
         try {
 
             const { userId, bookingId } = input;
 
             const bookingData = await this._bookingRepository.findByBookingId(bookingId);
             if (!bookingData) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
             };
 
-            if (bookingData.userId !== userId) throw { status: BAD_REQUEST, message: DATA_MISMATCH };
+            if (bookingData.userId !== userId) throw new AppError(BAD_REQUEST, DATA_MISMATCH);
+
 
             //valdiationg if slot is availabe or not 
             const currentDateTime = new Date();
@@ -44,7 +46,7 @@ export class RetryAvailabilityUseCase implements IRetryAvailabilityUseCase {
                     cancelledAt
                 );
 
-                if (!cancelledBooking?.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                if (!cancelledBooking?.paymentInfo) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
                 return {
                     status: cancelledBooking.status,
@@ -71,7 +73,7 @@ export class RetryAvailabilityUseCase implements IRetryAvailabilityUseCase {
                     cancelledAt
                 );
 
-                if (!cancelledBooking?.paymentInfo) throw { status: NOT_FOUND, message: NOT_FOUND_MSG };
+                if (!cancelledBooking?.paymentInfo) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
                 return {
                     status: cancelledBooking.status,
@@ -82,13 +84,10 @@ export class RetryAvailabilityUseCase implements IRetryAvailabilityUseCase {
                     reason: ALREDY_BOOKED,
                 };
             }
-            return null; 
+            return null;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

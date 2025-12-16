@@ -1,11 +1,8 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { Messages } from "../../../shared/const/Messages";
 import { JobHistoryInputDTO, JobHistoryOutputDTO } from "../../DTOs/BookingDTO/BookingHistoryDTO";
 import { IJobHistoryUseCase } from "../../Interface/useCases/Provider/IJobHistoryUseCase";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
+
 
 export class JobHistoryUseCase implements IJobHistoryUseCase {
     constructor(
@@ -33,11 +30,8 @@ export class JobHistoryUseCase implements IJobHistoryUseCase {
                 total: bookings.total
             };
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

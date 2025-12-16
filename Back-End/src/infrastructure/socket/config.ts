@@ -19,7 +19,7 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
 
     //socket Event listners
     ioInstance.on("connection", (socket) => {
-        logger.info("---------Socket Connected--------");
+        logger.info("Socket Connected");
         const { userId, role } = socket.data;
 
         // Join user-specific room for personal notifications
@@ -40,7 +40,6 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
         //     socket.to(chatId).emit("chat:typing", { userId });
         // });
 
-        // Caller → wants to start a call
         socket.on("zego:call:invite", (payload: { roomID: string; callFrom: string; callTo: string; callerName: string }) => {
             ioInstance.to(payload.callTo).emit("zego:call:incoming", {
                 roomID: payload.roomID,
@@ -49,14 +48,8 @@ export const initializeSocket = (httpServer: HTTPServer, logger: ILoggerService)
             });
         });
 
-        // socket.on("zego:call:reject", (payload: { callTo: string; }) => {
-        //     ioInstance.to(payload.callTo).emit("zego:call:rejected", {
-        //         reason: "Call Rejected"
-        //     });
-        // });
-
         socket.on("disconnect", (reason) => {
-            logger.info(`-----------------socket disconnected, Reason: ${reason}-------------`);
+            logger.info(`socket disconnected, Reason: ${reason}`);
         });
 
         socket.on("error", (error) => {

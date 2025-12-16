@@ -4,32 +4,29 @@ import { IHashService } from "../../../domain/interface/ServiceInterface/IHashSe
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IResetPasswordUseCase } from "../../Interface/useCases/Auth/IResetPasswordUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { NOT_FOUND,INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
-export class ResetPasswordUseCase implements IResetPasswordUseCase{
+export class ResetPasswordUseCase implements IResetPasswordUseCase {
     constructor(
-        private readonly _hashService : IHashService,
-        private readonly _userRepository : IUserRepository,
+        private readonly _hashService: IHashService,
+        private readonly _userRepository: IUserRepository,
     ) { }
-    
-    async execute( token : string , password : string ):Promise<void> {
+
+    async execute(token: string, password: string): Promise<void> {
         try {
-            const hashedPassword = await this._hashService.hash( password ); 
+            const hashedPassword = await this._hashService.hash(password);
 
-            const decodeEmail = jwt.verify(token, process.env.JWT_RESET_PASSWORD_SECRET as string) as { email : string};
-            
-            if (!await this._userRepository.resetPasswordByEmail(decodeEmail.email ,hashedPassword )) {
-                throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+            const decodeEmail = jwt.verify(token, process.env.JWT_RESET_PASSWORD_SECRET as string) as { email: string };
+
+            if (!await this._userRepository.resetPasswordByEmail(decodeEmail.email, hashedPassword)) {
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("User"));
             }
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

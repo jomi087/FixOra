@@ -1,13 +1,9 @@
 import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
 import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
 import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { Messages } from "../../../shared/const/Messages";
 import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase";
 import { commonOtpEmail } from "../../services/emailTemplates/commonOtpTemplate";
 
-const { INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INTERNAL_ERROR } = Messages;
 
 export class ResendOtpUseCase implements IResendOtpUseCase {
     constructor(
@@ -19,7 +15,7 @@ export class ResendOtpUseCase implements IResendOtpUseCase {
 
     async execute(email: string): Promise<void> {
         try {
-            
+
             const otp = this._otpGenratorService.generateOtp();
             console.log("this._is resend otp", otp);
 
@@ -32,11 +28,8 @@ export class ResendOtpUseCase implements IResendOtpUseCase {
             const html = commonOtpEmail({ otp, description: "Re-send Otp request" });
             await this._emailService.sendEmail(email, "FixOra OTP", html);
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

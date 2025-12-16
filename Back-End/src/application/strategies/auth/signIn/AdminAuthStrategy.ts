@@ -6,32 +6,30 @@ import { Messages } from "../../../../shared/const/Messages";
 import { RoleEnum } from "../../../../shared/enums/Roles";
 import { SigninInputDTO } from "../../../DTOs/AuthDTO/SigninDTO";
 import { AuthData, IAuthStrategy } from "../../../Interface/strategies/auth/IAuthStrategy";
+import { AppError } from "../../../../shared/errors/AppError";
 
-const { FORBIDDEN, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { INVALID_CREDENTIALS, INTERNAL_ERROR } = Messages;
+const { FORBIDDEN } = HttpStatusCode;
+const { INVALID_CREDENTIALS } = Messages;
 
-export class AdminAuthStrategy  implements IAuthStrategy  {
+export class AdminAuthStrategy implements IAuthStrategy {
     constructor(
         private readonly _userRepository: IUserRepository,
         private readonly _hashService: IHashService
-    ) {}
+    ) { }
 
     async authenticate(credentials: SigninInputDTO): Promise<AuthData> {
-        
+
         try {
             const user = await this._userRepository.findByEmail(credentials.email) as User;
 
-            if (!user || user.role != credentials.role ||  user.role != RoleEnum.Admin  ) throw { status: FORBIDDEN, message: INVALID_CREDENTIALS };
-            const isMatch = await this._hashService.compare(credentials.password, user.password as string );
-            if (!isMatch) throw { status: FORBIDDEN , message: INVALID_CREDENTIALS };
+            if (!user || user.role != credentials.role || user.role != RoleEnum.Admin) throw new AppError(FORBIDDEN, INVALID_CREDENTIALS);
+
+            const isMatch = await this._hashService.compare(credentials.password, user.password as string);
+            if (!isMatch) throw new AppError(FORBIDDEN, INVALID_CREDENTIALS);
             return { userData: user, role: RoleEnum.Admin };
-            
-        } catch (error ) {
-            if (error.status && error.message) throw error;
-            throw {
-                status: INTERNAL_SERVER_ERROR,
-                message: INTERNAL_ERROR
-            };
+
+        } catch (error:unknown) {
+            throw error;
         }
     }
 }

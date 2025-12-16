@@ -3,10 +3,11 @@ import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 import { ISignOutStrategy } from "../../../Interface/strategies/auth/ISignOutStrategy";
 import { SignOutDTO } from "../../../DTOs/AuthDTO/SingOutDTO";
+import { AppError } from "../../../../shared/errors/AppError";
 
 
-const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = HttpStatusCode;
-const { USER_NOT_FOUND, INTERNAL_ERROR } = Messages;
+const { BAD_REQUEST } = HttpStatusCode;
+const { USER_NOT_FOUND, MISSING_TOKEN } = Messages;
 
 export class ProviderSignOutStrategy implements ISignOutStrategy {
     constructor(
@@ -15,18 +16,13 @@ export class ProviderSignOutStrategy implements ISignOutStrategy {
 
     async execute(input: SignOutDTO): Promise<void> {
         try {
-            if (!input.fcmToken) throw { status: BAD_REQUEST, message: "FCM TOKEN MISSING" };
+            if (!input.fcmToken) throw new AppError(BAD_REQUEST, MISSING_TOKEN("FCM"));
             //clear fcm token and refreshToken
             if (!(await this._userRepository.clearTokensById(input.userId, input.fcmToken))) {
-                throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
+                throw new AppError(BAD_REQUEST, USER_NOT_FOUND);
             }
-        } catch (error) {
-            if (error.status && error.message) throw error;
-
-            throw {
-                status: INTERNAL_SERVER_ERROR,
-                message: INTERNAL_ERROR
-            };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

@@ -30,9 +30,10 @@ import { IRescheduleBookingUseCase } from "../../application/Interface/useCases/
 import { IUpdateSelectedLocationUseCase } from "../../application/Interface/useCases/Client/IUpdateSelectedLocationUseCase";
 import { IRequestEmailUpdateUseCase } from "../../application/Interface/useCases/Client/IRequestEmailUpdateUseCase";
 import { IConfirmEmailUpdateUseCase } from "../../application/Interface/useCases/Client/IConfirmEmailUpdateUseCase";
+import { AppError } from "../../shared/errors/AppError";
 
 const { OK, BAD_REQUEST, NOT_FOUND, UNAUTHORIZED, UNPROCESSABLE_ENTITY, CONFLICT, GONE } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, USER_NOT_FOUND, FIELD_REQUIRED, KYC_REQUEST_STATUS,
+const { UNAUTHORIZED_MSG, IMAGE_VALIDATION_ERROR, FIELD_REQUIRED, KYC_REQUEST_STATUS,
     VERIFICATION_MAIL_SENT, PROFILE_UPDATED_SUCCESS, ADD_ADDRESS,
     SUBMITTED_BOOKING_REQUEST, BOOKING_ID_NOT_FOUND } = Messages;
 
@@ -96,8 +97,9 @@ export class UserController {
             console.log(req.query);
 
             const user = req.user;
-            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
-            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
+            if (!user) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
+
+            if (!user.location || !user.location.coordinates) throw new AppError(UNPROCESSABLE_ENTITY, ADD_ADDRESS);
 
             let parsedCoordinates = {
                 latitude: user.location.coordinates.latitude,
@@ -150,8 +152,8 @@ export class UserController {
             const { id } = req.params;
 
             const user = req.user;
-            if (!user) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
-            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
+            if (!user) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
+            if (!user.location || !user.location.coordinates) throw new AppError(UNPROCESSABLE_ENTITY, ADD_ADDRESS);
 
             let location = {
                 latitude: user.location.coordinates.latitude,
@@ -164,7 +166,6 @@ export class UserController {
                     longitude: user.selectedLocation.lng
                 };
             }
-
 
             const result = await this._providerInfoUseCase.execute({
                 id,
@@ -185,8 +186,7 @@ export class UserController {
     async saveLocation(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = req.user?.userId;
-            if (!userId) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
-
+            if (!userId) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             const { address, lat, lng } = req.body;
             console.log(address, lat, lng);
 
@@ -212,7 +212,7 @@ export class UserController {
     async kycApplication(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = req.user?.userId;
-            if (!userId) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
+            if (!userId) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
 
             const { dob, gender, service, specialization, serviceCharge } = req.body;
 
@@ -221,7 +221,7 @@ export class UserController {
             const requiredFields = ["profileImage", "idCard", "educationCertificate"];
             for (const field of requiredFields) {
                 if (!files?.[field] || files[field].length === 0) {
-                    throw { status: BAD_REQUEST, message: FIELD_REQUIRED };
+                    throw new AppError(BAD_REQUEST,FIELD_REQUIRED);
                 }
             }
 
@@ -229,7 +229,7 @@ export class UserController {
                 for (const file of files[field]) {
                     const validationError = validateFile(file, allowedTypes, maxSizeMB);
                     if (validationError) {
-                        throw { status: BAD_REQUEST, message: validationError || IMAGE_VALIDATION_ERROR };
+                        throw new AppError(BAD_REQUEST, validationError || IMAGE_VALIDATION_ERROR);
                     }
                 }
             }
@@ -305,7 +305,7 @@ export class UserController {
     async createReviewDispute(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const userId = req.user.userId;
             const disputeType = DisputeType.REVIEW;
@@ -326,7 +326,7 @@ export class UserController {
 
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
             }
 
             const reviewStatus = await this._reviewStatusUseCase.execute(bookingId);
@@ -364,9 +364,9 @@ export class UserController {
             const { providerId, providerUserId, scheduledAt, issueTypeId, issue } = req.body;
 
             const user = req.user;
-            if (!user?.userId) throw { status: BAD_REQUEST, message: USER_NOT_FOUND };
-            if (!user.location || !user.location.coordinates) throw { status: UNPROCESSABLE_ENTITY, message: ADD_ADDRESS };
+            if (!user?.userId) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
 
+            if (!user.location || !user.location.coordinates) throw new AppError(UNPROCESSABLE_ENTITY,ADD_ADDRESS);
             const userId = user.userId;
 
             let location: { latitude: number; longitude: number };
@@ -422,8 +422,6 @@ export class UserController {
             const { rescheduledAt } = req.body;
             const bookingId = req.params.bookingId as string;
 
-            console.log("hi");
-
             const data = await this._rescheduleBookingUseCase.execute({ bookingId, rescheduledAt });
 
             res.status(200).json({
@@ -439,7 +437,7 @@ export class UserController {
     async getBookingHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const userId = req.user.userId;
@@ -464,7 +462,7 @@ export class UserController {
         try {
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
             }
             const data = await this._getBookingDetailsUseCase.execute(bookingId);
             res.status(OK).json({
@@ -480,14 +478,14 @@ export class UserController {
         try {
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const userId = req.user.userId;
 
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
             }
 
             const result = await this._retryAvailabilityUseCase.execute({ userId, bookingId });
@@ -522,14 +520,14 @@ export class UserController {
         try {
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const userId = req.user.userId;
 
             const { bookingId } = req.params;
             if (!bookingId) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND,BOOKING_ID_NOT_FOUND);
             }
 
             const data = await this._cancelBookingUseCase.execute({ userId, bookingId });
@@ -564,7 +562,7 @@ export class UserController {
     async initiateWalletPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const userId = req.user.userId;
 
@@ -599,7 +597,7 @@ export class UserController {
     async walletInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const userId = req.user.userId;
 
@@ -625,7 +623,7 @@ export class UserController {
             const role = req.user?.role;
 
             if (!userId || !role) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const { amount } = req.body;
@@ -645,7 +643,7 @@ export class UserController {
     async requestEmailUpdate(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             // console.log("hi");
             const currentEmail = req.user.email!;
@@ -666,7 +664,7 @@ export class UserController {
         try {
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             console.log(req.body);
             const currentEmail = req.user.email!;
@@ -688,7 +686,7 @@ export class UserController {
         try {
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const userId = req.user.userId;
@@ -712,7 +710,7 @@ export class UserController {
             const { password } = req.body;
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const userId = req.user.userId;
             await this._verifyPasswordUseCase.execute(password, userId);

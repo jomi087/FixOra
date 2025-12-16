@@ -4,30 +4,31 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../DTOs/ProviderInfoDTO";
 import { IProviderInfoUseCase } from "../../Interface/useCases/Client/IProviderInfoUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR,NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR ,PROVIDER_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 
-export class ProviderInfoUseCase implements IProviderInfoUseCase{
+export class ProviderInfoUseCase implements IProviderInfoUseCase {
     constructor(
-        private readonly _userRepository : IUserRepository, 
+        private readonly _userRepository: IUserRepository,
     ) { }
-    
-    async execute(input: ProviderInfoInputDTO ): Promise<ProviderInfoOutputDTO>{
-        try { 
-            const providerData = await this._userRepository.findProviderInfoById(input.id,input.coordinates);
-            
+
+    async execute(input: ProviderInfoInputDTO): Promise<ProviderInfoOutputDTO> {
+        try {
+            const providerData = await this._userRepository.findProviderInfoById(input.id, input.coordinates);
+
             if (!providerData) {
-                throw { status: NOT_FOUND, message: PROVIDER_NOT_FOUND }; 
+                throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Provider"));
             }
 
             const { user, provider, category, booking, availability, distanceFee } = providerData;
-            
+
             const mappedData: ProviderInfoDTO = {
                 providerId: provider.providerId,
                 user: {
-                    userId: user.userId , 
+                    userId: user.userId,
                     fname: user.fname,
                     lname: user.lname,
                 },
@@ -40,26 +41,22 @@ export class ProviderInfoUseCase implements IProviderInfoUseCase{
                         name: sub.name
                     }))
                 },
-                bookings:booking.map(bk => ({
+                bookings: booking.map(bk => ({
                     bookingId: bk.bookingId,
-                    scheduledAt : bk.scheduledAt,
+                    scheduledAt: bk.scheduledAt,
                     status: bk.status,
                 })),
-                availability : availability.workTime,
+                availability: availability.workTime,
                 profileImage: provider.profileImage,
                 serviceCharge: provider.serviceCharge,
-                isOnline: provider.isOnline, 
-                distanceFee : distanceFee,
+                isOnline: provider.isOnline,
+                distanceFee: distanceFee,
             };
             return mappedData;
 
-        } catch (error) {
-            console.log(error);
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
-    
+
 }

@@ -3,12 +3,13 @@ import { IChatMessageRepository } from "../../../domain/interface/RepositoryInte
 import { IChatRepository } from "../../../domain/interface/RepositoryInterface/IChatRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { SendChatMessageInputDTO } from "../../DTOs/ChatDTO";
 import { ISendChatMessageUseCase } from "../../Interface/useCases/chat/ISendChatMessageUseCase";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG, } = Messages;
 
 export class SendChatMessageUseCase implements ISendChatMessageUseCase {
     constructor(
@@ -33,20 +34,19 @@ export class SendChatMessageUseCase implements ISendChatMessageUseCase {
             await this._chatRepository.updateLatestMessage(input.chatId, chatMsg.id!);
 
             const chat = await this._chatRepository.getChatById(chatId);
-            if (!chat) throw { status: NOT_FOUND, message: "Chat not found" };
+            if (!chat) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Chat"));
+
 
             const receiverId = chat.participants.find(id => id !== senderId);
-            if (!receiverId) throw { status: NOT_FOUND, message: "Receiver not found" };
+            if (!receiverId) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Receiver"));
+
 
             return {
-                chatMessage: chatMsg,  
+                chatMessage: chatMsg,
                 receiverId
             };
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

@@ -3,9 +3,10 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
 import { IWalletTopUpUseCase, WalletTopUpInput } from "../../Interface/useCases/Client/IWalletTopUpUseCase";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
+import { AppError } from "../../../shared/errors/AppError";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, WALLET_ID_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 
 export class WalletTopupUseCase implements IWalletTopUpUseCase {
@@ -19,13 +20,12 @@ export class WalletTopupUseCase implements IWalletTopUpUseCase {
             const { amount, role, userId } = input;
 
             let wallet = await this._walletRepository.findByUserId(userId);
-            if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+            if (!wallet) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
             
             return await this._paymentService.createWalletTopUpIntent(userId, role, amount);
             
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

@@ -4,11 +4,12 @@ import { IFileValidator } from "../../../domain/interface/ServiceInterface/IFile
 import { IImageUploaderService } from "../../../domain/interface/ServiceInterface/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { UpdateCategoryInputDTO } from "../../DTOs/CategoryDTO";
 import { IUpdateCategoryUseCase } from "../../Interface/useCases/Admin/IUpdateCategoryUseCase";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT } = HttpStatusCode;
-const { INTERNAL_ERROR, CATEGORY_ALREADY_EXISTS } = Messages;
+const { NOT_FOUND, CONFLICT } = HttpStatusCode;
+const { CATEGORY_ALREADY_EXISTS, CATEGORY_NOT_FOUND } = Messages;
 
 export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
     constructor(
@@ -23,7 +24,7 @@ export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
             const normalizedCategoryName = name.trim().toLowerCase();
             const existing = await this._categoryRepository.findByName(normalizedCategoryName);
             if (existing && existing.categoryId != categoryId) {
-                throw { status: CONFLICT, message: CATEGORY_ALREADY_EXISTS };
+                throw new AppError(CONFLICT, CATEGORY_ALREADY_EXISTS);
             }
 
             let imageUrl: string | null = null;
@@ -40,16 +41,13 @@ export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
             });
 
             if (!updated) {
-                throw { status: NOT_FOUND, message: "Id Not Found" };
+                throw new AppError(NOT_FOUND, CATEGORY_NOT_FOUND);
             }
 
             return updated;
 
-        } catch (error) {
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 }

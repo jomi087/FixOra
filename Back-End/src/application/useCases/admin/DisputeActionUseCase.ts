@@ -3,12 +3,13 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { AppError } from "../../../shared/errors/AppError";
 import { DisputeActionInputDTO, DisputeActionOutputDTO } from "../../DTOs/DisputeDTO";
 import { IDisputeActionHandler } from "../../Interface/useCases/Admin/handlers/IDisputeActionHandler";
 import { IDisputeActionUseCase } from "../../Interface/useCases/Admin/IDisputeActionUseCase";
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND } = HttpStatusCode;
-const { INTERNAL_ERROR, USER_NOT_FOUND } = Messages;
+const { NOT_FOUND } = HttpStatusCode;
+const { USER_NOT_FOUND, DISPUTE_NOT_FOUND, INVALID_TYPE } = Messages;
 
 export class DisputeActionUseCase implements IDisputeActionUseCase {
     constructor(
@@ -20,50 +21,42 @@ export class DisputeActionUseCase implements IDisputeActionUseCase {
 
     async execute(input: DisputeActionInputDTO): Promise<DisputeActionOutputDTO> {
 
-        console.log("entered useCase");
         // const tx = await this.transactionManager.start();
 
         try {
             const { disputeId, status, userId, reason } = input;
             const disputeData = await this._disputeRepository.findById(disputeId);
-            if (!disputeData) throw { status: NOT_FOUND, message: "DisputeId Not Found" };
+            if (!disputeData) throw new AppError(NOT_FOUND, DISPUTE_NOT_FOUND);
 
             const handler = this._handlers[disputeData.disputeType];
-            if (!handler) throw { status: NOT_FOUND, message: "Unsupported dispute type" };
+            if (!handler) throw new AppError(NOT_FOUND, INVALID_TYPE("Dispute"));
 
             const updatedDispute = await this._disputeRepository.updateDispute(
                 disputeId,
                 status,
                 { adminId: userId, action: reason },
             );
-            if (!updatedDispute || !updatedDispute.adminNote) throw { status: NOT_FOUND, message: "Dispute update failed" };
-            console.log("updatedDispute",updatedDispute);
+            if (!updatedDispute || !updatedDispute.adminNote) throw new AppError(NOT_FOUND, DISPUTE_NOT_FOUND);
 
             await handler.takeAction(updatedDispute);
 
             const adminData = await this._userReporitory.findByUserId(updatedDispute.adminNote.adminId, ["password", "refreshToken"]);
-            if (!adminData) throw { status: NOT_FOUND, message: USER_NOT_FOUND };
-            // await tx.commit();
+            if (!adminData) throw new AppError(NOT_FOUND, USER_NOT_FOUND);
 
-            const mappedData:DisputeActionOutputDTO= {
+            const mappedData: DisputeActionOutputDTO = {
                 status: updatedDispute.status,
                 adminNote: {
                     name: `${adminData.fname} ${adminData.lname ?? ""}`,
                     action: updatedDispute.adminNote.action
                 }
             };
-            console.log("mappedData",mappedData);
             return mappedData;
 
-        } catch (error) {
+        } catch (error:unknown) {
             // console.log("error", error);
             // await tx.rollback();
-            if (error.status && error.message) {
-                throw error;
-            }
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
-            // } finally {
-            //     await tx.end();
-        }
+            throw error;
+           
+        } //finally { await tx.end() }
     }
 }

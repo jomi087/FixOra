@@ -16,15 +16,15 @@ import { allowedTypes, maxSizeMB } from "../../shared/const/constants";
 import validateFile from "../validations/fileValidation";
 import { IWorkCompletionUseCase } from "../../application/Interface/useCases/Provider/IWorkCompletionUseCase";
 import { IPendingBookingRequestUseCase } from "../../application/Interface/useCases/Provider/IPendingBookingRequestUseCase";
-import { RoleEnum } from "../../shared/enums/Roles";
 import { IProviderServiceInfoUseCase } from "../../application/Interface/useCases/Provider/IProviderServiceInfoUseCase";
 import { IProviderServiceUseCase } from "../../application/Interface/useCases/Provider/IProviderServiceUseCase";
 import { IProviderDataUpdateUseCase } from "../../application/Interface/useCases/Provider/IProviderDataUpdateUseCase";
 import { SalesPreset } from "../../shared/types/salesReport";
 import { IGetSalesReportUseCase } from "../../application/Interface/useCases/Provider/IGetSalesReportUseCase";
+import { AppError } from "../../shared/errors/AppError";
 
-const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND } = Messages;
+const { OK, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
+const { UNAUTHORIZED_MSG, BOOKING_ID_NOT_FOUND, IMAGE_VALIDATION_ERROR } = Messages;
 
 export class ProviderController {
     constructor(
@@ -49,9 +49,8 @@ export class ProviderController {
     async pendingBookingRequest(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
-            if (req.user.role != RoleEnum.Provider) throw { status: 404, message: UNAUTHORIZED_MSG };
 
             const providerUserId = req.user.userId;
 
@@ -91,7 +90,7 @@ export class ProviderController {
     async confirmBookings(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const providerUserId = req.user.userId;
@@ -112,7 +111,7 @@ export class ProviderController {
             const { bookingId } = req.params;
 
             if (!bookingId) {
-                throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                throw new AppError(NOT_FOUND, BOOKING_ID_NOT_FOUND);
             }
 
             const data = await this._getJobDetailsUseCase.execute(bookingId);
@@ -130,7 +129,7 @@ export class ProviderController {
     async getJobHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
 
             const providerUserId = req.user.userId;
@@ -206,9 +205,9 @@ export class ProviderController {
                 throw new Error("You can upload up to 3 images only");
             }
             for (const file of files) {
-                const error = validateFile(file, allowedTypes, maxSizeMB);
-                if (error) {
-                    throw { status: 400, message: error };
+                const validationError = validateFile(file, allowedTypes, maxSizeMB);
+                if (validationError) {
+                    throw new AppError(BAD_REQUEST, validationError || IMAGE_VALIDATION_ERROR);
                 }
             }
 
@@ -243,7 +242,7 @@ export class ProviderController {
     async providerServices(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const providerUserId = req.user.userId;
             const data = await this._providerServiceUseCase.execute(providerUserId);
@@ -261,7 +260,7 @@ export class ProviderController {
     async providerInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const providerUserId = req.user.userId;
 
@@ -280,7 +279,7 @@ export class ProviderController {
     async updateProviderData(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const { serviceCharge, category } = req.body;
             const providerUserId = req.user.userId;
@@ -300,7 +299,7 @@ export class ProviderController {
     async getAvailabilityTime(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const providerUserId = req.user.userId;
 
@@ -321,7 +320,7 @@ export class ProviderController {
         try {
             const { schedule } = req.body;
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const providerUserId = req.user.userId;
 
@@ -343,7 +342,7 @@ export class ProviderController {
             const { day, leaveOption } = req.body;
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const providerUserId = req.user.userId;
 
@@ -371,7 +370,7 @@ export class ProviderController {
             console.log(req.query);
 
             if (!req.user?.userId) {
-                throw { status: UNAUTHORIZED, message: UNAUTHORIZED_MSG };
+                throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
             const providerUserId = req.user.userId;
 

@@ -4,6 +4,7 @@ import { Messages } from "../../shared/const/Messages";
 //implimented with zod was bit hard so validated with plain js
 import { Request, Response, NextFunction } from "express";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { AppError } from "../../shared/errors/AppError";
 
 const { BAD_REQUEST } = HttpStatusCode;
 const { SERVICE_REQUIRED, INVALID_SPECIALIZATION, SERVICE_CHARGE_RANGE,AT_LEAST_ONE_SUBCATEGORY_REQUIRED,
@@ -29,7 +30,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
 
         //service
         if (!service?.trim()) {
-            throw { status: BAD_REQUEST, message: SERVICE_REQUIRED };
+            throw new AppError(BAD_REQUEST, SERVICE_REQUIRED);
         }
 
         //specialization
@@ -38,46 +39,46 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
             try {
                 parsedSpecialization = JSON.parse(specialization);
             } catch {
-                throw { status : BAD_REQUEST, message : INVALID_SUBCATEGORIES_JSON };
+            throw new AppError(BAD_REQUEST, INVALID_SUBCATEGORIES_JSON);
             }
         } else {
             parsedSpecialization = specialization;
         }
         
         if (!Array.isArray(parsedSpecialization) || parsedSpecialization.length === 0) {
-            throw { status: BAD_REQUEST, message: AT_LEAST_ONE_SUBCATEGORY_REQUIRED };
+            throw new AppError(BAD_REQUEST, AT_LEAST_ONE_SUBCATEGORY_REQUIRED);
         }
         
         parsedSpecialization.forEach((sub) => {
             if (typeof sub !== "string") {
-                throw { status: BAD_REQUEST, message: INVALID_SPECIALIZATION };
+            throw new AppError(BAD_REQUEST, INVALID_SPECIALIZATION);
             }   
         });
         
         //ServiceCharge
         const chargeNum = Number(serviceCharge);
         if (isNaN(chargeNum) || chargeNum < 300 || chargeNum > 500) {
-            throw { status: BAD_REQUEST, message: SERVICE_CHARGE_RANGE };
+            throw new AppError(BAD_REQUEST, SERVICE_CHARGE_RANGE);
         }
 
         //D.O.B
         if (!dob?.trim()) {
-            throw { status: BAD_REQUEST, message: DOB_REQUIRED };
+            throw new AppError(BAD_REQUEST, DOB_REQUIRED);
         }
         
         const birthDate = new Date(dob);
         
         if (isNaN(birthDate.getTime())) {
-            throw { status: BAD_REQUEST, message: INVALID_DOB };
+            throw new AppError(BAD_REQUEST, INVALID_DOB);
         }
         
         if (!isLegal(birthDate)) {
-            throw { status: BAD_REQUEST, message: AGE_RESTRICTED };
+            throw new AppError(BAD_REQUEST, AGE_RESTRICTED);
         }
 
         //Gender
         if (!gender || !["Male", "Female", "Other"].includes(gender)) {
-            throw { status: BAD_REQUEST, message: INVALID_GENDER };
+            throw new AppError(BAD_REQUEST, INVALID_GENDER);
         }
         
         req.body.specialization = parsedSpecialization; 

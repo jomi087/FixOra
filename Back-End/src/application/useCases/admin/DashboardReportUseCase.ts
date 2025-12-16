@@ -12,56 +12,6 @@ export class DashboardReportUseCase implements IDashboardReportUseCase {
         private readonly _bookingRepository: IBookingRepository,
     ) { }
 
-    async execute(range: TimeRange): Promise<DashboardStatsOutputDTO> {
-        const { start, end } = this.getDateRange(range);
-
-        console.log(start, end);
-        
-        const [userStats, serviceStats, bookingStats] = await Promise.all([
-            this._userRepository.dashboardUserStats(start, end),
-            this._categoryRepository.dashboardServiceStats(start, end),
-            this._bookingRepository.dashboardBookingStats(start, end),
-        ]);
-
-        const mappedData: DashboardStatsOutputDTO = {
-            overview: {
-                totalRevenue: bookingStats.totalRevenue,
-                penalityRevenue: bookingStats.penalityRevenue,
-                customers: {
-                    total: userStats.totalCustomers,
-                    blocked: userStats.blockedCustomers,
-                },
-                providers: {
-                    total: userStats.totalProviders,
-                    blocked: userStats.blockedProviders,
-                },
-                services: {
-                    total: serviceStats.totalServices,
-                    inactive: serviceStats.blockedServices,
-                },
-            },
-            // Growth metrics within selected date range
-            growth: {
-                newCustomers: userStats.newCustomers,
-                newProviders: userStats.newProviders,
-            },
-            // Time-series data (bookings and revenue trends)
-            bookingsOverTime: bookingStats.bookingStatsByDate.map(dataSet => ({
-                date: dataSet.date,
-                bookingCount: dataSet.totalBookings,
-                bookingRevenue: dataSet.totalRevenue,
-            })),
-            // Service performance metrics
-            bookingsByService: bookingStats.bookingCountByService.map(dataSet => ({
-                service: dataSet.serviceName,
-                booked: dataSet.count,
-            })),
-            topProviders: bookingStats.topProviders
-        };
-        
-        return mappedData;
-    }
-
     private getDateRange(range: TimeRange = "monthly") {
         const today = new Date();
         let start: Date;
@@ -87,4 +37,54 @@ export class DashboardReportUseCase implements IDashboardReportUseCase {
         };
         return { start, end };
     }
+
+    async execute(range: TimeRange): Promise<DashboardStatsOutputDTO> {
+        try {
+            const { start, end } = this.getDateRange(range);
+            const [userStats, serviceStats, bookingStats] = await Promise.all([
+                this._userRepository.dashboardUserStats(start, end),
+                this._categoryRepository.dashboardServiceStats(start, end),
+                this._bookingRepository.dashboardBookingStats(start, end),
+            ]);
+            const mappedData: DashboardStatsOutputDTO = {
+                overview: {
+                    totalRevenue: bookingStats.totalRevenue,
+                    penalityRevenue: bookingStats.penalityRevenue,
+                    customers: {
+                        total: userStats.totalCustomers,
+                        blocked: userStats.blockedCustomers,
+                    },
+                    providers: {
+                        total: userStats.totalProviders,
+                        blocked: userStats.blockedProviders,
+                    },
+                    services: {
+                        total: serviceStats.totalServices,
+                        inactive: serviceStats.blockedServices,
+                    },
+                },
+                // Growth metrics within selected date range
+                growth: {
+                    newCustomers: userStats.newCustomers,
+                    newProviders: userStats.newProviders,
+                },
+                // Time-series data (bookings and revenue trends)
+                bookingsOverTime: bookingStats.bookingStatsByDate.map(dataSet => ({
+                    date: dataSet.date,
+                    bookingCount: dataSet.totalBookings,
+                    bookingRevenue: dataSet.totalRevenue,
+                })),
+                // Service performance metrics
+                bookingsByService: bookingStats.bookingCountByService.map(dataSet => ({
+                    service: dataSet.serviceName,
+                    booked: dataSet.count,
+                })),
+                topProviders: bookingStats.topProviders
+            };
+            return mappedData;
+        } catch (error: unknown) {
+            throw error;
+        }
+    }
+
 }

@@ -15,12 +15,13 @@ import { TransactionStatus, TransactionType } from "../../../shared/enums/Transa
 import { Messages } from "../../../shared/const/Messages";
 import { SendBookingConfirmedInput } from "../../DTOs/NotificationDTO";
 import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";
+import { AppError } from "../../../shared/errors/AppError";
 // import { ISendBookingConfirmedNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingConfirmedNotificationUseCase";
 // import { SendBookingCancelledNotificationUseCase } from "../Notificiations/SendBookingCancelledNotificationUseCase";
 
 
-const { INTERNAL_SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
-const { INTERNAL_ERROR, BOOKING_ID_NOT_FOUND, WALLET_ID_NOT_FOUND } = Messages;
+const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
+const { NOT_FOUND_MSG, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD } = Messages;
 
 
 export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
@@ -62,9 +63,8 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                 isRead: notification.isRead,
             });
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -76,8 +76,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
             // console.log(transactionId,"transactionID");
             if (eventType === "booking_success") {
                 const booking = await this._bookingRepository.findByBookingId(id);
-                if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
-
+                if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
                 const totalAmount = booking.pricing.baseCost + booking.pricing.distanceFee;
                 const updateData = {
                     paymentInfo: {
@@ -93,7 +92,8 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
                 //pending: instead of updtedBooking get the Booking data with userName and providerName 
                 const updatedBooking = await this._bookingRepository.updateBooking(id, updateData);
-                if (!updatedBooking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+
 
                 const jobKey = `paymentBooking-${id}`;
                 this._bookingSchedulerService.cancel(jobKey);
@@ -127,7 +127,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
             if (eventType === "booking_failed") {
 
                 const booking = await this._bookingRepository.findByBookingId(id);
-                if (!booking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
 
                 const updateData = {
                     paymentInfo: {
@@ -142,7 +142,8 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                 };
 
                 const updatedBooking = await this._bookingRepository.updateBooking(id, updateData);
-                if (!updatedBooking) throw { status: NOT_FOUND, message: BOOKING_ID_NOT_FOUND };
+                if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
+
 
                 const jobKey = `paymentBooking-${id}`;
                 this._bookingSchedulerService.cancel(jobKey);
@@ -158,8 +159,9 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
             if (eventType === "wallet_success") {
 
                 const wallet = await this._walletRepository.findByUserId(id);
-                if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
-                if (!amount) throw { status: BAD_REQUEST, message: "Amount required" };
+                if (!wallet) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
+
+                if (!amount) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("amount"));
 
                 const numAmount = Number(amount);
                 await this._walletRepository.updateWalletOnTransaction({
@@ -169,6 +171,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                     status: TransactionStatus.SUCCESS,
                     type: TransactionType.CREDIT,
                 });
+                
                 setTimeout(() => {
                     this._notificationService.notifyPaymentSuccessToUser(id);
                 }, 5000);
@@ -176,7 +179,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
             if (eventType === "wallet_failed") {
                 const wallet = await this._walletRepository.findByUserId(id);
-                if (!wallet) throw { status: NOT_FOUND, message: WALLET_ID_NOT_FOUND };
+                if (!wallet) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Wallet"));
 
                 const numAmount = Number(amount) || 0;
                 await this._walletRepository.updateWalletOnTransaction({
@@ -196,9 +199,8 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
                 }, 5000);
             }
 
-        } catch (error) {
-            if (error.status && error.message) throw error;
-            throw { status: INTERNAL_SERVER_ERROR, message: INTERNAL_ERROR };
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
