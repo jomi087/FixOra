@@ -35,7 +35,6 @@ const UserManagement: React.FC = () => {
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
-      console.log(error);
       const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_UPDATE_STATUS ;
       toast.error(errorMsg);
     }

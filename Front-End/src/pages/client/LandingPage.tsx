@@ -31,7 +31,6 @@ const LandingPage: React.FC = () => {
         }
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
-        // console.log(error)
         const errorMsg = error?.response?.data?.message || Messages.FAILED_TO_FETCH_DATA;
         toast.error(errorMsg);
       } finally {

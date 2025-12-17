@@ -11,7 +11,6 @@ import type { CommissionFee } from "@/shared/types/others";
 
 const CommissionFeeSection = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log("inputRef", inputRef);
   // ---------------- STATE ----------------
   const [commissionFee, setCommissionFee] = useState<number | null>(null);
   const [commissionFeeData, setCommissionFeeData] = useState<{ amount: number; createdAt: string }[]>([]);
@@ -36,7 +35,7 @@ const CommissionFeeSection = () => {
         const commissionFeeData = res.data.commissionFeeData as CommissionFee;
         const fee = commissionFeeData.fee ?? null;
         const history = commissionFeeData.feeHistory ?? [];
-        // console.log(typeof commissionFeeData[0].createdAt );
+
         setCommissionFee(fee);
         setCommissionFeeData(history);
       } catch (error) {

@@ -194,8 +194,7 @@ export class ProviderController {
 
     async acknowledgeCompletionWithProof(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            // console.log(req.body);
-            // console.log(req.files);
+
             const files = req.files as Express.Multer.File[];
 
             if (!files || files.length < 2) {
@@ -366,8 +365,6 @@ export class ProviderController {
                 startDate?: string;
                 endDate?: string;
             };
-
-            console.log(req.query);
 
             if (!req.user?.userId) {
                 throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);

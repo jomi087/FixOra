@@ -36,7 +36,6 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       try {
         await AuthService.registerToken(FcmToken, "web");
         localStorage.setItem("fcm_token", FcmToken);
-        console.log("FCM Token registered successfully!");
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
         const errorMsg = error?.response?.data?.message || "Something went wrong";
@@ -74,7 +73,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     }
 
     const handleConnect = () => {
-      console.log("Socket connected:", socket.id);
+      console.log("Socket connected");
     };
 
     //notification

@@ -126,7 +126,6 @@ const BookingDetails = () => {
 
   const rescheduleBooking = async (rescheduledAt: Date) => {
     if (!bookingId) return;
-    console.log("rescheduled AT", rescheduledAt);
     try {
       const res = await AuthService.rescheduleBooking(bookingId, rescheduledAt);
       setBookingInDetails((prev) => {
@@ -217,7 +216,6 @@ const BookingDetails = () => {
         setShowModePayment(false);
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
-        console.log(error);
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);
       } finally {
@@ -281,7 +279,6 @@ const BookingDetails = () => {
 
     const blob = await pdf(<InvoicePDF invoiceData={bookingInDetails!} />).toBlob();
     const url = URL.createObjectURL(blob);
-    //console.log(url)
 
     // Trigger a download
     const link = document.createElement("a");

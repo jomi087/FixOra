@@ -19,7 +19,6 @@ interface ClientInfoProps {
 
 const ProviderInfo: React.FC<ClientInfoProps> = ({ providerUser }) => {
   const navigate = useNavigate();
-  console.log(providerUser);
 
   const handleChat = async () => {
     try {

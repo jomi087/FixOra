@@ -94,8 +94,6 @@ export class UserController {
                 ratingFilter, availabilityFilter,
             } = req.query;
 
-            console.log(req.query);
-
             const user = req.user;
             if (!user) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
 
@@ -188,7 +186,6 @@ export class UserController {
             const userId = req.user?.userId;
             if (!userId) throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             const { address, lat, lng } = req.body;
-            console.log(address, lat, lng);
 
             await this._updateSelectedLocationUseCase.execute({
                 userId,
@@ -233,7 +230,6 @@ export class UserController {
                     }
                 }
             }
-            console.log("files", files);
 
             const dtoFiles = Object.entries(files).reduce((acc, [key, value]) => {
                 acc[key] = value.map(f => ({
@@ -289,7 +285,6 @@ export class UserController {
 
     async updatedReview(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            //console.log(req.body);
             const { ratingId, rating, feedback } = req.body;
             let data = await this._updateReviewUseCase.execute({ ratingId, rating, feedback });
             res.status(OK).json({
@@ -575,7 +570,6 @@ export class UserController {
             });
 
         } catch (error) {
-            console.log(error);
             next(error);
         }
     }
@@ -645,7 +639,6 @@ export class UserController {
             if (!req.user) {
                 throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
-            // console.log("hi");
             const currentEmail = req.user.email!;
             const { email: newEmail } = req.body;
 
@@ -666,7 +659,6 @@ export class UserController {
             if (!req.user?.userId) {
                 throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
-            console.log(req.body);
             const currentEmail = req.user.email!;
             const userId = req.user.userId;
 

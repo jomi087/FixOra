@@ -93,7 +93,6 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
         const { latitude, longitude } = position.coords;
         try {
           const address = await getAddressFromCoordinates(latitude, longitude);
-          // console.log(address);
           setForm((prev) => ({
             ...prev,
             location: {
@@ -187,7 +186,6 @@ const EditProfile: React.FC<EditProfileProps> = ({ toggle }) => {
     try {
       const res = await AuthService.editProfileApi(form);
       if (res.status == HttpStatusCode.OK) {
-        console.log("hlo",res.data);
         dispatch(Userinfo({ user: { ...user, ...res.data.user } }));
         toast.success("Updated");
         toggle(false);

@@ -12,17 +12,15 @@ export class GetSalesReportUseCase implements IGetSalesReportUseCase {
     async execute(input: SalesReportInputDTO): Promise<SalesReportOutputDTO> {
         try {
             const { preset, startDate, endDate, providerUserId } = input;
-            // console.log("preset, startDate, endDate ", preset, startDate, endDate);
+
 
             const { start, end } = this.getDateRange(preset, startDate, endDate);
-            // console.log("start, end", start, end);
 
             let salesData = await this._bookingRepository.findProviderSalesByDateRange(
                 providerUserId,
                 start,
                 end
             );
-            // console.log("salesData", salesData);
 
             const mappedData: SalesReportOutputDTO = {
                 totalCompletedSaleAmount: salesData.totalCompletedSaleAmount,
@@ -41,7 +39,6 @@ export class GetSalesReportUseCase implements IGetSalesReportUseCase {
                     Date: b.paymentInfo?.paidAt || "N/A",
                 }))
             };
-            // console.log(mappedData);
             return mappedData;
         } catch (error: unknown) {
             throw error;

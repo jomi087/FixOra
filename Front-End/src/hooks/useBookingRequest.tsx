@@ -48,7 +48,6 @@ export const useBookingRequest = (
   const { data } = useAppSelector((state) => state.providerInfo);
   const dispatch = useAppDispatch();
 
-  // console.log("dates", dates);
   const getAvailableSlotsForDate = (date: string) => {  //selectedDate via genrateDate 01-10-2025
     if (!data?.availability) return [];
 
@@ -57,14 +56,12 @@ export const useBookingRequest = (
     const daySchedule = data.availability.find(d => d.day === dayName && d.active);
     if (!daySchedule) return [];
 
-    // console.log("daySchedule", daySchedule);
     return allSlots.filter((slot) =>
       daySchedule.slots.includes(slot.value) // value = "HH:mm"
     );
   };
 
   const filteredTimeSlots = getAvailableSlotsForDate(selectedDate);
-  //  console.log("filteredTimeSlots", selectedDate);
 
   const handleDateChange = (date: string) => {
     setSelectedDate(date);
@@ -73,7 +70,6 @@ export const useBookingRequest = (
 
   const handleTimeChange = (time: string) => {
     setSelectedTime(time);
-    // console.log("handleTimeChange",time, selectedDate, selectedTime, );
     if (type == "Reschedule") {
       if (!rescheduleBooking) return toast.error("Something went wrong");
       const rescheduledAt = dateTime(selectedDate, time);
@@ -97,12 +93,10 @@ export const useBookingRequest = (
       issue: description
     };
 
-    //console.log("payload",payload)
     setIsWaiting(true);
 
     try {
       const res = await AuthService.bookingApplicationApi(payload);
-      //console.log(res);
       if (res.status === HttpStatusCode.OK) {
         if (res.data.booking.status == BookingStatus.PENDING) {
           dispatch(addBooking(res.data.booking));
@@ -127,7 +121,6 @@ export const useBookingRequest = (
     const handleBookingResponse = (payload: BookingResponsePayload) => {
       if (payload.response === ProviderResponseStatus.ACCEPTED) {
         setBookingId(payload.bookingId);
-        // console.log("mode of payment was invoked");
         setShowModePayment(true);
 
       } else if (payload.response === ProviderResponseStatus.REJECTED) {
@@ -195,7 +188,6 @@ export const useBookingRequest = (
 
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
-        console.log(error);
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);
       } finally {
@@ -223,7 +215,6 @@ export const useBookingRequest = (
 
       } catch (err) {
         const error = err as AxiosError<{ message: string }>;
-        console.log(error);
         const errorMsg = error?.response?.data?.message || Messages.PAYMENT_FAILED;
         toast.error(errorMsg);
       } finally {

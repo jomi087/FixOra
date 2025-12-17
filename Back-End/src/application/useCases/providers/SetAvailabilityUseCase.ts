@@ -100,7 +100,6 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
             for (const slot of slots) {
 
                 const [hour, minute] = slot.split(":").map(Number);
-                // console.log(hour, minute);
 
                 const local = new Date();
                 local.setHours(hour, minute, 0, 0);
@@ -119,7 +118,6 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
                 const utcEndString = `${utcEndHour}:${utcEndMinute}`;
 
                 const bookings = await this._bookingRepository.findBookingsByUtcRange(providerUserId, dayIndex, utcStartString, utcEndString);
-                // console.log("bookings", bookings);
 
                 for (const booking of bookings) {
 
@@ -197,8 +195,6 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
             let provider = await this._providerRepository.findByUserId(input.providerUserId);
             if (!provider) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Provider"));
 
-            // console.log("inputSchedule", input.schedule);
-
             const oldAvailability = await this._availabilityRepository.getProviderAvialability(provider.providerId);
             if (!oldAvailability) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Availability"));
 
@@ -214,11 +210,8 @@ export class SetAvailabilityUseCase implements ISetAvailabilityUseCase {
                     active: value.active
                 }));
 
-            console.log(`oldAvailability.workTime -> ${oldAvailability.workTime}, newWorkTime -> ${newWorkTime}`);
 
             const removedSlots = this.getRemovedSlots(oldAvailability.workTime, newWorkTime);
-
-            console.log("removedSlots", removedSlots);
 
             if (removedSlots.length > 0) {
                 await this.cancelBookingsForSlots(input.providerUserId, removedSlots);

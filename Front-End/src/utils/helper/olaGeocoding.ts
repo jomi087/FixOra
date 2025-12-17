@@ -16,7 +16,6 @@ export async function reverseGeocode(lat: number, lng: number) {
 // 2. Autocomplete
 export async function autoCompleteSearch(query: string) {
   try {
-    console.log("calling autoCompleteSearch api");
     const res = await AuthService.autoCompleteSearch(query);
     return res.data;
 
@@ -29,7 +28,6 @@ export async function autoCompleteSearch(query: string) {
 // 3. Forward Geocoding (text → lat/lng)
 export async function forwardGeocode(address: string) {
   try {
-    console.log("calling forwardGeocode api");
     const res = await AuthService.forwardGeocode(address);
     return res.data;
 

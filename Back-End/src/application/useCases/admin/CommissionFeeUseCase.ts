@@ -12,7 +12,6 @@ export class CommissionFeeUseCase implements ICommissionFeeUseCase {
 
     async execute(): Promise<CommissionFeeDTO> {
         try {
-            //find 
             let commissionFeeData: CommissionFee | null;
             commissionFeeData = await this._commissionFeeRepository.findCommissionFeeData();
             if (!commissionFeeData) {
@@ -21,7 +20,6 @@ export class CommissionFeeUseCase implements ICommissionFeeUseCase {
                     feeHistory: [],
                 });
             }
-            // console.log("commissionFeeData", commissionFeeData);
             const history = commissionFeeData.feeHistory.length > 0 ? commissionFeeData.feeHistory.map((f) => ({
                 amount: f.amount,
                 createdAt: f.createdAt

@@ -20,7 +20,6 @@ const Slots: React.FC<SlotsProps> = ({ selectedDate, selectedSlot, setSelectedSl
 
   const dayName = DayName(formattedSelectedDate);
   const { data: availability } = useAppSelector((state) => state.availability);
-  // console.log("availability", availability);
 
   const daySchedule = availability.find(d => d.day === dayName && d.active);
 

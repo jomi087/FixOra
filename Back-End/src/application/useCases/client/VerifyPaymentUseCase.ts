@@ -16,8 +16,6 @@ import { Messages } from "../../../shared/const/Messages";
 import { SendBookingConfirmedInput } from "../../DTOs/NotificationDTO";
 import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";
 import { AppError } from "../../../shared/errors/AppError";
-// import { ISendBookingConfirmedNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingConfirmedNotificationUseCase";
-// import { SendBookingCancelledNotificationUseCase } from "../Notificiations/SendBookingCancelledNotificationUseCase";
 
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;
@@ -31,9 +29,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
         private readonly _bookingRepository: IBookingRepository,
         private readonly _walletRepository: IWalletRepository,
         private readonly _bookingSchedulerService: IBookingSchedulerService,
-        private readonly _notificationRepository: INotificationRepository,
-        // private readonly _sendBookingConfirmedNotificationUseCase: ISendBookingConfirmedNotificationUseCase,
-        // private readonly _sendBookingCancelledNotificationUseCase: SendBookingCancelledNotificationUseCase    
+        private readonly _notificationRepository: INotificationRepository,   
     ) { }
 
     private async sendBookingConfirmedNotification(input: SendBookingConfirmedInput): Promise<void> {
@@ -73,7 +69,7 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
             const result = await this._paymentService.verifyPayment(rawBody, signature);
             if (!result) return;
             const { eventType, id, transactionId, amount, reason } = result;
-            // console.log(transactionId,"transactionID");
+
             if (eventType === "booking_success") {
                 const booking = await this._bookingRepository.findByBookingId(id);
                 if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
@@ -147,13 +143,6 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
                 const jobKey = `paymentBooking-${id}`;
                 this._bookingSchedulerService.cancel(jobKey);
-
-                // setTimeout(() => {
-                //     this._notificationService.//notifyPaymentFailureToUser(
-                //         updatedBooking.userId,
-                //         updatedBooking.paymentInfo?.reason || "Payment failed",
-                //     );
-                // }, 5000);
             }
 
             if (eventType === "wallet_success") {

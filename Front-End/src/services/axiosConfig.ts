@@ -24,7 +24,6 @@ axiosInstance.interceptors.response.use(
 
     if (status === HttpStatusCode.UNAUTHORIZED && !originalRequest._retry) {
       originalRequest._retry = true;
-      // console.log("enteredd here here here")
       try {
         // Call refresh token endpoint
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/refresh-token`, {}, {

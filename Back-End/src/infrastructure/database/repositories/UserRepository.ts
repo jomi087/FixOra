@@ -458,8 +458,6 @@ export class UserRepository implements IUserRepository {
         }
 
         const result = await UserModel.aggregate<AggregatedFacetResult>(pipeline).exec();
-        // console.log(result[0].data)
-
 
         return {
             data: result[0].data || [],
@@ -627,7 +625,6 @@ export class UserRepository implements IUserRepository {
         }
 
         const result = await UserModel.aggregate<AggregatedResult>(pipeline);
-        // console.log("come on",result[0]);
         return result[0];
     }
 

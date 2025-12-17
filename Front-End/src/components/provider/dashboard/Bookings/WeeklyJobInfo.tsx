@@ -18,7 +18,6 @@ const WeeklyJobInfo: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data, isLoading, error } = useAppSelector((state) => state.providerBookingInfo);
-  // console.log("data", data);
 
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
@@ -118,8 +117,6 @@ const WeeklyJobInfo: React.FC = () => {
                 } else {
                   slotClass += "text-primary cursor-not-allowed text-sm";
                 }
-
-                //console.log("hi",booking?.status);
 
                 return (
                   <button

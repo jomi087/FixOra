@@ -18,7 +18,6 @@ const AuthCheck = ({ onComplete }: { onComplete: () => void }) => {
         }
       } catch{
         dispatch(logout());
-        //console.log("error",error);
       } finally {
         onComplete();
       }

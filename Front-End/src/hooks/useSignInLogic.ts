@@ -104,14 +104,12 @@ export const useSignInLogic = () => {
 
         } catch (err) {
           const error = err as AxiosError<{ message: string }>;
-          console.log(error.response);
           const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
           toast.error(errorMsg);
         }
       }
     },
-    onError: (error) => {
-      console.log("Google login error", error);
+    onError: (_error) => {
       toast.error("Google login failed");
     },
     flow: "auth-code",  // this enables PKCE under the hood

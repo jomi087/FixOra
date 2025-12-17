@@ -48,13 +48,11 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
-        console.log("Accuracy:", pos.coords.accuracy);
 
         const { latitude, longitude } = pos.coords;
         setPosition({ lat: latitude, lng: longitude });
 
         const addr = await reverseGeocode(latitude, longitude);
-        // console.log("use crcnt location on button click ", addr);
         setAddress(addr);
       },
       (err) => console.error(err),
@@ -90,7 +88,6 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
   // ----------------------------
   const choosePlace = async (address: string) => {
     const results = await forwardGeocode(address);
-    console.log("choosePlace", results);
     if (results.length > 0) {
       const loc = results[0];
       setPosition({ lat: loc.lat, lng: loc.lng });
@@ -108,7 +105,6 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
     if (!position) return;
     const fetchAddress = async () => {
       const addr = await reverseGeocode(position.lat, position.lng);
-      console.log("default location ", addr);
       setAddress(addr);
     };
     fetchAddress();

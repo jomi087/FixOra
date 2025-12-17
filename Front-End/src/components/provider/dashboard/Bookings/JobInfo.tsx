@@ -39,7 +39,6 @@ const JobInfo = () => {
       const inActive = availability.every(dayObj => dayObj.active === false);
 
       if (!allEmpty && inActive) {
-        console.log("inActive", inActive);
         setOpen(true);
         setIsNew(false);
       }

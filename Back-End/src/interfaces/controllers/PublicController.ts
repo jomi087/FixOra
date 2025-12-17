@@ -37,7 +37,6 @@ export class PublicController {
             const userId = req.user.userId;
 
             const notificationData = await this._getNotificationsUseCase.execute(userId);
-            // console.log(notificationData);
 
             res.status(OK).json({
                 success: true,
@@ -57,7 +56,6 @@ export class PublicController {
                 throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Notificaiton"));
             }
 
-            // console.log("entered ", notificationId);
             await this._notificationAcknowledgmentUseCase.execute(notificationId);
 
             res.status(OK).json({ success: true });

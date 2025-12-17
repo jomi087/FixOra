@@ -28,7 +28,6 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
             if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking-data"));
             if (!booking.paymentInfo) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("booking.paymentInfo"));
 
-            // console.log("checking diagnosed " ,booking.diagnosed);
             const mappedData: jobDetailsOutputDTO = {
                 bookingId: booking.bookingId!,
                 user: {

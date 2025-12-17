@@ -28,7 +28,6 @@ export class UpdateBookingStatusUseCase implements IUpdateBookingStatusUseCase {
 
         this._bookingSchedulerService.scheduleTimeoutJob(paymentKey, bookingId, PAYMENT_SESSION_TIMEOUT, async () => {
             const latestBooking = await this._bookingRepository.findByBookingId(bookingId);
-            // console.log(latestBooking?.paymentInfo?.status);
 
             if (!latestBooking || latestBooking.paymentInfo?.status !== PaymentStatus.PENDING) return;
 

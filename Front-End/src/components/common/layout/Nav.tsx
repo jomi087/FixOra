@@ -35,7 +35,6 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
 
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
   const { items } = useAppSelector((state) => state.notification);
-  // console.log("all items", items);
 
   const unreadCount = items.filter((itm) => {
     return itm.isRead === false;
@@ -53,7 +52,6 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
       if (res.status === HttpStatusCode.OK) {
         if (user?.role == RoleEnum.PROVIDER) {
           localStorage.removeItem("fcm_token");
-          console.log("FCM token deleted locally");
         }
         dispatch(clearNotifications());
         dispatch(logout());
@@ -73,7 +71,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
   const handleNotificationInDetails = async (noti: Notification) => {
     if (!user) return;
     const { bookingId } = noti.metadata || {};
-    if (!noti.notificationId) console.log(" Can't mark a read notification Id is missing");
+    if (!noti.notificationId) return;
 
     if (!noti.isRead && noti.notificationId) {
       try {

@@ -207,7 +207,6 @@ export class KYCRequestRepository implements IKYCRequestRepository {
         }
 
         const result = await KYCRequestModel.aggregate<AggregatedFacetResult>(pipeline);
-        // console.log(result[0].data); 
         const data = result[0].data ?? [];
         const total = result[0].totalCount[0]?.total ?? 0;
 

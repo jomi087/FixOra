@@ -17,7 +17,6 @@ const Review: React.FC<{ providerId: string }> = ({ providerId }) => {
   useEffect(() => {
     dispatch(fetchProviderReviews({ providerId, currentPage, itemsPerPage }));
   }, [dispatch, providerId, currentPage]);
-  // console.log("reviews", reviews);
 
   if(reviews.length <= 0 )return;
 

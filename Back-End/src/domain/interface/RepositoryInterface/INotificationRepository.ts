@@ -6,7 +6,3 @@ export interface INotificationRepository {
     findByUserId(userId: string): Promise<Notification[]>;
     markAsRead(notificationId: string): Promise<void>;
 }
-
-//send(userId: string, type: NotificationType, message: string, metadata?: any): Promise<void>;
-//getUserNotifications(userId: string): Promise<Notification[]>;
-//markAsRead(notificationId: string): Promise<void>;

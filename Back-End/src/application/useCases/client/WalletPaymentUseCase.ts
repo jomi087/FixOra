@@ -11,7 +11,6 @@ import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
-// import { ISendBookingConfirmedNotificationUseCase } from "../../Interface/useCases/Notificiation/ISendBookingConfirmedNotificationUseCase";
 import { SendBookingConfirmedInput } from "../../DTOs/NotificationDTO";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";

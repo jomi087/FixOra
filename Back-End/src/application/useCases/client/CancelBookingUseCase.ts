@@ -130,10 +130,6 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
                 if (!updatedBooking.paymentInfo) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("updatedBooking.paymentInfo"));
 
-
-                //notifying provider
-                //this._notificationService.//notifyBookingCancellation(updatedBooking.providerUserId, updatedBooking.bookingId);
-
                 await this.sendBookingCancelledNotification({
                     userId: updatedBooking.providerUserId,
                     title: "Booking Cancelled",
@@ -202,9 +198,6 @@ export class CancelBookingUseCase implements ICancelBookingUseCase {
                 const updatedBooking = await this._bookingRepository.updateBooking(bookingId, updateData);
                 if (!updatedBooking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
                 if (!updatedBooking.paymentInfo) throw new AppError(INTERNAL_SERVER_ERROR, INTERNAL_ERROR, INVARIANT_VIOLATION_MISSING_FIELD("updatedBooking.paymentInfo"));
-
-                //notifying provider
-                //this._notificationService.//notifyBookingCancellation(updatedBooking.providerUserId, updatedBooking.bookingId);
 
                 await this.sendBookingCancelledNotification({
                     userId: updatedBooking.providerUserId,

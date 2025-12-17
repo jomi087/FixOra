@@ -8,7 +8,6 @@ interface PublicRouteProps {
 
 const PublicRoute = ({ children }: PublicRouteProps) => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
-  console.log(isAuthenticated , user?.role);
 
   if (isAuthenticated) {
     if (user?.role == RoleEnum.CUSTOMER) {

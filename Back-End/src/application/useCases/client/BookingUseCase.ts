@@ -80,7 +80,6 @@ export class BookingUseCase implements IBookingUseCase {
             const scheduledAt: Date = new Date(input.scheduledAt);
             let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(input.providerId, scheduledAt);
 
-            // console.log(CheckExistingNoRejectedBooking)
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.ACCEPTED)) {
                 throw new AppError(CONFLICT, ALREDY_BOOKED);
             } else if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.PENDING)) {

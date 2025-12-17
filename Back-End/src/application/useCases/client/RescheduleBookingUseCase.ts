@@ -71,7 +71,6 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
 
             let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(booking.provider.id, rescheduledAt);
 
-            // console.log(CheckExistingNoRejectedBooking)
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.PENDING)) {
                 throw new AppError(CONFLICT, PENDING_BOOKING);
 

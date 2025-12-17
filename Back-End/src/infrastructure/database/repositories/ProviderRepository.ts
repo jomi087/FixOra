@@ -208,7 +208,6 @@ export class ProviderRepository implements IProviderRepository {
         ];
 
         const result = await ProviderModel.aggregate(pipeline);
-        console.log("result[0]", result[0]);
         return result[0];
     }
 

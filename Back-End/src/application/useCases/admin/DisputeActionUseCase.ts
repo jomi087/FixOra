@@ -53,7 +53,6 @@ export class DisputeActionUseCase implements IDisputeActionUseCase {
             return mappedData;
 
         } catch (error:unknown) {
-            // console.log("error", error);
             // await tx.rollback();
             throw error;
            

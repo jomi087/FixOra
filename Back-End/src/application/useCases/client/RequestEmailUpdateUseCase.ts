@@ -38,7 +38,6 @@ export class RequestEmailUpdateUseCase implements IRequestEmailUpdateUseCase {
             });
 
             const html = commonOtpEmail({ otp, description: "Email updation request" });
-            console.log("currentEmail", currentEmail);
             await this._emailService.sendEmail(currentEmail, "FixOra OTP", html);
 
         } catch (error: unknown) {

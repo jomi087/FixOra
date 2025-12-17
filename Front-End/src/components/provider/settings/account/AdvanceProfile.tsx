@@ -49,8 +49,7 @@ const AdvanceProfile = () => {
     }
     if (!initialData || !serviceCharge || !services) return;
 
-    // console.log("services", JSON.stringify(services?.subcategories));
-    // console.log("intialData.cetegory", JSON.stringify(initialData.category.subcategories));
+
 
     const isServiceChargeSame = serviceCharge === initialData.serviceCharge;
     const isServicesSame = JSON.stringify(services ?? {}) === JSON.stringify(initialData.category ?? {});
@@ -64,7 +63,7 @@ const AdvanceProfile = () => {
       serviceCharge: serviceCharge as number,
       category: services as Services
     };
-    // console.log("payload",payload);
+
     setLoadingStates((prev) => ({ ...prev, update: true }));
     try {
       const res = await AuthService.updateProviderDataApi(payload);

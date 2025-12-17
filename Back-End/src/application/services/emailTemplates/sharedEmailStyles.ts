@@ -1,4 +1,4 @@
-// src/application/services/emailTemplates/sharedEmailStyles.ts
+ src/application/services/emailTemplates/sharedEmailStyles.ts
 export const sharedEmailStyles = `
   body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
