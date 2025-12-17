@@ -1,7 +1,7 @@
 import { CommissionFee } from "../../../domain/entities/CommissionFeeEntity";
 import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
 import { COMMISSION_FEE } from "../../../shared/const/constants";
-import { CommissionFeeDTO } from "../../DTOs/CommissionFeeDTO";
+import { CommissionFeeDTO } from "../../dtos/CommissionFeeDTO";
 import { ICommissionFeeUseCase } from "../../Interface/useCases/Admin/ICommissionFeeUseCase";
 
 export class CommissionFeeUseCase implements ICommissionFeeUseCase {

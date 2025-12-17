@@ -1,4 +1,4 @@
-import { SigninInputDTO, SignInOutputDTO } from "../../../DTOs/AuthDTO/SigninDTO";
+import { SigninInputDTO, SignInOutputDTO } from "../../../dtos/AuthDTO/SigninDTO";
 
 export interface ISigninUseCase {
     execute(credentials : SigninInputDTO ) : Promise<SignInOutputDTO>

@@ -4,7 +4,7 @@ import { IChatRepository } from "../../../domain/interface/RepositoryInterface/I
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { SendChatMessageInputDTO } from "../../DTOs/ChatDTO";
+import { SendChatMessageInputDTO } from "../../dtos/ChatDTO";
 import { ISendChatMessageUseCase } from "../../Interface/useCases/chat/ISendChatMessageUseCase";
 
 

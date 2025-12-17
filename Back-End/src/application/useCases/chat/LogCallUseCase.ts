@@ -1,7 +1,7 @@
 import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
 import { IChatMessageRepository } from "../../../domain/interface/RepositoryInterface/IChatMessageRepository";
 import { IChatRepository } from "../../../domain/interface/RepositoryInterface/IChatRepository";
-import { LogCallInputDTO } from "../../DTOs/ChatDTO";
+import { LogCallInputDTO } from "../../dtos/ChatDTO";
 import { ILogCallUseCase } from "../../Interface/useCases/chat/ILogCallUseCase";
 
 

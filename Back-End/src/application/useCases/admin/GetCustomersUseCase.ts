@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
-import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../DTOs/GetCustomerDTO";
+import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../dtos/GetCustomerDTO";
 import { IGetCustomersUseCase } from "../../Interface/useCases/Admin/IGetCustomersUseCase";
 
 

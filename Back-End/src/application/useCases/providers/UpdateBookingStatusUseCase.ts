@@ -8,7 +8,7 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { Messages } from "../../../shared/const/Messages";
-import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../DTOs/BookingDTO/UpdateBookingStatusDTO";
+import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../dtos/BookingDTO/UpdateBookingStatusDTO";
 import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/Provider/IUpdateBookingStatusUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 

@@ -1,5 +1,5 @@
 import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
-import { DisputeListItemDTO, DisputeListResponseDTO, FilterDisputeInputDTO } from "../../DTOs/DisputeDTO";
+import { DisputeListItemDTO, DisputeListResponseDTO, FilterDisputeInputDTO } from "../../dtos/DisputeDTO";
 import { IGetDisputesUseCase } from "../../Interface/useCases/Admin/IGetDisputesUseCase";
 
 

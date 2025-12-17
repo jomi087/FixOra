@@ -2,7 +2,7 @@ import { IProviderRepository } from "../../../domain/interface/RepositoryInterfa
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { ProviderServiceInfoInputDTO, ProviderServiceInfoOutputDTO } from "../../DTOs/ProviderInfoDTO";
+import { ProviderServiceInfoInputDTO, ProviderServiceInfoOutputDTO } from "../../dtos/ProviderInfoDTO";
 import { IProviderDataUpdateUseCase } from "../../Interface/useCases/Provider/IProviderDataUpdateUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;

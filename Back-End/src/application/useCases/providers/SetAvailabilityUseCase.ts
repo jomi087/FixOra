@@ -4,7 +4,7 @@ import { IProviderRepository } from "../../../domain/interface/RepositoryInterfa
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
-import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../DTOs/AvailabilityDTO";
+import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../dtos/AvailabilityDTO";
 import { ISetAvailabilityUseCase } from "../../Interface/useCases/Provider/ISetAvailabilityUseCase";
 import { DaySchedule } from "../../../domain/entities/AvailabilityEntity";
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
@@ -12,7 +12,7 @@ import { DAYS } from "../../../shared/const/constants";
 import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
 import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
 import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
-import { SendBookingCancelledInput } from "../../DTOs/NotificationDTO";
+import { SendBookingCancelledInput } from "../../dtos/NotificationDTO";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { PaymentStatus } from "../../../shared/enums/Payment";

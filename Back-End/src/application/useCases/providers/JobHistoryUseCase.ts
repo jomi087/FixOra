@@ -1,5 +1,5 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { JobHistoryInputDTO, JobHistoryOutputDTO } from "../../DTOs/BookingDTO/BookingHistoryDTO";
+import { JobHistoryInputDTO, JobHistoryOutputDTO } from "../../dtos/BookingDTO/BookingHistoryDTO";
 import { IJobHistoryUseCase } from "../../Interface/useCases/Provider/IJobHistoryUseCase";
 
 

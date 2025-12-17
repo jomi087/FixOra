@@ -1,5 +1,5 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { BookingHistoryInputDTO, BookingHistoryOutputDTO } from "../../DTOs/BookingDTO/BookingHistoryDTO";
+import { BookingHistoryInputDTO, BookingHistoryOutputDTO } from "../../dtos/BookingDTO/BookingHistoryDTO";
 import { IBookingHistoryUseCase } from "../../Interface/useCases/Client/IBookingHistoryUseCase";
 
 export class BookingHistoryUseCase implements IBookingHistoryUseCase {

@@ -3,7 +3,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { AppError } from "../../../shared/errors/AppError";
-import { RegisterFcmTokenInputDTO } from "../../DTOs/RegisterFcmTokenDTO";
+import { RegisterFcmTokenInputDTO } from "../../dtos/RegisterFcmTokenDTO";
 import { IRegisterFcmTokenUseCase } from "../../Interface/useCases/Auth/IRegisterFcmTokenUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;

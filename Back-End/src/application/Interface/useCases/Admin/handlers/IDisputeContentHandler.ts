@@ -1,4 +1,4 @@
-import { DisputeContentOutput } from "../../../../DTOs/DisputeDTO";
+import { DisputeContentOutput } from "../../../../dtos/DisputeDTO";
 
 export interface IDisputeContentHandler {
   getContent(contentId: string): Promise<DisputeContentOutput>;

@@ -3,7 +3,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { DisputeContentOutput } from "../../DTOs/DisputeDTO";
+import { DisputeContentOutput } from "../../dtos/DisputeDTO";
 import { IDisputeContentHandler } from "../../Interface/useCases/Admin/handlers/IDisputeContentHandler";
 import { IDisputeContentInfoUseCase } from "../../Interface/useCases/Admin/IDisputeContentInfoUseCase";
 

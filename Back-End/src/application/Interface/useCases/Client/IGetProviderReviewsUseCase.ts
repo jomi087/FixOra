@@ -1,4 +1,4 @@
-import { ReviewInputDTO, ReviewOutputDTO } from "../../../DTOs/ReviewDTO";
+import { ReviewInputDTO, ReviewOutputDTO } from "../../../dtos/ReviewDTO";
 
 export interface IGetProviderReviewsUseCase {
     execute(input: ReviewInputDTO): Promise<ReviewOutputDTO>;

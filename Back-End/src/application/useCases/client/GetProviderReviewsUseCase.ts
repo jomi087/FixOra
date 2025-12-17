@@ -1,5 +1,5 @@
 import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
-import { ReviewInputDTO, ReviewOutputDTO } from "../../DTOs/ReviewDTO";
+import { ReviewInputDTO, ReviewOutputDTO } from "../../dtos/ReviewDTO";
 import { IGetProviderReviewsUseCase } from "../../Interface/useCases/Client/IGetProviderReviewsUseCase";
 
 

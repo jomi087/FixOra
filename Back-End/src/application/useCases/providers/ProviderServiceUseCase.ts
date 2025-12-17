@@ -3,7 +3,7 @@ import { IProviderRepository } from "../../../domain/interface/RepositoryInterfa
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { ShortCategoryOutputDTO } from "../../DTOs/CategoryDTO";
+import { ShortCategoryOutputDTO } from "../../dtos/CategoryDTO";
 import { IProviderServiceUseCase } from "../../Interface/useCases/Provider/IProviderServiceUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;

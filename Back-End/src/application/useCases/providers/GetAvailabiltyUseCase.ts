@@ -4,7 +4,7 @@ import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
-import { getAvailabilityOutputDTO } from "../../DTOs/AvailabilityDTO";
+import { getAvailabilityOutputDTO } from "../../dtos/AvailabilityDTO";
 import { IGetAvailabilityUseCase } from "../../Interface/useCases/Provider/IGetAvailabilityUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 

@@ -2,7 +2,7 @@ import { IRatingRepository } from "../../../domain/interface/RepositoryInterface
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { UpdateReviewInputDTO, UpdateReviewOutputDTO } from "../../DTOs/ReviewDTO";
+import { UpdateReviewInputDTO, UpdateReviewOutputDTO } from "../../dtos/ReviewDTO";
 import { IUpdateReviewUseCase } from "../../Interface/useCases/Client/IUpdateReviewUseCase";
 
 

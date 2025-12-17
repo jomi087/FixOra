@@ -1,4 +1,4 @@
-import { AddReviewInputDTO } from "../../../DTOs/ReviewDTO";
+import { AddReviewInputDTO } from "../../../dtos/ReviewDTO";
 
 export interface IAddReviewUseCase  {
     execute(input: AddReviewInputDTO):Promise<void>

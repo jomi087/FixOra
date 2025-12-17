@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
 import { Gender } from "../../../shared/enums/Gender";
-import { ActiveProviderDTO, GetActiveProvidersInputDTO, GetActiveProvidersOutputDTO } from "../../DTOs/GetActiveProvidersDTO";
+import { ActiveProviderDTO, GetActiveProvidersInputDTO, GetActiveProvidersOutputDTO } from "../../dtos/GetActiveProvidersDTO";
 import { IGetActiveProvidersUseCase } from "../../Interface/useCases/Client/IGetActiveProvidersUseCase";
 
 

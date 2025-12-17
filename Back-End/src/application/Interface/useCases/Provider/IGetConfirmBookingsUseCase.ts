@@ -1,4 +1,4 @@
-import { ConfirmBookingOutputDTO } from "../../../DTOs/BookingDTO/BookingInfoDTO";
+import { ConfirmBookingOutputDTO } from "../../../dtos/BookingDTO/BookingInfoDTO";
 
 export interface IGetConfirmBookingsUseCase {
     execute(input : string ):Promise<ConfirmBookingOutputDTO[]>

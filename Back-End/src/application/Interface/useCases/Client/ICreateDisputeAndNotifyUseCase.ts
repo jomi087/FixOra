@@ -1,4 +1,4 @@
-import { DisputeInputDTO } from "../../../DTOs/DisputeDTO";
+import { DisputeInputDTO } from "../../../dtos/DisputeDTO";
 
 /**
  * Use case contract for creating a new review dispute.

@@ -1,4 +1,4 @@
-import { SignOutDTO } from "../../../DTOs/AuthDTO/SingOutDTO";
+import { SignOutDTO } from "../../../dtos/AuthDTO/SingOutDTO";
 
 export interface ISignOutStrategy {
   execute(input: SignOutDTO ): Promise<void>;

@@ -1,4 +1,4 @@
-import { RegisterFcmTokenInputDTO } from "../../../DTOs/RegisterFcmTokenDTO";
+import { RegisterFcmTokenInputDTO } from "../../../dtos/RegisterFcmTokenDTO";
 
 export interface IRegisterFcmTokenUseCase {
     execute(input: RegisterFcmTokenInputDTO ): Promise<void>

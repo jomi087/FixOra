@@ -2,7 +2,7 @@
 import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { BookingDetailsOutputDTO } from "../../DTOs/BookingDTO/BookingInfoDTO";
+import { BookingDetailsOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";
 import { IGetBookingDetailsUseCase } from "../../Interface/useCases/Client/IGetBookingDetailsUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 

@@ -2,7 +2,7 @@ import { IUserRepository } from "../../../domain/interface/RepositoryInterface/I
 import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { SigninInputDTO, SignInOutputDTO } from "../../DTOs/AuthDTO/SigninDTO";
+import { SigninInputDTO, SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";
 import { ISigninUseCase } from "../../Interface/useCases/Auth/ISigninUseCase";
 import { AuthStrategyFactory } from "../../strategies/auth/signIn/AuthStrategyFactory";
 import { AppError } from "../../../shared/errors/AppError";

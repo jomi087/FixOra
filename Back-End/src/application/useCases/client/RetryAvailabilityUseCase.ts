@@ -3,7 +3,7 @@ import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { Messages } from "../../../shared/const/Messages";
-import { RetryAvailabilityInputDTO, RetryAvailabilityOutputDTO } from "../../DTOs/BookingDTO/BookingInfoDTO";
+import { RetryAvailabilityInputDTO, RetryAvailabilityOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";
 import { IRetryAvailabilityUseCase } from "../../Interface/useCases/Client/IRetryAvailabilityUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 

@@ -1,4 +1,4 @@
-import { DisputeActionInputDTO, DisputeActionOutputDTO } from "../../../DTOs/DisputeDTO";
+import { DisputeActionInputDTO, DisputeActionOutputDTO } from "../../../dtos/DisputeDTO";
 
 export interface IDisputeActionUseCase {
     execute(input: DisputeActionInputDTO): Promise<DisputeActionOutputDTO>

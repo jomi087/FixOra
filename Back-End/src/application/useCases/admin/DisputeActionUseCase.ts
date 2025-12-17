@@ -4,7 +4,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { DisputeActionInputDTO, DisputeActionOutputDTO } from "../../DTOs/DisputeDTO";
+import { DisputeActionInputDTO, DisputeActionOutputDTO } from "../../dtos/DisputeDTO";
 import { IDisputeActionHandler } from "../../Interface/useCases/Admin/handlers/IDisputeActionHandler";
 import { IDisputeActionUseCase } from "../../Interface/useCases/Admin/IDisputeActionUseCase";
 
