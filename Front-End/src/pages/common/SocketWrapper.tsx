@@ -105,8 +105,8 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       });
     };
 
-    const handleConnectError = (err: any) => {
-      toast.error(err.message);
+    const handleConnectError = (err: Error) => {
+      toast.error(err.message || "Socket connection failed");
     };
 
     socket.on("connect", handleConnect);
@@ -138,7 +138,7 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   return (
     <>
       {children}
-      {firstBooking  && (
+      {firstBooking && (
         <BookingApplicationDialouge
           key={firstBooking.bookingId}
           data={firstBooking}

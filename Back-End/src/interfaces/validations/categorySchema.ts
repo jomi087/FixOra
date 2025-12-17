@@ -24,7 +24,7 @@ export function validateCategory(req: Request, res: Response, next: NextFunction
             throw new AppError(BAD_REQUEST, CATEGORY_DESCRIPTION_REQUIRED);
         }
 
-        let parsedSubcategories: any;
+        let parsedSubcategories: unknown;
         if (typeof subcategories === "string") {
             try {
                 parsedSubcategories = JSON.parse(subcategories);

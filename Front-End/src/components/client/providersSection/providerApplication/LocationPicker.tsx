@@ -73,7 +73,7 @@ export default function LocationPicker({ open, onClose, onSave }: LocationPicker
       const res = await autoCompleteSearch(query);
 
       // Type-safe mapping
-      const mapped: Suggestion[] = res.map((x: any) => ({
+      const mapped: Suggestion[] = res.map((x: { description: string }) => ({
         description: x.description,
       }));
 

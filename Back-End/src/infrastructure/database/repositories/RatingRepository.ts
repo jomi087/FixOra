@@ -125,7 +125,7 @@ export class RatingRepository implements IRatingRepository {
 
     /** @inheritdoc */
     async deactivateRating(ratingId: string /*txSession?: ITransactionSession*/): Promise<boolean> {
-        // const session = (txSession as any)?.nativeSession;
+        // const session = (txSession as Any)?.nativeSession;
         const result = await RatingModel.findOneAndUpdate(
             { ratingId },
             { $set: { active: false, updatedAt: new Date() } },

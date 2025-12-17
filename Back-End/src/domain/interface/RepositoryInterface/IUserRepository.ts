@@ -84,7 +84,7 @@ export interface IUserRepository {
     findByRole(Role: RoleEnum): Promise<User[]>
 
     //removeFcmToken
-    addFcmToken(userId: string, FcmToken: string, platform?: string): Promise<any>
+    addFcmToken(userId: string, FcmToken: string, platform?: string): Promise<void>
 
     dashboardUserStats(start: Date, end: Date): Promise<{
         totalCustomers: number;

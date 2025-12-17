@@ -34,7 +34,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
         }
 
         //specialization
-        let parsedSpecialization: any;
+        let parsedSpecialization: unknown;
         if (typeof specialization === "string") {
             try {
                 parsedSpecialization = JSON.parse(specialization);
