@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { RoleEnum } from "@/shared/enums/roles";
 import { App_Name, shortInputLength } from "@/utils/constant";
+import { BiHide, BiShow } from "react-icons/bi";
 
 interface signInProps {
   singInThemeImage: string;
@@ -15,7 +16,7 @@ interface signInProps {
 
 const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotPassword, googleSignin, loading, role }) => {
 
-
+  const [showPw, setShowPw] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -65,7 +66,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
                   name="email"
                   id="email"
                   aria-required="true"
-                  className="flex-1 p-3 outline-none "
+                  className="flex-1 p-3 outline-none font-roboto text-sm"
                   placeholder="Enter your email"
                   required
                   autoComplete="email"
@@ -81,24 +82,39 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
             {isSignInForm &&
               <label htmlFor="password" className="block w-full">
                 <span className="sr-only">Password</span>
+
                 <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-blue-50">
+                  {/* Left label */}
                   <span className="bg-black px-5 py-3 text-white select-none text-sm md:text-base whitespace-nowrap">
                     Password
                   </span>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    aria-required="true"
-                    className="flex-1 p-3 outline-none  "
-                    placeholder="Enter your password"
-                    required
-                    autoComplete="current-password"
-                    value={password}
-                    maxLength={shortInputLength}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={loading}
-                  />
+
+                  {/* Input + toggle */}
+                  <div className="flex items-center w-full px-2">
+                    <input
+                      type={showPw ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      className="flex-1 py-2 px-2 outline-none font-roboto text-sm"
+                      placeholder="Enter your password"
+                      required
+                      autoComplete="current-password"
+                      aria-required="true"
+                      value={password}
+                      maxLength={shortInputLength}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={loading}
+                    />
+
+                    <button
+                      type="button"
+                      className="ml-2 text-gray-500 hover:text-blue-700 focus:outline-none"
+                      onClick={() => setShowPw((v) => !v)}
+                      aria-label={showPw ? "Hide password" : "Show password"}
+                    >
+                      {showPw ? <BiShow size={20} /> : <BiHide size={20} />}
+                    </button>
+                  </div>
                 </div>
               </label>
             }

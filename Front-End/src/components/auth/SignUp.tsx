@@ -166,7 +166,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
             <input
               id="password"
               name="password"
-              type="text"
+              type="password"
               placeholder="Enter your password"
               className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
               required
@@ -185,7 +185,7 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
             <input
               id="cPassword"
               name="cPassword"
-              type="text"
+              type="password"
               placeholder="Confirm password"
               className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
               required
