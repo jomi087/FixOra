@@ -1,5 +1,3 @@
-// Infrastructure talking to MongoDB using the IUserRepository interface.
-// Parameters like email/userId come from the use case layer.
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { User } from "../../../domain/entities/UserEntity";
 import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
@@ -9,9 +7,6 @@ import { Booking } from "../../../domain/entities/BookingEntity";
 import { Provider } from "../../../domain/entities/ProviderEntity";
 import { Availability } from "../../../domain/entities/AvailabilityEntity";
 import { PipelineStage } from "mongoose";
-
-//!mistake in this repository (i have am violatin srp rule need to re-work) 
-//split the logic into indivijual
 
 export class UserRepository implements IUserRepository {
 

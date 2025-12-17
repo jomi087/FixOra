@@ -39,7 +39,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
             try {
                 parsedSpecialization = JSON.parse(specialization);
             } catch {
-            throw new AppError(BAD_REQUEST, INVALID_SUBCATEGORIES_JSON);
+                throw new AppError(BAD_REQUEST, INVALID_SUBCATEGORIES_JSON);
             }
         } else {
             parsedSpecialization = specialization;
@@ -51,7 +51,7 @@ export function validateKYCRequest(req: Request, res: Response, next: NextFuncti
         
         parsedSpecialization.forEach((sub) => {
             if (typeof sub !== "string") {
-            throw new AppError(BAD_REQUEST, INVALID_SPECIALIZATION);
+                throw new AppError(BAD_REQUEST, INVALID_SPECIALIZATION);
             }   
         });
         

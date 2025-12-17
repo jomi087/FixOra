@@ -14,15 +14,6 @@ import { RoleEnum } from "@/shared/enums/roles";
 import type { AppLocation } from "@/shared/types/location";
 
 class AuthService {
-  // getBearerTokenConfig(token?: string) { //jwt token
-  //   return {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token || ""}`
-  //     },
-  //   };
-  // }
-
   getJsonConfig() {
     return {
       headers: {
@@ -30,14 +21,6 @@ class AuthService {
       }
     };
   }
-
-  // getMultiPartConfig() {
-  //   return {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     }
-  //   };
-  // }
 
   //#  i have alredy cofigure axios with repeated option and backend Url so that the resone some of api request not having options and baseUrl
   /*********************************************************************************************************************** */

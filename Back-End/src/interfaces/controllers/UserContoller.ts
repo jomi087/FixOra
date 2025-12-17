@@ -104,13 +104,6 @@ export class UserController {
                 longitude: user.location.coordinates.longitude
             };
 
-            // if (coordinates) {
-            //     const coords = JSON.parse(coordinates as string);
-            //     parsedCoordinates = {
-            //         latitude: Number(coords.latitude),
-            //         longitude: Number(coords.longitude)
-            //     };
-            // }
 
             if (user.selectedLocation) {
                 parsedCoordinates = {
