@@ -1,19 +1,21 @@
-import Spline from "@splinetool/react-spline";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import type { Signup } from "@/shared/types/user";
 import { RoleEnum } from "@/shared/enums/roles";
-import { App_Name, shortInputLength, } from "@/utils/constant";
+import { shortInputLength } from "@/utils/constant";
 
+// Lazy load Spline
+const Spline = lazy(() => import("@splinetool/react-spline"));
 
-interface signUpProps{
-  alternativeSideContent?: string; //only image acceptable
+interface signUpProps {
+  alternativeSideContent?: string;
   loading?: boolean;
-  signUpSubmit: (formData:Signup) => Promise<void>;
-} 
-
+  signUpSubmit: (formData: Signup) => Promise<void>;
+}
 
 const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUpSubmit }) => {
+
+  const [pageReady, setPageReady] = useState(false);
 
   const [formData, setFormData] = useState<Signup>({
     fname: "",
@@ -21,13 +23,14 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
     email: "",
     mobileNo: "",
     password: "",
-    cPassword: ""
+    cPassword: "",
   });
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
     /* Basic js verison
-    
     const name = e.target.name;
     const value = e.target.value;
 
@@ -39,189 +42,161 @@ const SignUp: React.FC<signUpProps> = ({ loading, alternativeSideContent, signUp
       password: formData.password,
       cPassword: formData.cPassword,
     };
-
     newFormData[name] = value;
     setFormData(newFormData);
-
     */
-    
-    //Advance js version 
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]:value });
   };
 
-  const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>)=> {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
     signUpSubmit(formData);
   };
 
   return (
-    <div className="flex flex-1 flex-col md:flex-row  pt-10 overflow-hidden ">
-      {/* Left: Image */}
-      <section className="hidden md:flex md:w-1/2  relative top-45  p-4 ">
-        { alternativeSideContent ? (
-          <img src={ alternativeSideContent } alt="" />
-        ) : (
-          <div className="w-full h-[400px] max-h-[80vh] rounded-2xl overflow-hidden">
-            <Spline scene="https://prod.spline.design/hNfClYEFxdGOsdZG/scene.splinecode" />
+    <>
+      {/* FULL PAGE LOADER */}
+      {!pageReady && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+          <div className="text-center">
+            <div className="w-10 h-10 border-4 border-blue-700 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-gray-600 text-sm">
+              Preparing signup experience…
+            </p>
           </div>
-        )
-        }
-      </section>
+        </div>
+      )}
 
-      {/* Right: Sign Up Container */}
-      <section className="flex flex-col justify-center items-center md:w-2/3    ">
-        <div className="w-full max-w-md text-black shadow-lg shadow-black border-1 rounded-2xl p-4 ">
-          <h2 className="text-4xl text-center mb-10 font-extrabold tracking-tight">
-            Create Your Account
-          </h2>
-
-          <div aria-live="polite" className="sr-only">
-            {loading && "Signing up , please wait..."}
-          </div>
-          
-          <form className="space-y-4" noValidate onSubmit={handleFormSubmit}>
-            <div className="flex justify-between items-center rounded-lg overflow-hidden">
-              {/* First Name */}
-              <label htmlFor="fname" className="sr-only">
-                First Name
-              </label>
-              <input
-                id="fname"
-                name="fname"
-                type="text"
-                placeholder="Enter your first name"
-                className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
-                required
-                disabled={loading}
-                aria-required="true"
-                aria-disabled={loading}
-                maxLength={shortInputLength}
-                value={formData.fname}
-                onChange={handleChange}
-              />
-              {/*Last Name*/}
-              <label htmlFor="lname" className="sr-only">
-                Last Name
-              </label>
-              <input
-                id="lname"
-                name="lname"
-                type="text"
-                placeholder="Enter your Last name"
-                className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 ml-1.5"
-                required
-                disabled={loading}
-                aria-required="true"
-                aria-disabled={loading}
-                maxLength={shortInputLength}
-                value={formData.lname}
-                onChange={handleChange}
-              />
+      {/* PAGE CONTENT (renders only when ready) */}
+      <div
+        className={`flex flex-1 flex-col md:flex-row pt-10 overflow-hidden transition-opacity duration-500 ${pageReady ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {/* LEFT SIDE */}
+        <section className="hidden md:flex md:w-1/2 p-4 relative top-48 ">
+          {alternativeSideContent ? (
+            <img
+              src={alternativeSideContent}
+              alt=""
+              className="w-full h-full object-cover rounded-2xl"
+            />
+          ) : (
+            <div className="w-full h-[400px] max-h-[80vh] rounded-2xl overflow-hidden">
+              <Suspense
+                fallback={
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    Loading 3D…
+                  </div>
+                }
+              >
+                <Spline
+                  scene="https://prod.spline.design/hNfClYEFxdGOsdZG/scene.splinecode"
+                  onLoad={() => setPageReady(true)}
+                />
+              </Suspense>
             </div>
+          )}
+        </section>
 
-            {/* Email */}
-            <label htmlFor="email" className="sr-only">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
-              required
-              disabled={loading}
-              autoComplete="email"
-              aria-required="true"
-              aria-disabled={loading}
-              maxLength={shortInputLength}
-              value={formData.email}
-              onChange={handleChange}
-            />
+        {/* RIGHT SIDE */}
+        <section className="flex flex-col justify-center items-center md:w-2/3">
+          <div className="w-full max-w-md text-black shadow-lg shadow-black rounded-2xl p-4">
+            <h2 className="text-4xl text-center mb-10 font-extrabold tracking-tight">
+              Create Your Account
+            </h2>
 
-            {/* Mobile Number */}
-            <label htmlFor="mobileNo" className="sr-only">
-              Mobile Number
-            </label>
-            <input
-              id="mobileNo"
-              name="mobileNo"
-              type="text"
-              placeholder="Enter your Mobile number"
-              className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
-              required
-              disabled={loading}
-              aria-required="true"
-              aria-disabled={loading}
-              value={formData.mobileNo}
-              onChange={handleChange}
-            />
+            <form className="space-y-4" onSubmit={handleFormSubmit} noValidate>
+              {/* Name */}
+              <div className="flex gap-2">
+                <input
+                  name="fname"
+                  placeholder="First name"
+                  className="w-full p-3 border rounded-lg"
+                  value={formData.fname}
+                  onChange={handleChange}
+                  maxLength={shortInputLength}
+                  required
+                />
+                <input
+                  name="lname"
+                  placeholder="Last name"
+                  className="w-full p-3 border rounded-lg"
+                  value={formData.lname}
+                  onChange={handleChange}
+                  maxLength={shortInputLength}
+                  required
+                />
+              </div>
 
-            {/* Password */}
-            <label htmlFor="password" className="sr-only">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Enter your password"
-              className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
-              required
-              disabled={loading}
-              aria-required="true"
-              aria-disabled={loading}
-              maxLength={shortInputLength}
-              value={formData.password}
-              onChange={handleChange}
-            />
+              {/* Email */}
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                className="w-full p-3 border rounded-lg"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
 
-            {/* C-Password */}
-            <label htmlFor="cPassword" className="sr-only">
-              Confirm Password
-            </label>
-            <input
-              id="cPassword"
-              name="cPassword"
-              type="password"
-              placeholder="Confirm password"
-              className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 mr-1.5 "
-              required
-              disabled={loading}
-              aria-required="true"
-              aria-disabled={loading}
-              maxLength={shortInputLength}
-              value={formData.cPassword}
-              onChange={handleChange}
-            />
+              {/* Mobile */}
+              <input
+                name="mobileNo"
+                placeholder="Mobile number"
+                className="w-full p-3 border rounded-lg"
+                value={formData.mobileNo}
+                onChange={handleChange}
+                required
+              />
 
-            {/* Sign Up Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              aria-busy={loading}
-              aria-label={`Sign up to ${App_Name}`}
-              className={`w-full py-3 rounded-full font-semibold text-white shadow-lg transition-colors duration-300 ${
-                loading
+              {/* Password */}
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                className="w-full p-3 border rounded-lg"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+
+              {/* Confirm */}
+              <input
+                name="cPassword"
+                type="password"
+                placeholder="Confirm password"
+                className="w-full p-3 border rounded-lg"
+                value={formData.cPassword}
+                onChange={handleChange}
+                required
+              />
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-3 rounded-full font-semibold text-white ${loading
                   ? "bg-blue-400 cursor-not-allowed"
                   : "bg-blue-800 hover:bg-blue-900"
-              }`}
-            >
-              {loading ? "Signing Up..." : "Sign Up"}
-            </button>
-          </form>
+                }`}
+              >
+                {loading ? "Signing Up…" : "Sign Up"}
+              </button>
+            </form>
 
-          <p className="mt-6 text-center">
-            Already have an account?
-            <Link to={`/signIn/${RoleEnum.CUSTOMER}`} className="underline text-blue-600 font-semibold ml-1">
-              Sign-In
-            </Link>
-          </p>
-        </div>
-      </section>
-    </div>
+            <p className="mt-6 text-center">
+              Already have an account?
+              <Link
+                to={`/signIn/${RoleEnum.CUSTOMER}`}
+                className="underline text-blue-600 font-semibold ml-1"
+              >
+                Sign In
+              </Link>
+            </p>
+          </div>
+        </section>
+      </div>
+    </>
   );
 };
 
