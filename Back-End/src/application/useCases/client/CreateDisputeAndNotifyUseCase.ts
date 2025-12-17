@@ -1,11 +1,11 @@
-import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { DisputeInputDTO } from "../../dtos/DisputeDTO";
-import { ICreateDisputeAndNotifyUseCase } from "../../Interface/useCases/Client/ICreateDisputeAndNotifyUseCase";
+import { ICreateDisputeAndNotifyUseCase } from "../../Interface/useCases/client/ICreateDisputeAndNotifyUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { buildDisputeReportEmail } from "../../services/emailTemplates/disputeReportTemplate";
 import { AppError } from "../../../shared/errors/AppError";

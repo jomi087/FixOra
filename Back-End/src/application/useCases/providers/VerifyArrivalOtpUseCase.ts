@@ -1,10 +1,10 @@
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
-import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
+import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IVerifyArrivalOtpUseCase } from "../../Interface/useCases/Provider/IVerifyArrivalOtpUseCase";
+import { IVerifyArrivalOtpUseCase } from "../../Interface/useCases/provider/IVerifyArrivalOtpUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { BAD_REQUEST } = HttpStatusCode;

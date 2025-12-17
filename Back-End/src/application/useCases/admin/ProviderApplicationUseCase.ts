@@ -1,6 +1,6 @@
-import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
+import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterface/IKYCRequestRepository";
 import { ProviderApplicationDTO, ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../dtos/ProviderApplicationDTO";
-import { IProviderApplicationUseCase } from "../../Interface/useCases/Admin/IProviderApplicationUseCase";
+import { IProviderApplicationUseCase } from "../../Interface/useCases/admin/IProviderApplicationUseCase";
 
 
 export class ProviderApplicationUseCase implements IProviderApplicationUseCase {

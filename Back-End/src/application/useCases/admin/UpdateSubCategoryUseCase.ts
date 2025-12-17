@@ -1,12 +1,12 @@
 import { Category } from "../../../domain/entities/CategoryEntity";
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
-import { IFileValidator } from "../../../domain/interface/ServiceInterface/IFileValidator";
-import { IImageUploaderService } from "../../../domain/interface/ServiceInterface/IImageUploaderService";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
+import { IFileValidator } from "../../../domain/interface/serviceInterface/IFileValidator";
+import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { UpdateSubCategoryInputDTO } from "../../dtos/CategoryDTO";
-import { IUpdateSubCategoryUseCase } from "../../Interface/useCases/Admin/IUpdateSubCategoryUseCase";
+import { IUpdateSubCategoryUseCase } from "../../Interface/useCases/admin/IUpdateSubCategoryUseCase";
 
 const {  NOT_FOUND, CONFLICT } = HttpStatusCode;
 const {  NOT_FOUND_MSG, ALREADY_EXISTS_MSG } = Messages;

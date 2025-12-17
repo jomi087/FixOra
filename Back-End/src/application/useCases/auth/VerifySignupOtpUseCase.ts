@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { DecodedUserDTO } from "../../dtos/AuthDTO/DecodedUserDTO";
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IVerifySignupOtpUseCase } from "../../Interface/useCases/Auth/IVerifySignupOtpUseCase";
-import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
+import { IVerifySignupOtpUseCase } from "../../Interface/useCases/auth/IVerifySignupOtpUseCase";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { FORBIDDEN, BAD_REQUEST } = HttpStatusCode;

@@ -1,9 +1,9 @@
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { AddReviewInputDTO } from "../../dtos/ReviewDTO";
-import { IAddReviewUseCase } from "../../Interface/useCases/Client/IAddReviewUseCase";
+import { IAddReviewUseCase } from "../../Interface/useCases/client/IAddReviewUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { AppError } from "../../../shared/errors/AppError";
 

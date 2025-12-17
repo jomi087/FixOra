@@ -3,11 +3,11 @@
 import jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
 
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { IForgotPasswordUseCase } from "../../Interface/useCases/Auth/IForgotPasswordUseCase";
+import { IForgotPasswordUseCase } from "../../Interface/useCases/auth/IForgotPasswordUseCase";
 import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
 import { BRAND } from "../../../shared/const/constants";
 import { AppError } from "../../../shared/errors/AppError";

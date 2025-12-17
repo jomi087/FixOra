@@ -1,13 +1,13 @@
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity";
-import { IKYCRequestRepository } from "../../../domain/interface/RepositoryInterface/IKYCRequestRepository";
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterface/IKYCRequestRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { KYCStatus } from "../../../shared/enums/KYCstatus";
 import { Messages } from "../../../shared/const/Messages";
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../dtos/UpdateKYCStatusDTO";
-import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/Admin/IUpdateKYCStatusUseCase";
+import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/admin/IUpdateKYCStatusUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { AppError } from "../../../shared/errors/AppError";
 

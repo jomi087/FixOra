@@ -1,7 +1,7 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IToggleUserStatusUseCase } from "../../Interface/useCases/Admin/IToggleUserStatusUseCase";
+import { IToggleUserStatusUseCase } from "../../Interface/useCases/admin/IToggleUserStatusUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;

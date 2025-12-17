@@ -1,5 +1,5 @@
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import NotificationModel from "../models/NotificationModel";
 
 export class NotificationRepository implements INotificationRepository {

@@ -1,5 +1,5 @@
 import { Category, Subcategory } from "../../../domain/entities/CategoryEntity";
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
 import CategoryModel from "../models/CategoryModel";
 import { FilterQuery } from "mongoose";
 

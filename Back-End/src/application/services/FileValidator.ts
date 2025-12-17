@@ -1,4 +1,4 @@
-import { IFileValidator } from "../../domain/interface/ServiceInterface/IFileValidator";
+import { IFileValidator } from "../../domain/interface/serviceInterface/IFileValidator";
 import { Messages } from "../../shared/const/Messages";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { AppError } from "../../shared/errors/AppError";

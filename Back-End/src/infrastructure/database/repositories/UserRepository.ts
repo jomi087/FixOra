@@ -1,6 +1,6 @@
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { User } from "../../../domain/entities/UserEntity";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import UserModel from "../models/UserModel";
 import { Category } from "../../../domain/entities/CategoryEntity";
 import { Booking } from "../../../domain/entities/BookingEntity";

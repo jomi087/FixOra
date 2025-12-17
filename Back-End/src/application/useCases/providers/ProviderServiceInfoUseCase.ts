@@ -1,9 +1,9 @@
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { ProviderServiceInfoOutputDTO } from "../../dtos/ProviderInfoDTO";
-import { IProviderServiceInfoUseCase } from "../../Interface/useCases/Provider/IProviderServiceInfoUseCase";
+import { IProviderServiceInfoUseCase } from "../../Interface/useCases/provider/IProviderServiceInfoUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG } = Messages;

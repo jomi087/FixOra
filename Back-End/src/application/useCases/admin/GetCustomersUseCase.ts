@@ -1,6 +1,6 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { GetCustomersInputDTO, GetCustomersOutputDTO } from "../../dtos/GetCustomerDTO";
-import { IGetCustomersUseCase } from "../../Interface/useCases/Admin/IGetCustomersUseCase";
+import { IGetCustomersUseCase } from "../../Interface/useCases/admin/IGetCustomersUseCase";
 
 
 export class GetCustomersUseCase implements IGetCustomersUseCase {

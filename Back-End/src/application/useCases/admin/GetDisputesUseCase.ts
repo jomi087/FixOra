@@ -1,6 +1,6 @@
-import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
 import { DisputeListItemDTO, DisputeListResponseDTO, FilterDisputeInputDTO } from "../../dtos/DisputeDTO";
-import { IGetDisputesUseCase } from "../../Interface/useCases/Admin/IGetDisputesUseCase";
+import { IGetDisputesUseCase } from "../../Interface/useCases/admin/IGetDisputesUseCase";
 
 
 export class GetDisputesUseCase implements IGetDisputesUseCase {

@@ -1,8 +1,8 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
-import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IRefreshTokenUseCase } from "../../Interface/useCases/Auth/IRefreshTokenUseCase";
+import { IRefreshTokenUseCase } from "../../Interface/useCases/auth/IRefreshTokenUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 

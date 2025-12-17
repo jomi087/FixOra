@@ -1,6 +1,6 @@
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
 import { ActiveCategoryOutputDTO } from "../../dtos/CategoryDTO";
-import { IActiveServiceUseCase } from "../../Interface/useCases/Client/IActiveServiceUseCase";
+import { IActiveServiceUseCase } from "../../Interface/useCases/client/IActiveServiceUseCase";
 
 
 export class ActiveServiceUseCase implements IActiveServiceUseCase {

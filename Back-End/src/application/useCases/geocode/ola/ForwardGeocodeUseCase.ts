@@ -1,5 +1,5 @@
 import { ForwardGeocodeResult } from "../../../../domain/entities/GeocodeResult";
-import { IGeocodeService } from "../../../../domain/interface/ServiceInterface/IGeocodeService";
+import { IGeocodeService } from "../../../../domain/interface/serviceInterface/IGeocodeService";
 import { IForwardGeocodeUseCase } from "../../../Interface/useCases/geocode/ola/IForwardGeocodeUseCase";
 
 export class ForwardGeocodeUseCase implements IForwardGeocodeUseCase {

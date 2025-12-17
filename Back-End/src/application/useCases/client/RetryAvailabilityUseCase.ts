@@ -1,10 +1,10 @@
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { Messages } from "../../../shared/const/Messages";
 import { RetryAvailabilityInputDTO, RetryAvailabilityOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";
-import { IRetryAvailabilityUseCase } from "../../Interface/useCases/Client/IRetryAvailabilityUseCase";
+import { IRetryAvailabilityUseCase } from "../../Interface/useCases/client/IRetryAvailabilityUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 

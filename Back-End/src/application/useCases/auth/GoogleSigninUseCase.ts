@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 import { RoleEnum } from "../../../shared/enums/Roles";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuthService";
-import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
+import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IGoogleSigninUseCase } from "../../Interface/useCases/Auth/IGoogleSigninUseCase";
+import { IGoogleSigninUseCase } from "../../Interface/useCases/auth/IGoogleSigninUseCase";
 import { SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";
 import { AppError } from "../../../shared/errors/AppError";
 

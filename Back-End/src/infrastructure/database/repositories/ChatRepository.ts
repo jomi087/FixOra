@@ -1,6 +1,6 @@
 import mongoose, { PipelineStage } from "mongoose";
 import { ChatListItem } from "../../../domain/entities/projections/ChatListItem";
-import { IChatRepository } from "../../../domain/interface/RepositoryInterface/IChatRepository";
+import { IChatRepository } from "../../../domain/interface/repositoryInterface/IChatRepository";
 import { ChatModel } from "../models/ChatModel";
 import { Chat } from "../../../domain/entities/ChatEntity";
 

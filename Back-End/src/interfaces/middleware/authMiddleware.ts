@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { ITokenService } from "../../domain/interface/ServiceInterface/ITokenService";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
+import { ITokenService } from "../../domain/interface/serviceInterface/ITokenService";
+import { IUserRepository } from "../../domain/interface/repositoryInterface/IUserRepository";
 import { User } from "../../domain/entities/UserEntity";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";

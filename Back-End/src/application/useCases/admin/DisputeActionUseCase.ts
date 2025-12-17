@@ -1,12 +1,12 @@
-import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { DisputeActionInputDTO, DisputeActionOutputDTO } from "../../dtos/DisputeDTO";
-import { IDisputeActionHandler } from "../../Interface/useCases/Admin/handlers/IDisputeActionHandler";
-import { IDisputeActionUseCase } from "../../Interface/useCases/Admin/IDisputeActionUseCase";
+import { IDisputeActionHandler } from "../../Interface/useCases/admin/handlers/IDisputeActionHandler";
+import { IDisputeActionUseCase } from "../../Interface/useCases/admin/IDisputeActionUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG, INVALID_TYPE } = Messages;

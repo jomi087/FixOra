@@ -5,15 +5,15 @@ import { useState } from "react";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import SearchInput from "@/components/common/others/SearchInput";
 import FilterSelect from "@/components/common/others/FilterSelect";
-import AddCategoryDialoge from "@/components/admin/ServiceManagement/AddCategoryDialoge";
+import AddCategoryDialoge from "@/components/admin/serviceManagement/AddCategoryDialoge";
 import Pagination from "@/components/common/others/Pagination";
 import { useServiceManagement } from "@/hooks/useServiceManagement";
 import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { AxiosError } from "axios";
-import MainServiceTable from "@/components/admin/ServiceManagement/MainServiceTable";
-import SubServiceTable from "@/components/admin/ServiceManagement/SubServiceTable";
+import MainServiceTable from "@/components/admin/serviceManagement/MainServiceTable";
+import SubServiceTable from "@/components/admin/serviceManagement/SubServiceTable";
 import type { Category } from "@/shared/types/category";
 
 const ServiceManagement: React.FC = () => {

@@ -1,23 +1,23 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { Booking } from "../../../domain/entities/BookingEntity";
-import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
-import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { toggleAvailabilityInputDTO } from "../../dtos/AvailabilityDTO";
-import { IToggleAvailabilityUseCase } from "../../Interface/useCases/Provider/IToggleAvailabilityUseCase";
+import { IToggleAvailabilityUseCase } from "../../Interface/useCases/provider/IToggleAvailabilityUseCase";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { SendBookingCancelledInput } from "../../dtos/NotificationDTO";
 import { NotificationType } from "../../../shared/enums/Notification";
-import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
+import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;

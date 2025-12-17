@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
-import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
-import { IWalletRepository } from "../../../domain/interface/RepositoryInterface/IWalletRepository";
-import { IBookingSchedulerService } from "../../../domain/interface/ServiceInterface/IBookingSchedulerService";
-import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
-import { IPaymentService } from "../../../domain/interface/ServiceInterface/IPaymentService";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
+import { IBookingSchedulerService } from "../../../domain/interface/serviceInterface/IBookingSchedulerService";
+import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
+import { IPaymentService } from "../../../domain/interface/serviceInterface/IPaymentService";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { NotificationType } from "../../../shared/enums/Notification";
@@ -14,7 +14,7 @@ import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
 import { SendBookingConfirmedInput } from "../../dtos/NotificationDTO";
-import { IVerifyPaymentUseCase } from "../../Interface/useCases/Client/IVerifyPaymentUseCase";
+import { IVerifyPaymentUseCase } from "../../Interface/useCases/client/IVerifyPaymentUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 

@@ -115,7 +115,7 @@ const registerFcmTokenUseCase = new RegisterFcmTokenUseCase(userRepository);
 import { RefreshTokenUseCase } from "../application/useCases/auth/RefreshTokenUseCase";
 const refreshTokenUseCase = new RefreshTokenUseCase(tokenService, userRepository);
 
-import { configureSignOutStrategies } from "../infrastructure/config/SignoutConfig";
+import { configureSignOutStrategies } from "../infrastructure/config/signoutConfig";
 const signOutFactory = configureSignOutStrategies(userRepository);
 import { SignoutUseCase } from "../application/useCases/auth/SignoutUseCase";
 const signoutUseCase = new SignoutUseCase(signOutFactory);

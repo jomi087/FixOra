@@ -1,10 +1,10 @@
-import { ICategoryRepository } from "../../../domain/interface/RepositoryInterface/ICategoryRepository";
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { ShortCategoryOutputDTO } from "../../dtos/CategoryDTO";
-import { IProviderServiceUseCase } from "../../Interface/useCases/Provider/IProviderServiceUseCase";
+import { IProviderServiceUseCase } from "../../Interface/useCases/provider/IProviderServiceUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG } = Messages;

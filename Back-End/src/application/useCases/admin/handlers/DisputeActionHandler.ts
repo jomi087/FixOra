@@ -1,11 +1,11 @@
 import { Dispute } from "../../../../domain/entities/DisputeEntity";
-// import { ITransactionSession } from "../../../../domain/interface/DatabaseInterface/ITransactionManager";
-import { IRatingRepository } from "../../../../domain/interface/RepositoryInterface/IRaitingRepository";
+// import { ITransactionSession } from "../../../../domain/interface/databaseInterface/ITransactionManager";
+import { IRatingRepository } from "../../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { Messages } from "../../../../shared/const/Messages";
 import { DisputeStatus } from "../../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../../shared/errors/AppError";
-import { IDisputeActionHandler } from "../../../Interface/useCases/Admin/handlers/IDisputeActionHandler";
+import { IDisputeActionHandler } from "../../../Interface/useCases/admin/handlers/IDisputeActionHandler";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG } = Messages;

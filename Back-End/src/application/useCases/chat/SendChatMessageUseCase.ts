@@ -1,6 +1,6 @@
 import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
-import { IChatMessageRepository } from "../../../domain/interface/RepositoryInterface/IChatMessageRepository";
-import { IChatRepository } from "../../../domain/interface/RepositoryInterface/IChatRepository";
+import { IChatMessageRepository } from "../../../domain/interface/repositoryInterface/IChatMessageRepository";
+import { IChatRepository } from "../../../domain/interface/repositoryInterface/IChatRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";

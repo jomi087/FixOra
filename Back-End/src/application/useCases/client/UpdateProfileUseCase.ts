@@ -1,8 +1,8 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { EditProfileInputDTO, UpdatedProfileOutputDTO } from "../../dtos/EditProfileDTO";
-import { IUpdateProfileUseCase } from "../../Interface/useCases/Client/IUpdateProfileUseCase";
+import { IUpdateProfileUseCase } from "../../Interface/useCases/client/IUpdateProfileUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;

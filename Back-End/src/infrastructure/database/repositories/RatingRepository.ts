@@ -1,9 +1,9 @@
 import { PipelineStage } from "mongoose";
 import { Rating } from "../../../domain/entities/RatingEntity";
 import { User } from "../../../domain/entities/UserEntity";
-import { IRatingRepository } from "../../../domain/interface/RepositoryInterface/IRaitingRepository";
+import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { RatingModel } from "../models/RatingModel";
-// import { ITransactionSession } from "../../../domain/interface/DatabaseInterface/ITransactionManager";
+// import { ITransactionSession } from "../../../domain/interface/databaseInterface/ITransactionManager";
 
 export class RatingRepository implements IRatingRepository {
     /** @inheritdoc */

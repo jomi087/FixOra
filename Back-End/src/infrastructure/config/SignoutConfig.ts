@@ -1,5 +1,5 @@
 import { RoleEnum } from "../../shared/enums/Roles";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
+import { IUserRepository } from "../../domain/interface/repositoryInterface/IUserRepository";
 import { SignOutStrategyFactory } from "../../application/strategies/auth/signOut/SignOutStrategyFactory";
 import { CustomerSignOutStrategy } from "../../application/strategies/auth/signOut/CustomerSignOutStrategy";
 import { ProviderSignOutStrategy } from "../../application/strategies/auth/signOut/ProviderSignOutStrategy";

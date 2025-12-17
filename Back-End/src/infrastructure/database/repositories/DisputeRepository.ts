@@ -3,9 +3,9 @@ import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { DisputeModel } from "../models/DisputeModel";
 
 import { Dispute } from "../../../domain/entities/DisputeEntity";
-import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
 import { User } from "../../../domain/entities/UserEntity";
-// import { ITransactionSession } from "../../../domain/interface/DatabaseInterface/ITransactionManager";
+// import { ITransactionSession } from "../../../domain/interface/databaseInterface/ITransactionManager";
 
 
 export class DisputeRepository implements IDisputeRepository {

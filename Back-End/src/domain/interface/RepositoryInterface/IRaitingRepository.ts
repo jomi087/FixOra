@@ -1,6 +1,6 @@
 import { Rating } from "../../entities/RatingEntity";
 import { User } from "../../entities/UserEntity";
-// import { ITransactionSession } from "../DatabaseInterface/ITransactionManager";
+// import { ITransactionSession } from "../databaseInterface/ITransactionManager";
 
 export interface IRatingRepository {
     /**

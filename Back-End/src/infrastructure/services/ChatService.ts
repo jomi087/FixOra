@@ -1,4 +1,4 @@
-import { IChatService } from "../../domain/interface/ServiceInterface/IChatService";
+import { IChatService } from "../../domain/interface/serviceInterface/IChatService";
 import { getIO } from "../socket/config";
 
 export class ChatService implements IChatService {

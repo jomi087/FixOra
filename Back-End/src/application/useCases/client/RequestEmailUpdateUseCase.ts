@@ -1,12 +1,12 @@
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
-import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
+import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/IOtpGeneratorService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { NewEmailRequestInputDTO } from "../../dtos/EditProfileDTO";
-import { IRequestEmailUpdateUseCase } from "../../Interface/useCases/Client/IRequestEmailUpdateUseCase";
+import { IRequestEmailUpdateUseCase } from "../../Interface/useCases/client/IRequestEmailUpdateUseCase";
 import { commonOtpEmail } from "../../services/emailTemplates/commonOtpTemplate";
 
 const { CONFLICT } = HttpStatusCode;

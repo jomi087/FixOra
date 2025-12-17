@@ -1,7 +1,7 @@
-import { ICommissionFeeRepository } from "../../../domain/interface/RepositoryInterface/ICommissionFeeRepository";
-import { ILoggerService } from "../../../domain/interface/ServiceInterface/ILoggerService";
+import { ICommissionFeeRepository } from "../../../domain/interface/repositoryInterface/ICommissionFeeRepository";
+import { ILoggerService } from "../../../domain/interface/serviceInterface/ILoggerService";
 import { COMMISSION_FEE } from "../../../shared/const/constants";
-import { IInitializeCommissionFeeUseCase } from "../../Interface/useCases/Public/IInitializeCommissionFeeUseCase";
+import { IInitializeCommissionFeeUseCase } from "../../Interface/useCases/public/IInitializeCommissionFeeUseCase";
 
 
 

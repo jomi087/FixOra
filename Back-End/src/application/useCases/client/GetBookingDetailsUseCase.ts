@@ -1,9 +1,9 @@
 
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { BookingDetailsOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";
-import { IGetBookingDetailsUseCase } from "../../Interface/useCases/Client/IGetBookingDetailsUseCase";
+import { IGetBookingDetailsUseCase } from "../../Interface/useCases/client/IGetBookingDetailsUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;

@@ -1,9 +1,9 @@
-import { IUserRepository } from "../../../domain/interface/RepositoryInterface/IUserRepository";
-import { ITokenService } from "../../../domain/interface/ServiceInterface/ITokenService";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { SigninInputDTO, SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";
-import { ISigninUseCase } from "../../Interface/useCases/Auth/ISigninUseCase";
+import { ISigninUseCase } from "../../Interface/useCases/auth/ISigninUseCase";
 import { AuthStrategyFactory } from "../../strategies/auth/signIn/AuthStrategyFactory";
 import { AppError } from "../../../shared/errors/AppError";
 

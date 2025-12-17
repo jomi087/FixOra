@@ -1,17 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
-import { IBookingRepository } from "../../../domain/interface/RepositoryInterface/IBookingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { DAYS } from "../../../shared/const/constants";
 import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
-import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
 import { RescheduleBookingInputDTO } from "../../dtos/BookingDTO/RescheduleBooking";
-import { IRescheduleBookingUseCase } from "../../Interface/useCases/Client/IRescheduleBookingUseCase";
+import { IRescheduleBookingUseCase } from "../../Interface/useCases/client/IRescheduleBookingUseCase";
 import { SendBookingConfirmedInput } from "../../dtos/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
-import { INotificationService } from "../../../domain/interface/ServiceInterface/INotificationService";
-import { INotificationRepository } from "../../../domain/interface/RepositoryInterface/INotificationRepository";
+import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY } = HttpStatusCode;

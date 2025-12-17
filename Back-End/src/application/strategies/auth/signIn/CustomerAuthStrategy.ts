@@ -1,6 +1,6 @@
 import { User } from "../../../../domain/entities/UserEntity";
-import { IUserRepository } from "../../../../domain/interface/RepositoryInterface/IUserRepository";
-import { IHashService } from "../../../../domain/interface/ServiceInterface/IHashService";
+import { IUserRepository } from "../../../../domain/interface/repositoryInterface/IUserRepository";
+import { IHashService } from "../../../../domain/interface/serviceInterface/IHashService";
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 import { RoleEnum } from "../../../../shared/enums/Roles";

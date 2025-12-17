@@ -1,11 +1,11 @@
-import { IDisputeRepository } from "../../../domain/interface/RepositoryInterface/IDisputeRepository";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { DisputeContentOutput } from "../../dtos/DisputeDTO";
-import { IDisputeContentHandler } from "../../Interface/useCases/Admin/handlers/IDisputeContentHandler";
-import { IDisputeContentInfoUseCase } from "../../Interface/useCases/Admin/IDisputeContentInfoUseCase";
+import { IDisputeContentHandler } from "../../Interface/useCases/admin/handlers/IDisputeContentHandler";
+import { IDisputeContentInfoUseCase } from "../../Interface/useCases/admin/IDisputeContentInfoUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG, INVALID_TYPE } = Messages;

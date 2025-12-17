@@ -1,11 +1,11 @@
-import { IAvailabilityRepository } from "../../../domain/interface/RepositoryInterface/IAvailabilityRepository";
-import { IProviderRepository } from "../../../domain/interface/RepositoryInterface/IProviderRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
 import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
 import { getAvailabilityOutputDTO } from "../../dtos/AvailabilityDTO";
-import { IGetAvailabilityUseCase } from "../../Interface/useCases/Provider/IGetAvailabilityUseCase";
+import { IGetAvailabilityUseCase } from "../../Interface/useCases/provider/IGetAvailabilityUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 

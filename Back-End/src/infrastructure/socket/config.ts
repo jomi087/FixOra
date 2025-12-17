@@ -1,7 +1,7 @@
 import { Server as SocketIOServer } from "socket.io";
 import { Server as HTTPServer } from "http";
 import { socketAuthMiddleware } from "./authMiddleware";
-import type { ILoggerService } from "../../domain/interface/ServiceInterface/ILoggerService";
+import type { ILoggerService } from "../../domain/interface/serviceInterface/ILoggerService";
 
 
 export let ioInstance: SocketIOServer;

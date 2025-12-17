@@ -1,7 +1,7 @@
-import { IOtpRepository } from "../../../domain/interface/RepositoryInterface/IOtpRepository";
-import { IOtpGenratorService } from "../../../domain/interface/ServiceInterface/IOtpGeneratorService";
-import { IEmailService } from "../../../domain/interface/ServiceInterface/IEmailService";
-import { IResendOtpUseCase } from "../../Interface/useCases/Auth/IResendOtpUseCase";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
+import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/IOtpGeneratorService";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
+import { IResendOtpUseCase } from "../../Interface/useCases/auth/IResendOtpUseCase";
 import { commonOtpEmail } from "../../services/emailTemplates/commonOtpTemplate";
 
 

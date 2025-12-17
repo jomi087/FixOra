@@ -1,6 +1,6 @@
 import { RoleEnum } from "../../shared/enums/Roles";
-import { IUserRepository } from "../../domain/interface/RepositoryInterface/IUserRepository";
-import { IHashService } from "../../domain/interface/ServiceInterface/IHashService";
+import { IUserRepository } from "../../domain/interface/repositoryInterface/IUserRepository";
+import { IHashService } from "../../domain/interface/serviceInterface/IHashService";
 import { AuthStrategyFactory } from "../../application/strategies/auth/signIn/AuthStrategyFactory";
 import { CustomerAuthStrategy } from "../../application/strategies/auth/signIn/CustomerAuthStrategy";
 import { AdminAuthStrategy } from "../../application/strategies/auth/signIn/AdminAuthStrategy";

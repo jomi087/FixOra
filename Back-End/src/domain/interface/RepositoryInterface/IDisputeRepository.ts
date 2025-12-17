@@ -1,7 +1,7 @@
 import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { Dispute } from "../../entities/DisputeEntity";
 import { User } from "../../entities/UserEntity";
-// import { ITransactionSession } from "../DatabaseInterface/ITransactionManager";
+// import { ITransactionSession } from "../databaseInterface/ITransactionManager";
 
 export interface IDisputeRepository {
     /**
