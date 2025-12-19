@@ -24,7 +24,7 @@ import { IGetSalesReportUseCase } from "../../application/Interface/useCases/pro
 import { AppError } from "../../shared/errors/AppError";
 
 const { OK, UNAUTHORIZED, NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
-const { UNAUTHORIZED_MSG, NOT_FOUND_MSG, IMAGE_VALIDATION_ERROR } = Messages;
+const { UNAUTHORIZED_MSG, NOT_FOUND_MSG, REQUIRED, IMAGE_VALIDATION_ERROR } = Messages;
 
 export class ProviderController {
     constructor(
@@ -197,12 +197,10 @@ export class ProviderController {
 
             const files = req.files as Express.Multer.File[];
 
-            if (!files || files.length < 2) {
-                throw new Error("At least two work proof image is required");
+            if (!files) {
+                throw new AppError(BAD_REQUEST, REQUIRED("Work proof images"));
             }
-            if (files.length > 3) {
-                throw new Error("You can upload up to 3 images only");
-            }
+
             for (const file of files) {
                 const validationError = validateFile(file, allowedTypes, maxSizeMB);
                 if (validationError) {

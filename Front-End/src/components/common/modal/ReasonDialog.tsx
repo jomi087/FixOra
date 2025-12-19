@@ -10,11 +10,11 @@ interface ReasonDialogProps {
   open: boolean
   setOpen: (open: boolean) => void
   tittle?: string;
-  discription?: string
+  description?: string
   placeholder?: string
 }
 
-const ReasonDialog: React.FC<ReasonDialogProps> = ({ onConfirm, loading, open, setOpen, tittle = "Reason", discription = "", placeholder = "" }) => {
+const ReasonDialog: React.FC<ReasonDialogProps> = ({ onConfirm, loading, open, setOpen, tittle = "Reason", description = "", placeholder = "" }) => {
   const [reason, setReason] = useState(""); // suggestion move the state to parent cz i am not able to control setReason from partent
   const [error, setError] = useState("");
   const handleConfirm = () => {
@@ -33,7 +33,7 @@ const ReasonDialog: React.FC<ReasonDialogProps> = ({ onConfirm, loading, open, s
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="">{tittle}</DialogTitle>
-          <DialogDescription className="text-xs mt-2">{discription}</DialogDescription>
+          <DialogDescription className="text-xs mt-2">{description}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-2">
           <div className="grid flex-1 gap-2">

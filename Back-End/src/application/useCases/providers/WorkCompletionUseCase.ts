@@ -17,8 +17,8 @@ import { INotificationRepository } from "../../../domain/interface/repositoryInt
 import { AppError } from "../../../shared/errors/AppError";
 
 
-const { NOT_FOUND } = HttpStatusCode;
-const {  NOT_FOUND_MSG } = Messages;
+const { NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
+const { NOT_FOUND_MSG, INVALID_WORK_PROOF_IMAGES_COUNT } = Messages;
 
 
 export class WorkCompletionUseCase implements IWorkCompletionUseCase {
@@ -64,6 +64,10 @@ export class WorkCompletionUseCase implements IWorkCompletionUseCase {
 
     async execute(input: WorkCompletionInputDTO): Promise<WorkCompletionOutputDTO> {
         try {
+
+            if (input.plainFiles.length < 2 || input.plainFiles.length > 3) {
+                throw new AppError(BAD_REQUEST, INVALID_WORK_PROOF_IMAGES_COUNT);
+            }
             const workProofUrls: string[] = [];
 
             for (const file of input.plainFiles) {
