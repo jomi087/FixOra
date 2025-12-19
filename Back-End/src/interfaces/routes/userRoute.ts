@@ -10,7 +10,7 @@ import upload from "../middleware/upload";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { addFundsSchema } from "../validations/walletSchema";
 import { addReviewSchema, reportReviewSchema, updateReviewSchema } from "../validations/reviewSchema";
-import { callLogSchema, chatMessageSchema, startChatSchema } from "../validations/chatSchema";
+import { callLogSchema, startChatSchema } from "../validations/chatSchema";
 
 const router = express.Router();
 
@@ -67,8 +67,8 @@ router.patch("/booking/cancel-booking/:bookingId", AuthMiddleware([RoleEnum.Cust
 
 router.post("/chats", validateRequest(startChatSchema), AuthMiddleware([RoleEnum.Customer]), chatController.startChat.bind(chatController));
 router.get("/chats", AuthMiddleware([RoleEnum.Customer]), chatController.getChatList.bind(chatController));
-router.get("/chats/:chatId/messages", AuthMiddleware([RoleEnum.Customer]), chatController.getChatMessages.bind(chatController));;
-router.post("/chats/:chatId/messages", validateRequest(chatMessageSchema), AuthMiddleware([RoleEnum.Customer]), chatController.sendChatMessage.bind(chatController));
+router.get("/chats/:chatId/messages", AuthMiddleware([RoleEnum.Customer]), chatController.getChatMessages.bind(chatController));
+router.post("/chats/:chatId/messages", upload.single("file"), AuthMiddleware([RoleEnum.Customer]), chatController.sendChatMessage.bind(chatController));
 router.post("/chats/:chatId/call-log", validateRequest(callLogSchema), AuthMiddleware([RoleEnum.Customer]), chatController.logCall.bind(chatController));
 
 router.get("/wallet", AuthMiddleware([RoleEnum.Customer, RoleEnum.Provider]), userController.walletInfo.bind(userController));

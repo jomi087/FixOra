@@ -1,6 +1,6 @@
 import { Category } from "../../../domain/entities/CategoryEntity";
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
-import { IFileValidator } from "../../../domain/interface/serviceInterface/IFileValidator";
+import { IFileValidationService } from "../../../domain/interface/serviceInterface/IFileValidationService";
 import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
@@ -15,7 +15,7 @@ export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
     constructor(
         private readonly _categoryRepository: ICategoryRepository,
         private readonly _imageUploaderService: IImageUploaderService,
-        private readonly _fileValidator: IFileValidator
+        private readonly _fileValidatonService: IFileValidationService
     ) { }
     async execute(input: UpdateCategoryInputDTO): Promise<Category> {
         try {
@@ -30,7 +30,7 @@ export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
             let imageUrl: string | null = null;
 
             if (imageFile) {
-                this._fileValidator.validate(imageFile);
+                this._fileValidatonService.validate(imageFile);
                 imageUrl = await this._imageUploaderService.uploadImage(imageFile.buffer, "FixOra/Services");
             }
 

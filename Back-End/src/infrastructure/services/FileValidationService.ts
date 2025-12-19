@@ -1,4 +1,4 @@
-import { IFileValidator } from "../../domain/interface/serviceInterface/IFileValidator";
+import { IFileValidationService } from "../../domain/interface/serviceInterface/IFileValidationService";
 import { Messages } from "../../shared/const/Messages";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { AppError } from "../../shared/errors/AppError";
@@ -8,7 +8,7 @@ import { UploadedFile } from "../../shared/types/common";
 const { BAD_REQUEST } = HttpStatusCode;
 const { INVALID_IMAGE_FORMAT, IMAGE_SIZE_EXCEEDED } = Messages;
 
-export class FileValidator implements IFileValidator {
+export class FileValidationService  implements IFileValidationService  {
     constructor(
         private allowedTypes: string[],
         private maxSizeMB: number

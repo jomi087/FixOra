@@ -30,7 +30,8 @@ export class ChatMessageRepository implements IChatMessageRepository {
                         senderId: 1,
                         type: 1,
                         content: 1,
-                        callStatus:1,
+                        callStatus: 1,
+                        file:1,
                         createdAt: 1,
                         isRead: 1,
                     },
@@ -44,22 +45,28 @@ export class ChatMessageRepository implements IChatMessageRepository {
     }
 
     /** @inheritdoc */
-    async createChatMessage(
-        chatId: string,
-        senderId: string,
-        content: string,
-        type: "text" | "call",
-        status?: CallStatus,
-    ): Promise<ChatMessage> {
+    async createChatMessage(params: {
+        chatId: string;
+        senderId: string;
+        content: string;
+        type: "text" | "call" | "image";
+        callStatus?: CallStatus;
+        file?: {
+            url: string;
+            mimeType: string;
+            size: number;
+        };
+    }): Promise<ChatMessage> {
 
-        const callStatus = type === "call" ? status : undefined;
+        const { chatId, senderId, content, type, callStatus, file } = params;
 
         const messageDoc = await ChatMessageModel.create({
             chatId: new mongoose.Types.ObjectId(chatId),
             senderId,
             content,
             type,
-            callStatus
+            callStatus,
+            file,
         });
 
         return {
@@ -69,6 +76,7 @@ export class ChatMessageRepository implements IChatMessageRepository {
             content: messageDoc.content,
             type: messageDoc.type,
             ...(messageDoc.callStatus && { callStatus: messageDoc.callStatus }),
+            ...(messageDoc.file && { file: messageDoc.file }),
             isRead: messageDoc.isRead,
             isActive: messageDoc.isActive,
             createdAt: messageDoc.createdAt,

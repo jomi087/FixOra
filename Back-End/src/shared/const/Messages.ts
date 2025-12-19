@@ -28,10 +28,10 @@ export const Messages = {
 
     CATEGORY_NAME_REQUIRED: "Category name is required",
     CATEGORY_DESCRIPTION_REQUIRED: "Category description is required",
-    INVALID_SUBCATEGORIES_JSON: "Invalid subcategories JSON",
     AT_LEAST_ONE_SUBCATEGORY_REQUIRED: "At least one subcategory is required",
     SUBCATEGORY_NAME_REQUIRED: (index: number) => `Subcategory ${index + 1} name is required`,
     SUBCATEGORY_DESCRIPTION_REQUIRED: (index: number) => `Subcategory ${index + 1} description is required`,
+    REQUIRED: (str: string): string => `${str} is required`,
 
     MAIN_CATEGORY_IMAGE_MISSING: "Main category image missing",
     SUBCATEGORY_IMAGE_MISSING: "Subcategory image missing",
@@ -59,7 +59,7 @@ export const Messages = {
     ALREADY_REPORTED_DISPUTE_TYPE: (str: string): string => `You’ve already reported this ${str}`,
 
 
-    UNABLE_TO_SEND_EMAIL : "Unable to send email. Please try again later.",
+    UNABLE_TO_SEND_EMAIL: "Unable to send email. Please try again later.",
 
     INVALID_CREDENTIALS: "Invalid credentials",
     INVALID_ROLE: "Invalid role",
@@ -71,6 +71,8 @@ export const Messages = {
     INVALID_GENDER: "Gender must be Male, Female, or Other",
     INVALID_SPECIALIZATION: "Invalid specialization",
     INVALID_DOB: "Invalid date of birth",
+    INVALID_SUBCATEGORIES_JSON: "Invalid subcategories JSON",
+    INVALID_WORK_PROOF_IMAGES_COUNT:"Invalid number of work proof images",
     INVALID_FORMAT: "Invalid Format",
     INVALID_IMAGE_FORMAT: "Invalid image format",
     INVALID_TYPE: (str: string): string => str ? `Invalid ${str} Type` : "Invalid Type",

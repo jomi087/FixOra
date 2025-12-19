@@ -18,8 +18,13 @@ export interface ChatMessage {
     chatId: string;
     senderId: string;
     content: string;
-    type: "text" | "call"
-    callStatus?:  "accepted" | "rejected";
+    type: "text" | "call" | "image"
+    file?: {
+        url: string;
+        mimeType: string;
+        size: number;
+    }
+    callStatus?: "accepted" | "rejected";
     createdAt: Date;
     isRead: boolean;
 }

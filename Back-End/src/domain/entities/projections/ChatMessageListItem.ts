@@ -7,6 +7,11 @@ export interface ChatMessageListItem {
   content: string;
   type: string;
   callStatus?: CallStatus;
+  file?: {
+    url: string;
+    mimeType: string;
+    size: number;
+  };
   createdAt: Date;
   isRead: boolean;
 }

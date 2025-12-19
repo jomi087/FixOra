@@ -93,14 +93,26 @@ export class ChatController {
             if (!req.user?.userId) {
                 throw new AppError(UNAUTHORIZED, UNAUTHORIZED_MSG);
             }
-            const { chatId } = req.params;
-            const { content } = req.body;
             const senderId = req.user.userId;
+
+            const { chatId } = req.params;
+            const type = req.body.type as "text" | "image";
+            const content = req.body.content ?? "";
+
+            const fileData = req.file
+                ? {
+                    buffer: req.file.buffer,
+                    mimeType: req.file.mimetype,
+                    size: req.file.size,
+                }
+                : null;
 
             const { chatMessage, receiverId } = await this._sendChatMessageUseCase.execute({
                 chatId,
                 senderId,
+                type,
                 content,
+                file: fileData,
             });
 
             const responseDTO = {
@@ -109,13 +121,13 @@ export class ChatController {
                 senderId: chatMessage.senderId,
                 content: chatMessage.content,
                 type: chatMessage.type,
+                ...(chatMessage.file && { file: chatMessage.file }),
                 createdAt: chatMessage.createdAt!,
                 isRead: chatMessage.isRead,
             };
 
             this._chatService.sendNewMessage(chatId, responseDTO);
             this._chatService.sendChatListUpdate(receiverId, responseDTO);
-
 
             res.status(OK).json({
                 success: true,
@@ -138,7 +150,7 @@ export class ChatController {
             const chatMessage = await this._logCallUseCase.execute({
                 chatId,
                 callerId,
-                status
+                callStatus:status
             });
 
             const responseDTO = {

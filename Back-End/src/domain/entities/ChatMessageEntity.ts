@@ -5,8 +5,16 @@ export interface ChatMessage {
     chatId: string;
     senderId: string;
     content: string;
-    type: "text" | "call";
+    type: "text" | "call" | "image";
     callStatus?: CallStatus;
+
+    // For file-based messages (image, document, video later)
+    file?: {
+        url: string;
+        mimeType: string;
+        size: number;
+    };
+
     isRead: boolean;
     isActive: boolean;
     createdAt?: Date,

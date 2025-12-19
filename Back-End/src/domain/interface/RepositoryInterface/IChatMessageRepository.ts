@@ -21,12 +21,17 @@ export interface IChatMessageRepository {
      * @param type 
      * @param CallStatus (only for call)
      */
-    createChatMessage(
-        chatId: string,
-        senderId: string,
-        content: string,
-        type: "text" | "call",
-        status?: CallStatus,
-    ): Promise<ChatMessage>
+    createChatMessage(params: {
+        chatId: string;
+        senderId: string;
+        content: string;
+        type: "text" | "call" | "image";
+        callStatus?: CallStatus;
+        file?: {
+            url: string;
+            mimeType: string;
+            size: number;
+        };
+    }): Promise<ChatMessage>
 }
 

@@ -14,21 +14,21 @@ export class LogCallUseCase implements ILogCallUseCase {
     async execute(input: LogCallInputDTO): Promise<ChatMessage> {
 
         try {
-            const { chatId, callerId, status } = input;
+            const { chatId, callerId, callStatus } = input;
 
             let content = "Vedio Call";
 
-            if (status == "rejected") {
+            if (callStatus == "rejected") {
                 content = `${content} (No Answer)`;
             } // else for accepte it will be Vedio Call
 
-            const chatMsg = await this._chatMessageRepository.createChatMessage(
+            const chatMsg = await this._chatMessageRepository.createChatMessage({
                 chatId,
-                callerId,
+                senderId:callerId,
                 content,
-                "call",
-                status
-            );
+                type: "call",
+                callStatus:callStatus
+            });
 
             await this._chatRepository.updateLatestMessage(chatId, chatMsg.id!);
 

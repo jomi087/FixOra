@@ -33,7 +33,7 @@ import { ChatService } from "../infrastructure/services/ChatService";
 import { OlaGeocodeService } from "../infrastructure/services/GeocodeService";
 import { CallService } from "../infrastructure/services/CallService";
 
-import { FileValidator } from "../application/services/FileValidator";
+import { FileValidationService } from "../infrastructure/services/FileValidationService";
 import { ReviewDisputeContentHandler } from "../application/useCases/admin/handlers/ReviewDisputeContentHandler";
 import { ReviewDisputeActionHandler } from "../application/useCases/admin/handlers/DisputeActionHandler";
 
@@ -70,7 +70,7 @@ const callService = new CallService();
 const geocodeService = new OlaGeocodeService();
 
 //validatior
-const fileValidator = new FileValidator(allowedTypes, maxSizeMB);
+const fileValidatonService = new FileValidationService(allowedTypes, maxSizeMB);
 
 // strategy handler,
 const reviewHandler = new ReviewDisputeContentHandler(ratingRepository);
@@ -285,10 +285,10 @@ import { ToggleCategoryStatusUseCase } from "../application/useCases/admin/Toggl
 const toggleCategoryStatusUseCase = new ToggleCategoryStatusUseCase(categoryRepository);
 
 import { UpdateCategoryUseCase } from "../application/useCases/admin/UpdateCategoryUseCase";
-const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository, imageUploaderService, fileValidator);
+const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository, imageUploaderService, fileValidatonService);
 
 import { UpdateSubCategoryUseCase } from "../application/useCases/admin/UpdateSubCategoryUseCase";
-const updateSubCategoryUseCase = new UpdateSubCategoryUseCase(categoryRepository, imageUploaderService, fileValidator);
+const updateSubCategoryUseCase = new UpdateSubCategoryUseCase(categoryRepository, imageUploaderService, fileValidatonService);
 
 import { GetDisputesUseCase } from "../application/useCases/admin/GetDisputesUseCase";
 const getDisputesUseCase = new GetDisputesUseCase(disputeRepository);
@@ -317,7 +317,7 @@ import { GetChatMessagesUseCase } from "../application/useCases/chat/GetChatMess
 const getChatMessagesUseCase = new GetChatMessagesUseCase(chatMessageRepository);
 
 import { SendChatMessageUseCase } from "../application/useCases/chat/SendChatMessageUseCase";
-const sendChatMessageUseCase = new SendChatMessageUseCase(chatRepository, chatMessageRepository);
+const sendChatMessageUseCase = new SendChatMessageUseCase(chatRepository, chatMessageRepository, imageUploaderService, fileValidatonService);
 
 import { LogCallUseCase } from "../application/useCases/chat/LogCallUseCase";
 const logCallUseCase = new LogCallUseCase(chatRepository, chatMessageRepository);

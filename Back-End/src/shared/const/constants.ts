@@ -11,15 +11,23 @@ export const BodyParserLimits = {
 
 export const LANDING_PAGE_TOP_PROVIDERS_LIMIT = 5;
 
-export const BOOKING_REQUEST_TIMEOUT_MS = 
+export const BOOKING_REQUEST_TIMEOUT_MS =
     process.env.NODE_ENV === "production" ? 5 * 60 * 1000 : 1 * 60 * 1000;
 
 export const PAYMENT_SESSION_TIMEOUT =
     process.env.NODE_ENV === "production" ? 5 * 60 * 1000 : 1 * 60 * 1000;
 
 export const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-
 export const maxSizeMB = 5;
+
+export const DOCUMENT_RULES = {
+    allowedTypes: [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ],
+    maxSizeMB: 10,
+};
 
 export const FULL_REFUND_WINDOW_MINUTES = 15;
 

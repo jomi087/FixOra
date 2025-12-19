@@ -1,6 +1,8 @@
 import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
 import { IChatMessageRepository } from "../../../domain/interface/repositoryInterface/IChatMessageRepository";
 import { IChatRepository } from "../../../domain/interface/repositoryInterface/IChatRepository";
+import { IFileValidationService } from "../../../domain/interface/serviceInterface/IFileValidationService";
+import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
@@ -8,13 +10,15 @@ import { SendChatMessageInputDTO } from "../../dtos/ChatDTO";
 import { ISendChatMessageUseCase } from "../../Interface/useCases/chat/ISendChatMessageUseCase";
 
 
-const { NOT_FOUND } = HttpStatusCode;
-const { NOT_FOUND_MSG, } = Messages;
+const { NOT_FOUND, BAD_REQUEST } = HttpStatusCode;
+const { NOT_FOUND_MSG } = Messages;
 
 export class SendChatMessageUseCase implements ISendChatMessageUseCase {
     constructor(
         private _chatRepository: IChatRepository,
-        private _chatMessageRepository: IChatMessageRepository
+        private _chatMessageRepository: IChatMessageRepository,
+        private readonly _imageUploaderService: IImageUploaderService, //cloudinary
+        private readonly _fileValidatonService: IFileValidationService
     ) { }
 
     async execute(input: SendChatMessageInputDTO): Promise<{
@@ -22,14 +26,48 @@ export class SendChatMessageUseCase implements ISendChatMessageUseCase {
         receiverId: string
     }> {
         try {
-            const { chatId, senderId, content } = input;
+            const { chatId, senderId, type, content, file } = input;
 
-            const chatMsg = await this._chatMessageRepository.createChatMessage(
+            let normalizedContent = content?.trim() ?? "";
+
+            if (type === "text" && !normalizedContent) {
+                throw new AppError(BAD_REQUEST, "Text message cannot be empty");
+            }
+
+            if (type === "text" && file) {
+                throw new AppError(BAD_REQUEST, "Text message cannot have attachment");
+            }
+
+            if (type === "image" && !file) {
+                throw new AppError(BAD_REQUEST, "Image file is required");
+            }
+
+            if (type === "image" && !normalizedContent) {
+                normalizedContent = "📷 Photo";
+            }
+
+            let imageUrl: string | null = null;
+
+            if (file) {
+                this._fileValidatonService.validate(file);
+                imageUrl = await this._imageUploaderService.uploadImage(file.buffer, "FixOra/Chats");
+            }
+
+            const chatMsg = await this._chatMessageRepository.createChatMessage({
                 chatId,
                 senderId,
-                content,
-                "text"
-            );
+                content: normalizedContent,
+                type,
+                ...(file && imageUrl && {
+                    file: {
+                        url: imageUrl,
+                        mimeType: file.mimeType,
+                        size: file.size
+                    }
+                }),
+            });
+
+
 
             await this._chatRepository.updateLatestMessage(input.chatId, chatMsg.id!);
 
@@ -40,11 +78,11 @@ export class SendChatMessageUseCase implements ISendChatMessageUseCase {
             const receiverId = chat.participants.find(id => id !== senderId);
             if (!receiverId) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Receiver"));
 
-
             return {
                 chatMessage: chatMsg,
                 receiverId
             };
+
         } catch (error: unknown) {
             throw error;
         }

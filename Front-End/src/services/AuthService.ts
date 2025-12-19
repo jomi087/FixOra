@@ -44,14 +44,19 @@ class AuthService {
     });
   }
 
+
   logCall(role: RoleEnum, chatId: string, payload: { callerId: string, status: string }) {
     return axiosInstance.post(API_ROUTES.CHAT.CALL_LOGS(role, chatId), payload);
   }
 
   sendChatMessages(role: RoleEnum, chatId: string, content: string) {
-    return axiosInstance.post(API_ROUTES.CHAT.MESSAGES(role, chatId), { content });
+    return axiosInstance.post(API_ROUTES.CHAT.MESSAGES(role, chatId), { type: "text", content });
   }
 
+  sendChatMessageWithFile(role: string, chatId: string, formData: FormData) {
+    return axiosInstance.post(`/api/${role}/chats/${chatId}/messages`,formData,);
+  }
+  
   /*********************************************************************************************************************** */
 
   acknowledgeNotificationAPI(notificationId: string) {

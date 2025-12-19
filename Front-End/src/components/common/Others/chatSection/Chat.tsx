@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2, Search, Send, Video } from "lucide-react";
+import { BsCameraVideo } from "react-icons/bs";
+import { MdImage,/*MdInsertDriveFile */ } from "react-icons/md";
+import { GoPlus } from "react-icons/go";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import AuthService from "@/services/AuthService";
 import { useAppSelector } from "@/store/hooks";
@@ -13,8 +16,10 @@ import { toPascalCase } from "@/utils/helper/utils";
 import socket from "@/services/soket";
 import { formatChatDate } from "@/utils/helper/chatDate";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+// import { MessageRenderer } from "./message/MessageRenderer";
 import { PiPhoneCallLight } from "react-icons/pi";
 import { FaPhoneSlash } from "react-icons/fa6";
+import { ImageModal } from "../../modal/ImageModal";
 
 type IncomingCall = {
   roomID: string;
@@ -23,6 +28,7 @@ type IncomingCall = {
 }
 
 const Chat = () => {
+
   const [chatList, setChatList] = useState<ChatListItem[]>([]);
   const [selectedChat, setSelectedChat] = useState<ChatListItem | null>(null);
 
@@ -39,6 +45,11 @@ const Chat = () => {
 
   const { user } = useAppSelector((state) => state.auth);
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
+
+  //attachments
+  const [showAttachments, setShowAttachments] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
 
   // VIDEO CALL STATES
   const zegoContainerRef = useRef<HTMLDivElement | null>(null);
@@ -223,6 +234,7 @@ const Chat = () => {
     if (!user) return;
 
     const handler = (msg: ChatMessage) => {
+      console.log("this is the chtMsg", msg);
       setChatList(prev => {
         const updatedChat = prev.find(c => c.id === msg.chatId);
         if (!updatedChat) return prev;
@@ -283,6 +295,33 @@ const Chat = () => {
       setTimeout(() => {
         setIsLoadingMore(false);
       }, 200);
+    }
+  };
+
+  const handleSendImage = async (file: File) => {
+    if (!selectedChat || !user) return;
+
+    const formData = new FormData();
+    formData.append("type", "image");
+    formData.append("file", file);
+
+    try {
+      await AuthService.sendChatMessageWithFile(
+        user.role,
+        selectedChat.id,
+        formData
+      );
+
+      requestAnimationFrame(() => {
+        const container = messageContainerRef.current;
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
+      });
+
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      toast.error(err.response?.data?.message || "Image upload failed");
     }
   };
 
@@ -484,6 +523,14 @@ const Chat = () => {
                     <div className="text-xs text-muted-foreground">online</div>
                   </div>
                 </div>
+                <Button
+                  className=" cursor-pointer items-center text-muted-foreground hover:text-foreground transition-colors active:scale-95"
+                  variant={"outline"}
+                  onClick={handleStartCall}
+                >
+                  <BsCameraVideo className="hover:text-foreground transition-colors" size={28} />
+                  <span className="font-roboto text-xs">Call</span>
+                </Button>
               </div>
 
               {/* Chat Messages Area */}
@@ -513,14 +560,14 @@ const Chat = () => {
                         className={`flex ${msg.senderId === user.userId ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-md px-4 py-1.5 rounded-2xl shadow-sm relative ${msg.senderId === user.userId
-                            ? "bg-green-700/85 text-white rounded-br-none"
-                            : "bg-gray-900/90 border border-border/40 rounded-bl-none text-white"
+                          className={`max-w-md relative rounded-xl  ${msg.senderId === user.userId
+                            ? "bg-green-700/85 text-white rounded-br-none "
+                            : "bg-gray-900/90 border border-border/40 text-white rounded-bl-none"
                           }`}
                         >
-                          {/* Message Text */}
+                          {/* Message Section */}
                           {msg.type === "call" ? (
-                            <div className="text-sm font-roboto leading-relaxed break-words py-3 px-1 flex items-center gap-2">
+                            <div className="text-sm font-roboto leading-relaxed break-words py-3 px-3.5 flex items-center gap-2">
                               <div className="border-2 border-white p-1 rounded-full">
                                 {(() => {
                                   switch (msg.callStatus) {
@@ -535,18 +582,34 @@ const Chat = () => {
                               </div>
                               <span>{msg.content}</span>
                             </div>
+                          ) : msg.type === "image" ? (
+                            msg.file?.url ? (
+                              <ImageModal
+                                src={msg.file.url}
+                                alt="Experience Certificate"
+                                trigger={
+                                  <img
+                                    src={msg.file.url}
+                                    className="max-w-55 cursor-pointer"
+                                    alt="chat image"
+                                  />
+                                }
+                              />
+                            ) : (
+                              <div className=" text-xs text-muted-foreground font-mono leading-relaxed break-words pr-13 pl-3 py-1.5">
+                                ⚠️ Image unavailable
+                              </div>
+                            )
                           ) : (
-                            <div className="text-sm font-mono leading-relaxed break-words pr-10">
+                            <div className=" text-sm font-mono leading-relaxed break-words pr-13 pl-3 py-1.5">
                               {msg.content}
                             </div>
                           )}
-
-
                           {/* Timestamp */}
-                          <span
-                            className={`absolute bottom-1 right-2 text-[10px] ${msg.senderId === user.userId
-                              ? "text-blue-100"
-                              : "text-muted-foreground"
+                          <div
+                            className={`absolute bottom-1 right-2 text-[9px] ${msg.senderId === user.userId
+                              ? "text-white"
+                              : "text-white/70"
                             }`}
                           >
                             {new Date(msg.createdAt).toLocaleTimeString(undefined, {
@@ -554,7 +617,7 @@ const Chat = () => {
                               minute: "2-digit",
                               hour12: true,
                             })}
-                          </span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -562,8 +625,65 @@ const Chat = () => {
                 })}
               </div>
               {/* Message Input */}
-              <div className="bg-card border-t border-border px-4 py-3">
-                <div className="flex items-center gap-3">
+              <div className="bg-card border-t border-border px-2 py-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  hidden
+                  onChange={(e) => {
+                    if (e.target.files?.[0]) {
+                      handleSendImage(e.target.files[0]);
+                    }
+                  }} />
+
+                <div className="flex items-center p-1 gap-2">
+                  <div className="relative">
+                    {/* Attachment Menu */}
+                    {showAttachments && (
+                      <div className="absolute bottom-16 -left-2 bg-card border border-border rounded-xl shadow-xl p-2 w-36 animate-in fade-in zoom-in-150">
+                        {/* Image */}
+                        <button
+                          onClick={() => {
+                            fileInputRef.current?.click(); // open file picker
+                            setShowAttachments(false);
+                          }}
+                          className="flex items-center gap-3 w-full px-1 py-1 rounded-lg hover:bg-muted/50 transition"
+                        >
+                          <div className="w-7 h-7 rounded-full bg-blue-500/15 flex items-center justify-center">
+                            <MdImage size={14} className="text-blue-500" />
+                          </div>
+                          <span className="text-sm font-medium">Image</span>
+                        </button>
+
+
+                        {/* Document */}
+                        {/* <button
+                          onClick={() => {
+                            console.log("Document upload");
+                            setShowAttachments(false);
+                          }}
+                          className="flex items-center gap-3 w-full px-1 py-1 rounded-lg hover:bg-muted/50 transition"
+                        >
+                          <div className="w-7 h-7 rounded-full bg-purple-500/15 flex items-center justify-center">
+                            <MdInsertDriveFile size={14} className="text-purple-500" />
+                          </div>
+                          <span className="text-xs font-medium">Document</span>
+                        </button> */}
+                      </div>
+                    )}
+
+                    {/* Attachment Icon */}
+                    <button
+                      onClick={() => setShowAttachments((prev) => !prev)}
+                      className={`p-1.5 rounded-full active:scale-90 transition hover:bg-gray-300 hover:dark:bg-black/40 ${showAttachments ? "bg-gray-300 dark:bg-black/40" : ""} `}
+                    >
+                      <GoPlus
+                        size={25}
+                        className={`transition-transform duration-400 ${showAttachments ? "rotate-135" : "rotate-0"} `}
+                      />
+                    </button>
+                  </div>
                   <input
                     type="text"
                     value={messageInput}
@@ -572,7 +692,7 @@ const Chat = () => {
                     min={"1"}
                     max={"50"}
                     placeholder="Search"
-                    className="flex-1 bg-muted/50 dark:bg-muted/30 text-foreground placeholder:text-muted-foreground px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    className="flex-1 bg-muted/50 dark:bg-muted/30 text-foreground placeholder:text-muted-foreground px-4 py-2 rounded-lg outline-none focus:ring-1 focus:ring-primary/30 transition-all"
                   />
                   <Button
                     className="cursor-pointer bg-blue-500 dark:bg-blue-500 text-white  hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors active:scale-95"
@@ -582,13 +702,13 @@ const Chat = () => {
                     <Send size={18} />
                   </Button>
 
-                  <Button
+                  {/* <Button
                     className=" cursor-pointer text-muted-foreground border border-primary hover:text-foreground transition-colors active:scale-95"
                     variant={"outline"}
                     onClick={handleStartCall}
                   >
-                    <Video className=" hover:text-foreground transition-colors" size={22} />
-                  </Button>
+                    <Video className="hover:text-foreground transition-colors" size={22} />
+                  </Button> */}
                 </div>
               </div>
             </div>

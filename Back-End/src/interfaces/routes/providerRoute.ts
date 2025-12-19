@@ -8,7 +8,7 @@ import { daySchema, workTimeSchema } from "../validations/availabilitySchema";
 import upload from "../middleware/upload";
 import { diagnoseSchema } from "../validations/diagnoseSchema";
 import { UpdateProviderDataSchema } from "../validations/providerDataSchema";
-import { callLogSchema, chatMessageSchema, startChatSchema } from "../validations/chatSchema";
+import { callLogSchema, startChatSchema } from "../validations/chatSchema";
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.get("/jobDetails/:bookingId", AuthMiddleware([RoleEnum.Provider]), provid
 router.post("/chats",validateRequest(startChatSchema), AuthMiddleware([RoleEnum.Provider]), chatController.startChat.bind(chatController));
 router.get("/chats", AuthMiddleware([RoleEnum.Provider]), chatController.getChatList.bind(chatController));
 router.get("/chats/:chatId/messages", AuthMiddleware([RoleEnum.Provider]),  chatController.getChatMessages.bind(chatController));;
-router.post("/chats/:chatId/messages", validateRequest(chatMessageSchema), AuthMiddleware([RoleEnum.Provider]), chatController.sendChatMessage.bind(chatController));
+router.post("/chats/:chatId/messages", upload.single("file"), AuthMiddleware([RoleEnum.Provider]), chatController.sendChatMessage.bind(chatController));
 router.post("/chats/:chatId/call-log", validateRequest(callLogSchema), AuthMiddleware([RoleEnum.Provider]), chatController.logCall.bind(chatController));
 
 router.get("/job-history", AuthMiddleware([RoleEnum.Provider]), providerController.getJobHistory.bind(providerController));

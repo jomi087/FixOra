@@ -6,8 +6,13 @@ export interface ChatMessageDocument extends Document {
     chatId: Types.ObjectId;
     senderId: string;
     content: string;
-    type: "text" | "call";
+    type: "text" | "call" | "image";
     callStatus?: CallStatus;
+    file?: {
+        url: string;
+        mimeType: string;
+        size: number;
+    };
     isRead: boolean;
     isActive: boolean;
     createdAt: Date;
@@ -30,17 +35,26 @@ const ChatMessageSchema = new Schema<ChatMessageDocument>(
         content: {
             type: String,
             trim: true,
+            default: "",
             required: true,
         },
         type: {
             type: String,
-            enum: ["text", "call"],
+            enum: ["text", "call", "image"],
             default: "text"
         },
         callStatus: {
             type: String,
             enum: ["accepted", "rejected"],
             required: false
+        },
+        file: {
+            type: {
+                url: { type: String },
+                mimeType: { type: String },
+                size: { type: Number },
+            },
+            default: undefined
         },
         isRead: {
             type: Boolean,
