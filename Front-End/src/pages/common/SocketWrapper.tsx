@@ -28,7 +28,10 @@ const SocketWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const registerFcmToken = async () => {
       //Firebase Cloud Messaging Token
       const FcmToken = await generateToken();
-      if (!FcmToken) return;
+      if (!FcmToken) {
+        toast.info("Push notifications disabled");
+        return;
+      }
 
       const storedToken = localStorage.getItem("fcm_token");
       if (storedToken === FcmToken) return;

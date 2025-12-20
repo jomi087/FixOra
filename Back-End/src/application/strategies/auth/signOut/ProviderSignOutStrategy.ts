@@ -7,7 +7,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 
 
 const { BAD_REQUEST } = HttpStatusCode;
-const { NOT_FOUND_MSG, MISSING_TOKEN } = Messages;
+const { NOT_FOUND_MSG } = Messages;
 
 export class ProviderSignOutStrategy implements ISignOutStrategy {
     constructor(
@@ -16,7 +16,7 @@ export class ProviderSignOutStrategy implements ISignOutStrategy {
 
     async execute(input: SignOutDTO): Promise<void> {
         try {
-            if (!input.fcmToken) throw new AppError(BAD_REQUEST, MISSING_TOKEN("FCM"));
+            if (!input.fcmToken) return;
             //clear fcm token and refreshToken
             if (!(await this._userRepository.clearTokensById(input.userId, input.fcmToken))) {
                 throw new AppError(BAD_REQUEST, NOT_FOUND_MSG("User"));

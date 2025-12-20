@@ -59,7 +59,6 @@ export const useSignInLogic = () => {
         const { userData } = res.data;
         dispatch(Userinfo({ user: userData }));
         dispatch(fetchNotifications());
-        toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
         //navigateByRole(userData.role);
       }
     } catch (err) {
