@@ -7,7 +7,7 @@ import AuthService from "@/services/AuthService";
 import { Messages } from "@/utils/constant";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
-import ServiceShimmer from "./shimmer ui/ServiceShimmer";
+import ServiceShimmer from "./shimmer_ui/ServiceShimmer";
 import type { ServiceData, Services } from "@/shared/types/user";
 import { serviceAndSpecializationValidation, serviceChargeValidation } from "@/utils/validation/serviceValidation";
 import ServiceCharge from "./ServiceCharge";

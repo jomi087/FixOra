@@ -8,7 +8,7 @@ import { dateTime, generateDateList, generateTimeSlots, splitDateTime } from "@/
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import BookingInfoShimmer from "./shimmer ui/BookingInfoShimmer";
+import BookingInfoShimmer from "./shimmer_ui/BookingInfoShimmer";
 import { NotificationType } from "@/shared/enums/NotificationType";
 
 const dates = generateDateList(ONE_WEEK);
