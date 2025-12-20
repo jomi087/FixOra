@@ -1,5 +1,5 @@
 import renderStars from "@/components/common/other/StarRating";
-import type { ActiveProvider } from "@/shared/types/user";
+import type { ActiveProvider } from "@/shared/typess/user";
 import { toPascalCase } from "@/utils/helper/utils";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { GrContactInfo } from "react-icons/gr";

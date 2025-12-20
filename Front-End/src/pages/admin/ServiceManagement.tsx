@@ -14,7 +14,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { AxiosError } from "axios";
 import MainServiceTable from "@/components/admin/serviceManagement/MainServiceTable";
 import SubServiceTable from "@/components/admin/serviceManagement/SubServiceTable";
-import type { Category } from "@/shared/types/category";
+import type { Category } from "@/shared/typess/category";
 
 const ServiceManagement: React.FC = () => {
 

@@ -2,7 +2,7 @@ import { Pie, PieChart, Cell } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Badge } from "@/components/ui/badge";
-import type { TimeRange } from "@/shared/types/dashboard";
+import type { TimeRange } from "@/shared/typess/dashboard";
 import { getServiceColor } from "@/utils/constant";
 
 interface PieData {

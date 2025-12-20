@@ -1,4 +1,4 @@
-import type { CustomersData } from "@/shared/types/user";
+import type { CustomersData } from "@/shared/typess/user";
 import React from "react";
 import { IoPersonCircleOutline } from "react-icons/io5";
 

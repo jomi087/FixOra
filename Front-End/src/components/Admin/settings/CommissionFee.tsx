@@ -7,7 +7,7 @@ import type { AxiosError } from "axios";
 import { Messages } from "@/utils/constant";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
-import type { CommissionFee } from "@/shared/types/others";
+import type { CommissionFee } from "@/shared/typess/others";
 
 const CommissionFeeSection = () => {
   const inputRef = useRef<HTMLInputElement>(null);

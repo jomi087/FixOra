@@ -5,7 +5,7 @@ import { BHPP, Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import type { jobHistory } from "@/shared/types/booking";
+import type { jobHistory } from "@/shared/typess/booking";
 import BookingHistoryShimmer from "./BookingHistoryShimmer";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { useNavigate } from "react-router-dom";

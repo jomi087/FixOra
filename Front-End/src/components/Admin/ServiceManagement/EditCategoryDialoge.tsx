@@ -9,7 +9,7 @@ import { validateImage } from "@/utils/validation/imageValidation";
 import { categoryImageSize, Messages } from "@/utils/constant";
 import AuthService from "@/services/AuthService";
 import type { AxiosError } from "axios";
-import type { Category } from "@/shared/types/category";
+import type { Category } from "@/shared/typess/category";
 
 interface Errors {
   name: string;

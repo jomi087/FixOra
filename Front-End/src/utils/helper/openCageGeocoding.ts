@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import type { Coordinates } from "@/shared/types/location";
+import type { Coordinates } from "@/shared/typess/location";
 
 // Reverse Geocode (lat/lng → address)
 export const getAddressFromCoordinates = async (lat: number, lon: number) => {

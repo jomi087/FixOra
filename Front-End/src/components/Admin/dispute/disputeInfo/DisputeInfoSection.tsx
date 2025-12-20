@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
 import AuthService from "@/services/AuthService";
-import type { DisputeContent } from "@/shared/types/dispute";
+import type { DisputeContent } from "@/shared/typess/dispute";
 import { longInputLength, Messages, validationMsg } from "@/utils/constant";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Calendar, FileText, Loader2, Shield, Star, XCircle } from "lucide-react";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import type { ProviderList } from "@/shared/types/user";
+import type { ProviderList } from "@/shared/typess/user";
 import ProviderKYCDialog from "./ProviderKYCDialog";
 
 interface ProviderListTableProps {

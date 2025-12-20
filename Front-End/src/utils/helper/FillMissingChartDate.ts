@@ -1,4 +1,4 @@
-import type { BookingStats, TimeRange } from "@/shared/types/dashboard";
+import type { BookingStats, TimeRange } from "@/shared/typess/dashboard";
 
 export function fillMissingChartData(rawData: BookingStats[], timeRange: TimeRange): BookingStats[] {
 

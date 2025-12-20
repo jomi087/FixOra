@@ -6,7 +6,7 @@ import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Download } from "lucide-react";
-import type { SalesPreset, SalesSummary } from "@/shared/types/salesReport";
+import type { SalesPreset, SalesSummary } from "@/shared/typess/salesReport";
 import SalesReportTable from "./SalesReportTable";
 import { pdf } from "@react-pdf/renderer";
 import { SalesReportPDF } from "./SalesReportPDF";

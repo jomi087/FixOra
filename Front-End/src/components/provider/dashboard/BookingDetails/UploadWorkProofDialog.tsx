@@ -10,7 +10,7 @@ import { ImageSize, longInputLength, Messages, shortInputLength } from "@/utils/
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import type { JobInfoDetails } from "@/shared/types/booking";
+import type { JobInfoDetails } from "@/shared/typess/booking";
 import { useState } from "react";
 import Lottie from "lottie-react";
 import LoadingAnimation from "@/assets/animations/LoadingPaperplane.json";

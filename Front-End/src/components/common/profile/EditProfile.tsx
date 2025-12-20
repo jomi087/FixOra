@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import type { ProfileEdit } from "@/shared/types/user";
-import type { Address } from "@/shared/types/location";
+import type { ProfileEdit } from "@/shared/typess/user";
+import type { Address } from "@/shared/typess/location";
 
 import { getAddressFromCoordinates, getCoordinatesFromAddress } from "@/utils/helper/openCageGeocoding";
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";

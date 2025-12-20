@@ -2,7 +2,7 @@ import { EllipsisVertical } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/hooks";
-import type { providerReviews } from "@/shared/types/user";
+import type { providerReviews } from "@/shared/typess/user";
 import EditReview from "./EditReview";
 import ReportReview from "./ReportReview";
 

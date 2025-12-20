@@ -1,4 +1,4 @@
-import type { Address } from "@/shared/types/location";
+import type { Address } from "@/shared/typess/location";
 
 export const getFormattedAddress = (location: Address): string => {
   return [

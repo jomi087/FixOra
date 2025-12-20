@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import type { Category } from "@/shared/types/category";
+import type { Category } from "@/shared/typess/category";
 import EditCategoryDialoge from "./EditCategoryDialoge";
 
 interface TableColumn {

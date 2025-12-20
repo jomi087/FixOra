@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchAvailability, saveAvailability, toggleAvailability } from "@/store/provider/availabilitySlice";
 import { generateTimeSlots } from "@/utils/helper/Date&Time";
 import { TIME_SLOTS } from "@/utils/constant";
-import type { Day, LeaveOption } from "@/shared/types/availability";
+import type { Day, LeaveOption } from "@/shared/typess/availability";
 import { toast } from "react-toastify";
 
 // -- helper types --

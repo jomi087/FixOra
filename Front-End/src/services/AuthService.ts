@@ -1,17 +1,17 @@
-import type { Day, LeaveOption } from "@/shared/types/availability";
+import type { Day, LeaveOption } from "@/shared/typess/availability";
 import axiosInstance from "./axiosConfig";
-import type { ProfileEdit, ServiceData, Signin, Signup } from "@/shared/types/user";
+import type { ProfileEdit, ServiceData, Signin, Signup } from "@/shared/typess/user";
 import type { KYCStatus } from "@/shared/enums/KycStatus";
 import type { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";
 import { API_ROUTES } from "@/utils/constant";
-import type { Platform } from "@/shared/types/others";
-import type { SalesPreset } from "@/shared/types/salesReport";
-import type { TimeRange } from "@/shared/types/dashboard";
-import type { DisputeContentResponse, DisputeListPayload, DisputeListResponse } from "@/shared/types/dispute";
+import type { Platform } from "@/shared/typess/others";
+import type { SalesPreset } from "@/shared/typess/salesReport";
+import type { TimeRange } from "@/shared/typess/dashboard";
+import type { DisputeContentResponse, DisputeListPayload, DisputeListResponse } from "@/shared/typess/dispute";
 import type { AxiosResponse } from "axios";
 import type { DisputeStatus } from "@/shared/enums/Dispute";
 import { RoleEnum } from "@/shared/enums/roles";
-import type { AppLocation } from "@/shared/types/location";
+import type { AppLocation } from "@/shared/typess/location";
 
 class AuthService {
   getJsonConfig() {

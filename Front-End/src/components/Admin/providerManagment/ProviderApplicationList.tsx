@@ -4,7 +4,7 @@ import Pagination from "@/components/common/other/Pagination";
 import SearchInput from "@/components/common/other/SearchInput";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { ProviderList } from "@/shared/types/user";
+import type { ProviderList } from "@/shared/typess/user";
 import { Messages, PALPP } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";

@@ -1,5 +1,5 @@
 import StatCard from "@/components/common/other/StatCard";
-import type { BaseStats } from "@/shared/types/dashboard";
+import type { BaseStats } from "@/shared/typess/dashboard";
 import { formatINRCurrency } from "@/utils/helper/utils";
 
 interface SectionCardsProps {

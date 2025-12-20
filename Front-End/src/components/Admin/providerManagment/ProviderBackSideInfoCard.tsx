@@ -1,4 +1,4 @@
-import type { ProviderData } from "@/shared/types/user";
+import type { ProviderData } from "@/shared/typess/user";
 import { getFormattedAddress } from "@/utils/helper/formatedAddress";
 import { toPascalCase } from "@/utils/helper/utils";
 import { ImageModal } from "@/components/common/modal/ImageModal";

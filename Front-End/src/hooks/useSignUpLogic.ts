@@ -1,4 +1,4 @@
-import type { Signup } from "@/shared/types/user";
+import type { Signup } from "@/shared/typess/user";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateCPassword, validateEmail, validateFName, validateLName, validateMobileNo, validatePassword } from "@/utils/validation/formValidation";

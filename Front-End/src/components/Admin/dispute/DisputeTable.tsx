@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import type { Dispute } from "@/shared/types/dispute";
+import type { Dispute } from "@/shared/typess/dispute";
 import { shortId, toPascalCase } from "@/utils/helper/utils";
 import { useNavigate } from "react-router-dom";
 

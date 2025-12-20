@@ -1,6 +1,6 @@
 import { RoleEnum } from "@/shared/enums/roles";
-import type { TimeRange } from "@/shared/types/dashboard";
-import type { SalesPreset } from "@/shared/types/salesReport";
+import type { TimeRange } from "@/shared/typess/dashboard";
+import type { SalesPreset } from "@/shared/typess/salesReport";
 import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet,

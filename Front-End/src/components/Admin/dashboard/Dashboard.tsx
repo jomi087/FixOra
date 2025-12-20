@@ -4,7 +4,7 @@ import SectionCards from "./SectionCards";
 import type { ChartConfig } from "@/components/ui/chart";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import type { BaseStats, BookingStats, TimeRange, GrowthStats, BookingServiceStats, TopProvider } from "@/shared/types/dashboard";
+import type { BaseStats, BookingStats, TimeRange, GrowthStats, BookingServiceStats, TopProvider } from "@/shared/typess/dashboard";
 import { AxiosError } from "axios";
 import { Messages } from "@/utils/constant";
 import { toast } from "react-toastify";

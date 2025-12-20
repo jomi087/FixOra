@@ -1,7 +1,7 @@
 import AuthService from "@/services/AuthService";
 import type { BookingStatus } from "@/shared/enums/BookingStatus";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
-import type { ConfirmJobBookings } from "@/shared/types/booking";
+import type { ConfirmJobBookings } from "@/shared/typess/booking";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";

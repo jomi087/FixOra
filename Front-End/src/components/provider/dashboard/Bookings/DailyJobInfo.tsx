@@ -5,7 +5,7 @@ import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { addConfirmedBooking, fetchProviderBookingsInfo, removeBooking, updateConfirmedBooking } from "@/store/provider/bookingSlice";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import { toast } from "react-toastify";
-import type { ConfirmJobBookings } from "@/shared/types/booking";
+import type { ConfirmJobBookings } from "@/shared/typess/booking";
 import { useNavigate } from "react-router-dom";
 import AllSlots from "./AllSlots";
 import ConfirmedSlots from "./ConfirmedSlots";
