@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { RoleEnum } from "@/shared/enums/roles";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { NotificationType } from "@/shared/enums/NotificationType";
-import type { Notification } from "@/shared/typess/booking";
+import type { Notification } from "@/shared/types/booking";
 import { splitDateTime } from "@/utils/helper/Date&Time";
 import { clearNotifications, fetchNotifications, markAsRead } from "@/store/common/notificationSlice";
 import type { AxiosError } from "axios";

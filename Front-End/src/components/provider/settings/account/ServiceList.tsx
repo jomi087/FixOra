@@ -1,4 +1,4 @@
-import type { Services } from "@/shared/typess/user";
+import type { Services } from "@/shared/types/user";
 import { toPascalCase } from "@/utils/helper/utils";
 import { Undo2 } from "lucide-react";
 import { CiEdit } from "react-icons/ci";

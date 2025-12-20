@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import AuthService from "@/services/AuthService";
-import type { Day, LeaveOption } from "@/shared/typess/availability";
+import type { Day, LeaveOption } from "@/shared/types/availability";
 import type { AxiosError } from "axios";
 import { Messages } from "@/utils/constant";
 

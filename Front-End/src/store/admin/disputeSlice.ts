@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import AuthService from "@/services/AuthService";
-import type { Dispute, DisputeListPayload, DisputeListResponse } from "@/shared/typess/dispute";
+import type { Dispute, DisputeListPayload, DisputeListResponse } from "@/shared/types/dispute";
 import type { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
 import axios from "axios";
 import { DLPP } from "@/utils/constant";

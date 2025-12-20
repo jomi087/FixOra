@@ -1,6 +1,6 @@
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import { styles } from "./style";
-import type { SalesSummary } from "@/shared/typess/salesReport";
+import type { SalesSummary } from "@/shared/types/salesReport";
 import { shortBookingId } from "@/utils/helper/utils";
 
 interface SalesReportPDFProps {

@@ -1,4 +1,4 @@
-import type { Services } from "@/shared/typess/user";
+import type { Services } from "@/shared/types/user";
 import { Messages } from "../constant";
 
 export const serviceChargeValidation = (amount: number | null): string | null => {

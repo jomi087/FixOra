@@ -1,4 +1,4 @@
-import type { CompleteHistory } from "@/shared/typess/salesReport";
+import type { CompleteHistory } from "@/shared/types/salesReport";
 import { shortBookingId } from "@/utils/helper/utils";
 
 interface SalesReportTableProps {

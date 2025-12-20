@@ -5,7 +5,7 @@ import AuthService from "@/services/AuthService";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
 import { Messages } from "@/utils/constant";
-import type { JobInfoDetails } from "@/shared/typess/booking";
+import type { JobInfoDetails } from "@/shared/types/booking";
 import AppointmentDetails from "./AppointmentDetails";
 import BookingPayment from "./BookingPayment";
 import ClientInfo from "./ClientInfo";

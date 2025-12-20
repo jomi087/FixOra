@@ -1,4 +1,4 @@
-import type { ProviderData } from "@/shared/typess/user";
+import type { ProviderData } from "@/shared/types/user";
 import React, { useState } from "react";
 import ProviderFrontSideInfoCard from "./ProviderFrontSideInfoCard";
 import ProviderBackSideInfoCard from "./ProviderBackSideInfoCard";

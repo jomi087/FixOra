@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
-import type { Transaction } from "@/shared/typess/wallet";
+import type { Transaction } from "@/shared/types/wallet";
 import { TransactionStatus, TransactionType } from "@/shared/enums/Transaction";
 import Pagination from "@/components/common/other/Pagination";
 import { shortBookingId, shortId } from "@/utils/helper/utils";

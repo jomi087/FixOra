@@ -1,6 +1,6 @@
 import AuthService from "@/services/AuthService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import type { BookingsHistory } from "@/shared/typess/booking";
+import type { BookingsHistory } from "@/shared/types/booking";
 import { BHPP, Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { useEffect, useMemo, useState } from "react";

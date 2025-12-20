@@ -9,7 +9,7 @@ import { useAppSelector } from "@/store/hooks";
 import { Messages, MPP } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import type { ChatListItem, ChatMessage } from "@/shared/typess/chat";
+import type { ChatListItem, ChatMessage } from "@/shared/types/chat";
 import { useDebounce } from "use-debounce";
 import { Button } from "@/components/ui/button";
 import { toPascalCase } from "@/utils/helper/utils";

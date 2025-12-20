@@ -1,5 +1,5 @@
 import AuthService from "@/services/AuthService";
-import type { ProviderInfo, providerReviews } from "@/shared/typess/user";
+import type { ProviderInfo, providerReviews } from "@/shared/types/user";
 import { Messages } from "@/utils/constant";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AxiosError } from "axios";

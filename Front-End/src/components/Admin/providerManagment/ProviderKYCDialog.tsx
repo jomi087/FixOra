@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogTitle, } from "@/components/ui/dialog";
 import AuthService from "@/services/AuthService";
-import type { ProviderList } from "@/shared/typess/user";
+import type { ProviderList } from "@/shared/types/user";
 import { formatDOB, toPascalCase } from "@/utils/helper/utils";
 import { useState } from "react";
 import { toast } from "react-toastify";

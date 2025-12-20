@@ -1,6 +1,6 @@
 import BookingDetailsShimmer from "@/components/provider/dashboard/bookingDetails/shimmer ui/BookingDetailsShimmer";
 import AuthService from "@/services/AuthService";
-import type { BookingInfoDetails } from "@/shared/typess/booking";
+import type { BookingInfoDetails } from "@/shared/types/booking";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";

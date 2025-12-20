@@ -1,4 +1,4 @@
-import type { BookingRequestPayload } from "@/shared/typess/booking";
+import type { BookingRequestPayload } from "@/shared/types/booking";
 import {
   Dialog,
   DialogContent,

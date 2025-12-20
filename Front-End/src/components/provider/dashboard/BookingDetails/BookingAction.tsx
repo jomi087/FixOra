@@ -9,7 +9,7 @@ import type { AxiosError } from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import UploadWorkProofDialog from "./UploadWorkProofDialog";
-import type { JobInfoDetails } from "@/shared/typess/booking";
+import type { JobInfoDetails } from "@/shared/types/booking";
 
 interface BookingActionProps {
   id: string;

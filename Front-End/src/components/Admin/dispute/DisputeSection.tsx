@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { DisputeTable } from "./DisputeTable";
-import type { DisputeListPayload } from "@/shared/typess/dispute";
+import type { DisputeListPayload } from "@/shared/types/dispute";
 import SearchInput from "@/components/common/other/SearchInput";
 import FilterSelect from "@/components/common/other/FilterSelect";
 import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";

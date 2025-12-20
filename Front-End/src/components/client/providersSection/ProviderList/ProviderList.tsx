@@ -11,7 +11,7 @@ import Pagination from "@/components/common/other/Pagination";
 import { MapPinPlus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import LocationPicker from "../providerApplication/LocationPicker";
-import type { AppLocation } from "@/shared/typess/location";
+import type { AppLocation } from "@/shared/types/location";
 import type { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { Messages } from "@/utils/constant";

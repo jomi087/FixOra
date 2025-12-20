@@ -10,10 +10,10 @@ import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, PCPP } from "@/utils/constant";
-import type { ActiveProvider } from "@/shared/typess/user";
+import type { ActiveProvider } from "@/shared/types/user";
 import { setApplyFilters, setReset } from "@/store/user/filterSlice";
 import type { AxiosError } from "axios";
-import type { AppLocation } from "@/shared/typess/location";
+import type { AppLocation } from "@/shared/types/location";
 
 export const useAuthProvider = () => {
   const dispatch = useAppDispatch();

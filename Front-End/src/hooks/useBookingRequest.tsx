@@ -7,7 +7,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { addBooking, fetchProviderInfo, removeBooking, updateBookingStatus } from "@/store/user/providerInfoSlice";
 import { useEffect, useState } from "react";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import type { BookingResponsePayload } from "@/shared/typess/booking";
+import type { BookingResponsePayload } from "@/shared/types/booking";
 import socket from "@/services/soket";
 import { PaymentMode } from "@/shared/enums/Payment";
 import { ProviderResponseStatus } from "@/shared/enums/ProviderResponseStatus";

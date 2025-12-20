@@ -2,7 +2,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
-import type { Category, Subcategory } from "@/shared/typess/category";
+import type { Category, Subcategory } from "@/shared/types/category";
 import CategoryBaseForm from "./CategoryBaseForm";
 import { toast } from "react-toastify";
 import { validateCategoryName, validateDescription } from "@/utils/validation/categoryValidation";

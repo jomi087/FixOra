@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import type { Signup } from "@/shared/typess/user";
+import type { Signup } from "@/shared/types/user";
 import { RoleEnum } from "@/shared/enums/roles";
 import { shortInputLength } from "@/utils/constant";
 

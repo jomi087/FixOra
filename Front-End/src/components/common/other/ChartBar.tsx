@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import type { BookingStats, TimeRange } from "@/shared/typess/dashboard";
+import type { BookingStats, TimeRange } from "@/shared/types/dashboard";
 import { Badge } from "@/components/ui/badge";
 import { useCallback } from "react";
 

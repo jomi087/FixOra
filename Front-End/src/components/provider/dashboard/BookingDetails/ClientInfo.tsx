@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import AuthService from "@/services/AuthService";
-import type { AppLocation } from "@/shared/typess/location";
+import type { AppLocation } from "@/shared/types/location";
 import { Messages } from "@/utils/constant";
 import { toPascalCase } from "@/utils/helper/utils";
 import type { AxiosError } from "axios";
