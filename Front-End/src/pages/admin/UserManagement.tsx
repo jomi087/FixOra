@@ -1,9 +1,9 @@
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/other/SideBar";
-import UserInfoCard from "@/components/admin/userManagment/UserInfoCard";
+import UserInfoCard from "@/components/admins/userManagment/UserInfoCard";
 import Pagination from "@/components/common/other/Pagination";
 import { adminSideBarOptions, Messages } from "@/utils/constant";
-import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
+import SkeletonInfoCard from "@/components/admins/SkeletonInfoCard";
 import { useUserManagement } from "@/hooks/useUserManagementHook";
 import FilterSelect from "@/components/common/other/FilterSelect";
 import SearchInput from "@/components/common/other/SearchInput";

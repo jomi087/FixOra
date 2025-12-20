@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SkeletonInfoCard from "../../../admin/SkeletonInfoCard";
+import SkeletonInfoCard from "../../../admins/SkeletonInfoCard";
 import FilterSelect from "../../../common/other/FilterSelect";
 import SearchInput from "../../../common/other/SearchInput";
 import { Button } from "../../../ui/button";

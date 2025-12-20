@@ -1,4 +1,4 @@
-import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
+import SkeletonInfoCard from "@/components/admins/SkeletonInfoCard";
 import ProviderTandC from "@/components/client/providersSection/providerApplication/ProviderTandC";
 import Services from "@/components/client/servicesSection/Services";
 import Footer from "@/components/common/layout/Footer";
