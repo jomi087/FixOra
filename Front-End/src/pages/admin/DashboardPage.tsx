@@ -1,7 +1,7 @@
 import SideBar from "@/components/common/other/SideBar";
 import Nav from "../../components/common/layout/Nav";
 import { adminSideBarOptions } from "@/utils/constant";
-import Dashboard from "@/components/admins/dashboard/Dashboard";
+import Dashboard from "@/components/admin/dashboard/Dashboard";
 
 const DashboardPage:React.FC = () => {
   return (

@@ -1,4 +1,4 @@
-import SkeletonInfoCard from "@/components/admins/SkeletonInfoCard";
+import SkeletonInfoCard from "@/components/admin/SkeletonInfoCard";
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/other/SideBar";
 import Pagination from "@/components/common/other/Pagination";
