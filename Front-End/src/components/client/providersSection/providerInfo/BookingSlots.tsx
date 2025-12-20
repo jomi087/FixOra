@@ -1,11 +1,11 @@
-import BookingDatesInfo from "@/components/common/others/BookingDatesInfo";
+import BookingDatesInfo from "@/components/common/other/BookingDatesInfo";
 import TimeSlotSelector from "@/components/client/providersSection/providerInfo/TimeSlotSelector";
 import BookingDialog from "./BookingDialog";
 
 import Lottie from "lottie-react";
 import LodingAnimation from "@/assets/animations/BoxyLoading.json";
 import { useBookingRequest } from "@/hooks/useBookingRequest";
-import { ModeOfPayment } from "@/components/common/others/ModeOfPayment";
+import { ModeOfPayment } from "@/components/common/other/ModeOfPayment";
 import { useEffect, useRef, useState } from "react";
 import { PAYMENT_SESSION_TIMEOUT_MS } from "@/utils/constant";
 

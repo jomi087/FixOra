@@ -1,13 +1,13 @@
 import { useState } from "react";
 import SkeletonInfoCard from "../../../admin/SkeletonInfoCard";
-import FilterSelect from "../../../common/others/FilterSelect";
-import SearchInput from "../../../common/others/SearchInput";
+import FilterSelect from "../../../common/other/FilterSelect";
+import SearchInput from "../../../common/other/SearchInput";
 import { Button } from "../../../ui/button";
 
 import ProviderCard from "./ProviderCard";
 // import MobileFilterSideBar from "./MobileFilterSideBar";
 import { useAuthProvider } from "@/hooks/useAuthProvider";
-import Pagination from "@/components/common/others/Pagination";
+import Pagination from "@/components/common/other/Pagination";
 import { MapPinPlus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import LocationPicker from "../providerApplication/LocationPicker";

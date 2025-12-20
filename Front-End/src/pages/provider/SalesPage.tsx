@@ -1,5 +1,5 @@
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/others/SideBar";
+import SideBar from "@/components/common/other/SideBar";
 import Sales from "@/components/provider/settings/sales/Sales";
 import { providerSideBarOptions } from "@/utils/constant";
 

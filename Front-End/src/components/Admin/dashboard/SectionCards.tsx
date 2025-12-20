@@ -1,4 +1,4 @@
-import StatCard from "@/components/common/others/StatCard";
+import StatCard from "@/components/common/other/StatCard";
 import type { BaseStats } from "@/shared/types/dashboard";
 import { formatINRCurrency } from "@/utils/helper/utils";
 

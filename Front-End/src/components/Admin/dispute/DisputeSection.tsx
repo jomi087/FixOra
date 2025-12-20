@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { DisputeTable } from "./DisputeTable";
 import type { DisputeListPayload } from "@/shared/types/dispute";
-import SearchInput from "@/components/common/others/SearchInput";
-import FilterSelect from "@/components/common/others/FilterSelect";
+import SearchInput from "@/components/common/other/SearchInput";
+import FilterSelect from "@/components/common/other/FilterSelect";
 import { DisputeStatus, DisputeType } from "@/shared/enums/Dispute";
-import Pagination from "@/components/common/others/Pagination";
+import Pagination from "@/components/common/other/Pagination";
 import { useDebounce } from "use-debounce";
 import { Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";

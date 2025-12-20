@@ -1,4 +1,4 @@
-import ChartBar from "../../common/others/ChartBar";
+import ChartBar from "../../common/other/ChartBar";
 import ChartPie from "./ChartPie";
 import SectionCards from "./SectionCards";
 import type { ChartConfig } from "@/components/ui/chart";

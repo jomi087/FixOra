@@ -1,7 +1,7 @@
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/others/SideBar";
+import SideBar from "@/components/common/other/SideBar";
 import { providerSideBarOptions } from "@/utils/constant";
-import Chat from "@/components/common/others/chatSection/Chat";
+import Chat from "@/components/common/other/chatSection/Chat";
 
 const ChatPage = () => {
   return (

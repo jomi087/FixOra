@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import type { Transaction } from "@/shared/types/wallet";
 import { TransactionStatus, TransactionType } from "@/shared/enums/Transaction";
-import Pagination from "@/components/common/others/Pagination";
+import Pagination from "@/components/common/other/Pagination";
 import { shortBookingId, shortId } from "@/utils/helper/utils";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Card,CardHeader,CardTitle,CardContent,CardFooter, } from "@/components/ui/card";
 import { Table,TableHeader,TableRow, TableHead,TableBody,TableCell } from "@/components/ui/table";
-import Pagination from "@/components/common/others/Pagination";
+import Pagination from "@/components/common/other/Pagination";
 import AuthService from "@/services/AuthService";
 import type { AxiosError } from "axios";
 import { Messages } from "@/utils/constant";

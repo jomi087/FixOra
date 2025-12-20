@@ -4,9 +4,9 @@ import { lazy, Suspense } from "react";
 import ProtectedRoute from "./ProtectedRoutes.tsx";
 import PublicRoute from "./PublicRoute.tsx";
 
-import PageLoader from "@/components/common/others/PageLoader.tsx";
+import PageLoader from "@/components/common/other/PageLoader.tsx";
 import ErrorBoundary from "../pages/common/ErrorBoundary.tsx";
-import PageNotFound from "../components/common/others/PageNotFound.tsx";
+import PageNotFound from "../components/common/other/PageNotFound.tsx";
 import SignInPage from "../pages/common/SignInPage.tsx";
 import LandingPage from "../pages/client/LandingPage";
 

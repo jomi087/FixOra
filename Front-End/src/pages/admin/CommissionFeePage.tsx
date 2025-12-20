@@ -1,6 +1,6 @@
 import CommissionFee from "@/components/admin/settings/CommissionFee";
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/others/SideBar";
+import SideBar from "@/components/common/other/SideBar";
 import { adminSideBarOptions } from "@/utils/constant";
 
 const CommissionFeePage = () => {

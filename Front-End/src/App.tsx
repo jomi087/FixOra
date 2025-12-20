@@ -4,8 +4,8 @@ import { Provider } from "react-redux";
 import appStore from "./store/appStore";
 import AuthCheck from "./components/auth/AuthCheck";
 import { useState } from "react";
-import PageLoader from "./components/common/others/PageLoader";
-import ToastConfig from "./components/common/others/ToastConfig";
+import PageLoader from "./components/common/other/PageLoader";
+import ToastConfig from "./components/common/other/ToastConfig";
 import SocketWrapper from "./pages/common/SocketWrapper";
 
 

@@ -1,7 +1,7 @@
 import ProviderListTable from "@/components/admin/providerManagment/ProviderListTable";
-import FilterSelect from "@/components/common/others/FilterSelect";
-import Pagination from "@/components/common/others/Pagination";
-import SearchInput from "@/components/common/others/SearchInput";
+import FilterSelect from "@/components/common/other/FilterSelect";
+import Pagination from "@/components/common/other/Pagination";
+import SearchInput from "@/components/common/other/SearchInput";
 import AuthService from "@/services/AuthService";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import type { ProviderList } from "@/shared/types/user";

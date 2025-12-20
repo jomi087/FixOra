@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import BookingHistoryShimmer from "@/components/provider/history/BookingHistoryShimmer";
-import Pagination from "@/components/common/others/Pagination";
+import Pagination from "@/components/common/other/Pagination";
 import { shortBookingId } from "@/utils/helper/utils";
 
 const BookingHistoryTable = () => {

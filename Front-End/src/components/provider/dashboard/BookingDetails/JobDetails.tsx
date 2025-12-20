@@ -13,7 +13,7 @@ import WorkProof from "./WorkProof";
 import BookingDetailsShimmer from "./shimmer ui/BookingDetailsShimmer";
 import BookingAction from "./BookingAction";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
-import Diagnosed from "../../../common/others/Diagnosed";
+import Diagnosed from "../../../common/other/Diagnosed";
 
 
 const JobDetails = () => {

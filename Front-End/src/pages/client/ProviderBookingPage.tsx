@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import Nav from "@/components/common/layout/Nav";
 import { useEffect } from "react";
 import ProviderInfo from "@/components/client/providersSection/providerInfo/ProviderInfo";
-import PageLoader from "@/components/common/others/PageLoader";
+import PageLoader from "@/components/common/other/PageLoader";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchProviderInfo } from "@/store/user/providerInfoSlice";
 import Review from "@/components/client/providersSection/providerInfo/Review";

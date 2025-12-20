@@ -1,5 +1,5 @@
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/others/SideBar";
+import SideBar from "@/components/common/other/SideBar";
 import ScheduleAvailability from "@/components/provider/settings/availability/ScheduleAvailability";
 import { providerSideBarOptions } from "@/utils/constant";
 

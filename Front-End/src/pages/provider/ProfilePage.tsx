@@ -1,6 +1,6 @@
 import Profile from "@/components/common/profile/Profile";
 import Nav from "@/components/common/layout/Nav";
-import SideBar from "@/components/common/others/SideBar";
+import SideBar from "@/components/common/other/SideBar";
 import { providerSideBarOptions } from "@/utils/constant";
 
 const ProfilePage = () => {

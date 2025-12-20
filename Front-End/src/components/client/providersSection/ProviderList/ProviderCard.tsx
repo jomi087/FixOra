@@ -1,4 +1,4 @@
-import renderStars from "@/components/common/others/StarRating";
+import renderStars from "@/components/common/other/StarRating";
 import type { ActiveProvider } from "@/shared/types/user";
 import { toPascalCase } from "@/utils/helper/utils";
 import { IoPersonCircleOutline } from "react-icons/io5";
