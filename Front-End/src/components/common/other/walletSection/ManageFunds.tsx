@@ -10,7 +10,7 @@ import AuthService from "@/services/AuthService";
 import { loadStripe } from "@stripe/stripe-js";
 import socket from "@/services/soket";
 import { useAppSelector } from "@/store/hooks";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 
 
 const ManageFunds: React.FC<{ balance: number }> = ({ balance }) => {

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthService from "@/services/AuthService";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";

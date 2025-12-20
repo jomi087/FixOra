@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { RoleEnum } from "@/shared/enums/roles.ts";
+import { RoleEnum } from "@/shared/enums/Role.ts";
 import { lazy, Suspense } from "react";
 import ProtectedRoute from "./ProtectedRoutes.tsx";
 import PublicRoute from "./PublicRoute.tsx";

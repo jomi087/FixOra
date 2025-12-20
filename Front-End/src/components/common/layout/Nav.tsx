@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import AuthService from "../../../services/AuthService";
 import { logout } from "../../../store/common/userSlice";
 import { toast } from "react-toastify";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { NotificationType } from "@/shared/enums/NotificationType";
 import type { Notification } from "@/shared/types/booking";

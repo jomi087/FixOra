@@ -9,7 +9,7 @@ import { addNotification } from "@/store/common/notificationSlice";
 import { generateToken } from "@/services/pushNotificationConfig";
 import AuthService from "@/services/AuthService";
 import { shortBookingId } from "@/utils/helper/utils";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import type { AxiosError } from "axios";
 import { addBookingRequest, fetchPendingBookingRequests, removeBookingRequest } from "@/store/provider/bookingRequestSlice";
 

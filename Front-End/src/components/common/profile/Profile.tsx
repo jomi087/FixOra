@@ -9,7 +9,7 @@ import ChangePassowrdDialog from "./ChangePassowrdDialog";
 import { validateEmail, validatePassword } from "@/utils/validation/formValidation";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages, shortInputLength } from "@/utils/constant";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import type { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { toPascalCase } from "@/utils/helper/utils";

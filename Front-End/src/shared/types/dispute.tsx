@@ -1,5 +1,5 @@
 import type { DisputeStatus, DisputeType } from "../enums/Dispute";
-import type { RoleEnum } from "../enums/roles";
+import type { RoleEnum } from "../enums/Role";
 
 
 export interface DisputeListPayload {

@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/store/hooks";
 import { App_Name, HeroSectionImage } from "../../utils/constant";
 import { Link } from "react-router-dom";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 
 
 

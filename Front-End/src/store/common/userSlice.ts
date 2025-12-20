@@ -1,5 +1,5 @@
 //# Typed version
-import type { RoleEnum } from "@/shared/enums/roles";
+import type { RoleEnum } from "@/shared/enums/Role";
 import type { AddressWithCoordinates } from "@/shared/types/location";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";

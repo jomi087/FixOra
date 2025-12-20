@@ -1,4 +1,4 @@
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import type { TimeRange } from "@/shared/types/dashboard";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import {

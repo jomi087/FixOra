@@ -8,7 +8,7 @@ import { App_Name } from "../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { slugify } from "@/utils/helper/utils";
 import { useAppSelector } from "@/store/hooks";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import { toast } from "react-toastify";
 
 

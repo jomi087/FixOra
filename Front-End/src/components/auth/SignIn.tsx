@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import { App_Name, shortInputLength } from "@/utils/constant";
 import { BiHide, BiShow } from "react-icons/bi";
 

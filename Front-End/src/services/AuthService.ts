@@ -10,7 +10,7 @@ import type { TimeRange } from "@/shared/types/dashboard";
 import type { DisputeContentResponse, DisputeListPayload, DisputeListResponse } from "@/shared/types/dispute";
 import type { AxiosResponse } from "axios";
 import type { DisputeStatus } from "@/shared/enums/Dispute";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import type { AppLocation } from "@/shared/types/location";
 
 class AuthService {

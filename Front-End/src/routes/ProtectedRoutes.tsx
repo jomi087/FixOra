@@ -2,7 +2,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import type { ReactNode } from "react";
 import PageNotFound from "@/components/common/other/PageNotFound";
-import type { RoleEnum } from "@/shared/enums/roles";
+import type { RoleEnum } from "@/shared/enums/Role";
 
 interface ProtectedRouteProps {
   children: ReactNode

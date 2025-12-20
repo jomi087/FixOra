@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import AuthService from "../../services/AuthService"; // adjust path as needed
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { BookingRequestPayload } from "@/shared/types/booking";
 import type { info } from "../common/userSlice";

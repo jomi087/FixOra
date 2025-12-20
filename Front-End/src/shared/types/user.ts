@@ -1,7 +1,7 @@
 import type { Day } from "./availability";
 import type { BookingStatus } from "../enums/BookingStatus";
 import type { Gender } from "../enums/Gender";
-import type { RoleEnum } from "../enums/roles";
+import type { RoleEnum } from "../enums/Role";
 import type { AddressWithCoordinates } from "./location";
 
 export type Credentials = {

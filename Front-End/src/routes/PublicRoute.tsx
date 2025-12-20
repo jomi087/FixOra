@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 
 interface PublicRouteProps {
 	children: React.ReactNode;

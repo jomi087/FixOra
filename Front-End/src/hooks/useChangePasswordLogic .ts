@@ -6,7 +6,7 @@ import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { Messages } from "@/utils/constant";
 import type { AxiosError } from "axios";
 import { useAppSelector } from "@/store/hooks";
-import { RoleEnum } from "@/shared/enums/roles";
+import { RoleEnum } from "@/shared/enums/Role";
 
 export const useChangePasswordLogic = () => {
   const [searchParams] = useSearchParams();
