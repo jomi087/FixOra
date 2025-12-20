@@ -6,7 +6,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "../../ui/button";
 import ReasonDialog from "../../common/modal/ReasonDialog";
-import { KYCStatus } from "@/shared/enums/KycStatus";
+import { KYCStatus } from "@/shared/enums/KycStatuss";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { ApprovedSeal, Messages, RejectSeal } from "@/utils/constant";
 import { ImageModal } from "@/components/common/modal/ImageModal";
