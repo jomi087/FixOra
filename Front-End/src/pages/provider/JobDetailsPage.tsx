@@ -1,6 +1,6 @@
 import Nav from "@/components/common/layout/Nav";
 import SideBar from "@/components/common/others/SideBar";
-import JobDetails from "@/components/provider/dashboard/BookingDetails/JobDetails";
+import JobDetails from "@/components/provider/dashboard/bookingDetails/JobDetails";
 import { providerSideBarOptions } from "@/utils/constant";
 
 const JobDetailsPage = () => {

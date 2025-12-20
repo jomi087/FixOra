@@ -1,4 +1,4 @@
-import BookingDetailsShimmer from "@/components/provider/dashboard/BookingDetails/shimmer ui/BookingDetailsShimmer";
+import BookingDetailsShimmer from "@/components/provider/dashboard/bookingDetails/shimmer ui/BookingDetailsShimmer";
 import AuthService from "@/services/AuthService";
 import type { BookingInfoDetails } from "@/shared/types/booking";
 import { Messages } from "@/utils/constant";
