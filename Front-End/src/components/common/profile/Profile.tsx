@@ -197,7 +197,7 @@ const Profile: React.FC<ProfileProps> = ({ toggle }) => {
                   Close
                 </Button>
               </div>
-              <p className="text-[11px]  text-red-500 font-serif  font-light">*After updating the email you would need  re-login</p>
+              <p className="text-[10px] text-chart-3 font-serif font-light">*After updating the email you would need  re-login</p>
             </div>
           ) : (
             <div className="text-xl font-semibold mt-6 flex items-center gap-2 w-full justify-center">
