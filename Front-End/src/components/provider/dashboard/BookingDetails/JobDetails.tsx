@@ -10,7 +10,7 @@ import AppointmentDetails from "./AppointmentDetails";
 import BookingPayment from "./BookingPayment";
 import ClientInfo from "./ClientInfo";
 import WorkProof from "./WorkProof";
-import BookingDetailsShimmer from "./shimmer ui/BookingDetailsShimmer";
+import BookingDetailsShimmer from "@/components/common/shimmer_ui/BookingDetailsShimmer";
 import BookingAction from "./BookingAction";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import Diagnosed from "../../../common/other/Diagnosed";
