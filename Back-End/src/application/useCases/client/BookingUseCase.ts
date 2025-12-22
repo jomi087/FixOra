@@ -4,7 +4,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } from "../../dtos/BookingDTO/CreateBookingApplicationDTO";
-import { IBookingUseCase } from "../../Interface/useCases/client/IBookingUseCase";
+import { IBookingUseCase } from "../../interfacetemp/useCases/client/IBookingUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { BOOKING_REQUEST_TIMEOUT_MS, DAYS } from "../../../shared/const/constants";

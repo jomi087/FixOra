@@ -2,14 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
-import { IGetUserChatsUseCase } from "../../application/Interface/useCases/chat/IGetUserChatsUseCase";
-import { IStartChatUseCase } from "../../application/Interface/useCases/chat/IStartChatUseCase";
-import { IGetChatMessagesUseCase } from "../../application/Interface/useCases/chat/IGetChatMessagesUseCase";
-import { ISendChatMessageUseCase } from "../../application/Interface/useCases/chat/ISendChatMessageUseCase";
+import { IGetUserChatsUseCase } from "../../application/interfacetemp/useCases/chat/IGetUserChatsUseCase";
+import { IStartChatUseCase } from "../../application/interfacetemp/useCases/chat/IStartChatUseCase";
+import { IGetChatMessagesUseCase } from "../../application/interfacetemp/useCases/chat/IGetChatMessagesUseCase";
+import { ISendChatMessageUseCase } from "../../application/interfacetemp/useCases/chat/ISendChatMessageUseCase";
 import { IChatService } from "../../domain/interface/serviceInterface/IChatService";
 import { CallStatus } from "../../shared/types/common";
 import { ICallService } from "../../domain/interface/serviceInterface/ICallService";
-import { ILogCallUseCase } from "../../application/Interface/useCases/chat/ILogCallUseCase";
+import { ILogCallUseCase } from "../../application/interfacetemp/useCases/chat/ILogCallUseCase";
 import { AppError } from "../../shared/errors/AppError";
 
 const { OK, UNAUTHORIZED } = HttpStatusCode;

@@ -6,7 +6,7 @@ import { DAYS } from "../../../shared/const/constants";
 import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
 import { RescheduleBookingInputDTO } from "../../dtos/BookingDTO/RescheduleBooking";
-import { IRescheduleBookingUseCase } from "../../Interface/useCases/client/IRescheduleBookingUseCase";
+import { IRescheduleBookingUseCase } from "../../interfacetemp/useCases/client/IRescheduleBookingUseCase";
 import { SendBookingConfirmedInput } from "../../dtos/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";

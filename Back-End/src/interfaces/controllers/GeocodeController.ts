@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { IReverseGeocodeUseCase } from "../../application/Interface/useCases/geocode/ola/IReverseGeocodeUseCase";
-import { IForwardGeocodeUseCase } from "../../application/Interface/useCases/geocode/ola/IForwardGeocodeUseCase";
-import { IAutocompleteGeocodeUseCase } from "../../application/Interface/useCases/geocode/ola/IAutocompleteGeocodeUseCase";
+import { IReverseGeocodeUseCase } from "../../application/interfacetemp/useCases/geocode/ola/IReverseGeocodeUseCase";
+import { IForwardGeocodeUseCase } from "../../application/interfacetemp/useCases/geocode/ola/IForwardGeocodeUseCase";
+import { IAutocompleteGeocodeUseCase } from "../../application/interfacetemp/useCases/geocode/ola/IAutocompleteGeocodeUseCase";
 
 export class GeocodeController {
     constructor(

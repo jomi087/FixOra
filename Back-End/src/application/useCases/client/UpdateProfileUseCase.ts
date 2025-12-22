@@ -2,7 +2,7 @@ import { IUserRepository } from "../../../domain/interface/repositoryInterface/I
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { EditProfileInputDTO, UpdatedProfileOutputDTO } from "../../dtos/EditProfileDTO";
-import { IUpdateProfileUseCase } from "../../Interface/useCases/client/IUpdateProfileUseCase";
+import { IUpdateProfileUseCase } from "../../interfacetemp/useCases/client/IUpdateProfileUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;

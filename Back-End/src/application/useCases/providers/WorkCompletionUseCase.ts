@@ -6,7 +6,7 @@ import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { WorkCompletionInputDTO, WorkCompletionOutputDTO } from "../../dtos/WorkCompletionDTO";
-import { IWorkCompletionUseCase } from "../../Interface/useCases/provider/IWorkCompletionUseCase";
+import { IWorkCompletionUseCase } from "../../interfacetemp/useCases/provider/IWorkCompletionUseCase";
 import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";

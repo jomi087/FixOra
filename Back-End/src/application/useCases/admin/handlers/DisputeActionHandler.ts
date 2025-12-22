@@ -5,7 +5,7 @@ import { Messages } from "../../../../shared/const/Messages";
 import { DisputeStatus } from "../../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../../shared/errors/AppError";
-import { IDisputeActionHandler } from "../../../Interface/useCases/admin/handlers/IDisputeActionHandler";
+import { IDisputeActionHandler } from "../../../interfacetemp/useCases/admin/handlers/IDisputeActionHandler";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG } = Messages;

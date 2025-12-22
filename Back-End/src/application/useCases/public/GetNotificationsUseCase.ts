@@ -1,6 +1,6 @@
 import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { NotificationOutputDTO } from "../../dtos/NotificationDTO";
-import { IGetNotificationsUseCase } from "../../Interface/useCases/public/IGetNotificationsUseCase";
+import { IGetNotificationsUseCase } from "../../interfacetemp/useCases/public/IGetNotificationsUseCase";
 
 
 export class GetNotificationsUseCase implements IGetNotificationsUseCase {

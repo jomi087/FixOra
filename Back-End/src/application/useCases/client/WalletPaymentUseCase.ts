@@ -5,7 +5,7 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
 import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../dtos/WalletDTO/walletPaymentDTO";
-import { IWalletPaymentUseCase } from "../../Interface/useCases/client/IWalletPaymentUseCase";
+import { IWalletPaymentUseCase } from "../../interfacetemp/useCases/client/IWalletPaymentUseCase";
 import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";

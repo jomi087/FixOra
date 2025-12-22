@@ -1,4 +1,4 @@
-import { ICreatePaymentUseCase } from "../../Interface/useCases/client/ICreatePaymentUseCase";
+import { ICreatePaymentUseCase } from "../../interfacetemp/useCases/client/ICreatePaymentUseCase";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IPaymentService } from "../../../domain/interface/serviceInterface/IPaymentService";

@@ -4,7 +4,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { ShortCategoryOutputDTO } from "../../dtos/CategoryDTO";
-import { IProviderServiceUseCase } from "../../Interface/useCases/provider/IProviderServiceUseCase";
+import { IProviderServiceUseCase } from "../../interfacetemp/useCases/provider/IProviderServiceUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG } = Messages;

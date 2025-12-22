@@ -1,6 +1,6 @@
 import { IChatRepository } from "../../../domain/interface/repositoryInterface/IChatRepository";
 import { StartChatDTO  } from "../../dtos/ChatDTO";
-import { IStartChatUseCase } from "../../Interface/useCases/chat/IStartChatUseCase";
+import { IStartChatUseCase } from "../../interfacetemp/useCases/chat/IStartChatUseCase";
 
 export class StartChatUseCase implements IStartChatUseCase {
     constructor(

@@ -6,7 +6,7 @@ import { IEmailService } from "../../../domain/interface/serviceInterface/IEmail
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IVerifyPasswordUseCase } from "../../Interface/useCases/client/IVerifyPasswordUseCase";
+import { IVerifyPasswordUseCase } from "../../interfacetemp/useCases/client/IVerifyPasswordUseCase";
 import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
 import { BRAND } from "../../../shared/const/constants";
 import { AppError } from "../../../shared/errors/AppError";

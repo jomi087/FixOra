@@ -4,7 +4,7 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { AppError } from "../../../shared/errors/AppError";
 import { RegisterFcmTokenInputDTO } from "../../dtos/RegisterFcmTokenDTO";
-import { IRegisterFcmTokenUseCase } from "../../Interface/useCases/auth/IRegisterFcmTokenUseCase";
+import { IRegisterFcmTokenUseCase } from "../../interfacetemp/useCases/auth/IRegisterFcmTokenUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG } = Messages;

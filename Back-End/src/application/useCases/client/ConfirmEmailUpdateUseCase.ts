@@ -5,7 +5,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { EmailUpdateVerfifyOTPInputDTO } from "../../dtos/EditProfileDTO";
-import { IConfirmEmailUpdateUseCase } from "../../Interface/useCases/client/IConfirmEmailUpdateUseCase";
+import { IConfirmEmailUpdateUseCase } from "../../interfacetemp/useCases/client/IConfirmEmailUpdateUseCase";
 
 const { BAD_REQUEST } = HttpStatusCode;
 const { INVALID_OTP, OTP_EXPIRED } = Messages;
