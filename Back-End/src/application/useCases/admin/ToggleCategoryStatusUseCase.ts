@@ -1,4 +1,4 @@
-import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICategoryRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/admin/IToggleCategoryStatusUseCase";

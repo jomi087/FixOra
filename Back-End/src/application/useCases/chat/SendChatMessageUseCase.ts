@@ -1,8 +1,8 @@
 import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
-import { IChatMessageRepository } from "../../../domain/interface/repositoryInterface/IChatMessageRepository";
-import { IChatRepository } from "../../../domain/interface/repositoryInterface/IChatRepository";
-import { IFileValidationService } from "../../../domain/interface/serviceInterface/IFileValidationService";
-import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
+import { IChatMessageRepository } from "../../../domain/interface/repositoryInterfaceTempName/IChatMessageRepository";
+import { IChatRepository } from "../../../domain/interface/repositoryInterfaceTempName/IChatRepository";
+import { IFileValidationService } from "../../../domain/interface/serviceInterfaceTempName/IFileValidationService";
+import { IImageUploaderService } from "../../../domain/interface/serviceInterfaceTempName/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";

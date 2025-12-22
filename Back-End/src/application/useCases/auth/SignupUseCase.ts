@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
 
-import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
-import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterfaceTempName/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterfaceTempName/IEmailService";
 import { SignupDTO } from "../../dtos/AuthDTO/SignupDTO";
-import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/IOtpGeneratorService";
-import { IHashService } from "../../../domain/interface/serviceInterface/IHashService";
+import { IOtpGenratorService } from "../../../domain/interface/serviceInterfaceTempName/IOtpGeneratorService";
+import { IHashService } from "../../../domain/interface/serviceInterfaceTempName/IHashService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ISignupUseCase } from "../../Interface/useCases/auth/ISignupUseCase";

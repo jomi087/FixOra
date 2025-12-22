@@ -1,4 +1,4 @@
-import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICategoryRepository";
 import { GetServicesInputDTO, GetServicesOutputDTO } from "../../dtos/CategoryDTO";
 import { IGetServiceUseCase } from "../../Interface/useCases/admin/IGetServiceUseCase";
 

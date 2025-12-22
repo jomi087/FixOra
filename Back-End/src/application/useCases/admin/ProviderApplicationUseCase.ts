@@ -1,4 +1,4 @@
-import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterface/IKYCRequestRepository";
+import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterfaceTempName/IKYCRequestRepository";
 import { ProviderApplicationDTO, ProviderApplicationInputDTO, ProviderApplicationOutputDTO } from "../../dtos/ProviderApplicationDTO";
 import { IProviderApplicationUseCase } from "../../Interface/useCases/admin/IProviderApplicationUseCase";
 

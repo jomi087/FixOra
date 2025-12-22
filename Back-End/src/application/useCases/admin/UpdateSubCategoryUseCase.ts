@@ -1,7 +1,7 @@
 import { Category } from "../../../domain/entities/CategoryEntity";
-import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
-import { IFileValidationService } from "../../../domain/interface/serviceInterface/IFileValidationService";
-import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICategoryRepository";
+import { IFileValidationService } from "../../../domain/interface/serviceInterfaceTempName/IFileValidationService";
+import { IImageUploaderService } from "../../../domain/interface/serviceInterfaceTempName/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";

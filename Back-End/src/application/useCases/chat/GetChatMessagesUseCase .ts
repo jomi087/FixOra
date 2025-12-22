@@ -1,5 +1,5 @@
 import { ChatMessageListItem } from "../../../domain/entities/projections/ChatMessageListItem";
-import { IChatMessageRepository } from "../../../domain/interface/repositoryInterface/IChatMessageRepository";
+import { IChatMessageRepository } from "../../../domain/interface/repositoryInterfaceTempName/IChatMessageRepository";
 import { ChatMessageInputDTO } from "../../dtos/ChatDTO";
 import { IGetChatMessagesUseCase } from "../../Interface/useCases/chat/IGetChatMessagesUseCase";
 

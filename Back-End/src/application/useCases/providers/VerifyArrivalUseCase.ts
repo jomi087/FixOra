@@ -1,9 +1,9 @@
-import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
-import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
-import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
-import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/IOtpGeneratorService";
-import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterfaceTempName/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterfaceTempName/IEmailService";
+import { IOtpGenratorService } from "../../../domain/interface/serviceInterfaceTempName/IOtpGeneratorService";
+import { ITokenService } from "../../../domain/interface/serviceInterfaceTempName/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyArrivalUseCase } from "../../Interface/useCases/provider/IVerifyArrivalUseCase";

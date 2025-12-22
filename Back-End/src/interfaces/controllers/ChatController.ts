@@ -6,9 +6,9 @@ import { IGetUserChatsUseCase } from "../../application/Interface/useCases/chat/
 import { IStartChatUseCase } from "../../application/Interface/useCases/chat/IStartChatUseCase";
 import { IGetChatMessagesUseCase } from "../../application/Interface/useCases/chat/IGetChatMessagesUseCase";
 import { ISendChatMessageUseCase } from "../../application/Interface/useCases/chat/ISendChatMessageUseCase";
-import { IChatService } from "../../domain/interface/serviceInterface/IChatService";
+import { IChatService } from "../../domain/interface/serviceInterfaceTempName/IChatService";
 import { CallStatus } from "../../shared/types/common";
-import { ICallService } from "../../domain/interface/serviceInterface/ICallService";
+import { ICallService } from "../../domain/interface/serviceInterfaceTempName/ICallService";
 import { ILogCallUseCase } from "../../application/Interface/useCases/chat/ILogCallUseCase";
 import { AppError } from "../../shared/errors/AppError";
 

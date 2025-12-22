@@ -1,5 +1,5 @@
 import { InitializeCommissionFeeUseCase } from "../../application/useCases/public/InitializeCommissionFeeUseCase";
-import { ILoggerService } from "../../domain/interface/serviceInterface/ILoggerService";
+import { ILoggerService } from "../../domain/interface/serviceInterfaceTempName/ILoggerService";
 import { CommissionFeeRepository } from "../database/repositories/CommissionFeeRepository";
 
 export const initializeCommissionFee = async (logger: ILoggerService) => {

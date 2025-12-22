@@ -2,7 +2,7 @@ import { PipelineStage } from "mongoose";
 import { Category } from "../../../domain/entities/CategoryEntity";
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity";
 import { User } from "../../../domain/entities/UserEntity";
-import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterface/IKYCRequestRepository";
+import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterfaceTempName/IKYCRequestRepository";
 import KYCRequestModel from "../models/KYCRequestModel";
 
 export class KYCRequestRepository implements IKYCRequestRepository {

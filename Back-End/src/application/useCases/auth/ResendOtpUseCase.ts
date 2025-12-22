@@ -1,6 +1,6 @@
-import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
-import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/IOtpGeneratorService";
-import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterfaceTempName/IOtpRepository";
+import { IOtpGenratorService } from "../../../domain/interface/serviceInterfaceTempName/IOtpGeneratorService";
+import { IEmailService } from "../../../domain/interface/serviceInterfaceTempName/IEmailService";
 import { IResendOtpUseCase } from "../../Interface/useCases/auth/IResendOtpUseCase";
 import { commonOtpEmail } from "../../services/emailTemplates/commonOtpTemplate";
 

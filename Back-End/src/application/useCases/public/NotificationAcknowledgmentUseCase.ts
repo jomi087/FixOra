@@ -1,4 +1,4 @@
-import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterfaceTempName/INotificationRepository";
 import { INotificationAcknowledgmentUseCase } from "../../Interface/useCases/public/INotificationAcknowledgmentUseCase";
 
 export class NotificationAcknowledgmentUseCase implements INotificationAcknowledgmentUseCase {

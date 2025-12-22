@@ -1,7 +1,7 @@
 import { Booking } from "../../../domain/entities/BookingEntity";
-import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
-import { IBookingSchedulerService } from "../../../domain/interface/serviceInterface/IBookingSchedulerService";
-import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
+import { IBookingSchedulerService } from "../../../domain/interface/serviceInterfaceTempName/IBookingSchedulerService";
+import { INotificationService } from "../../../domain/interface/serviceInterfaceTempName/INotificationService";
 import { PAYMENT_SESSION_TIMEOUT } from "../../../shared/const/constants";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";

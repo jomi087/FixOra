@@ -1,5 +1,5 @@
 
-import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { BookingDetailsOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";

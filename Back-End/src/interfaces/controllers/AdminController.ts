@@ -8,7 +8,7 @@ import { IGetServiceUseCase } from "../../application/Interface/useCases/admin/I
 import { ICreateServiceCategoryUseCase } from "../../application/Interface/useCases/admin/ICreateServiceCategoryUseCase";
 import { IToggleCategoryStatusUseCase } from "../../application/Interface/useCases/admin/IToggleCategoryStatusUseCase";
 import { IToggleUserStatusUseCase } from "../../application/Interface/useCases/admin/IToggleUserStatusUseCase";
-import { IImageUploaderService } from "../../domain/interface/serviceInterface/IImageUploaderService";
+import { IImageUploaderService } from "../../domain/interface/serviceInterfaceTempName/IImageUploaderService";
 import { IProviderApplicationUseCase } from "../../application/Interface/useCases/admin/IProviderApplicationUseCase";
 import { IUpdateKYCStatusUseCase } from "../../application/Interface/useCases/admin/IUpdateKYCStatusUseCase";
 import { ICommissionFeeUseCase } from "../../application/Interface/useCases/admin/ICommissionFeeUseCase";

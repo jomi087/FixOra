@@ -1,4 +1,4 @@
-import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterfaceTempName/IWalletRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { WalletDTO, WalletInputDTO, WalletOutputDTO } from "../../dtos/WalletDTO/walletDTO";

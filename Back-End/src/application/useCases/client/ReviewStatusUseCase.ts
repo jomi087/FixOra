@@ -1,4 +1,4 @@
-import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
+import { IRatingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IRaitingRepository";
 import { IReviewStatusUseCase } from "../../Interface/useCases/client/IReviewStatusUseCase";
 
 

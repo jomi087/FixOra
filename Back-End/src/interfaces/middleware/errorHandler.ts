@@ -1,6 +1,6 @@
 
 import { Request, Response, NextFunction } from "express";
-import { ILoggerService } from "../../domain/interface/serviceInterface/ILoggerService";
+import { ILoggerService } from "../../domain/interface/serviceInterfaceTempName/ILoggerService";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { AppError } from "../../shared/errors/AppError";

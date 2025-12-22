@@ -1,5 +1,5 @@
 import { AutocompleteResult } from "../../../../domain/entities/GeocodeResult";
-import { IGeocodeService } from "../../../../domain/interface/serviceInterface/IGeocodeService";
+import { IGeocodeService } from "../../../../domain/interface/serviceInterfaceTempName/IGeocodeService";
 import { IAutocompleteGeocodeUseCase } from "../../../Interface/useCases/geocode/ola/IAutocompleteGeocodeUseCase";
 
 

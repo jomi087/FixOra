@@ -1,4 +1,4 @@
-import { IFileValidationService } from "../../domain/interface/serviceInterface/IFileValidationService";
+import { IFileValidationService } from "../../domain/interface/serviceInterfaceTempName/IFileValidationService";
 import { Messages } from "../../shared/const/Messages";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { AppError } from "../../shared/errors/AppError";

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ChatMessageListItem } from "../../../domain/entities/projections/ChatMessageListItem";
-import { IChatMessageRepository } from "../../../domain/interface/repositoryInterface/IChatMessageRepository";
+import { IChatMessageRepository } from "../../../domain/interface/repositoryInterfaceTempName/IChatMessageRepository";
 import { ChatMessageModel } from "../models/ChatMessageModel";
 import { ChatMessage } from "../../../domain/entities/ChatMessageEntity";
 import { CallStatus } from "../../../shared/types/common";

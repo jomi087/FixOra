@@ -1,5 +1,5 @@
-import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterfaceTempName/IDisputeRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";

@@ -1,4 +1,4 @@
-import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICategoryRepository";
 import { v4 as uuidv4 } from "uuid";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";

@@ -3,7 +3,7 @@ import { Booking } from "../../../domain/entities/BookingEntity";
 import { Category, Subcategory } from "../../../domain/entities/CategoryEntity";
 import { Provider } from "../../../domain/entities/ProviderEntity";
 import { User } from "../../../domain/entities/UserEntity";
-import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";

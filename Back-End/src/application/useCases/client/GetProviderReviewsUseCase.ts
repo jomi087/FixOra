@@ -1,4 +1,4 @@
-import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
+import { IRatingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IRaitingRepository";
 import { ReviewInputDTO, ReviewOutputDTO } from "../../dtos/ReviewDTO";
 import { IGetProviderReviewsUseCase } from "../../Interface/useCases/client/IGetProviderReviewsUseCase";
 

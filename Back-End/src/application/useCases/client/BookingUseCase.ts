@@ -1,19 +1,19 @@
 import { Booking } from "../../../domain/entities/BookingEntity";
-import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } from "../../dtos/BookingDTO/CreateBookingApplicationDTO";
 import { IBookingUseCase } from "../../Interface/useCases/client/IBookingUseCase";
 import { v4 as uuidv4 } from "uuid";
-import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
+import { INotificationService } from "../../../domain/interface/serviceInterfaceTempName/INotificationService";
 import { BOOKING_REQUEST_TIMEOUT_MS, DAYS } from "../../../shared/const/constants";
-import { IBookingSchedulerService } from "../../../domain/interface/serviceInterface/IBookingSchedulerService";
+import { IBookingSchedulerService } from "../../../domain/interface/serviceInterfaceTempName/IBookingSchedulerService";
 import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
-import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
-import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
-import { IPushNotificationService } from "../../../domain/interface/serviceInterface/IPushNotificationService";
-import { ICommissionFeeRepository } from "../../../domain/interface/repositoryInterface/ICommissionFeeRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterfaceTempName/IAvailabilityRepository";
+import { IPushNotificationService } from "../../../domain/interface/serviceInterfaceTempName/IPushNotificationService";
+import { ICommissionFeeRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICommissionFeeRepository";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { CONFLICT, NOT_FOUND, UNPROCESSABLE_ENTITY, BAD_REQUEST } = HttpStatusCode;

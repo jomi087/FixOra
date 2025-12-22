@@ -1,4 +1,4 @@
-import { IOtpGenratorService } from "../../domain/interface/serviceInterface/IOtpGeneratorService";
+import { IOtpGenratorService } from "../../domain/interface/serviceInterfaceTempName/IOtpGeneratorService";
 
 export class OtpGenratorservice implements IOtpGenratorService{
     

@@ -1,4 +1,4 @@
-import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { RoleEnum } from "../../../shared/enums/Roles";

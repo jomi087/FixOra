@@ -1,4 +1,4 @@
-import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterfaceTempName/IProviderRepository";
 import { GetProvidersInputDTO, GetProvidersOutputDTO, ProviderDTO } from "../../dtos/GetProviderDTO";
 import { IGetProvidersUseCase } from "../../Interface/useCases/admin/IGetProvidersUseCase";
 

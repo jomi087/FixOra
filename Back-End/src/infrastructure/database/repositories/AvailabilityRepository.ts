@@ -1,5 +1,5 @@
 import { Availability, DaySchedule } from "../../../domain/entities/AvailabilityEntity";
-import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterfaceTempName/IAvailabilityRepository";
 import { Day } from "../../../shared/types/availability";
 import AvailabilityModel from "../models/AvailabilityModel";
 
