@@ -71,6 +71,9 @@ app.use(express.static(path.join(__dirname, "../public")));
 /**********************************************************************************************
  * ROUTES
 **********************************************************************************************/
+app.get("/api/health", (_req, res) => {
+    res.status(200).send("Backend is running 🚀");
+});
 app.use("/api", publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/customer", userRoutes);
