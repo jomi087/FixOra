@@ -1,6 +1,6 @@
 import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { ReviewInputDTO, ReviewOutputDTO } from "../../dtos/ReviewDTO";
-import { IGetProviderReviewsUseCase } from "../../Interface/useCases/clientTemp/IGetProviderReviewsUseCase";
+import { IGetProviderReviewsUseCase } from "../../Interface/useCases/client/IGetProviderReviewsUseCase";
 
 
 export class GetProviderReviewsUseCase implements IGetProviderReviewsUseCase {

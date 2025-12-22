@@ -9,7 +9,7 @@ import { PaymentStatus } from "../../../shared/enums/Payment";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
 import { CancelBookingInputDTO, CancelBookingOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";
-import { ICancelBookingUseCase } from "../../Interface/useCases/clientTemp/ICancelBookingUseCase";
+import { ICancelBookingUseCase } from "../../Interface/useCases/client/ICancelBookingUseCase";
 import { SendBookingCancelledInput } from "../../dtos/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";

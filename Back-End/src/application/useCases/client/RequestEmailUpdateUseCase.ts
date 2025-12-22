@@ -6,7 +6,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { NewEmailRequestInputDTO } from "../../dtos/EditProfileDTO";
-import { IRequestEmailUpdateUseCase } from "../../Interface/useCases/clientTemp/IRequestEmailUpdateUseCase";
+import { IRequestEmailUpdateUseCase } from "../../Interface/useCases/client/IRequestEmailUpdateUseCase";
 import { commonOtpEmail } from "../../services/emailTemplates/commonOtpTemplate";
 
 const { CONFLICT } = HttpStatusCode;
