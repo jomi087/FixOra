@@ -3,7 +3,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { CommissionFeeDTO } from "../../dtos/CommissionFeeDTO";
-import { IUpdateCommissionFeeUseCase } from "../../Interface/useCases/adminTemp/IUpdateCommissionFeeUseCase";
+import { IUpdateCommissionFeeUseCase } from "../../Interface/useCases/admin/IUpdateCommissionFeeUseCase";
 
 
 const {  NOT_FOUND } = HttpStatusCode;

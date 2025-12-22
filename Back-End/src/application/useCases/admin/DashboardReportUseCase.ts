@@ -1,6 +1,6 @@
 import { endOfDay, startOfDay, startOfMonth, startOfWeek, startOfYear } from "date-fns";
 import { DashboardStatsOutputDTO, TimeRange } from "../../dtos/DashboardDTO";
-import { IDashboardReportUseCase } from "../../Interface/useCases/adminTemp/IDashboardReportUseCase";
+import { IDashboardReportUseCase } from "../../Interface/useCases/admin/IDashboardReportUseCase";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
