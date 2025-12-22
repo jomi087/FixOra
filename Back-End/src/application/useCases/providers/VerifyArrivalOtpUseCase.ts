@@ -4,7 +4,7 @@ import { ITokenService } from "../../../domain/interface/serviceInterface/IToken
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IVerifyArrivalOtpUseCase } from "../../Interface/useCases/providerTemp/IVerifyArrivalOtpUseCase";
+import { IVerifyArrivalOtpUseCase } from "../../Interface/useCases/provider/IVerifyArrivalOtpUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { BAD_REQUEST } = HttpStatusCode;

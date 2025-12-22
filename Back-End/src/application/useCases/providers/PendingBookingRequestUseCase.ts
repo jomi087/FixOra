@@ -1,6 +1,6 @@
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { PendingBookingRequestOutputDTO } from "../../dtos/BookingDTO/PendingBookingRequestDTO";
-import { IPendingBookingRequestUseCase } from "../../Interface/useCases/providerTemp/IPendingBookingRequestUseCase";
+import { IPendingBookingRequestUseCase } from "../../Interface/useCases/provider/IPendingBookingRequestUseCase";
 
 
 

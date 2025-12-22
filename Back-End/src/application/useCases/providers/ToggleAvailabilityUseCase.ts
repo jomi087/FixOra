@@ -9,7 +9,7 @@ import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { toggleAvailabilityInputDTO } from "../../dtos/AvailabilityDTO";
-import { IToggleAvailabilityUseCase } from "../../Interface/useCases/providerTemp/IToggleAvailabilityUseCase";
+import { IToggleAvailabilityUseCase } from "../../Interface/useCases/provider/IToggleAvailabilityUseCase";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
