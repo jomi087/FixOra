@@ -151,13 +151,13 @@ export class AuthController {
                 .status(OK)
                 .cookie("accessToken", result.accessToken, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+                    secure: true, //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
                     sameSite: "none",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
                 .cookie("refreshToken", result.refreshToken, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+                    secure: true, //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
                     sameSite: "none",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
