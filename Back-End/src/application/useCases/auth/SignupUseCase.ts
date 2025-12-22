@@ -6,7 +6,7 @@ import type { SignOptions } from "jsonwebtoken";
 import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
-import { SignupDTO } from "../../dtos/AuthDTO/SignupDTO";
+import { SignupDTO } from "../../dtos/auth/SignupDTO";
 import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/IOtpGeneratorService";
 import { IHashService } from "../../../domain/interface/serviceInterface/IHashService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";

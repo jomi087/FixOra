@@ -1,4 +1,4 @@
-import { SignOutInputDTO } from "../../../dtos/AuthDTO/SingOutDTO";
+import { SignOutInputDTO } from "../../../dtos/auth/SingOutDTO";
 
 export interface ISignoutUseCase{
     execute(input:SignOutInputDTO):Promise<void>

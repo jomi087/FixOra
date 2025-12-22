@@ -4,7 +4,7 @@ import { IWalletRepository } from "../../../domain/interface/repositoryInterface
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
-import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../dtos/WalletDTO/walletPaymentDTO";
+import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../dtos/walletDTO";
 import { IWalletPaymentUseCase } from "../../interface/useCases/client/IWalletPaymentUseCase";
 import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
@@ -91,7 +91,7 @@ export class WalletPaymentUseCase implements IWalletPaymentUseCase {
                         bookingId: booking.bookingId
                     }
                 });
-            } catch (error:unknown) {
+            } catch (error: unknown) {
                 await this._walletRepository.updateWalletOnTransaction({
                     userId: userId,
                     transactionId,

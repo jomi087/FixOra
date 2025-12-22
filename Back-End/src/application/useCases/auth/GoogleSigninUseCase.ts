@@ -6,7 +6,7 @@ import { ITokenService } from "../../../domain/interface/serviceInterface/IToken
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IGoogleSigninUseCase } from "../../interface/useCases/auth/IGoogleSigninUseCase";
-import { SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";
+import { SignInOutputDTO } from "../../dtos/auth/SigninDTO";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND, FORBIDDEN } = HttpStatusCode;

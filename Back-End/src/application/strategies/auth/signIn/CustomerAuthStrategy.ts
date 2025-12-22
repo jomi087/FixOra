@@ -4,7 +4,7 @@ import { IHashService } from "../../../../domain/interface/serviceInterface/IHas
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 import { RoleEnum } from "../../../../shared/enums/Roles";
-import { SigninInputDTO } from "../../../dtos/AuthDTO/SigninDTO";
+import { SigninInputDTO } from "../../../dtos/auth/SigninDTO";
 import { AuthData, IAuthStrategy } from "../../../interface/strategies/auth/IAuthStrategy";
 import { AppError } from "../../../../shared/errors/AppError";
 
