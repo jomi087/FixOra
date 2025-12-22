@@ -1,4 +1,4 @@
-import { Dispute } from "../../../../../domain/entities/DisputeEntitytemp";
+import { Dispute } from "../../../../../domain/entities/DisputeEntity";
 // import { ITransactionSession } from "../../../../../domain/interface/databaseInterface/ITransactionManager";
 
 export interface IDisputeActionHandler {

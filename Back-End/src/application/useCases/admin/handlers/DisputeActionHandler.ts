@@ -1,4 +1,4 @@
-import { Dispute } from "../../../../domain/entities/DisputeEntitytemp";
+import { Dispute } from "../../../../domain/entities/DisputeEntity";
 // import { ITransactionSession } from "../../../../domain/interface/databaseInterface/ITransactionManager";
 import { IRatingRepository } from "../../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { Messages } from "../../../../shared/const/Messages";
