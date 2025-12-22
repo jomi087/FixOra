@@ -1,5 +1,5 @@
 import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
-import { GetProvidersInputDTO, GetProvidersOutputDTO, ProviderDTO } from "../../dtos/GetProviderDTO";
+import { GetProvidersInputDTO, GetProvidersOutputDTO, ProviderDTO } from "../../dto/GetProviderDTO";
 import { IGetProvidersUseCase } from "../../interface/useCases/admin/IGetProvidersUseCase";
 
 export class GetProvidersUseCase implements IGetProvidersUseCase {

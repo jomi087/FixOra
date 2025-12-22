@@ -2,7 +2,7 @@ import { ICommissionFeeRepository } from "../../../domain/interface/repositoryIn
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { CommissionFeeDTO } from "../../dtos/CommissionFeeDTO";
+import { CommissionFeeDTO } from "../../dto/CommissionFeeDTO";
 import { IUpdateCommissionFeeUseCase } from "../../interface/useCases/admin/IUpdateCommissionFeeUseCase";
 
 

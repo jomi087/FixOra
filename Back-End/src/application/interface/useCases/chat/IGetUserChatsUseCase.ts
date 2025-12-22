@@ -1,5 +1,5 @@
 import { ChatListItem } from "../../../../domain/entities/projections/ChatListItem";
-import { GetChatsInputDTO } from "../../../dtos/ChatDTO";
+import { GetChatsInputDTO } from "../../../dto/ChatDTO";
 
 
 export interface IGetUserChatsUseCase{

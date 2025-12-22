@@ -5,7 +5,7 @@ import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { NewEmailRequestInputDTO } from "../../dtos/EditProfileDTO";
+import { NewEmailRequestInputDTO } from "../../dto/EditProfileDTO";
 import { IRequestEmailUpdateUseCase } from "../../interface/useCases/client/IRequestEmailUpdateUseCase";
 import { commonOtpEmail } from "../../services/emailTemplates/commonOtpTemplate";
 

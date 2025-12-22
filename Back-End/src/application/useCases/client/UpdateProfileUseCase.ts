@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { EditProfileInputDTO, UpdatedProfileOutputDTO } from "../../dtos/EditProfileDTO";
+import { EditProfileInputDTO, UpdatedProfileOutputDTO } from "../../dto/EditProfileDTO";
 import { IUpdateProfileUseCase } from "../../interface/useCases/client/IUpdateProfileUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 

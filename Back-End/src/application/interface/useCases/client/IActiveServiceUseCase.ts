@@ -1,4 +1,4 @@
-import { ActiveCategoryOutputDTO } from "../../../dtos/CategoryDTO";
+import { ActiveCategoryOutputDTO } from "../../../dto/CategoryDTO";
 
 export interface IActiveServiceUseCase{
     execute(): Promise<ActiveCategoryOutputDTO[]>

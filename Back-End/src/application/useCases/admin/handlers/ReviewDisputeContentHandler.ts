@@ -2,7 +2,7 @@ import { IRatingRepository } from "../../../../domain/interface/repositoryInterf
 import { Messages } from "../../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../../shared/errors/AppError";
-import { DisputeContentOutput } from "../../../dtos/DisputeDTO";
+import { DisputeContentOutput } from "../../../dto/DisputeDTO";
 import { IDisputeContentHandler } from "../../../interface/useCases/admin/handlers/IDisputeContentHandler";
 
 const { NOT_FOUND } = HttpStatusCode;

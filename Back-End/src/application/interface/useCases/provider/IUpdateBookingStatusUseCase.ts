@@ -1,4 +1,4 @@
-import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../../dtos/booking/UpdateBookingStatusDTO";
+import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../../dto/booking/UpdateBookingStatusDTO";
 
 export interface IUpdateBookingStatusUseCase{
     execute(input : UpdateBookingStatusInputDTO ):Promise<UpdateBookingStatusOutputDTO|null >

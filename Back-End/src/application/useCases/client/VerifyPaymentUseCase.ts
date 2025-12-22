@@ -13,7 +13,7 @@ import { NotificationType } from "../../../shared/enums/Notification";
 import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
-import { SendBookingConfirmedInput } from "../../dtos/NotificationDTO";
+import { SendBookingConfirmedInput } from "../../dto/NotificationDTO";
 import { IVerifyPaymentUseCase } from "../../interface/useCases/client/IVerifyPaymentUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 

@@ -4,7 +4,7 @@ import { IUserRepository } from "../../../domain/interface/repositoryInterface/I
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { EmailUpdateVerfifyOTPInputDTO } from "../../dtos/EditProfileDTO";
+import { EmailUpdateVerfifyOTPInputDTO } from "../../dto/EditProfileDTO";
 import { IConfirmEmailUpdateUseCase } from "../../interface/useCases/client/IConfirmEmailUpdateUseCase";
 
 const { BAD_REQUEST } = HttpStatusCode;

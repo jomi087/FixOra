@@ -1,6 +1,6 @@
 import { endOfDay, startOfDay, startOfMonth, startOfWeek } from "date-fns";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
-import { SalesReportInputDTO, SalesReportOutputDTO } from "../../dtos/SalesReportDTO";
+import { SalesReportInputDTO, SalesReportOutputDTO } from "../../dto/SalesReportDTO";
 import { IGetSalesReportUseCase } from "../../interface/useCases/provider/IGetSalesReportUseCase";
 import { SalesPreset } from "../../../shared/types/salesReport";
 

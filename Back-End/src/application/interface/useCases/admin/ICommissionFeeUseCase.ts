@@ -1,4 +1,4 @@
-import { CommissionFeeDTO } from "../../../dtos/CommissionFeeDTO";
+import { CommissionFeeDTO } from "../../../dto/CommissionFeeDTO";
 
 export interface ICommissionFeeUseCase {
     execute():Promise<CommissionFeeDTO>

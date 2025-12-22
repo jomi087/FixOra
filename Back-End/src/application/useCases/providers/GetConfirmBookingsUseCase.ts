@@ -1,5 +1,5 @@
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
-import { ConfirmBookingOutputDTO } from "../../dtos/booking/BookingInfoDTO";
+import { ConfirmBookingOutputDTO } from "../../dto/booking/BookingInfoDTO";
 import { IGetConfirmBookingsUseCase } from "../../interface/useCases/provider/IGetConfirmBookingsUseCase";
 
 

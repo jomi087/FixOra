@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
-import { DecodedUserDTO } from "../../dtos/auth/DecodedUserDTO";
+import { DecodedUserDTO } from "../../dto/auth/DecodedUserDTO";
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";

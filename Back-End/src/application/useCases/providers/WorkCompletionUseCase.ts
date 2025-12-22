@@ -5,13 +5,13 @@ import { IImageUploaderService } from "../../../domain/interface/serviceInterfac
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { WorkCompletionInputDTO, WorkCompletionOutputDTO } from "../../dtos/WorkCompletionDTO";
+import { WorkCompletionInputDTO, WorkCompletionOutputDTO } from "../../dto/WorkCompletionDTO";
 import { IWorkCompletionUseCase } from "../../interface/useCases/provider/IWorkCompletionUseCase";
 import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { NotificationType } from "../../../shared/enums/Notification";
-import { SendWorkFinsihedInput } from "../../dtos/NotificationDTO";
+import { SendWorkFinsihedInput } from "../../dto/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { AppError } from "../../../shared/errors/AppError";

@@ -1,4 +1,4 @@
-import { EmailUpdateVerfifyOTPInputDTO } from "../../../dtos/EditProfileDTO";
+import { EmailUpdateVerfifyOTPInputDTO } from "../../../dto/EditProfileDTO";
 
 export interface IConfirmEmailUpdateUseCase {
     execute(input: EmailUpdateVerfifyOTPInputDTO): Promise<void>;

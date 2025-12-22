@@ -4,7 +4,7 @@ import { IEmailService } from "../../../domain/interface/serviceInterface/IEmail
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { DisputeInputDTO } from "../../dtos/DisputeDTO";
+import { DisputeInputDTO } from "../../dto/DisputeDTO";
 import { ICreateDisputeAndNotifyUseCase } from "../../interface/useCases/client/ICreateDisputeAndNotifyUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { buildDisputeReportEmail } from "../../services/emailTemplates/disputeReportTemplate";

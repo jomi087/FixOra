@@ -1,6 +1,6 @@
 import { ChatListItem } from "../../../domain/entities/projections/ChatListItem";
 import { IChatRepository } from "../../../domain/interface/repositoryInterface/IChatRepository";
-import { GetChatsInputDTO } from "../../dtos/ChatDTO";
+import { GetChatsInputDTO } from "../../dto/ChatDTO";
 import { IGetUserChatsUseCase } from "../../interface/useCases/chat/IGetUserChatsUseCase";
 
 export class GetUserChatsUseCase implements IGetUserChatsUseCase {

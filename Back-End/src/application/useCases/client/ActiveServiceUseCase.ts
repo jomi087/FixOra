@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
-import { ActiveCategoryOutputDTO } from "../../dtos/CategoryDTO";
+import { ActiveCategoryOutputDTO } from "../../dto/CategoryDTO";
 import { IActiveServiceUseCase } from "../../interface/useCases/client/IActiveServiceUseCase";
 
 

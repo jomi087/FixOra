@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 //api logic
-import { SignupDTO } from "../../application/dtos/auth/SignupDTO";
-import { SigninInputDTO } from "../../application/dtos/auth/SigninDTO";
+import { SignupDTO } from "../../application/dto/auth/SignupDTO";
+import { SigninInputDTO } from "../../application/dto/auth/SigninDTO";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { IVerifySignupOtpUseCase } from "../../application/interface/useCases/auth/IVerifySignupOtpUseCase";
@@ -16,7 +16,7 @@ import { ISignoutUseCase } from "../../application/interface/useCases/auth/ISign
 import { ISignupUseCase } from "../../application/interface/useCases/auth/ISignupUseCase";
 import { IRegisterFcmTokenUseCase } from "../../application/interface/useCases/auth/IRegisterFcmTokenUseCase";
 import jwt from "jsonwebtoken";
-import { DecodedUserDTO } from "../../application/dtos/auth/DecodedUserDTO";
+import { DecodedUserDTO } from "../../application/dto/auth/DecodedUserDTO";
 import { AppError } from "../../shared/errors/AppError";
 
 const { OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN } = HttpStatusCode;

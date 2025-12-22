@@ -1,5 +1,5 @@
 import { endOfDay, startOfDay, startOfMonth, startOfWeek, startOfYear } from "date-fns";
-import { DashboardStatsOutputDTO, TimeRange } from "../../dtos/DashboardDTO";
+import { DashboardStatsOutputDTO, TimeRange } from "../../dto/DashboardDTO";
 import { IDashboardReportUseCase } from "../../interface/useCases/admin/IDashboardReportUseCase";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";

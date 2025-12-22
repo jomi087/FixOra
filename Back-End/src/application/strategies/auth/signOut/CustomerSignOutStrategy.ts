@@ -3,7 +3,7 @@ import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 
 import { ISignOutStrategy } from "../../../interface/strategies/auth/ISignOutStrategy";
-import { SignOutDTO } from "../../../dtos/auth/SingOutDTO";
+import { SignOutDTO } from "../../../dto/auth/SingOutDTO";
 import { AppError } from "../../../../shared/errors/AppError";
 
 const { BAD_REQUEST } = HttpStatusCode;

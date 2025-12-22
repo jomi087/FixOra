@@ -1,5 +1,5 @@
 import { ISignoutUseCase } from "../../interface/useCases/auth/ISignoutUseCase";
-import { SignOutInputDTO } from "../../dtos/auth/SingOutDTO";
+import { SignOutInputDTO } from "../../dto/auth/SingOutDTO";
 import { SignOutStrategyFactory } from "../../strategies/auth/signOut/SignOutStrategyFactory";
 
 

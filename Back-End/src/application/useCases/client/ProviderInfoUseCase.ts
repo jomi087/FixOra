@@ -2,7 +2,7 @@ import { IUserRepository } from "../../../domain/interface/repositoryInterface/I
 import { Gender } from "../../../shared/enums/Gender";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../dtos/ProviderInfoDTO";
+import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../dto/ProviderInfoDTO";
 import { IProviderInfoUseCase } from "../../interface/useCases/client/IProviderInfoUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 

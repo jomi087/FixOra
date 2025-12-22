@@ -1,7 +1,5 @@
 import { RoleEnum } from "../../../../shared/enums/Roles";
-import { SigninInputDTO } from "../../../dtos/auth/SigninDTO";
-
-
+import { SigninInputDTO } from "../../../dto/auth/SigninDTO";
 
 export type AuthData = {
   userData : any; 

@@ -5,7 +5,7 @@ import { IImageUploaderService } from "../../../domain/interface/serviceInterfac
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
-import { UpdateSubCategoryInputDTO } from "../../dtos/CategoryDTO";
+import { UpdateSubCategoryInputDTO } from "../../dto/CategoryDTO";
 import { IUpdateSubCategoryUseCase } from "../../interface/useCases/admin/IUpdateSubCategoryUseCase";
 
 const {  NOT_FOUND, CONFLICT } = HttpStatusCode;

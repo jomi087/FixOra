@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
-import { GetLandingDataOutputDTO } from "../../dtos/LandingPageDto";
+import { GetLandingDataOutputDTO } from "../../dto/LandingPageDto";
 import { IGetLandingDataUseCase } from "../../interface/useCases/public/IGetLandingDataUseCase";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { LANDING_PAGE_TOP_PROVIDERS_LIMIT } from "../../../shared/const/constants";

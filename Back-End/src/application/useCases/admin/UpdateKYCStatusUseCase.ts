@@ -6,7 +6,7 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { KYCStatus } from "../../../shared/enums/KYCstatus";
 import { Messages } from "../../../shared/const/Messages";
 import { RoleEnum } from "../../../shared/enums/Roles";
-import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../dtos/UpdateKYCStatusDTO";
+import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../dto/UpdateKYCStatusDTO";
 import { IUpdateKYCStatusUseCase } from "../../interface/useCases/admin/IUpdateKYCStatusUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { AppError } from "../../../shared/errors/AppError";

@@ -1,4 +1,4 @@
-import { jobDetailsOutputDTO } from "../../../dtos/booking/BookingInfoDTO";
+import { jobDetailsOutputDTO } from "../../../dto/booking/BookingInfoDTO";
 
 export interface IGetJobDetailsUseCase  {
     execute(input : string):Promise<jobDetailsOutputDTO>
