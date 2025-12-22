@@ -1,8 +1,8 @@
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { IPaymentService } from "../../../domain/interface/serviceInterfaceTempName/IPaymentService";
+import { IPaymentService } from "../../../domain/interface/serviceInterface/IPaymentService";
 import { IWalletTopUpUseCase, WalletTopUpInput } from "../../Interface/useCases/client/IWalletTopUpUseCase";
-import { IWalletRepository } from "../../../domain/interface/repositoryInterfaceTempName/IWalletRepository";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;

@@ -1,6 +1,6 @@
-import { IDisputeRepository } from "../../../domain/interface/repositoryInterfaceTempName/IDisputeRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
-import { IEmailService } from "../../../domain/interface/serviceInterfaceTempName/IEmailService";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";

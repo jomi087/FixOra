@@ -1,4 +1,4 @@
-import { IProviderRepository } from "../../../domain/interface/repositoryInterfaceTempName/IProviderRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";

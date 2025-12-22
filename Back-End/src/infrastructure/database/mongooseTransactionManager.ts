@@ -1,5 +1,5 @@
 import mongoose, { ClientSession } from "mongoose";
-import { ITransactionManager, ITransactionSession } from "../../domain/interface/databaseInterfaceTempName/ITransactionManager";
+import { ITransactionManager, ITransactionSession } from "../../domain/interface/databaseInterface/ITransactionManager";
 
 class MongooseTransactionSession implements ITransactionSession {
     constructor(private _session: ClientSession) {}

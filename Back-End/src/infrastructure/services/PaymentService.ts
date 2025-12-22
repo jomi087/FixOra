@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { IPaymentService } from "../../domain/interface/serviceInterfaceTempName/IPaymentService";
+import { IPaymentService } from "../../domain/interface/serviceInterface/IPaymentService";
 import { RoleEnum } from "../../shared/enums/Roles";
 
 

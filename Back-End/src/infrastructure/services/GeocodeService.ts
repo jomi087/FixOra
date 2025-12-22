@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IGeocodeService } from "../../domain/interface/serviceInterfaceTempName/IGeocodeService";
+import { IGeocodeService } from "../../domain/interface/serviceInterface/IGeocodeService";
 import { AutocompleteResult, ForwardGeocodeResult } from "../../domain/entities/GeocodeResult";
 
 export class OlaGeocodeService implements IGeocodeService {

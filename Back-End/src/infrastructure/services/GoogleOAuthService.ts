@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GoogleTokenResponse, GoogleUserInfo, IGoogleOAuthService } from "../../domain/interface/serviceInterfaceTempName/IGoogleOAuthService";
+import { GoogleTokenResponse, GoogleUserInfo, IGoogleOAuthService } from "../../domain/interface/serviceInterface/IGoogleOAuthService";
 
 
 export class GoogleOAuthService implements IGoogleOAuthService {

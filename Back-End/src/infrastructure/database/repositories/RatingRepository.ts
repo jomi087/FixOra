@@ -1,7 +1,7 @@
 import { PipelineStage } from "mongoose";
 import { Rating } from "../../../domain/entities/RatingEntity";
 import { User } from "../../../domain/entities/UserEntity";
-import { IRatingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IRaitingRepository";
+import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { RatingModel } from "../models/RatingModel";
 // import { ITransactionSession } from "../../../domain/interface/databaseInterface/ITransactionManager";
 

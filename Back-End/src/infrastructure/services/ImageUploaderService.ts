@@ -1,7 +1,7 @@
 
 import { v2 as cloudinary } from "cloudinary";
 import { Readable } from "stream";
-import { IImageUploaderService } from "../../domain/interface/serviceInterfaceTempName/IImageUploaderService";
+import { IImageUploaderService } from "../../domain/interface/serviceInterface/IImageUploaderService";
 import dotenv from "dotenv";
 dotenv.config();
 

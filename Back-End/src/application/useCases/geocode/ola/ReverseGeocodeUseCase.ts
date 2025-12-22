@@ -1,4 +1,4 @@
-import { IGeocodeService } from "../../../../domain/interface/serviceInterfaceTempName/IGeocodeService";
+import { IGeocodeService } from "../../../../domain/interface/serviceInterface/IGeocodeService";
 import { IReverseGeocodeUseCase } from "../../../Interface/useCases/geocode/ola/IReverseGeocodeUseCase";
 
 

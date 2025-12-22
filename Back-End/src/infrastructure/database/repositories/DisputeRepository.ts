@@ -3,7 +3,7 @@ import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { DisputeModel } from "../models/DisputeModel";
 
 import { Dispute } from "../../../domain/entities/DisputeEntity";
-import { IDisputeRepository } from "../../../domain/interface/repositoryInterfaceTempName/IDisputeRepository";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
 import { User } from "../../../domain/entities/UserEntity";
 // import { ITransactionSession } from "../../../domain/interface/databaseInterface/ITransactionManager";
 

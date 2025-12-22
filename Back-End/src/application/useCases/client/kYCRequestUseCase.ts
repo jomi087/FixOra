@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { KYCRequest } from "../../../domain/entities/KYCRequestEntity";
-import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterfaceTempName/IKYCRequestRepository";
-import { INotificationRepository } from "../../../domain/interface/repositoryInterfaceTempName/INotificationRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
-import { INotificationService } from "../../../domain/interface/serviceInterfaceTempName/INotificationService";
+import { IKYCRequestRepository } from "../../../domain/interface/repositoryInterface/IKYCRequestRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { KYCStatus } from "../../../shared/enums/KYCstatus";
 import { RoleEnum } from "../../../shared/enums/Roles";
@@ -12,7 +12,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { KYCInputDTO } from "../../dtos/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/client/IKYCRequestUseCase";
 import { NotificationType } from "../../../shared/enums/Notification";
-import { IImageUploaderService } from "../../../domain/interface/serviceInterfaceTempName/IImageUploaderService";
+import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { BAD_REQUEST, NOT_FOUND } = HttpStatusCode;

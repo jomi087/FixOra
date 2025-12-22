@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import { SignOptions } from "jsonwebtoken";
 import { User } from "../../../domain/entities/UserEntity";
-import { IHashService } from "../../../domain/interface/serviceInterfaceTempName/IHashService";
-import { IEmailService } from "../../../domain/interface/serviceInterfaceTempName/IEmailService";
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
+import { IHashService } from "../../../domain/interface/serviceInterface/IHashService";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IVerifyPasswordUseCase } from "../../Interface/useCases/client/IVerifyPasswordUseCase";

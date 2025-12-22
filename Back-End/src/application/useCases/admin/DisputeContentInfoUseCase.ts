@@ -1,4 +1,4 @@
-import { IDisputeRepository } from "../../../domain/interface/repositoryInterfaceTempName/IDisputeRepository";
+import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";

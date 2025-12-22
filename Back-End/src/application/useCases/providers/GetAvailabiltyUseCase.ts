@@ -1,5 +1,5 @@
-import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterfaceTempName/IAvailabilityRepository";
-import { IProviderRepository } from "../../../domain/interface/repositoryInterfaceTempName/IProviderRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
 import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";

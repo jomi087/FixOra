@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { IEmailService } from "../../domain/interface/serviceInterfaceTempName/IEmailService";
+import { IEmailService } from "../../domain/interface/serviceInterface/IEmailService";
 import { AppError } from "../../shared/errors/AppError";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";

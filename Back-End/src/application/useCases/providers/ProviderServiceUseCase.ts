@@ -1,5 +1,5 @@
-import { ICategoryRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICategoryRepository";
-import { IProviderRepository } from "../../../domain/interface/repositoryInterfaceTempName/IProviderRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";

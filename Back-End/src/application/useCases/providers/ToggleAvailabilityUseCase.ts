@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { Booking } from "../../../domain/entities/BookingEntity";
-import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterfaceTempName/IAvailabilityRepository";
-import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
-import { IProviderRepository } from "../../../domain/interface/repositoryInterfaceTempName/IProviderRepository";
-import { IWalletRepository } from "../../../domain/interface/repositoryInterfaceTempName/IWalletRepository";
+import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { DAYS } from "../../../shared/const/constants";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
@@ -15,9 +15,9 @@ import { PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { SendBookingCancelledInput } from "../../dtos/NotificationDTO";
 import { NotificationType } from "../../../shared/enums/Notification";
-import { INotificationRepository } from "../../../domain/interface/repositoryInterfaceTempName/INotificationRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { INotificationService } from "../../../domain/interface/serviceInterfaceTempName/INotificationService";
+import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;

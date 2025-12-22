@@ -1,5 +1,5 @@
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
-import { ITokenService } from "../../../domain/interface/serviceInterfaceTempName/ITokenService";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { SigninInputDTO, SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";

@@ -1,4 +1,4 @@
-import { ICallService } from "../../domain/interface/serviceInterfaceTempName/ICallService";
+import { ICallService } from "../../domain/interface/serviceInterface/ICallService";
 import { getIO } from "../socket/config";
 
 export class CallService implements ICallService {

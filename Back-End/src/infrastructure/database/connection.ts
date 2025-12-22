@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ILoggerService } from "../../domain/interface/serviceInterfaceTempName/ILoggerService";
+import { ILoggerService } from "../../domain/interface/serviceInterface/ILoggerService";
 
 const mongoConnect = async (logger: ILoggerService): Promise<void> => {
     const mongoUrl = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/fixora";

@@ -1,5 +1,5 @@
 import { CommissionFee } from "../../../domain/entities/CommissionFeeEntity";
-import { ICommissionFeeRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICommissionFeeRepository";
+import { ICommissionFeeRepository } from "../../../domain/interface/repositoryInterface/ICommissionFeeRepository";
 import CommissionFeeModel from "../models/CommissionFeeModel";
 
 export class CommissionFeeRepository implements ICommissionFeeRepository {

@@ -1,7 +1,7 @@
-import { IOtpRepository } from "../../../domain/interface/repositoryInterfaceTempName/IOtpRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
-import { IEmailService } from "../../../domain/interface/serviceInterfaceTempName/IEmailService";
-import { IOtpGenratorService } from "../../../domain/interface/serviceInterfaceTempName/IOtpGeneratorService";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
+import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/IOtpGeneratorService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";

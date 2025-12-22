@@ -1,9 +1,9 @@
 import { endOfDay, startOfDay, startOfMonth, startOfWeek, startOfYear } from "date-fns";
 import { DashboardStatsOutputDTO, TimeRange } from "../../dtos/DashboardDTO";
 import { IDashboardReportUseCase } from "../../Interface/useCases/admin/IDashboardReportUseCase";
-import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
-import { ICategoryRepository } from "../../../domain/interface/repositoryInterfaceTempName/ICategoryRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
 
 export class DashboardReportUseCase implements IDashboardReportUseCase {
     constructor(

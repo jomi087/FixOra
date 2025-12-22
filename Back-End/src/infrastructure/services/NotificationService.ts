@@ -1,7 +1,7 @@
 import {
     AutoRejectNotification,INotificationService, NotificationPayload,
     ProviderBookingNotification, UserResponsNotificaton
-} from "../../domain/interface/serviceInterfaceTempName/INotificationService";
+} from "../../domain/interface/serviceInterface/INotificationService";
 import { getIO } from "../socket/config";
 
 export class NotificationService implements INotificationService {

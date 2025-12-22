@@ -1,6 +1,6 @@
 
-import { IOtpRepository } from "../../../domain/interface/repositoryInterfaceTempName/IOtpRepository";
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
+import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";

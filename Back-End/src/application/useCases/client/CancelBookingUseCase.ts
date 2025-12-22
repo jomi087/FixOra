@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
-import { IWalletRepository } from "../../../domain/interface/repositoryInterfaceTempName/IWalletRepository";
-import { INotificationService } from "../../../domain/interface/serviceInterfaceTempName/INotificationService";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
+import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { FULL_REFUND_WINDOW_MINUTES, PARTIAL_REFUND_PERCENTAGE } from "../../../shared/const/constants";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
@@ -13,7 +13,7 @@ import { ICancelBookingUseCase } from "../../Interface/useCases/client/ICancelBo
 import { SendBookingCancelledInput } from "../../dtos/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
-import { INotificationRepository } from "../../../domain/interface/repositoryInterfaceTempName/INotificationRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { AppError } from "../../../shared/errors/AppError";
 
 

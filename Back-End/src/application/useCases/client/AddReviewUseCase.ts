@@ -1,5 +1,5 @@
-import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
-import { IRatingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IRaitingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { AddReviewInputDTO } from "../../dtos/ReviewDTO";

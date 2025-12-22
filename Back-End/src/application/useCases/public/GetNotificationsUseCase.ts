@@ -1,4 +1,4 @@
-import { INotificationRepository } from "../../../domain/interface/repositoryInterfaceTempName/INotificationRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { NotificationOutputDTO } from "../../dtos/NotificationDTO";
 import { IGetNotificationsUseCase } from "../../Interface/useCases/public/IGetNotificationsUseCase";
 

@@ -3,8 +3,8 @@
 import jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
 
-import { IUserRepository } from "../../../domain/interface/repositoryInterfaceTempName/IUserRepository";
-import { IEmailService } from "../../../domain/interface/serviceInterfaceTempName/IEmailService";
+import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
+import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IForgotPasswordUseCase } from "../../Interface/useCases/auth/IForgotPasswordUseCase";

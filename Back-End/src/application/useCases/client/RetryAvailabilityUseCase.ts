@@ -1,4 +1,4 @@
-import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { PaymentStatus } from "../../../shared/enums/Payment";

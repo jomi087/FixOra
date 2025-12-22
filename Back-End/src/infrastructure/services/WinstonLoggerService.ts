@@ -1,4 +1,4 @@
-import { ILoggerService } from "../../domain/interface/serviceInterfaceTempName/ILoggerService";
+import { ILoggerService } from "../../domain/interface/serviceInterface/ILoggerService";
 import { loggerInstance } from "../logger/config";
 
 export class WinstonLogger implements ILoggerService {

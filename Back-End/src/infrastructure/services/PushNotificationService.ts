@@ -1,4 +1,4 @@
-import { fcmTokens, IPushNotificationService, payload } from "../../domain/interface/serviceInterfaceTempName/IPushNotificationService";
+import { fcmTokens, IPushNotificationService, payload } from "../../domain/interface/serviceInterface/IPushNotificationService";
 import { firebaseAdmin } from "../firebase/firebaseAdmin";
 
 export class PushNotificationService implements IPushNotificationService {

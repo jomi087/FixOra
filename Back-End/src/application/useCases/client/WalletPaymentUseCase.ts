@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import { IBookingRepository } from "../../../domain/interface/repositoryInterfaceTempName/IBookingRepository";
-import { IWalletRepository } from "../../../domain/interface/repositoryInterfaceTempName/IWalletRepository";
+import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
+import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
@@ -8,11 +8,11 @@ import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../dtos/Wallet
 import { IWalletPaymentUseCase } from "../../Interface/useCases/client/IWalletPaymentUseCase";
 import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 import { BookingStatus } from "../../../shared/enums/BookingStatus";
-import { INotificationService } from "../../../domain/interface/serviceInterfaceTempName/INotificationService";
+import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { Booking } from "../../../domain/entities/BookingEntity";
-import { IBookingSchedulerService } from "../../../domain/interface/serviceInterfaceTempName/IBookingSchedulerService";
+import { IBookingSchedulerService } from "../../../domain/interface/serviceInterface/IBookingSchedulerService";
 import { SendBookingConfirmedInput } from "../../dtos/NotificationDTO";
-import { INotificationRepository } from "../../../domain/interface/repositoryInterfaceTempName/INotificationRepository";
+import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";
 import { NotificationType } from "../../../shared/enums/Notification";
 import { AppError } from "../../../shared/errors/AppError";
