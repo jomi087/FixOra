@@ -1,6 +1,6 @@
 
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { jobDetailsOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";
 import { IGetJobDetailsUseCase } from "../../Interface/useCases/provider/IGetJobDetailsUseCase";

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
 import { IGetCustomersUseCase } from "../../application/Interface/useCases/admin/IGetCustomersUseCase";
@@ -15,7 +15,7 @@ import { ICommissionFeeUseCase } from "../../application/Interface/useCases/admi
 import { IUpdateCommissionFeeUseCase } from "../../application/Interface/useCases/admin/IUpdateCommissionFeeUseCase";
 import { IDashboardReportUseCase } from "../../application/Interface/useCases/admin/IDashboardReportUseCase";
 import { IGetDisputesUseCase } from "../../application/Interface/useCases/admin/IGetDisputesUseCase";
-import { DisputeStatus, DisputeType } from "../../shared/enumss/Dispute";
+import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
 import { IDisputeContentInfoUseCase } from "../../application/Interface/useCases/admin/IDisputeContentInfoUseCase";
 import { IDisputeActionUseCase } from "../../application/Interface/useCases/admin/IDisputeActionUseCase";
 import { IUpdateCategoryUseCase } from "../../application/Interface/useCases/admin/IUpdateCategoryUseCase";

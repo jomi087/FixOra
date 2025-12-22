@@ -1,6 +1,6 @@
 import { Schema, Document, model } from "mongoose";
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { NotificationType } from "../../../shared/enumss/Notification";
+import { NotificationType } from "../../../shared/enums/Notification";
 
 export interface INotificationModel extends Document, Notification { }
 

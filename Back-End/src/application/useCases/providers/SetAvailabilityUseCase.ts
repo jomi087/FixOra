@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
 import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
 import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../dtos/AvailabilityDTO";
@@ -13,11 +13,11 @@ import { IWalletRepository } from "../../../domain/interface/repositoryInterface
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { SendBookingCancelledInput } from "../../dtos/NotificationDTO";
-import { TransactionStatus, TransactionType } from "../../../shared/enumss/Transaction";
-import { BookingStatus } from "../../../shared/enumss/BookingStatus";
-import { PaymentStatus } from "../../../shared/enumss/Payment";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { PaymentStatus } from "../../../shared/enums/Payment";
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { NotificationType } from "../../../shared/enumss/Notification";
+import { NotificationType } from "../../../shared/enums/Notification";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND, INTERNAL_SERVER_ERROR } = HttpStatusCode;

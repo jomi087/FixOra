@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../shared/enumss/Roles";
+import { RoleEnum } from "../../../shared/enums/Roles";
 
 export interface IPaymentService {
   createPaymentIntent(bookingId: string, totalAmount: number): Promise<string>;

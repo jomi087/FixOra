@@ -4,7 +4,7 @@ import {
     issueTypeIdField, providerIdField, providerUserIdField,
     providerResponseStatusField, bookingIdField
 } from "./fields";
-import { ProviderResponseStatus } from "../../shared/enumss/ProviderResponse";
+import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
 
 export const bookingIdSchema = z.object({
     bookingId: bookingIdField,

@@ -1,4 +1,4 @@
-import { RoleEnum } from "../enumss/Roles";
+import { RoleEnum } from "../enums/Roles";
 
 export type DecodedUserToken = {
     id: string;

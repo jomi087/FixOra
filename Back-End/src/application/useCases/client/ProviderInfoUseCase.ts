@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
-import { Gender } from "../../../shared/enumss/Gender";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { Gender } from "../../../shared/enums/Gender";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../dtos/ProviderInfoDTO";
 import { IProviderInfoUseCase } from "../../Interface/useCases/client/IProviderInfoUseCase";

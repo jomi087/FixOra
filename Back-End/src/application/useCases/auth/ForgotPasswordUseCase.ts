@@ -6,7 +6,7 @@ import type { SignOptions } from "jsonwebtoken";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
 import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IForgotPasswordUseCase } from "../../Interface/useCases/auth/IForgotPasswordUseCase";
 import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
 import { BRAND } from "../../../shared/const/constants";

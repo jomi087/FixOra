@@ -4,7 +4,7 @@ import { IChatRepository } from "../../../domain/interface/repositoryInterface/I
 import { IFileValidationService } from "../../../domain/interface/serviceInterface/IFileValidationService";
 import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { SendChatMessageInputDTO } from "../../dtos/ChatDTO";
 import { ISendChatMessageUseCase } from "../../Interface/useCases/chat/ISendChatMessageUseCase";

@@ -1,6 +1,6 @@
 import mongoose, { Document } from "mongoose";
 import { User } from "../../../domain/entities/UserEntity";
-import { RoleEnum } from "../../../shared/enumss/Roles";
+import { RoleEnum } from "../../../shared/enums/Roles";
 
 export interface IUserModel extends Document, User { }
 

@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { IPaymentService } from "../../domain/interface/serviceInterface/IPaymentService";
-import { RoleEnum } from "../../shared/enumss/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 
 
 export class PaymentService implements IPaymentService {

@@ -1,6 +1,6 @@
 import { ICreatePaymentUseCase } from "../../Interface/useCases/client/ICreatePaymentUseCase";
 import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IPaymentService } from "../../../domain/interface/serviceInterface/IPaymentService";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { AppError } from "../../../shared/errors/AppError";

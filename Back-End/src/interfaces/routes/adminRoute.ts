@@ -4,7 +4,7 @@ import upload from "../middleware/upload";
 import { updateCategorySchema, validateCategory } from "../validations/categorySchema";
 import { validateRequest } from "../middleware/validateRequest";
 import { kycStatus } from "../validations/kycSchema";
-import { RoleEnum } from "../../shared/enumss/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 import { disputeActionSchema } from "../validations/disputeSchema";
 
 const router = express.Router();

@@ -1,5 +1,5 @@
-import { BookingStatus } from "../../../shared/enumss/BookingStatus";
-import { PaymentMode, PaymentStatus } from "../../../shared/enumss/Payment";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 
 export interface WalletPaymentInputDTO {
     userId: string;

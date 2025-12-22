@@ -1,15 +1,15 @@
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { Messages } from "../../../shared/const/Messages";
-import { BookingStatus } from "../../../shared/enumss/BookingStatus";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { CreateBookingApplicationInputDTO, CreateBookingApplicationOutputDTO } from "../../dtos/BookingDTO/CreateBookingApplicationDTO";
 import { IBookingUseCase } from "../../Interface/useCases/client/IBookingUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { BOOKING_REQUEST_TIMEOUT_MS, DAYS } from "../../../shared/const/constants";
 import { IBookingSchedulerService } from "../../../domain/interface/serviceInterface/IBookingSchedulerService";
-import { ProviderResponseStatus } from "../../../shared/enumss/ProviderResponse";
+import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { IAvailabilityRepository } from "../../../domain/interface/repositoryInterface/IAvailabilityRepository";
 import { IPushNotificationService } from "../../../domain/interface/serviceInterface/IPushNotificationService";

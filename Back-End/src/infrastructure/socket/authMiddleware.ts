@@ -1,7 +1,7 @@
 import { Socket, ExtendedError } from "socket.io";
 import * as cookie from "cookie";
 import jwt from "jsonwebtoken";
-import { RoleEnum } from "../../shared/enumss/Roles";
+import { RoleEnum } from "../../shared/enums/Roles";
 import { ILoggerService } from "../../domain/interface/serviceInterface/ILoggerService";
 import { DecodedUserToken } from "../../shared/types/common";
 

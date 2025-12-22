@@ -1,4 +1,4 @@
-import { DisputeType } from "../shared/enumss/Dispute";
+import { DisputeType } from "../shared/enums/Dispute";
 import { allowedTypes, maxSizeMB } from "../shared/const/constants";
 
 

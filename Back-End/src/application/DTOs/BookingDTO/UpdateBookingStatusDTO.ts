@@ -1,5 +1,5 @@
-import { BookingStatus } from "../../../shared/enumss/BookingStatus";
-import { ProviderResponseStatus } from "../../../shared/enumss/ProviderResponse";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 
 export interface UpdateBookingStatusInputDTO  {
   bookingId: string;

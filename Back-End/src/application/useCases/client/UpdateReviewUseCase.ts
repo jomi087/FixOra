@@ -1,6 +1,6 @@
 import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { UpdateReviewInputDTO, UpdateReviewOutputDTO } from "../../dtos/ReviewDTO";
 import { IUpdateReviewUseCase } from "../../Interface/useCases/client/IUpdateReviewUseCase";

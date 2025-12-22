@@ -3,16 +3,16 @@ import { IBookingRepository } from "../../../domain/interface/repositoryInterfac
 import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { FULL_REFUND_WINDOW_MINUTES, PARTIAL_REFUND_PERCENTAGE } from "../../../shared/const/constants";
-import { BookingStatus } from "../../../shared/enumss/BookingStatus";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
-import { PaymentStatus } from "../../../shared/enumss/Payment";
-import { TransactionStatus, TransactionType } from "../../../shared/enumss/Transaction";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { PaymentStatus } from "../../../shared/enums/Payment";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
 import { CancelBookingInputDTO, CancelBookingOutputDTO } from "../../dtos/BookingDTO/BookingInfoDTO";
 import { ICancelBookingUseCase } from "../../Interface/useCases/client/ICancelBookingUseCase";
 import { SendBookingCancelledInput } from "../../dtos/NotificationDTO";
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { NotificationType } from "../../../shared/enumss/Notification";
+import { NotificationType } from "../../../shared/enums/Notification";
 import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { AppError } from "../../../shared/errors/AppError";
 

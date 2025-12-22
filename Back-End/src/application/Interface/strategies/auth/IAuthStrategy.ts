@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../../shared/enumss/Roles";
+import { RoleEnum } from "../../../../shared/enums/Roles";
 import { SigninInputDTO } from "../../../dtos/AuthDTO/SigninDTO";
 
 

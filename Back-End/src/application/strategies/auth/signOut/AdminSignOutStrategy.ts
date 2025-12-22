@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../../../domain/interface/repositoryInterface/IUserRepository";
-import { HttpStatusCode } from "../../../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 import { ISignOutStrategy } from "../../../Interface/strategies/auth/ISignOutStrategy";
 import { SignOutDTO } from "../../../dtos/AuthDTO/SingOutDTO";

@@ -1,4 +1,4 @@
-import { Gender } from "../../shared/enumss/Gender";
+import { Gender } from "../../shared/enums/Gender";
 
 export interface KYCFile {
     fieldName: string;

@@ -1,6 +1,6 @@
 import { IFileValidationService } from "../../domain/interface/serviceInterface/IFileValidationService";
 import { Messages } from "../../shared/const/Messages";
-import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { AppError } from "../../shared/errors/AppError";
 import { UploadedFile } from "../../shared/types/common";
 

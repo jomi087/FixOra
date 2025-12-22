@@ -1,20 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
-import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
-import { TransactionStatus, TransactionType } from "../../../shared/enumss/Transaction";
+import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
 import { WalletPaymentInputDTO, WalletPaymentOutputDTO } from "../../dtos/WalletDTO/walletPaymentDTO";
 import { IWalletPaymentUseCase } from "../../Interface/useCases/client/IWalletPaymentUseCase";
-import { PaymentMode, PaymentStatus } from "../../../shared/enumss/Payment";
-import { BookingStatus } from "../../../shared/enumss/BookingStatus";
+import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
+import { BookingStatus } from "../../../shared/enums/BookingStatus";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { Booking } from "../../../domain/entities/BookingEntity";
 import { IBookingSchedulerService } from "../../../domain/interface/serviceInterface/IBookingSchedulerService";
 import { SendBookingConfirmedInput } from "../../dtos/NotificationDTO";
 import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { Notification } from "../../../domain/entities/NotificationEntity";
-import { NotificationType } from "../../../shared/enumss/Notification";
+import { NotificationType } from "../../../shared/enums/Notification";
 import { AppError } from "../../../shared/errors/AppError";
 
 

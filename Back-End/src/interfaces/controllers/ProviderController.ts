@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
 import { IUpdateBookingStatusUseCase } from "../../application/Interface/useCases/provider/IUpdateBookingStatusUseCase";
-import { ProviderResponseStatus } from "../../shared/enumss/ProviderResponse";
+import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
 import { IGetConfirmBookingsUseCase } from "../../application/Interface/useCases/provider/IGetConfirmBookingsUseCase";
 import { IGetJobDetailsUseCase } from "../../application/Interface/useCases/provider/IGetJobDetailsUseCase";
 

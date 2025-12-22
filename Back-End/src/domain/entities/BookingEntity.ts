@@ -1,6 +1,6 @@
-import { BookingStatus } from "../../shared/enumss/BookingStatus";
-import { PaymentMode, PaymentStatus } from "../../shared/enumss/Payment";
-import { ProviderResponseStatus } from "../../shared/enumss/ProviderResponse";
+import { BookingStatus } from "../../shared/enums/BookingStatus";
+import { PaymentMode, PaymentStatus } from "../../shared/enums/Payment";
+import { ProviderResponseStatus } from "../../shared/enums/ProviderResponse";
 
 export interface Booking {
     bookingId: string;//uuid
