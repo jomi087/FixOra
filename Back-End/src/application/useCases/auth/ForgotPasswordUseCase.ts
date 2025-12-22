@@ -7,7 +7,7 @@ import { IUserRepository } from "../../../domain/interface/repositoryInterface/I
 import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { IForgotPasswordUseCase } from "../../Interface/useCases/authTemp/IForgotPasswordUseCase";
+import { IForgotPasswordUseCase } from "../../Interface/useCases/auth/IForgotPasswordUseCase";
 import { buildResetPasswordEmail } from "../../services/emailTemplates/resetPasswordTemplate";
 import { BRAND } from "../../../shared/const/constants";
 import { AppError } from "../../../shared/errors/AppError";

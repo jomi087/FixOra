@@ -11,7 +11,7 @@ import { IOtpGenratorService } from "../../../domain/interface/serviceInterface/
 import { IHashService } from "../../../domain/interface/serviceInterface/IHashService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { ISignupUseCase } from "../../Interface/useCases/authTemp/ISignupUseCase";
+import { ISignupUseCase } from "../../Interface/useCases/auth/ISignupUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { CONFLICT } = HttpStatusCode;

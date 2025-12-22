@@ -10,7 +10,7 @@ import { IProviderInfoUseCase } from "../../application/Interface/useCases/clien
 import { IBookingUseCase } from "../../application/Interface/useCases/client/IBookingUseCase";
 import { ICreatePaymentUseCase } from "../../application/Interface/useCases/client/ICreatePaymentUseCase";
 import { IActiveServiceUseCase } from "../../application/Interface/useCases/client/IActiveServiceUseCase";
-import { IResetPasswordUseCase } from "../../application/Interface/useCases/authTemp/IResetPasswordUseCase";
+import { IResetPasswordUseCase } from "../../application/Interface/useCases/auth/IResetPasswordUseCase";
 import { IVerifyPaymentUseCase } from "../../application/Interface/useCases/client/IVerifyPaymentUseCase";
 import { IBookingHistoryUseCase } from "../../application/Interface/useCases/client/IBookingHistoryUseCase";
 import { IGetBookingDetailsUseCase } from "../../application/Interface/useCases/client/IGetBookingDetailsUseCase";
