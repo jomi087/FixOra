@@ -2,7 +2,7 @@ import { PipelineStage } from "mongoose";
 import { DisputeStatus } from "../../../shared/enums/Dispute";
 import { DisputeModel } from "../models/DisputeModel";
 
-import { Dispute } from "../../../domain/entities/DisputeEntity";
+import { Dispute } from "../../../domain/entities/DisputeEntitytemp";
 import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
 import { User } from "../../../domain/entities/UserEntity";
 // import { ITransactionSession } from "../../../domain/interface/databaseInterface/ITransactionManager";

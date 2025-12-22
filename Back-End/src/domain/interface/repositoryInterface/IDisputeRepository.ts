@@ -1,5 +1,5 @@
 import { DisputeStatus } from "../../../shared/enums/Dispute";
-import { Dispute } from "../../entities/DisputeEntity";
+import { Dispute } from "../../entities/DisputeEntitytemp";
 import { User } from "../../entities/UserEntity";
 // import { ITransactionSession } from "../databaseInterface/ITransactionManager";
 
