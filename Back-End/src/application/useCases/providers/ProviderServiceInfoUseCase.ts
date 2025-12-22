@@ -3,7 +3,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { ProviderServiceInfoOutputDTO } from "../../dtos/ProviderInfoDTO";
-import { IProviderServiceInfoUseCase } from "../../Interface/useCases/provider/IProviderServiceInfoUseCase";
+import { IProviderServiceInfoUseCase } from "../../Interface/useCases/providerTemp/IProviderServiceInfoUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG } = Messages;

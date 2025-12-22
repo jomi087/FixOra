@@ -5,7 +5,7 @@ import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { Day } from "../../../shared/types/availability";
 import { setAvailabilityInputDTO, setAvailabilityOutputDTO } from "../../dtos/AvailabilityDTO";
-import { ISetAvailabilityUseCase } from "../../Interface/useCases/provider/ISetAvailabilityUseCase";
+import { ISetAvailabilityUseCase } from "../../Interface/useCases/providerTemp/ISetAvailabilityUseCase";
 import { DaySchedule } from "../../../domain/entities/AvailabilityEntity";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
 import { DAYS } from "../../../shared/const/constants";
