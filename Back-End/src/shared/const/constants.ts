@@ -1,6 +1,6 @@
 export const BRAND = {
     NAME: "FixOra",
-    FRONTEND_URL: process.env.FRONTEND_URL || "http://localhost:5001",
+    FRONTEND_URL: process.env.FRONTEND_URL,
     LOGO_URL: `${process.env.FRONTEND_URL?.replace(/\/$/, "")}/images/fixoraLogo.png`,
 };
 
