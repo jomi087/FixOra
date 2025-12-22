@@ -1,5 +1,5 @@
 import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
-import { INotificationAcknowledgmentUseCase } from "../../Interface/useCases/public/INotificationAcknowledgmentUseCase";
+import { INotificationAcknowledgmentUseCase } from "../../Interface/useCases/publicTemp/INotificationAcknowledgmentUseCase";
 
 export class NotificationAcknowledgmentUseCase implements INotificationAcknowledgmentUseCase {
     constructor(
