@@ -4,8 +4,8 @@ import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { DisputeContentOutput } from "../../dtos/DisputeDTO";
-import { IDisputeContentHandler } from "../../Interface/useCases/admin/handlers/IDisputeContentHandler";
-import { IDisputeContentInfoUseCase } from "../../Interface/useCases/admin/IDisputeContentInfoUseCase";
+import { IDisputeContentHandler } from "../../Interface/useCases/adminTemp/handlers/IDisputeContentHandler";
+import { IDisputeContentInfoUseCase } from "../../Interface/useCases/adminTemp/IDisputeContentInfoUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG, INVALID_TYPE } = Messages;

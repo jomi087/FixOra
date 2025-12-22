@@ -7,7 +7,7 @@ import { KYCStatus } from "../../../shared/enums/KYCstatus";
 import { Messages } from "../../../shared/const/Messages";
 import { RoleEnum } from "../../../shared/enums/Roles";
 import { UpdateKYCStatusInputDTO, UpdateKYCStatusOutputDTO } from "../../dtos/UpdateKYCStatusDTO";
-import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/admin/IUpdateKYCStatusUseCase";
+import { IUpdateKYCStatusUseCase } from "../../Interface/useCases/adminTemp/IUpdateKYCStatusUseCase";
 import { v4 as uuidv4 } from "uuid";
 import { AppError } from "../../../shared/errors/AppError";
 

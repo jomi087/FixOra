@@ -2,7 +2,7 @@ import { ICategoryRepository } from "../../../domain/interface/repositoryInterfa
 import { v4 as uuidv4 } from "uuid";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { ICreateServiceCategoryUseCase } from "../../Interface/useCases/admin/ICreateServiceCategoryUseCase";
+import { ICreateServiceCategoryUseCase } from "../../Interface/useCases/adminTemp/ICreateServiceCategoryUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 export interface SubcategoryInputDTO {

@@ -1,7 +1,7 @@
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/admin/IToggleCategoryStatusUseCase";
+import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/adminTemp/IToggleCategoryStatusUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;

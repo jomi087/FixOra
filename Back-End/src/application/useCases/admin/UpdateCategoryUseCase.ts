@@ -6,7 +6,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { UpdateCategoryInputDTO } from "../../dtos/CategoryDTO";
-import { IUpdateCategoryUseCase } from "../../Interface/useCases/admin/IUpdateCategoryUseCase";
+import { IUpdateCategoryUseCase } from "../../Interface/useCases/adminTemp/IUpdateCategoryUseCase";
 
 const { NOT_FOUND, CONFLICT } = HttpStatusCode;
 const { CATEGORY_ALREADY_EXISTS, NOT_FOUND_MSG } = Messages;
