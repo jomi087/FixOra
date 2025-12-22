@@ -5,7 +5,7 @@ import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 import { RoleEnum } from "../../../../shared/enums/Roles";
 import { SigninInputDTO } from "../../../dtos/AuthDTO/SigninDTO";
-import { AuthData, IAuthStrategy } from "../../../interfacetemp/strategies/auth/IAuthStrategy";
+import { AuthData, IAuthStrategy } from "../../../interface/strategies/auth/IAuthStrategy";
 import { AppError } from "../../../../shared/errors/AppError";
 
 const { FORBIDDEN } = HttpStatusCode;

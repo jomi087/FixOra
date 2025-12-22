@@ -5,8 +5,8 @@ import { DisputeType } from "../../../shared/enums/Dispute";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { DisputeActionInputDTO, DisputeActionOutputDTO } from "../../dtos/DisputeDTO";
-import { IDisputeActionHandler } from "../../interfacetemp/useCases/admin/handlers/IDisputeActionHandler";
-import { IDisputeActionUseCase } from "../../interfacetemp/useCases/admin/IDisputeActionUseCase";
+import { IDisputeActionHandler } from "../../interface/useCases/admin/handlers/IDisputeActionHandler";
+import { IDisputeActionUseCase } from "../../interface/useCases/admin/IDisputeActionUseCase";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG, INVALID_TYPE } = Messages;

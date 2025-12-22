@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { SelectedLocationInputDTO } from "../../dtos/EditProfileDTO";
-import { IUpdateSelectedLocationUseCase } from "../../interfacetemp/useCases/client/IUpdateSelectedLocationUseCase";
+import { IUpdateSelectedLocationUseCase } from "../../interface/useCases/client/IUpdateSelectedLocationUseCase";
 
 
 

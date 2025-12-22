@@ -2,7 +2,7 @@ import { IUserRepository } from "../../../../domain/interface/repositoryInterfac
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 
-import { ISignOutStrategy } from "../../../interfacetemp/strategies/auth/ISignOutStrategy";
+import { ISignOutStrategy } from "../../../interface/strategies/auth/ISignOutStrategy";
 import { SignOutDTO } from "../../../dtos/AuthDTO/SingOutDTO";
 import { AppError } from "../../../../shared/errors/AppError";
 

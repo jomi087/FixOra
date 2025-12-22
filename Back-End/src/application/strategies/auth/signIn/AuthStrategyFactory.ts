@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
 import { RoleEnum } from "../../../../shared/enums/Roles";
-import { IAuthStrategy } from "../../../interfacetemp/strategies/auth/IAuthStrategy";
+import { IAuthStrategy } from "../../../interface/strategies/auth/IAuthStrategy";
 import { AppError } from "../../../../shared/errors/AppError";
 
 

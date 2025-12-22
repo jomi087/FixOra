@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { IGetLandingDataUseCase } from "../../application/interfacetemp/useCases/public/IGetLandingDataUseCase";
+import { IGetLandingDataUseCase } from "../../application/interface/useCases/public/IGetLandingDataUseCase";
 import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
-import { IGetNotificationsUseCase } from "../../application/interfacetemp/useCases/public/IGetNotificationsUseCase";
+import { IGetNotificationsUseCase } from "../../application/interface/useCases/public/IGetNotificationsUseCase";
 import { Messages } from "../../shared/const/Messages";
-import { INotificationAcknowledgmentUseCase } from "../../application/interfacetemp/useCases/public/INotificationAcknowledgmentUseCase";
+import { INotificationAcknowledgmentUseCase } from "../../application/interface/useCases/public/INotificationAcknowledgmentUseCase";
 import { AppError } from "../../shared/errors/AppError";
 
 const { OK, UNAUTHORIZED, NOT_FOUND } = HttpStatusCode;

@@ -1,5 +1,5 @@
 import { IGeocodeService } from "../../../../domain/interface/serviceInterface/IGeocodeService";
-import { IReverseGeocodeUseCase } from "../../../interfacetemp/useCases/geocode/ola/IReverseGeocodeUseCase";
+import { IReverseGeocodeUseCase } from "../../../interface/useCases/geocode/ola/IReverseGeocodeUseCase";
 
 
 export class ReverseGeocodeUseCase implements IReverseGeocodeUseCase {

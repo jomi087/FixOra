@@ -3,7 +3,7 @@ import { Gender } from "../../../shared/enums/Gender";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ProviderInfoDTO, ProviderInfoInputDTO, ProviderInfoOutputDTO } from "../../dtos/ProviderInfoDTO";
-import { IProviderInfoUseCase } from "../../interfacetemp/useCases/client/IProviderInfoUseCase";
+import { IProviderInfoUseCase } from "../../interface/useCases/client/IProviderInfoUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;

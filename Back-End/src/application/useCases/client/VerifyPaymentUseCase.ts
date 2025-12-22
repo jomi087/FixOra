@@ -14,7 +14,7 @@ import { PaymentMode, PaymentStatus } from "../../../shared/enums/Payment";
 import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
 import { Messages } from "../../../shared/const/Messages";
 import { SendBookingConfirmedInput } from "../../dtos/NotificationDTO";
-import { IVerifyPaymentUseCase } from "../../interfacetemp/useCases/client/IVerifyPaymentUseCase";
+import { IVerifyPaymentUseCase } from "../../interface/useCases/client/IVerifyPaymentUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 

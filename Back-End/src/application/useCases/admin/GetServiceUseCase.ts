@@ -1,6 +1,6 @@
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
 import { GetServicesInputDTO, GetServicesOutputDTO } from "../../dtos/CategoryDTO";
-import { IGetServiceUseCase } from "../../interfacetemp/useCases/admin/IGetServiceUseCase";
+import { IGetServiceUseCase } from "../../interface/useCases/admin/IGetServiceUseCase";
 
 export class GetServiceUseCase implements IGetServiceUseCase {
     constructor(

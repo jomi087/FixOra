@@ -3,7 +3,7 @@ import { ITokenService } from "../../../domain/interface/serviceInterface/IToken
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { SigninInputDTO, SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";
-import { ISigninUseCase } from "../../interfacetemp/useCases/auth/ISigninUseCase";
+import { ISigninUseCase } from "../../interface/useCases/auth/ISigninUseCase";
 import { AuthStrategyFactory } from "../../strategies/auth/signIn/AuthStrategyFactory";
 import { AppError } from "../../../shared/errors/AppError";
 

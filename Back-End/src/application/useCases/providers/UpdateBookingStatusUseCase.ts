@@ -9,7 +9,7 @@ import { PaymentStatus } from "../../../shared/enums/Payment";
 import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
 import { Messages } from "../../../shared/const/Messages";
 import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../dtos/BookingDTO/UpdateBookingStatusDTO";
-import { IUpdateBookingStatusUseCase } from "../../interfacetemp/useCases/provider/IUpdateBookingStatusUseCase";
+import { IUpdateBookingStatusUseCase } from "../../interface/useCases/provider/IUpdateBookingStatusUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 

@@ -2,7 +2,7 @@ import { IUserRepository } from "../../../domain/interface/repositoryInterface/I
 import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IRefreshTokenUseCase } from "../../interfacetemp/useCases/auth/IRefreshTokenUseCase";
+import { IRefreshTokenUseCase } from "../../interface/useCases/auth/IRefreshTokenUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 

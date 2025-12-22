@@ -3,7 +3,7 @@ import { Messages } from "../../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../../shared/errors/AppError";
 import { DisputeContentOutput } from "../../../dtos/DisputeDTO";
-import { IDisputeContentHandler } from "../../../interfacetemp/useCases/admin/handlers/IDisputeContentHandler";
+import { IDisputeContentHandler } from "../../../interface/useCases/admin/handlers/IDisputeContentHandler";
 
 const { NOT_FOUND } = HttpStatusCode;
 const { NOT_FOUND_MSG, } = Messages;

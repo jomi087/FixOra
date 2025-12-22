@@ -3,7 +3,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { UpdateReviewInputDTO, UpdateReviewOutputDTO } from "../../dtos/ReviewDTO";
-import { IUpdateReviewUseCase } from "../../interfacetemp/useCases/client/IUpdateReviewUseCase";
+import { IUpdateReviewUseCase } from "../../interface/useCases/client/IUpdateReviewUseCase";
 
 
 const { NOT_FOUND } = HttpStatusCode;

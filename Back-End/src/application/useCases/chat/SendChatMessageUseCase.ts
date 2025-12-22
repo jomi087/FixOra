@@ -7,7 +7,7 @@ import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { SendChatMessageInputDTO } from "../../dtos/ChatDTO";
-import { ISendChatMessageUseCase } from "../../interfacetemp/useCases/chat/ISendChatMessageUseCase";
+import { ISendChatMessageUseCase } from "../../interface/useCases/chat/ISendChatMessageUseCase";
 
 
 const { NOT_FOUND, BAD_REQUEST } = HttpStatusCode;

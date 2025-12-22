@@ -2,7 +2,7 @@ import { IWalletRepository } from "../../../domain/interface/repositoryInterface
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { WalletDTO, WalletInputDTO, WalletOutputDTO } from "../../dtos/WalletDTO/walletDTO";
-import { IGetUserwalletInfoUseCase } from "../../interfacetemp/useCases/client/IGetUserwalletInfoUseCase";
+import { IGetUserwalletInfoUseCase } from "../../interface/useCases/client/IGetUserwalletInfoUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;
