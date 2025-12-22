@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { ITokenService } from "../../domain/interface/serviceInterface/ITokenService";
 import { IUserRepository } from "../../domain/interface/repositoryInterface/IUserRepository";
 import { User } from "../../domain/entities/UserEntity";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
-import { RoleEnum } from "../../shared/enums/Roles";
+import { RoleEnum } from "../../shared/enumss/Roles";
 
 const { UNAUTHORIZED } = HttpStatusCode;
 const { TOKEN_EXPIRED,INVALID_TOKEN,NOT_FOUND_MSG,UNAUTHORIZED_MSG,ACCOUNT_BLOCKED,FORBIDDEN_MSG } = Messages;

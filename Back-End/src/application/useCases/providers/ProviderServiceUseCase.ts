@@ -1,7 +1,7 @@
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
 import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
 import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { ShortCategoryOutputDTO } from "../../dtos/CategoryDTO";
 import { IProviderServiceUseCase } from "../../Interface/useCases/provider/IProviderServiceUseCase";

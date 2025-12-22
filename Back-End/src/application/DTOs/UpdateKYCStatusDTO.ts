@@ -1,4 +1,4 @@
-import { KYCStatus } from "../../shared/enums/KYCstatus";
+import { KYCStatus } from "../../shared/enumss/KYCstatus";
 
 export interface UpdateKYCStatusInputDTO {
   id: string;

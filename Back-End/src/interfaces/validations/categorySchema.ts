@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { z } from "zod";
 import { stringMinMax } from "./fields";

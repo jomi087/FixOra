@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { Provider } from "../../../domain/entities/ProviderEntity";
-import { Gender } from "../../../shared/enums/Gender";
+import { Gender } from "../../../shared/enumss/Gender";
 
 // Extend Document with Provider
 export interface IProviderModel extends Document, Provider {}

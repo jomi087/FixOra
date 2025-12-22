@@ -5,7 +5,7 @@ import { validateRequest } from "../middleware/validateRequest";
 import { forgotPasswordSchema, resetPasswordSchema, signinSchema, signupSchema } from "../validations/authSchema";
 
 import { authController, AuthMiddleware } from "../../main/dependencyInjector";
-import { RoleEnum } from "../../shared/enums/Roles";
+import { RoleEnum } from "../../shared/enumss/Roles";
 import { FcmSchema } from "../validations/FcmSchema";
 
 

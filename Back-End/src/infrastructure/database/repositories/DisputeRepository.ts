@@ -1,5 +1,5 @@
 import { PipelineStage } from "mongoose";
-import { DisputeStatus } from "../../../shared/enums/Dispute";
+import { DisputeStatus } from "../../../shared/enumss/Dispute";
 import { DisputeModel } from "../models/DisputeModel";
 
 import { Dispute } from "../../../domain/entities/DisputeEntity";

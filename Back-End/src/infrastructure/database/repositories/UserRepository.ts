@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../shared/enums/Roles";
+import { RoleEnum } from "../../../shared/enumss/Roles";
 import { User } from "../../../domain/entities/UserEntity";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import UserModel from "../models/UserModel";

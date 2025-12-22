@@ -1,4 +1,4 @@
-import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
+import { DisputeStatus, DisputeType } from "../../shared/enumss/Dispute";
 
 export interface Dispute {
     disputeId: string;

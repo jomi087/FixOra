@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { IToggleCategoryStatusUseCase } from "../../Interface/useCases/admin/IToggleCategoryStatusUseCase";
 import { AppError } from "../../../shared/errors/AppError";

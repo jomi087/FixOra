@@ -1,7 +1,7 @@
 
 import { Schema, model, Document } from "mongoose";
-import { DisputeStatus } from "../../../shared/enums/Dispute";
-import { DisputeType } from "../../../shared/enums/Dispute";
+import { DisputeStatus } from "../../../shared/enumss/Dispute";
+import { DisputeType } from "../../../shared/enumss/Dispute";
 
 export interface DisputeDocument extends Document {
     disputeId: string;

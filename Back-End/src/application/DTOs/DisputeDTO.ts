@@ -1,5 +1,5 @@
-import { DisputeStatus, DisputeType } from "../../shared/enums/Dispute";
-import { RoleEnum } from "../../shared/enums/Roles";
+import { DisputeStatus, DisputeType } from "../../shared/enumss/Dispute";
+import { RoleEnum } from "../../shared/enumss/Roles";
 import { PaginationOutputDTO } from "./Common/PaginationDTO";
 
 export interface DisputeInputDTO {

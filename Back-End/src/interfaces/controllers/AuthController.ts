@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 //api logic
 import { SignupDTO } from "../../application/dtos/AuthDTO/SignupDTO";
 import { SigninInputDTO } from "../../application/dtos/AuthDTO/SigninDTO";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { IVerifySignupOtpUseCase } from "../../application/Interface/useCases/auth/IVerifySignupOtpUseCase";
 import { IResendOtpUseCase } from "../../application/Interface/useCases/auth/IResendOtpUseCase";

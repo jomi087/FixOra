@@ -1,6 +1,6 @@
 import { ICategoryRepository } from "../../../domain/interface/repositoryInterface/ICategoryRepository";
 import { v4 as uuidv4 } from "uuid";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { ICreateServiceCategoryUseCase } from "../../Interface/useCases/admin/ICreateServiceCategoryUseCase";
 import { AppError } from "../../../shared/errors/AppError";

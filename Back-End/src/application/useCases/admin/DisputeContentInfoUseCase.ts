@@ -1,7 +1,7 @@
 import { IDisputeRepository } from "../../../domain/interface/repositoryInterface/IDisputeRepository";
 import { Messages } from "../../../shared/const/Messages";
-import { DisputeType } from "../../../shared/enums/Dispute";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { DisputeType } from "../../../shared/enumss/Dispute";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { DisputeContentOutput } from "../../dtos/DisputeDTO";
 import { IDisputeContentHandler } from "../../Interface/useCases/admin/handlers/IDisputeContentHandler";

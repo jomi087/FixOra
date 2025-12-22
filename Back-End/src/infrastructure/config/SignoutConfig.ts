@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../shared/enums/Roles";
+import { RoleEnum } from "../../shared/enumss/Roles";
 import { IUserRepository } from "../../domain/interface/repositoryInterface/IUserRepository";
 import { SignOutStrategyFactory } from "../../application/strategies/auth/signOut/SignOutStrategyFactory";
 import { CustomerSignOutStrategy } from "../../application/strategies/auth/signOut/CustomerSignOutStrategy";

@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { IEmailService } from "../../domain/interface/serviceInterface/IEmailService";
 import { AppError } from "../../shared/errors/AppError";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 
 export class EmailService implements IEmailService {

@@ -1,6 +1,6 @@
 import express from "express";
 import { AuthMiddleware, publicController } from "../../main/dependencyInjector";
-import { RoleEnum } from "../../shared/enums/Roles";
+import { RoleEnum } from "../../shared/enumss/Roles";
 
 const router = express.Router();
 router.get("/landing-data", publicController.getLandingData.bind(publicController));

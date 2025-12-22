@@ -1,5 +1,5 @@
 import { BRAND } from "../../../shared/const/constants";
-import { DisputeType } from "../../../shared/enums/Dispute";
+import { DisputeType } from "../../../shared/enumss/Dispute";
 
 interface DisputeReportEmailProps {
     disputeId: string;

@@ -3,7 +3,7 @@ import { ICategoryRepository } from "../../../domain/interface/repositoryInterfa
 import { IFileValidationService } from "../../../domain/interface/serviceInterface/IFileValidationService";
 import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
 import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { UpdateSubCategoryInputDTO } from "../../dtos/CategoryDTO";
 import { IUpdateSubCategoryUseCase } from "../../Interface/useCases/admin/IUpdateSubCategoryUseCase";

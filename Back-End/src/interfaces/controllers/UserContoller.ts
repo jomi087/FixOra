@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IVerifyPasswordUseCase } from "../../application/Interface/useCases/client/IVerifyPasswordUseCase";
 import validateFile from "../validations/fileValidation";
 import { IKYCRequestUseCase } from "../../application/Interface/useCases/client/IKYCRequestUseCase";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { IGetActiveProvidersUseCase } from "../../application/Interface/useCases/client/IGetActiveProvidersUseCase";
 import { IUpdateProfileUseCase } from "../../application/Interface/useCases/client/IUpdateProfileUseCase";
@@ -25,7 +25,7 @@ import { IReviewStatusUseCase } from "../../application/Interface/useCases/clien
 import { IGetProviderReviewsUseCase } from "../../application/Interface/useCases/client/IGetProviderReviewsUseCase";
 import { IUpdateReviewUseCase } from "../../application/Interface/useCases/client/IUpdateReviewUseCase";
 import { ICreateDisputeAndNotifyUseCase } from "../../application/Interface/useCases/client/ICreateDisputeAndNotifyUseCase";
-import { DisputeType } from "../../shared/enums/Dispute";
+import { DisputeType } from "../../shared/enumss/Dispute";
 import { IRescheduleBookingUseCase } from "../../application/Interface/useCases/client/IRescheduleBookingUseCase";
 import { IUpdateSelectedLocationUseCase } from "../../application/Interface/useCases/client/IUpdateSelectedLocationUseCase";
 import { IRequestEmailUpdateUseCase } from "../../application/Interface/useCases/client/IRequestEmailUpdateUseCase";

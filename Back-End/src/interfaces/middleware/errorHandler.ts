@@ -1,7 +1,7 @@
 
 import { Request, Response, NextFunction } from "express";
 import { ILoggerService } from "../../domain/interface/serviceInterface/ILoggerService";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../shared/const/Messages";
 import { AppError } from "../../shared/errors/AppError";
 

@@ -1,4 +1,4 @@
-import { RoleEnum } from "../../../shared/enums/Roles";
+import { RoleEnum } from "../../../shared/enumss/Roles";
 
 export interface SignOutDTO {
     userId: string;

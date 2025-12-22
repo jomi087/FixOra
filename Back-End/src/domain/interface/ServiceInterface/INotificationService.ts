@@ -1,6 +1,6 @@
-import { BookingStatus } from "../../../shared/enums/BookingStatus";
-import { NotificationType } from "../../../shared/enums/Notification";
-import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
+import { BookingStatus } from "../../../shared/enumss/BookingStatus";
+import { NotificationType } from "../../../shared/enumss/Notification";
+import { ProviderResponseStatus } from "../../../shared/enumss/ProviderResponse";
 
 export interface NotificationPayload {
     // notificationId: string;

@@ -3,10 +3,10 @@ import { IBookingRepository } from "../../../domain/interface/repositoryInterfac
 import { IBookingSchedulerService } from "../../../domain/interface/serviceInterface/IBookingSchedulerService";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
 import { PAYMENT_SESSION_TIMEOUT } from "../../../shared/const/constants";
-import { BookingStatus } from "../../../shared/enums/BookingStatus";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { PaymentStatus } from "../../../shared/enums/Payment";
-import { ProviderResponseStatus } from "../../../shared/enums/ProviderResponse";
+import { BookingStatus } from "../../../shared/enumss/BookingStatus";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { PaymentStatus } from "../../../shared/enumss/Payment";
+import { ProviderResponseStatus } from "../../../shared/enumss/ProviderResponse";
 import { Messages } from "../../../shared/const/Messages";
 import { UpdateBookingStatusInputDTO, UpdateBookingStatusOutputDTO } from "../../dtos/BookingDTO/UpdateBookingStatusDTO";
 import { IUpdateBookingStatusUseCase } from "../../Interface/useCases/provider/IUpdateBookingStatusUseCase";

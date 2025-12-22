@@ -1,7 +1,7 @@
 import { PipelineStage } from "mongoose";
 import { Provider } from "../../../domain/entities/ProviderEntity";
 import { IProviderRepository } from "../../../domain/interface/repositoryInterface/IProviderRepository";
-import { RoleEnum } from "../../../shared/enums/Roles";
+import { RoleEnum } from "../../../shared/enumss/Roles";
 import ProviderModel from "../models/ProviderModel";
 import { User } from "../../../domain/entities/UserEntity";
 import { Category } from "../../../domain/entities/CategoryEntity";

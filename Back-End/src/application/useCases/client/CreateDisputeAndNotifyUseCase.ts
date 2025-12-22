@@ -2,8 +2,8 @@ import { IDisputeRepository } from "../../../domain/interface/repositoryInterfac
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { IEmailService } from "../../../domain/interface/serviceInterface/IEmailService";
 import { Messages } from "../../../shared/const/Messages";
-import { DisputeStatus } from "../../../shared/enums/Dispute";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { DisputeStatus } from "../../../shared/enumss/Dispute";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { DisputeInputDTO } from "../../dtos/DisputeDTO";
 import { ICreateDisputeAndNotifyUseCase } from "../../Interface/useCases/client/ICreateDisputeAndNotifyUseCase";
 import { v4 as uuidv4 } from "uuid";

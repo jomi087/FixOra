@@ -2,8 +2,8 @@ import { Dispute } from "../../../../domain/entities/DisputeEntity";
 // import { ITransactionSession } from "../../../../domain/interface/databaseInterface/ITransactionManager";
 import { IRatingRepository } from "../../../../domain/interface/repositoryInterface/IRaitingRepository";
 import { Messages } from "../../../../shared/const/Messages";
-import { DisputeStatus } from "../../../../shared/enums/Dispute";
-import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
+import { DisputeStatus } from "../../../../shared/enumss/Dispute";
+import { HttpStatusCode } from "../../../../shared/enumss/HttpStatusCode";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDisputeActionHandler } from "../../../Interface/useCases/admin/handlers/IDisputeActionHandler";
 

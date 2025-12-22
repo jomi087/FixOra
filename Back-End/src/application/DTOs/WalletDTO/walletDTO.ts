@@ -1,4 +1,4 @@
-import { TransactionStatus, TransactionType } from "../../../shared/enums/Transaction";
+import { TransactionStatus, TransactionType } from "../../../shared/enumss/Transaction";
 import { PaginationInputDTO } from "../Common/PaginationDTO";
 
 export interface Transaction {

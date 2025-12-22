@@ -5,13 +5,13 @@ import { IKYCRequestRepository } from "../../../domain/interface/repositoryInter
 import { INotificationRepository } from "../../../domain/interface/repositoryInterface/INotificationRepository";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { INotificationService } from "../../../domain/interface/serviceInterface/INotificationService";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
-import { KYCStatus } from "../../../shared/enums/KYCstatus";
-import { RoleEnum } from "../../../shared/enums/Roles";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
+import { KYCStatus } from "../../../shared/enumss/KYCstatus";
+import { RoleEnum } from "../../../shared/enumss/Roles";
 import { Messages } from "../../../shared/const/Messages";
 import { KYCInputDTO } from "../../dtos/KYCDTO";
 import { IKYCRequestUseCase } from "../../Interface/useCases/client/IKYCRequestUseCase";
-import { NotificationType } from "../../../shared/enums/Notification";
+import { NotificationType } from "../../../shared/enumss/Notification";
 import { IImageUploaderService } from "../../../domain/interface/serviceInterface/IImageUploaderService";
 import { AppError } from "../../../shared/errors/AppError";
 

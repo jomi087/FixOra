@@ -2,7 +2,7 @@
 import { IOtpRepository } from "../../../domain/interface/repositoryInterface/IOtpRepository";
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { Messages } from "../../../shared/const/Messages";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { AppError } from "../../../shared/errors/AppError";
 import { EmailUpdateVerfifyOTPInputDTO } from "../../dtos/EditProfileDTO";
 import { IConfirmEmailUpdateUseCase } from "../../Interface/useCases/client/IConfirmEmailUpdateUseCase";

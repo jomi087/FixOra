@@ -1,4 +1,4 @@
-import { Gender } from "../../shared/enums/Gender";
+import { Gender } from "../../shared/enumss/Gender";
 
 export interface Provider {
   providerId: string;

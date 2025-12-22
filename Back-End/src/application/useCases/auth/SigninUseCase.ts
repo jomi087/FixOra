@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../../domain/interface/repositoryInterface/IUserRepository";
 import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
-import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
 import { SigninInputDTO, SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";
 import { ISigninUseCase } from "../../Interface/useCases/auth/ISigninUseCase";

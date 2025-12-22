@@ -3,7 +3,7 @@ import { Messages } from "../../shared/const/Messages";
 
 //implimented with zod was bit hard so validated with plain js
 import { Request, Response, NextFunction } from "express";
-import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../shared/enumss/HttpStatusCode";
 import { AppError } from "../../shared/errors/AppError";
 
 const { BAD_REQUEST } = HttpStatusCode;

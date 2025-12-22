@@ -1,9 +1,9 @@
 import { User } from "../../../../domain/entities/UserEntity";
 import { IUserRepository } from "../../../../domain/interface/repositoryInterface/IUserRepository";
 import { IHashService } from "../../../../domain/interface/serviceInterface/IHashService";
-import { HttpStatusCode } from "../../../../shared/enums/HttpStatusCode";
+import { HttpStatusCode } from "../../../../shared/enumss/HttpStatusCode";
 import { Messages } from "../../../../shared/const/Messages";
-import { RoleEnum } from "../../../../shared/enums/Roles";
+import { RoleEnum } from "../../../../shared/enumss/Roles";
 import { SigninInputDTO } from "../../../dtos/AuthDTO/SigninDTO";
 import { AuthData, IAuthStrategy } from "../../../Interface/strategies/auth/IAuthStrategy";
 import { AppError } from "../../../../shared/errors/AppError";
