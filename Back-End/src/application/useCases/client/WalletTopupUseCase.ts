@@ -1,7 +1,7 @@
 import { Messages } from "../../../shared/const/Messages";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { IPaymentService } from "../../../domain/interface/serviceInterface/IPaymentService";
-import { IWalletTopUpUseCase, WalletTopUpInput } from "../../Interface/useCases/client/IWalletTopUpUseCase";
+import { IWalletTopUpUseCase, WalletTopUpInput } from "../../Interface/useCases/clientTemp/IWalletTopUpUseCase";
 import { IWalletRepository } from "../../../domain/interface/repositoryInterface/IWalletRepository";
 import { AppError } from "../../../shared/errors/AppError";
 

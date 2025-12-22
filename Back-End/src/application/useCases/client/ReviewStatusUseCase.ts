@@ -1,5 +1,5 @@
 import { IRatingRepository } from "../../../domain/interface/repositoryInterface/IRaitingRepository";
-import { IReviewStatusUseCase } from "../../Interface/useCases/client/IReviewStatusUseCase";
+import { IReviewStatusUseCase } from "../../Interface/useCases/clientTemp/IReviewStatusUseCase";
 
 
 export class ReviewStatusUseCase implements IReviewStatusUseCase {
