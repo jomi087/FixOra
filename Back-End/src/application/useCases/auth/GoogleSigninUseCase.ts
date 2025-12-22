@@ -5,7 +5,7 @@ import { GoogleOAuthService } from "../../../infrastructure/services/GoogleOAuth
 import { ITokenService } from "../../../domain/interface/serviceInterface/ITokenService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IGoogleSigninUseCase } from "../../Interface/useCases/auth/IGoogleSigninUseCase";
+import { IGoogleSigninUseCase } from "../../Interface/useCases/authTemp/IGoogleSigninUseCase";
 import { SignInOutputDTO } from "../../dtos/AuthDTO/SigninDTO";
 import { AppError } from "../../../shared/errors/AppError";
 

@@ -3,7 +3,7 @@ import { IUserRepository } from "../../../domain/interface/repositoryInterface/I
 import { IHashService } from "../../../domain/interface/serviceInterface/IHashService";
 import { HttpStatusCode } from "../../../shared/enums/HttpStatusCode";
 import { Messages } from "../../../shared/const/Messages";
-import { IResetPasswordUseCase } from "../../Interface/useCases/auth/IResetPasswordUseCase";
+import { IResetPasswordUseCase } from "../../Interface/useCases/authTemp/IResetPasswordUseCase";
 import { AppError } from "../../../shared/errors/AppError";
 
 const { NOT_FOUND } = HttpStatusCode;
