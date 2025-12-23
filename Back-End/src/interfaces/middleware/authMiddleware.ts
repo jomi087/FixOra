@@ -48,7 +48,7 @@ export class AuthMiddleware {  //verify Jwt
                 const options = {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
-                    sameSite: "none" as const
+                    sameSite: "lax" as const
                 };
 
                 if (user.isBlocked) {

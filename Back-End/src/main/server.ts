@@ -71,6 +71,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 /**********************************************************************************************
  * ROUTES
 **********************************************************************************************/
+
 app.use("/api", publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/customer", userRoutes);
@@ -86,7 +87,7 @@ initializeSocket(server, logger);
 logger.info("Socket.IO initialized");
 
 server.listen(port, () => {
-    logger.info(`Server is started running in http://localhost:${port}`);
+    console.info(`Server is started running in ${port}, Mode: ${process.env.NODE_ENV === "production" ? "Production" : "Development"}`);
 });
 
 /**********************************************************************************************

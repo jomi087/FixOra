@@ -48,7 +48,7 @@ export class AuthController {
             res.cookie("tempToken", tempToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
-                sameSite: "none",
+                sameSite: "lax",
                 maxAge: 10 * 60 * 1000 // temp token  for 10 mints  
             });
 
@@ -122,13 +122,13 @@ export class AuthController {
                 .cookie("accessToken", result.accessToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
-                    sameSite: "none",
+                    sameSite: "lax",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
                 .cookie("refreshToken", result.refreshToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
-                    sameSite: "none",
+                    sameSite: "lax",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
                 .json({
@@ -151,14 +151,14 @@ export class AuthController {
                 .status(OK)
                 .cookie("accessToken", result.accessToken, {
                     httpOnly: true,
-                    secure: true, //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
-                    sameSite: "none",
+                    secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+                    sameSite: "lax",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
                 .cookie("refreshToken", result.refreshToken, {
                     httpOnly: true,
-                    secure: true, //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
-                    sameSite: "none",
+                    secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
+                    sameSite: "lax",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
                 .json({
@@ -252,7 +252,7 @@ export class AuthController {
             const cookieOptions = {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "none" as const,
+                sameSite: "lax" as const,
             };
 
             res.cookie("accessToken", accessToken, {
@@ -275,7 +275,7 @@ export class AuthController {
             const cookieOptions = {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "none" as const,
+                sameSite: "lax" as const,
             };
 
             res.clearCookie("accessToken", cookieOptions);
@@ -298,7 +298,7 @@ export class AuthController {
             const options = {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "none" as const
+                sameSite: "lax" as const
             };
 
             res.status(OK)
