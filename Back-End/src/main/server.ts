@@ -1,12 +1,3 @@
-process.on("unhandledRejection", (reason) => {
-    console.error("Unhandled Rejection", reason);
-    process.exit(1);
-});
-
-process.on("uncaughtException", (err) => {
-    console.error("Uncaught Exception", err);
-    process.exit(1);
-});
 /**********************************************************************************************
  * MODULE IMPORTS & INITIALIZATION
  **********************************************************************************************/
@@ -93,7 +84,15 @@ server.listen(port, () => {
 /**********************************************************************************************
  * GLOBAL ERROR HANDLERS — Catch unhandled exceptions/rejections early
  **********************************************************************************************/
+// process.on("unhandledRejection", (reason) => {
+//     console.error("Unhandled Rejection", reason);
+//     process.exit(1);
+// });
 
+// process.on("uncaughtException", (err) => {
+//     console.error("Uncaught Exception", err);
+//     process.exit(1);
+// });
 
 //instead of morgan tiny we can create a our manaul api logger and connect with winston logger
 // app.use((req, res, next) => {

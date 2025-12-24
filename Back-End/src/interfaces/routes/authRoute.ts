@@ -7,23 +7,24 @@ import { forgotPasswordSchema, resetPasswordSchema, signinSchema, signupSchema }
 import { authController, AuthMiddleware } from "../../main/dependencyInjector";
 import { RoleEnum } from "../../shared/enums/Roles";
 import { fcmSchema } from "../validations/fcmTokenSchema";
+import { mediumRateLimit, strictRateLimit } from "../../infrastructure/security/rateLimiters";
 
 
-router.post("/signup", validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next));
-router.post("/verify-otp", (req, res, next) => authController.verifySignupAc(req, res, next));
-router.post("/resend-otp", (req, res, next) => authController.resendOtp(req, res, next));
+router.post("/signup", strictRateLimit, validateRequest(signupSchema), (req, res,next) => authController.signup(req, res, next));
+router.post("/verify-otp", strictRateLimit, (req, res, next) => authController.verifySignupAc(req, res, next));
+router.post("/resend-otp", strictRateLimit, (req, res, next) => authController.resendOtp(req, res, next));
 
-router.post("/signin", validateRequest(signinSchema), (req, res, next) => authController.signin(req, res, next));
+router.post("/signin", strictRateLimit, validateRequest(signinSchema), (req, res, next) => authController.signin(req, res, next));
 
-router.post("/google-signin", (req, res, next) => authController.googleSignin(req, res, next));
-router.post("/forgot-password", validateRequest(forgotPasswordSchema), (req, res, next)=> authController.forgotPassword(req, res, next));
-router.patch("/reset-password", validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next));
+router.post("/google-signin", strictRateLimit, (req, res, next) => authController.googleSignin(req, res, next));
+router.post("/forgot-password", strictRateLimit, validateRequest(forgotPasswordSchema), (req, res, next)=> authController.forgotPassword(req, res, next));
+router.patch("/reset-password", strictRateLimit, validateRequest(resetPasswordSchema), (req, res, next)=> authController.resetPassword(req, res, next));
 
 router.post("/register-fcm-token", validateRequest(fcmSchema), AuthMiddleware([RoleEnum.Provider]), (req, res, next) => authController.registerFcmToken(req, res, next));
 
-router.get("/check", AuthMiddleware(), (req, res, next) => authController.checkAuth(req, res, next));
-router.post("/refresh-token", (req, res, next) => authController.refreshToken(req, res, next));
-router.post("/signout", AuthMiddleware(), (req,res,next)=> authController.signout(req, res, next));
+router.get("/check", mediumRateLimit, AuthMiddleware(), (req, res, next) => authController.checkAuth(req, res, next));
+router.post("/refresh-token", strictRateLimit, (req, res, next) => authController.refreshToken(req, res, next));
+router.post("/signout", mediumRateLimit, AuthMiddleware(), (req,res,next)=> authController.signout(req, res, next));
 
 export default router;
 
