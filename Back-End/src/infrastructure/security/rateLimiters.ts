@@ -1,5 +1,8 @@
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import { Request, Response, NextFunction } from "express";
+import { HttpStatusCode } from "../../shared/enums/HttpStatusCode";
+import { AppError } from "../../shared/errors/AppError";
+const { TOO_MANY_REQUESTS } = HttpStatusCode;
 
 /* SOFT — browsing, search, lists*/
 const softLimiter = new RateLimiterMemory({
@@ -20,7 +23,7 @@ const strictLimiter = new RateLimiterMemory({
 });
 
 const chatSendLimiter = new RateLimiterMemory({
-    points: 30,    
+    points: 30,
     duration: 60,  // per minute
 });
 
@@ -34,10 +37,12 @@ function rateLimitMiddleware(limiter: RateLimiterMemory) {
             await limiter.consume(key);
             next();
         } catch {
-            res.status(429).json({
-                success: false,
-                message: "Too many requests. Please try again later.",
-            });
+            let error = new AppError(
+                TOO_MANY_REQUESTS,
+                "Too many requests. Please try again later.",
+                "Rate limit exceeded"
+            );
+            next(error);
         }
     };
 }
