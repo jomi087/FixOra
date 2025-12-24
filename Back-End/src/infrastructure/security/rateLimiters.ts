@@ -18,7 +18,7 @@ const mediumLimiter = new RateLimiterMemory({
 
 /* STRICT — auth, OTP, payments */
 const strictLimiter = new RateLimiterMemory({
-    points: 5,
+    points: 10,
     duration: 10 * 60,
 });
 
