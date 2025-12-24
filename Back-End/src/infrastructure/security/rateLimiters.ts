@@ -19,7 +19,7 @@ const mediumLimiter = new RateLimiterMemory({
 /* STRICT — auth, OTP, payments */
 const strictLimiter = new RateLimiterMemory({
     points: 10,
-    duration: 10 * 60,
+    duration: 5 * 60,
 });
 
 const chatSendLimiter = new RateLimiterMemory({
