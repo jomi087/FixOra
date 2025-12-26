@@ -84,8 +84,11 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
 
             const dayName = DAYS[rescheduledAt.getDay()];
 
-            const hours = rescheduledAt.getHours().toString().padStart(2, "0");
-            const minutes = rescheduledAt.getMinutes().toString().padStart(2, "0");
+            const localRescheduleDate = new Date(
+                rescheduledAt.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+            );
+            const hours = localRescheduleDate.getHours().toString().padStart(2, "0");
+            const minutes = localRescheduleDate.getMinutes().toString().padStart(2, "0");
             const timeStr = `${hours}:${minutes}`;
 
             const daySchedule = availability.workTime.find(d => d.day === dayName && d.active);
@@ -95,7 +98,7 @@ export class RescheduleBookingUseCase implements IRescheduleBookingUseCase {
             if (!daySchedule.slots.includes(timeStr)) throw new AppError(UNPROCESSABLE_ENTITY, TIME_OUTSIDE_PROVIDER_WORKING_HOURS);
 
             const rescheduledBookingData = await this._bookingRepository.updateScheduleDateandTime(input.bookingId, rescheduledAt);
-            if (!rescheduledBookingData)  throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Bookng"));
+            if (!rescheduledBookingData) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Bookng"));
 
 
             await this.sendBookingConfirmedNotification({
