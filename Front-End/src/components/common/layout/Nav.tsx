@@ -62,6 +62,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
         }, 500);
       }
     } catch (err) {
+      console.log("err",err);
       const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
       toast.error(errorMsg);
