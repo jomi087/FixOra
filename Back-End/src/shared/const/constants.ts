@@ -5,7 +5,7 @@ export const BRAND = {
 };
 
 export const BodyParserLimits = {
-    JSON_LIMIT: "1mb",
+    JSON_LIMIT: "5mb",
     URLENCODED_LIMIT: "1mb",
 };
 

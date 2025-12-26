@@ -5,9 +5,12 @@
       "destination": "/firebase-messaging-sw.js"
     },
     {
+      "source": "/assets/(.*)",
+      "destination": "/assets/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
   ]
 }
- 

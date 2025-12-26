@@ -64,6 +64,7 @@ export const Messages = {
   FAILED_PASSWORD_VERIFICATION: "Password verification Failed",
   KYC_SUBMITTED_SUCCESS: "KYC submitted successfully!",
   FAILED_TO_SUBMIT_KYC: "Failed to submit KYC",
+  FAILED_TO_SUBMIT_DATA: "Failed to submit Data",
   PROFILE_MODIFICATION_FAILED: "Profile modification failed",
   LOGIN_FAILED: "Login failed. Please try again later",
   FAILED_FETCH_POSTAL_INFO: "Failed to fetch postal info. Please try again later",

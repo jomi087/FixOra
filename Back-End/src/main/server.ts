@@ -55,7 +55,7 @@ app.use("/api", rawRoutes); //instead of parsing buffer to json we are passing a
 app.use(cookieParser());
 app.use(morgan("tiny", { stream }));
 app.use(cors(corsOptions));
-app.use(express.json({ limit: BodyParserLimits.JSON_LIMIT }));//Your server will only accept JSON request bodies up to 1 mB in size
+app.use(express.json({ limit: BodyParserLimits.JSON_LIMIT }));//Your server will only accept JSON request bodies up to 5 mB in size
 app.use(express.urlencoded({ extended: true, limit: BodyParserLimits.URLENCODED_LIMIT }));
 app.use(express.static(path.join(__dirname, "../public")));
 

@@ -94,7 +94,7 @@ const UploadWorkProofDialog: React.FC<UploadWorkProofDialogProps> = ({ bookingId
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       const errorMsg =
-        error?.response?.data?.message || Messages.FAILED_TO_SUBMIT_KYC;
+        error?.response?.data?.message || Messages.FAILED_TO_SUBMIT_DATA;
       toast.error(errorMsg);
     } finally {
       setLoading(false);
