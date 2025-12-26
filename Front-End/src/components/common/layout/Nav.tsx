@@ -48,7 +48,6 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
         fcmToken = localStorage.getItem("fcm_token") || (await generateToken());
       }
       const res = await AuthService.signoutApi(fcmToken);
-      console.log("res",res);
       if (res.status === HttpStatusCode.OK) {
         if (user?.role == RoleEnum.PROVIDER) {
           localStorage.removeItem("fcm_token");
@@ -62,7 +61,6 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
         }, 500);
       }
     } catch (err) {
-      console.log("err",err);
       const error = err as AxiosError<{ message: string }>;
       const errorMsg = error?.response?.data?.message || Messages.LOGIN_FAILED;
       toast.error(errorMsg);
