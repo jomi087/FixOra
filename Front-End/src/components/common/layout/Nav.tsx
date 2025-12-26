@@ -48,7 +48,7 @@ const Nav: React.FC<NavProps> = ({ className = "" }) => {
         fcmToken = localStorage.getItem("fcm_token") || (await generateToken());
       }
       const res = await AuthService.signoutApi(fcmToken);
-
+      console.log("res",res);
       if (res.status === HttpStatusCode.OK) {
         if (user?.role == RoleEnum.PROVIDER) {
           localStorage.removeItem("fcm_token");
