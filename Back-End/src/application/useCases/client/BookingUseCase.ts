@@ -78,7 +78,6 @@ export class BookingUseCase implements IBookingUseCase {
     async execute(input: CreateBookingApplicationInputDTO): Promise<CreateBookingApplicationOutputDTO> {
         try {
             const scheduledAt: Date = new Date(input.scheduledAt);
-            console.log("scheduleAt", scheduledAt);
             let CheckExistingNoRejectedBooking = await this._bookingRepository.findExistingBooking(input.providerId, scheduledAt);
 
             if (CheckExistingNoRejectedBooking && (CheckExistingNoRejectedBooking.provider.response === ProviderResponseStatus.ACCEPTED)) {
@@ -90,7 +89,6 @@ export class BookingUseCase implements IBookingUseCase {
             let availability = await this._availabilityRepository.getProviderAvialability(input.providerId);
             if (!availability) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Availability"));
 
-            console.log("availability", availability);
 
             const dayName = DAYS[scheduledAt.getDay()];
 
@@ -100,13 +98,11 @@ export class BookingUseCase implements IBookingUseCase {
             const hours = localDate.getHours().toString().padStart(2, "0");
             const minutes = localDate.getMinutes().toString().padStart(2, "0");
             const timeStr = `${hours}:${minutes}`;
-            console.log("timerStr", timeStr);
 
 
             const daySchedule = availability.workTime.find(d => d.day === dayName && d.active);
             if (!daySchedule)
                 throw new AppError(CONFLICT, PROVIDER_UNAVAILABLE_FOR_SELECTED_DAY);
-            console.log("daySchedule", daySchedule);
 
             if (!daySchedule.slots.includes(timeStr)) throw new AppError(UNPROCESSABLE_ENTITY, TIME_OUTSIDE_PROVIDER_WORKING_HOURS);
 
