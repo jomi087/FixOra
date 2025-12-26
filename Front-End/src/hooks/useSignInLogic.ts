@@ -7,33 +7,18 @@ import { Messages } from "@/utils/constant";
 import { validateEmail, validatePassword } from "@/utils/validation/formValidation";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fetchNotifications } from "@/store/common/notificationSlice";
 import type { AxiosError } from "axios";
 
 export const useSignInLogic = () => {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const { role } = useParams();
   const dispatch = useAppDispatch();
 
   const isValidRole = Object.values(RoleEnum).includes(role as RoleEnum);
   const userRole: RoleEnum = isValidRole ? (role as RoleEnum) : RoleEnum.CUSTOMER;
-
-  const navigateByRole = (userRole: RoleEnum) => {
-    switch (userRole) {
-    case RoleEnum.CUSTOMER:
-      navigate("/");
-      break;
-    case RoleEnum.PROVIDER:
-      navigate("/provider/dashboard");
-      break;
-    case RoleEnum.ADMIN:
-      navigate("/admin/dashboard");
-      break;
-    }
-  };
 
   const handleLogin = async (email: string, password: string) => {
 
@@ -59,7 +44,6 @@ export const useSignInLogic = () => {
         const { userData } = res.data;
         dispatch(Userinfo({ user: userData }));
         dispatch(fetchNotifications());
-        //navigateByRole(userData.role);
       }
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -97,8 +81,6 @@ export const useSignInLogic = () => {
             const { userData } = res.data;
             dispatch(Userinfo({ user: userData }));
             toast.success(res.data.message || Messages.SIGNIN_SUCCESS);
-
-            navigateByRole(userData.role);
           }
 
         } catch (err) {

@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { slugify } from "@/utils/helper/utils";
 import { useAppSelector } from "@/store/hooks";
 import { RoleEnum } from "@/shared/enums/Role";
-import { toast } from "react-toastify";
 
 
 interface learMoreProps {
@@ -28,8 +27,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
   const navigate = useNavigate();
   const handleServices = (section: string) => {
     if (!isAuthenticated) {
-      toast.info("Sign-In Required");
-      navigate(`/signIn/${RoleEnum.CUSTOMER}`);
+      navigate(`/signIn/${RoleEnum.CUSTOMER}`, { state: { from: `/customer/services#${slugify(section)}` } });
     } else {
       navigate(`/customer/services#${slugify(section)}`);
     }
@@ -48,14 +46,13 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
         </p>
 
         {/* Service Slider */}
-        {user && user.role == RoleEnum.CUSTOMER && (
+        {(!user || user.role === RoleEnum.CUSTOMER) && (
           <div className="">
             <h3 className="text-xl font-medium text-center underline pt-10 pb-5" >
               SERVICES PROVIDED
             </h3>
             <p className="text-center text-sm sm:text-lg font-mono font-medium md:w-3/4 mx-auto pb-5" id="service_Provided">
-              We currently offer a wide range of home repair services, including appliance servicing, electrical fixes, and plumbing solutions. Our platform is constantly evolving — new and specialized services will be added regularly to meet your needs more effectively.
-            </p>
+              Complete home care, evolving with you. We are dedicated to providing seamless repair solutions while continuously adding new ways to keep your home running perfectly.            </p>
             {!isPending && categories.length != 0 &&
               <Swiper
                 modules={[Pagination, Navigation, Autoplay]}
