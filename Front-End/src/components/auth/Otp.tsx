@@ -13,6 +13,13 @@ const Otp: React.FC<otpProps> = ({ otpTime, otpLength, otpSubmit, resendOtp }) =
   const [otp, setOtp] = useState(new Array(otpLength).fill(""));
   const [timer, setTimer] = useState(otpTime);
 
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  };
+
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
     const value = e.target.value;
     if (!/^[0-9]?$/.test(value)) return;
@@ -62,12 +69,18 @@ const Otp: React.FC<otpProps> = ({ otpTime, otpLength, otpSubmit, resendOtp }) =
   const isOtpComplete = otp.every((digit) => digit !== "");
 
   useEffect(() => {
-    if (timer === 0) return;
     const interval = setInterval(() => {
-      setTimer((prev) => prev - 1);
+      setTimer(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
+
     return () => clearInterval(interval);
-  }, [timer]);
+  }, []);
 
   return (
     <>
@@ -101,14 +114,20 @@ const Otp: React.FC<otpProps> = ({ otpTime, otpLength, otpSubmit, resendOtp }) =
                 </div> */}
 
         <div className="flex justify-between items-center gap-4">
-          <button
-            type='button'
-            className={`flex items-center gap-1 text-sm  ${timer > 0 ? "text-gray-300" : "text-blue-600  hover:underline cursor-pointer"}`} disabled={timer > 0}
-            onClick={() => { handleResendOtp(); }}
-          >
-            <BiRefresh className="text-lg" />
-            Resend OTP
-          </button>
+          {timer <= 0 ? (
+            <button
+              type='button'
+              className={"flex items-center gap-1 text-sm text-blue-600  hover:underline cursor-pointer"}
+              onClick={() => { handleResendOtp(); }}
+            >
+              <BiRefresh className="text-lg" />
+              Resend OTP
+            </button>
+          ) : (
+            <p className="font-roboto font-medium underline underline-offset-4 ">
+              {formatTime(timer)}
+            </p>
+          )}
 
           <button
             type='button'
@@ -122,7 +141,6 @@ const Otp: React.FC<otpProps> = ({ otpTime, otpLength, otpSubmit, resendOtp }) =
         </div>
       </div>
       {/* otp component  finish */}
-
     </>
   );
 };
