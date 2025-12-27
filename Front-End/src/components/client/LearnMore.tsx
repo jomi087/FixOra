@@ -60,6 +60,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
               <Swiper
                 modules={[Pagination, Navigation, Autoplay]}
                 loop={canLoopServices}
+                slidesPerGroup={1}
                 autoplay={
                   canLoopServices
                     ? { delay: 3000, disableOnInteraction: false }
@@ -72,7 +73,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
                     spaceBetween: 15,
                   },
                   700: {
-                    slidesPerView: categories.length < 4 ? categories.length : 4,
+                    slidesPerView: Math.min(categories.length, 4),
                     spaceBetween: 20,
                   },
                 }}
@@ -117,6 +118,8 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
                 <Swiper
                   modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
                   pagination={{ clickable: true }} // Enable clickable pagination
+                  slidesPerView={1}
+                  slidesPerGroup={1}
                   loop={canLoopProviders}
                   autoplay={
                     canLoopProviders
@@ -147,7 +150,7 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
         </div>
 
       </div>
-    </section>
+    </section >
   );
 
 };
