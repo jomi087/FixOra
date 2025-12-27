@@ -32,6 +32,9 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
       navigate(`/customer/services#${slugify(section)}`);
     }
   };
+  const canLoopProviders = providers.length > 1;
+  const canLoopServices = categories.length > 4;
+
   return (
     <section id="learnMore" className={"py-10"} aria-label={`Information about ${App_Name} services and providers`} >
       <div className="container mx-auto px-4">
@@ -56,11 +59,12 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
             {!isPending && categories.length != 0 &&
               <Swiper
                 modules={[Pagination, Navigation, Autoplay]}
-                loop={true}
-                autoplay={{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                }}
+                loop={canLoopServices}
+                autoplay={
+                  canLoopServices
+                    ? { delay: 3000, disableOnInteraction: false }
+                    : false
+                }
                 speed={5000} // Smooth transition duration in milliseconds
                 breakpoints={{
                   340: {
@@ -113,11 +117,12 @@ const LearnMore: React.FC<learMoreProps> = ({ categories, providers, isPending }
                 <Swiper
                   modules={[Pagination, Navigation, Autoplay]} // Add Pagination module
                   pagination={{ clickable: true }} // Enable clickable pagination
-                  loop={true}
-                  autoplay={{
-                    delay: 3000,
-                    disableOnInteraction: false,
-                  }}
+                  loop={canLoopProviders}
+                  autoplay={
+                    canLoopProviders
+                      ? { delay: 3000, disableOnInteraction: false }
+                      : false
+                  }
                   aria-label="Certified service providers slider"
                 >
                   {providers.map((provider) => (
