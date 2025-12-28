@@ -6,6 +6,7 @@ import walletInfoReducer from "./common/walletSlice";
 import categoryReducer from "./user/categorySlice";
 import filterReducer from "./user/filterSlice";
 import providerInfoReducer from "./user/providerInfoSlice";
+import bookingCacheReducer from "./user/bookingCacheSlice";
 import providerBookingReducer from "./provider/bookingSlice";
 import providerBookingRequestReducer from "./provider/bookingRequestSlice";
 import availabilityReducer from "./provider/availabilitySlice";
@@ -19,6 +20,7 @@ const appStore = configureStore({
     category: categoryReducer,
     filter: filterReducer,
     providerInfo: providerInfoReducer,
+    bookingCache: bookingCacheReducer,
 
     providerBookingInfo: providerBookingReducer,
     providerBookingRequest: providerBookingRequestReducer,

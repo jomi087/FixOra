@@ -17,7 +17,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { HttpStatusCode } from "@/shared/enums/HttpStatusCode";
 import { BookingStatus } from "@/shared/enums/BookingStatus";
 import { NotificationType } from "@/shared/enums/NotificationType";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Diagnosed from "@/components/common/other/Diagnosed";
 import CancelDialoge from "./dialoge/CancelDialoge";
 import { InvoicePDF } from "./invoice/InvoicePDF";
@@ -25,10 +25,14 @@ import { pdf } from "@react-pdf/renderer";
 import axios from "axios";
 import Feedback from "./Feedback";
 import BookingSlots from "@/components/client/providersSection/providerInfo/BookingSlots";
+import { cacheBookingDetails } from "@/store/user/bookingCacheSlice";
+
 
 const BookingDetails = () => {
   const { bookingId } = useParams();
-
+  const dispatch = useAppDispatch();
+  const cachedBooking = useAppSelector((state) => bookingId ? state.bookingCache.details[bookingId] : null);
+  
   const [bookingInDetails, setBookingInDetails] = useState<BookingInfoDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showModePayment, setShowModePayment] = useState(false);
@@ -40,14 +44,25 @@ const BookingDetails = () => {
   const [hasUserReviewed, setHasUserReviewed] = useState<boolean | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-
   //fetch Booking
   useEffect(() => {
     const fetchBooking = async () => {
       if (!bookingId) return;
+
+      if (cachedBooking) {
+        setBookingInDetails(cachedBooking);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const res = await AuthService.bookingDetailsApi(bookingId);
         setBookingInDetails(res.data.bookingDetailsData);
+        const status: BookingStatus = res.data.bookingDetailsData.status;
+        if (status === BookingStatus.COMPLETED) {
+          dispatch(cacheBookingDetails({ bookingId, details: res.data.bookingDetailsData }));
+        }
+
       } catch (error) {
         const err = error as AxiosError<{ message: string }>;
         const errorMsg =
