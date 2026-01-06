@@ -47,6 +47,8 @@ import ServiceManagement from "../pages/admin/ServiceManagement";
 import DisputePage from "@/pages/admin/DisputePage.tsx";
 import DisputeInfoPage from "@/pages/admin/DisputeInfoPage.tsx";
 import SettingsPage from "@/pages/admin/SettingsPage.tsx";
+import ProviderBlogPage from "@/pages/provider/BlogPage.tsx";
+import BlogPage from "@/pages/client/BlogPage.tsx";
 const AdminProfilePage = lazy(() => import("@/pages/admin/ProfilePage"));
 const CommissionFeePage = lazy(() => import("@/pages/admin/CommissionFeePage"));
 
@@ -119,6 +121,7 @@ const router = createBrowserRouter([
       { path: "provider-KYC", element: <VerifictionFormPage /> },
       { path: "providers/provider-booking/:providerId", element: <ProviderBookingPage /> },
       { path: "providers/provider-booking/payment/:bookingId", element: <Suspense fallback={<PageLoader />}><PaymentPage /></Suspense> },
+      { path: "blogs", element: <BlogPage/> },
       { path: "account/profile", element: <Suspense fallback={<PageLoader />}><ClientProfilePage /></Suspense> },
       { path: "change-password", element: <Suspense fallback={<PageLoader />}><ChangePasswordPage /></Suspense> },
       { path: "account/bookings", element: <BookingHistoryPage /> },
@@ -142,6 +145,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <ProviderDashboardPage /> },
       { path: "chats", element: <Suspense fallback={<PageLoader />}><ProviderChatPage /></Suspense> },
       { path: "wallet", element: <ProviderWalletPage /> },
+      { path: "blogs", element: <ProviderBlogPage /> },
       { path: "booking-history", element: <JobHistoryPage /> },
       { path: "booking-details/:bookingId", element: <JobDetailsPage /> },
       { path: "settings/profile", element: <ProviderProfilePage /> },

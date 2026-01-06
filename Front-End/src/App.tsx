@@ -26,7 +26,6 @@ function App() {
         )}
         <AuthCheck onComplete={() => setAuthChecked(true)} />
       </Provider>
-
     </>
   );
 }

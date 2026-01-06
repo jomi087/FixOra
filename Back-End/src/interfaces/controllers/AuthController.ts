@@ -156,14 +156,14 @@ export class AuthController {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
                     sameSite: "lax",
-                    domain: ".fxora.shop",
+                    // domain: ".fxora.shop",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
                 .cookie("refreshToken", result.refreshToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
                     sameSite: "lax",
-                    domain: ".fxora.shop",
+                    // domain: ".fxora.shop",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
                 })
                 .json({
@@ -258,7 +258,7 @@ export class AuthController {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "lax" as const,
-                domain: ".fxora.shop",
+                // domain: ".fxora.shop",
             };
 
             res.cookie("accessToken", accessToken, {
@@ -282,7 +282,7 @@ export class AuthController {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "lax" as const,
-                domain: ".fxora.shop",
+                // domain: ".fxora.shop",
             };
 
             res.clearCookie("accessToken", cookieOptions);
@@ -306,7 +306,7 @@ export class AuthController {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "lax" as const,
-                domain: ".fxora.shop",
+                // domain: ".fxora.shop",
             };
 
             res.status(OK)

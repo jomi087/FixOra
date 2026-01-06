@@ -14,7 +14,6 @@ export const validateRequest = (schema: ZodType<any>, location: Location = "body
             res.status(HttpStatusCode.BAD_REQUEST).json({ success: false, message: errorMessages[0].split(":")[0] || errorMessages[0] || errorMessages || Messages.VALIDATION_FAILED });
             return;
         };
-
         Object.assign(req[location], result.data);
         next();
     };

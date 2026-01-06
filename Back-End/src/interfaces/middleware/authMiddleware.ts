@@ -49,7 +49,7 @@ export class AuthMiddleware {  //verify Jwt
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
                     sameSite: "lax" as const,
-                    domain: ".fxora.shop",
+                    // domain: ".fxora.shop",
                 };
 
                 if (user.isBlocked) {

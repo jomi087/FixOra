@@ -159,7 +159,7 @@ export class ProviderController {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production", //now its false //later while converting it to http to https we have to make it true , so this will not allow the cookie to be sent over http ,currently it will alowed in both http and https  
                 sameSite: "lax",
-                domain: ".fxora.shop",
+                // domain: ".fxora.shop",
                 maxAge: 10 * 60 * 1000 // temp token  for 10 mints
             });
 

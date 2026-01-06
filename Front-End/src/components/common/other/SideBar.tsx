@@ -34,7 +34,7 @@ const SideBar: React.FC<SideBarProps> = ({ SideBar, className }) => {
             return (
               <li
                 key={index}
-                className="group relative flex justify-center mx-1 sm:mx-4 pt-2 pb-1 mb-6 rounded-lg  transition-transform"
+                className="group relative flex justify-center md:justify-start mx-1 sm:mx-5 pt-2 pb-1 mb-6 rounded-lg  transition-transform"
               >
                 {item.children ? (
                   <div className="">

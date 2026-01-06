@@ -5,7 +5,9 @@ import {
   Home, Briefcase, Users, /*FileText,*/ User,
   CalendarCheck, MessageSquareText, Wallet,
   LayoutDashboard, Settings, Wrench, AlertTriangle,
-  MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined
+  MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined,
+  NotebookPen,
+  FileText
 } from "lucide-react";
 
 /******************************************************************************************************* */
@@ -124,7 +126,7 @@ export const navItems = [
   { name: "Home", to: "/", icon: <Home size={18} /> },
   { name: "Services", to: "/customer/services", icon: <Briefcase size={18} /> },
   { name: "Providers", to: "/customer/providers", icon: <Users size={18} /> },
-  // { name: "Blog", to: "/customer/blog", icon: <FileText size={18} /> },
+  { name: "Blog", to: "/customer/blog", icon: <FileText size={18} /> },
   { name: "Account", to: "/customer/account/profile", icon: <User size={18} /> }
 ];
 /********************************************* Side-Bar Sections *******************************************************/
@@ -148,6 +150,7 @@ export const providerSideBarOptions: SideBarOption[] = [
   { icon: LayoutDashboard, section: "Dashboard", to: "/provider/dashboard" },
   { icon: MessageSquareMore, section: "Chat", to: "/provider/chats" },
   { icon: Wallet, section: "Wallet", to: "/provider/wallet" },
+  { icon: NotebookPen, section: "Blogs", to: "/provider/blogs" },
   { icon: ClipboardClock, section: "History", to: "/provider/booking-history" },
   {
     icon: Settings,
