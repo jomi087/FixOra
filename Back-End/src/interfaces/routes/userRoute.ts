@@ -16,7 +16,7 @@ import { chatSendRateLimit, mediumRateLimit, softRateLimit, strictRateLimit } fr
 const router = express.Router();
 
 //Services Section
-router.get("/services", AuthMiddleware([RoleEnum.Customer]), softRateLimit, (req, res, next) => userController.activeServices(req, res, next));
+router.get("/services",  softRateLimit, (req, res, next) => userController.activeServices(req, res, next));
 
 //Providers  Section
 router.get("/providers", AuthMiddleware([RoleEnum.Customer]), softRateLimit, (req, res, next) => userController.activeProviders(req, res, next));

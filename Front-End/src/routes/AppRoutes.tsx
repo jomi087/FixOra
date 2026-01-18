@@ -101,6 +101,16 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     )
   },
+  {
+    path: `/${RoleEnum.CUSTOMER}/services`,
+    element: (
+      <ErrorBoundary>
+        <Suspense fallback={<PageLoader />}>
+          <ServicePage />
+        </Suspense>
+      </ErrorBoundary>
+    )
+  },
   //client Routes
   {
     path: `/${RoleEnum.CUSTOMER}`,
@@ -114,7 +124,6 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
     children: [
-      { path: "services", element: <ServicePage /> },
       { path: "providers", element: <ProvidersPage /> },
       { path: "provider-KYC", element: <VerifictionFormPage /> },
       { path: "providers/provider-booking/:providerId", element: <ProviderBookingPage /> },

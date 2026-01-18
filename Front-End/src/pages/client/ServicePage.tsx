@@ -5,6 +5,7 @@ import Footer from "@/components/common/layout/Footer";
 import Nav from "@/components/common/layout/Nav";
 import { Button } from "@/components/ui/button";
 import useFetchCategories from "@/hooks/useFetchCategories";
+import { useAppSelector } from "@/store/hooks";
 import { useState } from "react";
 
 const ServicePage: React.FC = () => {
@@ -16,7 +17,7 @@ const ServicePage: React.FC = () => {
   //         dispatch(fetchCategories());
   //     }
   // }, [dispatch, categories.length])
-
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { categories, loading } = useFetchCategories();
   const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -25,17 +26,17 @@ const ServicePage: React.FC = () => {
       <Nav className="bg-nav-background text-nav-text" />
 
       <main className="pt-18 min-h-screen text-nav-text bg-nav-background ">
-
         <div className="flex items-start justify-center relative mt-8">
           {/* Right-aligned button */}
-          <Button
-            variant="default"
-            className="bg-yellow-600 cursor-pointer absolute right-4 -top-5"
-            onClick={() => setOpenConfirm(true)}
-          >
-            Become Providers
-          </Button>
-
+          {isAuthenticated && (
+            <Button
+              variant="default"
+              className="bg-yellow-600 cursor-pointer absolute right-4 -top-5"
+              onClick={() => setOpenConfirm(true)}
+            >
+              Become Providers
+            </Button>
+          )}
           {/* Center titles */}
           <div className="text-center">
             <h2 className="text-3xl font-serif">Our Services</h2>
@@ -47,7 +48,6 @@ const ServicePage: React.FC = () => {
               standards & quality to fix your issue happens.
             </p>
           </div>
-
         </div>
 
         {loading ? (
@@ -64,14 +64,16 @@ const ServicePage: React.FC = () => {
               <Services categories={categories} />
             )}
           </div>
-        )
-        }
+        )}
       </main>
 
-      <Footer className='bg-footer-background text-footer-text' />
+      <Footer className="bg-footer-background text-footer-text" />
 
       {/* T & C */}
-      <ProviderTandC openConfirm={openConfirm} setOpenConfirm={setOpenConfirm} />
+      <ProviderTandC
+        openConfirm={openConfirm}
+        setOpenConfirm={setOpenConfirm}
+      />
     </>
   );
 };
