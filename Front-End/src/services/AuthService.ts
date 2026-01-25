@@ -54,9 +54,9 @@ class AuthService {
   }
 
   sendChatMessageWithFile(role: string, chatId: string, formData: FormData) {
-    return axiosInstance.post(`/api/${role}/chats/${chatId}/messages`,formData,);
+    return axiosInstance.post(`/api/${role}/chats/${chatId}/messages`, formData,);
   }
-  
+
   /*********************************************************************************************************************** */
 
   acknowledgeNotificationAPI(notificationId: string) {
@@ -320,8 +320,14 @@ class AuthService {
 
   /*********************************************************************************************************************** */
   //Admin
-  DashboardData(timeRange: TimeRange) {
-    return axiosInstance.get(API_ROUTES.ADMIN.DASHBOARD(timeRange));
+  DashboardData(params: {
+    timeRange: TimeRange;
+    from: string;
+    to: string;
+  }) {
+    return axiosInstance.get(API_ROUTES.ADMIN.DASHBOARD, {
+      params: params
+    });
   }
 
   getCustomerApi(searchQuery: string, filter: string, currentPage: number, itemsPerPage: number) {

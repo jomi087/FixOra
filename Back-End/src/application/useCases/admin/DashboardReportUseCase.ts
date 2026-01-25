@@ -1,4 +1,3 @@
-import { endOfDay, startOfDay, startOfMonth, startOfWeek, startOfYear } from "date-fns";
 import { DashboardStatsOutputDTO, TimeRange } from "../../dto/DashboardDTO";
 import { IDashboardReportUseCase } from "../../interface/useCases/admin/IDashboardReportUseCase";
 import { IBookingRepository } from "../../../domain/interface/repositoryInterface/IBookingRepository";
@@ -12,39 +11,18 @@ export class DashboardReportUseCase implements IDashboardReportUseCase {
         private readonly _bookingRepository: IBookingRepository,
     ) { }
 
-    private getDateRange(range: TimeRange = "monthly") {
-        const today = new Date();
-        let start: Date;
-        let end: Date;
-
-        switch (range) {
-        case "daily":
-            start = startOfDay(today);
-            end = endOfDay(today);
-            break;
-        case "weekly":
-            start = startOfWeek(today, { weekStartsOn: 1 });
-            end = endOfDay(today);
-            break;
-        case "monthly":
-            start = startOfMonth(today);
-            end = endOfDay(today);
-            break;
-        case "yearly":
-            start = startOfYear(today);
-            end = endOfDay(today);
-            break;
-        };
-        return { start, end };
-    }
-
-    async execute(range: TimeRange): Promise<DashboardStatsOutputDTO> {
+    async execute(params: {
+        range: TimeRange;
+        from: Date;
+        to: Date;
+    }): Promise<DashboardStatsOutputDTO> {
         try {
-            const { start, end } = this.getDateRange(range);
+            const { from, to } = params;
+
             const [userStats, serviceStats, bookingStats] = await Promise.all([
-                this._userRepository.dashboardUserStats(start, end),
-                this._categoryRepository.dashboardServiceStats(start, end),
-                this._bookingRepository.dashboardBookingStats(start, end),
+                this._userRepository.dashboardUserStats(from, to),
+                this._categoryRepository.dashboardServiceStats(from, to),
+                this._bookingRepository.dashboardBookingStats(from, to),
             ]);
             const mappedData: DashboardStatsOutputDTO = {
                 overview: {

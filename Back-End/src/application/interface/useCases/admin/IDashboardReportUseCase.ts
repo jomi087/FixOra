@@ -1,6 +1,10 @@
 import { DashboardStatsOutputDTO, TimeRange } from "../../../dto/DashboardDTO";
 
 export interface IDashboardReportUseCase {
-  execute(range:TimeRange): Promise<DashboardStatsOutputDTO>;
+  execute(params: {
+    range: TimeRange;
+    from: Date;
+    to: Date;
+  }): Promise<DashboardStatsOutputDTO>
 }
 

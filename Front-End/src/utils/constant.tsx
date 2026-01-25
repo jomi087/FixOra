@@ -1,11 +1,21 @@
 import { RoleEnum } from "@/shared/enums/Role";
-import type { TimeRange } from "@/shared/types/dashboard";
 import type { SalesPreset } from "@/shared/types/salesReport";
 import {
-  Home, Briefcase, Users, /*FileText,*/ User,
-  CalendarCheck, MessageSquareText, Wallet,
-  LayoutDashboard, Settings, Wrench, AlertTriangle,
-  MessageSquareMore, ClipboardClock, CalendarClock, ChartNoAxesCombined
+  Home,
+  Briefcase,
+  Users,
+  /*FileText,*/ User,
+  CalendarCheck,
+  MessageSquareText,
+  Wallet,
+  LayoutDashboard,
+  Settings,
+  Wrench,
+  AlertTriangle,
+  MessageSquareMore,
+  ClipboardClock,
+  CalendarClock,
+  ChartNoAxesCombined,
 } from "lucide-react";
 
 /******************************************************************************************************* */
@@ -16,7 +26,7 @@ export const CURRENT_YEAR = 2025;
 export const COPYRIGHT_NOTICE = `© ${CURRENT_YEAR} ${App_Name}. All rights reserved.`;
 
 /********************************************* Image Sections *******************************************************/
-export const BGImage_404: string = "url('/images/404_Bg_Image.jpg')";  //used in sign-in, sign-up, pagenot-found,
+export const BGImage_404: string = "url('/images/404_Bg_Image.jpg')"; //used in sign-in, sign-up, pagenot-found,
 export const HeroSectionImage: string = "/images/hero-removebg-preview.png";
 export const SingInThemeImage: string = "/images/signIn.png";
 export const ApprovedSeal: string = "/images/approved.png";
@@ -25,27 +35,29 @@ export const ConfirmSeal: string = "/images/completedStamp.png";
 export const CancelSeal: string = "/images/cancelledSeal.png";
 
 /********************************************* Rules  *******************************************************/
-export const PAYMENT_SESSION_TIMEOUT_MS = Number(import.meta.env.VITE_PAYMENT_TIMEOUT_MS);
+export const PAYMENT_SESSION_TIMEOUT_MS = Number(
+  import.meta.env.VITE_PAYMENT_TIMEOUT_MS,
+);
 
 export const searchInputLength: number = 30; //50
 export const shortInputLength: number = 50; //50
-export const longInputLength: number = 200;  //200
+export const longInputLength: number = 200; //200
 
-export const categoryImageSize: number = 1;                                 //default set  to 2 mb
-export const providerImageSize: number = 1;                                 //default set  to 2 mb
+export const categoryImageSize: number = 1; //default set  to 2 mb
+export const providerImageSize: number = 1; //default set  to 2 mb
 export const KYCImageSize: number = 5; //default set  to 5 mb
-export const ImageSize: number = 5;    //default set  to 5 mb
+export const ImageSize: number = 5; //default set  to 5 mb
 export const minYear = `${new Date().getFullYear() - 150}-01-01`;
 export const maxYear = `${new Date().getFullYear() - 19}-01-01`;
-export const CCPP = 8;                                                  //CCPP => Customer Cards Per page -> default set to 16
-export const PCPP = 8;                                                  //PCPP => Provider Cards Per page  -> default set to 16
-export const PALPP = 10;                                                //PALPP => Provider Application List Per Page  -> default set to 15
-export const SLPP = 7;                                                  //SLPP => Service list Per page -> default set to 10
-export const BHPP = 7;                                                  //BHPP => Booking History Per Page  -> default set to 10
-export const TLPP = 5;                                                  //TLPP => Transaction List Per Page -> default set to 10
-export const RLPP = 5;                                                  //RLPP => Review List Per Page
-export const DLPP = 10;                                                 //DLPP => Dispute List Per Page
-export const MPP = 50;                                                  //MPP => Messages per page
+export const CCPP = 8; //CCPP => Customer Cards Per page -> default set to 16
+export const PCPP = 8; //PCPP => Provider Cards Per page  -> default set to 16
+export const PALPP = 10; //PALPP => Provider Application List Per Page  -> default set to 15
+export const SLPP = 7; //SLPP => Service list Per page -> default set to 10
+export const BHPP = 7; //BHPP => Booking History Per Page  -> default set to 10
+export const TLPP = 5; //TLPP => Transaction List Per Page -> default set to 10
+export const RLPP = 5; //RLPP => Review List Per Page
+export const DLPP = 10; //DLPP => Dispute List Per Page
+export const MPP = 50; //MPP => Messages per page
 export const DATE_RANGE_DAYS = 365;
 export const ONE_WEEK = 7;
 export const TIME_SLOTS = {
@@ -56,7 +68,8 @@ export const TIME_SLOTS = {
 /******************************************* Messages *******************************************************/
 export const Messages = {
   FAILED_CATEGORY_RESPONSE_MSG: "Failed to add category",
-  FAILED_TO_FETCH_ADDRESS_CORDINATES: "Failed to fetch address from coordinates",
+  FAILED_TO_FETCH_ADDRESS_CORDINATES:
+    "Failed to fetch address from coordinates",
   FAILED_TO_FETCH_CORDINATES: "Failed to fetch coordinates",
   FAILED_TO_FETCH_DATA: "Failed to fetch data",
   FAILED_TO_SAVE_DATA: "Failed to save data",
@@ -67,7 +80,8 @@ export const Messages = {
   FAILED_TO_SUBMIT_DATA: "Failed to submit Data",
   PROFILE_MODIFICATION_FAILED: "Profile modification failed",
   LOGIN_FAILED: "Login failed. Please try again later",
-  FAILED_FETCH_POSTAL_INFO: "Failed to fetch postal info. Please try again later",
+  FAILED_FETCH_POSTAL_INFO:
+    "Failed to fetch postal info. Please try again later",
   PASSWORD_UPDATED_SUCCESS: "Password updated successfully!",
   PASSWORD_UPDATE_FAILED: "Password updation failed",
   OTP_VERIFIED_SUCCESS: "OTP verified successfully!",
@@ -83,12 +97,12 @@ export const Messages = {
   FAILED_TO_UPDATE_STATUS: "Failed to update status",
   FAILED_TO_UPDATE: "Failed to update",
   INVALID_OR_UNAVAILABLE_PINCODE: "Invalid or unavailable Pincode",
-  NETWORK_ERROR_FETCHING_POSTAL_INFO: "Network error while fetching postal info",
+  NETWORK_ERROR_FETCHING_POSTAL_INFO:
+    "Network error while fetching postal info",
   BOOKING_STATUS_FAILED: "Failed to update booking status",
   ACCESS_DENID: "You don't have permission to access this resource.",
   STRIPE_FAILED: "Stripe failed to initialize",
   PAYMENT_FAILED: "Payment Failed, Try again",
-
 
   //move to validation section
   SERVICE_REQUIRED: "Service required",
@@ -96,7 +110,8 @@ export const Messages = {
   SERVICE_CHARGE_RANGE: "Service charge must be between 300 and 500",
   SELECT_SPECIALIZATION: "Select at least one specialization",
   SERVICE_CHARGE_REQUIRED: "Service charge is required",
-  EXPERIENCE_CERT_INVALID: "Experience certificate must be a valid JPG/PNG <= 5MB",
+  EXPERIENCE_CERT_INVALID:
+    "Experience certificate must be a valid JPG/PNG <= 5MB",
   GENDER_REQUIRED: "Select a gender",
   IMAGE_TYPE_INVALID: "Only JPEG, PNG, or JPG images are allowed.",
 };
@@ -110,7 +125,7 @@ export const validationMsg = {
 
 export const placeHolder = {
   ISSUE_TYPE: "Select issue type",
-  ISSUE_DESCRIPTION: "Briefly describe the problem you're facing"
+  ISSUE_DESCRIPTION: "Briefly describe the problem you're facing",
 };
 /******************************************* Reset Password Constraints Sections *******************************************************/
 export const constraints = [
@@ -125,20 +140,28 @@ export const navItems = [
   { name: "Services", to: "/customer/services", icon: <Briefcase size={18} /> },
   { name: "Providers", to: "/customer/providers", icon: <Users size={18} /> },
   // { name: "Blog", to: "/customer/blog", icon: <FileText size={18} /> },
-  { name: "Account", to: "/customer/account/profile", icon: <User size={18} /> }
+  {
+    name: "Account",
+    to: "/customer/account/profile",
+    icon: <User size={18} />,
+  },
 ];
 /********************************************* Side-Bar Sections *******************************************************/
 export interface SideBarOption {
-  icon: React.ElementType;
-  section: string;
-  to?: string;
-  children?: SideBarOption[];
+  icon: React.ElementType
+  section: string
+  to?: string
+  children?: SideBarOption[]
 }
 
 //User Side Bar
 export const userSideBarOptions: SideBarOption[] = [
   { icon: User, section: "Profile", to: "/customer/account/profile" },
-  { icon: CalendarCheck, section: "Bookings", to: "/customer/account/bookings" },
+  {
+    icon: CalendarCheck,
+    section: "Bookings",
+    to: "/customer/account/bookings",
+  },
   { icon: MessageSquareText, section: "Chats", to: "/customer/account/chats" },
   { icon: Wallet, section: "Wallet", to: "/customer/account/wallet" },
 ];
@@ -154,10 +177,17 @@ export const providerSideBarOptions: SideBarOption[] = [
     section: "Settings",
     children: [
       { icon: User, section: "Profile", to: "/provider/settings/profile" },
-      { icon: CalendarClock, section: "Availability", to: "/provider/settings/availability" },
-      { icon: ChartNoAxesCombined, section: "Sales", to: "/provider/settings/sales" }
-
-    ]
+      {
+        icon: CalendarClock,
+        section: "Availability",
+        to: "/provider/settings/availability",
+      },
+      {
+        icon: ChartNoAxesCombined,
+        section: "Sales",
+        to: "/provider/settings/sales",
+      },
+    ],
   },
 ];
 
@@ -171,7 +201,6 @@ export const adminSideBarOptions: SideBarOption[] = [
   { icon: Settings, section: "Settings", to: "/admin/settings" },
 ];
 
-
 export const settingOptions: { section: string; to: string }[] = [
   { section: "Profile", to: "/admin/settings/profile" },
   { section: "Commission Fee", to: "/admin/settings/commission-fee" },
@@ -179,11 +208,11 @@ export const settingOptions: { section: string; to: string }[] = [
 
 /*********************************************************************************************************************************************************/
 interface BlogPost {
-  title: string;
-  description: string;
-  image: string;
-  author: string;     // new
-  date: string;       // new (ISO or readable format)
+  title: string
+  description: string
+  image: string
+  author: string // new
+  date: string // new (ISO or readable format)
 }
 /********************************************************************************************************************************************************* */
 
@@ -208,8 +237,10 @@ export const API_ROUTES = {
 
   CHAT: {
     LIST: (role: RoleEnum) => `/api/${role}/chats`,
-    MESSAGES: (role: RoleEnum, chatId: string) => `/api/${role}/chats/${chatId}/messages`,
-    CALL_LOGS: (role: RoleEnum, chatId: string) => `/api/${role}/chats/${chatId}/call-log`
+    MESSAGES: (role: RoleEnum, chatId: string) =>
+      `/api/${role}/chats/${chatId}/messages`,
+    CALL_LOGS: (role: RoleEnum, chatId: string) =>
+      `/api/${role}/chats/${chatId}/call-log`,
   },
 
   CUSTOMER: {
@@ -232,10 +263,12 @@ export const API_ROUTES = {
     REVIEW_STATUS: (id: string) => `/api/customer/booking/review-status/${id}`,
 
     BOOKING_APPLICATION: "/api/customer/provider/booking",
-    RESCHEDULE_BOOKING: (bookingId: string) => `/api/customer/reschedule/booking/${bookingId}`,
+    RESCHEDULE_BOOKING: (bookingId: string) =>
+      `/api/customer/reschedule/booking/${bookingId}`,
     ONLINE_PAYMENT: "/api/customer/create-checkout-session",
     WALLET_PAYMENT: "/api/customer/wallet-payment",
-    PAYMENT_STATUS: (bookingId: string) => `/api/customer/booking/notify-paymentStatus/${bookingId}`,
+    PAYMENT_STATUS: (bookingId: string) =>
+      `/api/customer/booking/notify-paymentStatus/${bookingId}`,
     UPDATE_EMAIL_REQUEST: "/api/customer/email/update/request",
     UPDATE_EMAIL: "/api/customer/email/update/confirm",
     EDIT_PROFILE: "/api/customer/editProfile",
@@ -243,8 +276,10 @@ export const API_ROUTES = {
     CHANGE_PASSWORD: "/api/customer/change-password",
     BOOKING_HISTORY: "/api/customer/booking-history",
     BOOKING_DETAILS: (id: string) => `/api/customer/bookingDetails/${id}`,
-    RETRY_AVAILABILITY: (id: string) => `/api/customer/booking/retry-availability/${id}`,
-    CANCEL_BOOKING: (id: string) => `/api/customer/booking/cancel-booking/${id}`,
+    RETRY_AVAILABILITY: (id: string) =>
+      `/api/customer/booking/retry-availability/${id}`,
+    CANCEL_BOOKING: (id: string) =>
+      `/api/customer/booking/cancel-booking/${id}`,
     WALLET_INFO: (page: number, limit: number) =>
       `/api/customer/wallet?page=${page}&limit=${limit}`,
     ADD_FUND: "/api/customer/wallet/add-fund",
@@ -264,7 +299,11 @@ export const API_ROUTES = {
     WORKING_TIME_INFO: "/api/provider/availability-time",
     SCHEDULE_WORK_TIME: "api/provider/schedule-availability-time",
     TOGGLE_AVAILABILITY: "api/provider/toggle-availability",
-    SALES_REPORT: (filter: SalesPreset | null, startDate: string | null, endDate: string | null) => {
+    SALES_REPORT: (
+      filter: SalesPreset | null,
+      startDate: string | null,
+      endDate: string | null,
+    ) => {
       let url = "/api/provider/generate-salesReport";
       if (filter) {
         url += `?filter=${filter}`;
@@ -276,7 +315,7 @@ export const API_ROUTES = {
   },
 
   ADMIN: {
-    DASHBOARD: (timeRange: TimeRange) => `/api/admin/dashboard?range=${timeRange}`,
+    DASHBOARD: "/api/admin/dashboard",
 
     CUSTOMER_MANAGEMENT: "/api/admin/customers",
 
@@ -287,8 +326,10 @@ export const API_ROUTES = {
     TOGGLE_USER_STATUS: (userId: string) => `/api/admin/users/${userId}/status`,
 
     CATEGORY_MANAGEMENT: "/api/admin/services",
-    UPDATE_MAIN_CATEGORY: (categoryId: string) => `/api/admin/services/${categoryId}`,
-    UPDATE_SUB_CATEGORY: (subCategoryId: string) => `/api/admin/subServices/${subCategoryId}`,
+    UPDATE_MAIN_CATEGORY: (categoryId: string) =>
+      `/api/admin/services/${categoryId}`,
+    UPDATE_SUB_CATEGORY: (subCategoryId: string) =>
+      `/api/admin/subServices/${subCategoryId}`,
 
     TOGGLE_CATEGORY_STATUS: (id: string) => `/api/admin/services/${id}/status`,
 
@@ -326,7 +367,8 @@ const baseColors = [
   "#d946ef", // Future Service (Fuchsia)
   "#eab308", // Future Service (Yellow)
 ];
-export const getServiceColor = (index: number) => baseColors[index % baseColors.length];
+export const getServiceColor = (index: number) =>
+  baseColors[index % baseColors.length];
 /********************************************************************************************************************************************************** */
 
 export const blogPosts: Array<BlogPost> = [

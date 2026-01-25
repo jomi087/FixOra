@@ -50,9 +50,17 @@ export class AdminController {
 
     async dashBoardReport(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            const { timeRange, from, to } = req.query;
 
-            const range = req.query.range as "yearly" | "monthly" | "weekly" | "daily";
-            const { overview, growth, bookingsOverTime, bookingsByService, topProviders } = await this._dashboardReportUseCase.execute(range);
+            if (!timeRange || !from || !to) {
+                throw new AppError(400, "Missing dashboard query params");
+            }
+
+            const { overview, growth, bookingsOverTime, bookingsByService, topProviders } = await this._dashboardReportUseCase.execute({
+                range: timeRange as "yearly" | "monthly" | "weekly" | "daily",
+                from: new Date(from as string),
+                to: new Date(to as string),
+            });
 
             res.status(OK).json({
                 success: true,
@@ -82,6 +90,7 @@ export class AdminController {
                 customersData: result.data,
                 total: result.total
             });
+
         } catch (error) {
             next(error);
         }
