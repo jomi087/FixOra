@@ -67,9 +67,10 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     async execute(rawBody: Buffer, signature: string): Promise<void> {
         try {
             const result = await this._paymentService.verifyPayment(rawBody, signature);
+            console.info("result", result);
+
             if (!result) return;
             const { eventType, id, transactionId, amount, reason } = result;
-            console.info("result", result);
             
             if (eventType === "booking_success") {
                 const booking = await this._bookingRepository.findByBookingId(id);
