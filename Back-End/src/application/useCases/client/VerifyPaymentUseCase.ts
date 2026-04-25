@@ -69,7 +69,8 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
             const result = await this._paymentService.verifyPayment(rawBody, signature);
             if (!result) return;
             const { eventType, id, transactionId, amount, reason } = result;
-
+            console.log("event-type", eventType);
+            
             if (eventType === "booking_success") {
                 const booking = await this._bookingRepository.findByBookingId(id);
                 if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));

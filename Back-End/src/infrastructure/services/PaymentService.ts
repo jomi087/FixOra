@@ -27,8 +27,10 @@ export class PaymentService implements IPaymentService {
                     },
                 ],
                 mode: "payment",
-                success_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
-                cancel_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
+                // success_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
+                // cancel_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
+                success_url: "https://your-frontend.com/success",
+                cancel_url: "https://your-frontend.com/cancel",
                 metadata: {
                     bookingId: bookingId,
                 },
@@ -36,7 +38,7 @@ export class PaymentService implements IPaymentService {
             {
                 idempotencyKey: `booking_${bookingId}`,// Handles accidental retries, refreshes, or user double clicks. -> Prevents duplicate Stripe sessions
             });
-
+            console.log("session", session);
             return session.id;
 
         } catch (error: unknown) {
@@ -87,6 +89,7 @@ export class PaymentService implements IPaymentService {
         amount?: string,
         reason?: string
     } | null> {
+        console.log("process.env.STRIPE_WEBHOOK_SECRET", process.env.STRIPE_WEBHOOK_SECRET);
         const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
         let event: Stripe.Event;
         try {
