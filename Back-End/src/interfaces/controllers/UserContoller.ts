@@ -535,7 +535,7 @@ export class UserController {
     //payment
     async initiateOnlinePayment(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log("oooi");
+            console.info("oooi");
             const { bookingId } = req.body;
             const sessionId = await this._createPaymentUseCase.execute(bookingId);
 

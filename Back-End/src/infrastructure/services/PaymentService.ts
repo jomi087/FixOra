@@ -11,7 +11,7 @@ export class PaymentService implements IPaymentService {
 
     async createPaymentIntent(bookingId: string, totalAmount: number): Promise<string> {
         try {
-            console.log("enterd Create payment");
+            console.info("enterd Create payment");
             const session = await this.stripe.checkout.sessions.create({
                 payment_method_types: ["card",],
                 line_items: [
@@ -38,7 +38,7 @@ export class PaymentService implements IPaymentService {
             {
                 idempotencyKey: `booking_${bookingId}`,// Handles accidental retries, refreshes, or user double clicks. -> Prevents duplicate Stripe sessions
             });
-            console.log("session", session);
+            console.info("session", session);
             return session.id;
 
         } catch (error: unknown) {
