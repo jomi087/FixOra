@@ -51,7 +51,6 @@ initializeCommissionFee(logger);
 /**********************************************************************************************
  * MIDDLEWARES
 **********************************************************************************************/
-console.info("hlo world");
 app.use("/api", rawRoutes); //instead of parsing buffer to json we are passing as buffer it self
 app.use(cookieParser());
 app.use(morgan("tiny", { stream }));

@@ -11,7 +11,6 @@ export class PaymentService implements IPaymentService {
 
     async createPaymentIntent(bookingId: string, totalAmount: number): Promise<string> {
         try {
-            console.info("enterd Create payment");
             const session = await this.stripe.checkout.sessions.create({
                 payment_method_types: ["card",],
                 line_items: [
@@ -29,8 +28,8 @@ export class PaymentService implements IPaymentService {
                 mode: "payment",
                 // success_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
                 // cancel_url: `${process.env.FRONTEND_URL}/customer/providers/provider-booking/payment/${bookingId}`,
-                success_url: "https://your-frontend.com/success",
-                cancel_url: "https://your-frontend.com/cancel",
+                success_url: "https://example.com/success",
+                cancel_url: "https://example.com/cancel",
                 metadata: {
                     bookingId: bookingId,
                 },

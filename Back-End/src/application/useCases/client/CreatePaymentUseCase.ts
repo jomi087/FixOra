@@ -20,7 +20,6 @@ export class CreatePaymentUseCase implements ICreatePaymentUseCase {
         try {
             let booking = await this._bookingRepository.findByBookingId(bookingId);
             if (!booking) throw new AppError(NOT_FOUND, NOT_FOUND_MSG("Booking"));
-            console.log("wrkng");
             const totalAmount = booking.pricing.baseCost + booking.pricing.distanceFee;
 
             return await this._paymentService.createPaymentIntent(booking.bookingId, totalAmount);
