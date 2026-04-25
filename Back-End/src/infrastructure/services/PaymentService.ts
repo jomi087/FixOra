@@ -88,12 +88,12 @@ export class PaymentService implements IPaymentService {
         amount?: string,
         reason?: string
     } | null> {
-        console.log("process.env.STRIPE_WEBHOOK_SECRET", process.env.STRIPE_WEBHOOK_SECRET);
         const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
         let event: Stripe.Event;
         try {
             event = this.stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
-
+            console.info("event", event);
+            
             switch (event.type) {
             case "checkout.session.completed": {
                 const session = event.data.object as Stripe.Checkout.Session;

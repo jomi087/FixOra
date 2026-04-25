@@ -569,8 +569,11 @@ export class UserController {
 
     async verifyPaymentViaWebHook(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            console.info("verify payment");
             const sig = req.headers["stripe-signature"] as string;
+            console.info("req.headers",req.headers["stripe-signature"]);
             const rawBody = req.body;
+            console.info("req.body", req.body);
 
             await this._verifyPaymentUseCase.execute(rawBody, sig);
 
