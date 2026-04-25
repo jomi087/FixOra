@@ -11,7 +11,7 @@ export class PaymentService implements IPaymentService {
 
     async createPaymentIntent(bookingId: string, totalAmount: number): Promise<string> {
         try {
-
+            console.log("enterd Create payment");
             const session = await this.stripe.checkout.sessions.create({
                 payment_method_types: ["card",],
                 line_items: [
