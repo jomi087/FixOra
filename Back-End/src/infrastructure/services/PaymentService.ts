@@ -35,7 +35,6 @@ export class PaymentService implements IPaymentService {
             {
                 idempotencyKey: `booking_${bookingId}`,// Handles accidental retries, refreshes, or user double clicks. -> Prevents duplicate Stripe sessions
             });
-            console.info("session", session);
             return session.id;
 
         } catch (error: unknown) {
@@ -90,7 +89,6 @@ export class PaymentService implements IPaymentService {
         let event: Stripe.Event;
         try {
             event = this.stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
-            console.info("event", event);
             
             switch (event.type) {
             case "checkout.session.completed": {

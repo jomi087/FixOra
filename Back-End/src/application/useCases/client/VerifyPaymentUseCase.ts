@@ -67,7 +67,6 @@ export class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     async execute(rawBody: Buffer, signature: string): Promise<void> {
         try {
             const result = await this._paymentService.verifyPayment(rawBody, signature);
-            console.info("result", result);
 
             if (!result) return;
             const { eventType, id, transactionId, amount, reason } = result;
