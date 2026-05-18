@@ -18,37 +18,18 @@ const PaymentPage = () => {
   const { bookingId } = useParams();
 
   const navigate = useNavigate();
-  //const dispatch = useAppDispatch();
   const [paymentState, setPaymentState] = useState<PaymentState>("loading");
-  // const [failureReason, setFailureReason] = useState<string | null>(null);
-
-  /*useEffect(() => {
-    // const handlePaymentSuccess = () => {
-    //   setPaymentState("success");
-    // };
-
-    // const handlePaymentFailed = (reason: string) => {
-    //   setFailureReason(reason);
-    //   setPaymentState("failure");
-    // };
-
-    // socket.on("payment:success", handlePaymentSuccess);
-    // socket.on("payment:failure", handlePaymentFailed);
-
-    return () => {
-      // socket.off("payment:success", handlePaymentSuccess);
-      // socket.off("payment:failure", handlePaymentFailed);
-    };
-  }, []);*/
 
   const { items,error } = useAppSelector(state => state.notification);
 
+  //# Updating status on the basic of socket is bit messy , cz if socket fails then it will lead to an endlss loding ui state
   useEffect(() => {
     const latest = items[0];
     if (latest?.type === NotificationType.BOOKING_CONFIRMED) { 
       setPaymentState("success");;
     }
   }, [items]);
+  //* better approch will be make a api call for strip case verify with session id (so i have to return session id is successurl and failur url ) or check with db cz after verify we are updatin the db payment status
 
   if (error) {
     return <div>{error}</div>;

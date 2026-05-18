@@ -6,20 +6,42 @@ import { App_Name, shortInputLength } from "@/utils/constant";
 import { BiHide, BiShow } from "react-icons/bi";
 
 interface signInProps {
-  singInThemeImage: string;
-  signInSubmit: (email: string, password: string) => Promise<void>;
-  forgotPassword: (email: string) => Promise<void>;
-  googleSignin: () => void;
-  loading: boolean;
-  role: string;
+  singInThemeImage: string
+  signInSubmit: (email: string, password: string) => Promise<void>
+  forgotPassword: (email: string) => Promise<void>
+  googleSignin: () => void
+  loading: boolean
+  role: RoleEnum
 }
 
-const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotPassword, googleSignin, loading, role }) => {
-
+const SignIn: React.FC<signInProps> = ({
+  singInThemeImage,
+  signInSubmit,
+  forgotPassword,
+  googleSignin,
+  loading,
+  role,
+}) => {
   const [showPw, setShowPw] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignInForm, setIsSignInForm] = useState(true);
+
+  const handleAutoFill = () => {
+    switch (role) {
+    case RoleEnum.PROVIDER:
+      signInSubmit("sixuser@gmail.com", "1111111111");
+      break;
+
+    case RoleEnum.ADMIN:
+      signInSubmit("admin@gmail.com", "0000000000");
+      break;
+
+    default:
+      signInSubmit("threeuser@gmail.com", "1111111111");
+      break;
+    }
+  };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,19 +59,21 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
 
   return (
     <div className="flex flex-1 flex-col md:flex-row  pt-10 overflow-hidden ">
-
       {/* Left: Sign In Container */}
       <section className="flex flex-col justify-center items-center md:w-2/3    ">
         <div className="w-full max-w-md text-black shadow-lg shadow-black border-1 rounded-2xl p-8 pb-4 ">
           <h2 className="text-5xl text-center mb-2 font-extrabold tracking-tight">
-            {isSignInForm ? "Welcome Back  " : "Verify-Email"}
+            {isSignInForm ? "Welcome Back" : "Verify-Email"}
           </h2>
-          {isSignInForm && <p className=" text-center text-black text-sm font-semibold">
-            {role == "provider" ? "Lets get back to work!" : `Sign in to your ${App_Name} account to continue`}
-          </p>
-          }
+          {isSignInForm && (
+            <p className=" text-center text-black text-sm font-semibold">
+              {role == "provider"
+                ? "Lets get back to work!"
+                : `Sign in to your ${App_Name} account to continue`}
+            </p>
+          )}
 
-          <div aria-live="polite" role="status" className="sr-only" >
+          <div aria-live="polite" role="status" className="sr-only">
             {loading && "Processing in, please wait..."}
           </div>
 
@@ -79,7 +103,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
             </label>
 
             {/* Password */}
-            {isSignInForm &&
+            {isSignInForm && (
               <label htmlFor="password" className="block w-full">
                 <span className="sr-only">Password</span>
 
@@ -117,49 +141,69 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
                   </div>
                 </div>
               </label>
-            }
+            )}
 
             {/* Sign In Button */}
             {isSignInForm ? (
-              <button
-                type="submit"
-                disabled={loading}
-                aria-busy={loading}
-                aria-label={`Sign in to ${{ App_Name }}`}
-                className={`w-full py-3 rounded-full font-semibold text-white shadow-lg transition-colors duration-300 cursor-pointer ${loading
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-blue-800 hover:bg-blue-900"
-                }`}
+              <div className="w-full overflow-hidden rounded-xl ">
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-1">
+                  {/* Sign In Button */}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    aria-busy={loading}
+                    aria-label={`Sign in to ${App_Name}`}
+                    className={` relative w-full sm:flex-1 py-3 px-6 font-semibold font-mono text-white shadow-lg transition-all duration-300
+                    cursor-pointer rounded-t-xl sm:rounded-none sm:rounded-l-xl
+                     md:[clip-path:polygon(0_0,100%_0,85%_100%,0_100%)]
+                      ${loading ? "bg-blue-400 cursor-not-allowed opacity-70" : "bg-blue-700 hover:bg-blue-800 active:scale-[0.98]"}`}
+                  >
+                    Sign In
+                  </button>
 
-              >
-                {loading ? "Signing in..." : "Sign in"}
-              </button>
+                  {/* Auto Fill Button */}
+                  <button
+                    onClick={handleAutoFill}
+                    disabled={loading}
+                    aria-busy={loading}
+                    aria-label={`Auto fill for ${App_Name}`}
+                    className={` relative w-full sm:flex-1 py-3 px-6 font-semibold font-mono text-white shadow-lg transition-all duration-300 
+                      cursor-pointerrounded-b-xl sm:rounded-none sm:rounded-r-xl sm:-ml-8
+                      md:[clip-path:polygon(15%_0,100%_0,100%_100%,0_100%)]
+                      ${loading ? "bg-green-400 cursor-not-allowed opacity-70" : "bg-green-700 hover:bg-green-800 active:scale-[0.98]"}`}
+                  >
+                    Auto Fill
+                  </button>
+                </div>
+              </div>
             ) : (
               <button
                 type="submit"
                 disabled={loading}
                 aria-busy={loading}
                 aria-label={"verify-email button"}
-                className={`w-full py-3 rounded-full font-semibold text-white shadow-lg transition-colors duration-300 cursor-pointer ${loading
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-blue-800 hover:bg-blue-900"
+                className={`w-full py-3 rounded-full font-semibold text-white shadow-lg transition-colors duration-300 cursor-pointer ${
+                  loading
+                    ? "bg-blue-400 cursor-not-allowed"
+                    : "bg-blue-800 hover:bg-blue-900"
                 }`}
               >
                 Verify
               </button>
-            )
-            }
-
+            )}
           </form>
 
-          {isSignInForm &&
+          {isSignInForm && (
             <p className="mt-6 text-center">
               Don't have an account?
-              <Link to="/signup" className="underline text-blue-600 font-semibold ml-1">
+              <Link
+                to="/signup"
+                className="underline text-blue-600 font-semibold ml-1"
+              >
                 Sign up
               </Link>
             </p>
-          }
+          )}
 
           {isSignInForm && (
             <div className="flex justify-center mt-4">
@@ -179,7 +223,7 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
 
-          {isSignInForm &&
+          {isSignInForm && (
             <div className="flex justify-center mt-4">
               <button
                 type="button"
@@ -189,34 +233,40 @@ const SignIn: React.FC<signInProps> = ({ singInThemeImage, signInSubmit, forgotP
                 <FcGoogle size={25} />
               </button>
             </div>
-          }
+          )}
 
-          {!isSignInForm &&
+          {!isSignInForm && (
             <Link to="/signup" className="font-semibold block text-center ">
               Create Account
             </Link>
-          }
+          )}
 
-          {!isSignInForm &&
-            <button className=" w-full text-center mt-6 pt-2 text-black font-semibold cursor-pointer  "
-              onClick={() => { setIsSignInForm(true); }}
+          {!isSignInForm && (
+            <button
+              className=" w-full text-center mt-6 pt-2 text-black font-semibold cursor-pointer  "
+              onClick={() => {
+                setIsSignInForm(true);
+              }}
             >
               Back to Login
             </button>
-          }
+          )}
 
-          {isSignInForm &&
+          {isSignInForm && (
             <p className="mt-4 text-blue-100 text-center">
-              <Link to={`/signIn/${RoleEnum.ADMIN}`} className="text-black font-semibold">
+              <Link
+                to={`/signIn/${RoleEnum.ADMIN}`}
+                className="text-black font-semibold"
+              >
                 Explore our app
               </Link>
             </p>
-          }
+          )}
         </div>
       </section>
 
       {/* Right: Image */}
-      <section className="hidden md:flex md:w-1/2 relative " >
+      <section className="hidden md:flex md:w-1/2 relative ">
         <img
           src={singInThemeImage}
           alt="Sign In Illustration"
